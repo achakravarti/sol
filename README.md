@@ -2,8 +2,11 @@
 > Progressive toolkit for rapid application development in C
 
 
+[![GitHub license](https://img.shields.io/github/license/achakravarti/sol.svg)](https://github.com/achakravarti/sol/blob/master/LICENSE)[![Build Status](https://travis-ci.org/achakravarti/sol.svg?branch=master)](https://travis-ci.org/achakravarti/sol) [![codecov](https://codecov.io/gh/achakravarti/sol/branch/master/graph/badge.svg)](https://codecov.io/gh/achakravarti/sol) [![GitHub last commit](https://img.shields.io/github/last-commit/achakravarti/sol.svg)](https://github.com/achakravarti/sol/graphs/commit-activity)
+[![Issues](http://img.shields.io/github/issues/achakravarti/sol.svg)](https://github.com/achakravarti/sol/issues) [![GitHub issues-closed](https://img.shields.io/github/issues-closed/achakravarti/sol.svg)](https://github.com/achakravarti/sol/issues?q=is%3Aissue+is%3Aclosed)[![GitHub pull-requests](https://img.shields.io/github/issues-pr/achakravarti/sol.svg)](https://github.com/achakravarti/sol/pull/) [![GitHub pull-requests closed](https://img.shields.io/github/issues-pr-closed/achakravarti/sol.svg)](https://github.com/achakravart/sol/pull/) [![PRs Welcome](https://img.shields.io/badge/pull%20requests-welcome-blue.svg)](http://makeapullrequest.com)[![GitHub contributors](https://img.shields.io/github/contributors/achakravarti/sol.svg)](https://github.com/achakravarti/sol/graphs/contributors/)
+
+
 ## License
-[![GitHub license](https://img.shields.io/github/license/achakravarti/sol.svg)](https://github.com/achakravarti/sol/blob/master/LICENSE)
 
 Copyright (c) 2019 [Abhishek Chakravarti][]. 
 <abhishek@taranjali.org>
@@ -40,7 +43,6 @@ for providing a specific set of related functionality:
 
 
 ## Development
-[![Build Status](https://travis-ci.org/achakravarti/sol.svg?branch=master)](https://travis-ci.org/achakravarti/sol) [![codecov](https://codecov.io/gh/achakravarti/sol/branch/master/graph/badge.svg)](https://codecov.io/gh/achakravarti/sol) [![GitHub last commit](https://img.shields.io/github/last-commit/achakravarti/sol.svg)](https://github.com/achakravarti/sol/graphs/commit-activity)
 
 The Sol Library source code is available via [Git][] from its [GitHub][]
 [repository][]. The release versions are tagged on the `release` branch, and are
@@ -93,7 +95,6 @@ need to adapt these steps according to your use case.
 
 
 ## Support
-[![Issues](http://img.shields.io/github/issues/achakravarti/sol.svg)](https://github.com/achakravarti/sol/issues) [![GitHub issues-closed](https://img.shields.io/github/issues-closed/achakravarti/sol.svg)](https://github.com/achakravarti/sol/issues?q=is%3Aissue+is%3Aclosed)
 
 If you're using this Library, and have encountered any issues that you would
 require support for, please open an issue through this Library's [issue
@@ -117,7 +118,6 @@ that no guarantee is given that your support request would be resolved.
 
 
 ## Contributing
-[![GitHub pull-requests](https://img.shields.io/github/issues-pr/achakravarti/sol.svg)](https://github.com/achakravarti/sol/pull/) [![GitHub pull-requests closed](https://img.shields.io/github/issues-pr-closed/achakravarti/sol.svg)](https://github.com/achakravart/sol/pull/) [![PRs Welcome](https://img.shields.io/badge/pull%20requests-welcome-blue.svg)](http://makeapullrequest.com)
 
 Contributions to the development of the Sol Library within the scope of its
 objectives are encouraged and appreciated. Contributions can take one of the
@@ -133,7 +133,6 @@ the code of conduct, and on the development process and tools.
 
 
 ## Contributors
-[![GitHub contributors](https://img.shields.io/github/contributors/achakravarti/sol.svg)](https://github.com/achakravarti/sol/graphs/contributors/)
 
 The Sol Library was written, and is currently maintained, by 
 [Abhishek Chakravarti][].
