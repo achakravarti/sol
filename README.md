@@ -27,6 +27,17 @@ Chakravarti][], at <abhishek@taranjali.org>.
 
 ## Features
 
+The Sol Library is designed as a set of modules, with each module responsible
+for providing a specific set of related functionality:
+  1. The **Environment Module** helps identity the compiler and host environment
+  2. The **Compiler Hints Module** provides compiler hints that can potentially
+     optimise code
+  3. The **Primitive Data Types Module** defines the primitive data types along
+     with their related constants
+  4. The **Exception Handling Module** provides a basic structure to handle
+     exceptions
+  5. The **Unit Testing Module** provides a framework for executing unit tests
+
 
 ## Development
 [![Build Status](https://travis-ci.org/achakravarti/sol.svg?branch=master)](https://travis-ci.org/achakravarti/sol) [![codecov](https://codecov.io/gh/achakravarti/sol/branch/master/graph/badge.svg)](https://codecov.io/gh/achakravarti/sol) [![GitHub last commit](https://img.shields.io/github/last-commit/achakravarti/sol.svg)](https://github.com/achakravarti/sol/graphs/commit-activity)
@@ -48,6 +59,37 @@ about the development process and tools used to build Sol.
 
 
 ## Getting Started
+In order to use the Sol Library in a **hosted environment**, the following steps
+must be performed:  
+  1. Cloning the Git repository  
+  2. Testing the Library
+  3. Installing the Library
+
+
+The commands to do so are:  
+  - `git clone https://github.com/achakravarti/sol.git`  
+  - `make -s test`  
+  - `make -s install`  
+
+On executing the second step, a message will be diplayed on the standard output
+indicating the unit test results. If no unit tests fail, then you are good to go
+with the third step of installation.
+
+This Library does not comprise of any binaries, only a set of header files.
+These header files are installed in the standard include directory, the default
+being `/usr/local/include`. However, if required, you can change this by setting
+the correct value in the `ipath_standard` build variable in the Makefile.
+
+Once you have installed the Library, you can use it by including it in your C 
+source code like so:  
+  - `#include <sol/api.h>`  
+
+If you no longer need the Library, you can uninstall it by running the
+following command:  
+  - `make -s uninstall`  
+
+If you are using this Library in a **freestanding environment**, then you would
+need to adapt these steps according to your use case.
 
 
 ## Support
@@ -98,7 +140,7 @@ The Sol Library was written, and is currently maintained, by
 
 
 ## Acknowledgements
-
+TODO
 
 * * *
 
