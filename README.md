@@ -140,7 +140,22 @@ The Sol Library was written, and is currently maintained, by
 
 
 ## Acknowledgements
-TODO
+Special mention needs to be made for the following, which have significantly
+influenced the development of the Sol Library:  
+  * [Arch Linux][]  
+  * [Clang][]  
+  * [Codecov][]  
+  * [fvcproductions/sampleREADME.md][]  
+  * [GCC][]  
+  * [Git][]  
+  * [GitHub][]  
+  * [Linux][]  
+  * [Make A README][]  
+  * [Naereen/badges][]  
+  * [PurpleBooth/README-Template][]  
+  * [Travis CI][]  
+  * [Vim][]
+
 
 * * *
 
@@ -148,20 +163,27 @@ TODO
 [Abhishek Chakravarti]:https://github.com/achakravarti
 [Arch Linux]:https://www.archlinux.org
 [Clang]:https://clang.llvm.org
+[Codecov]:https://codecov.io
 [CONTRIBUTING.md]:https://github.com/achakravarti/sol/blob/master/CONTRIBUTING.md/
 [copy]:https://github.com/achakravarti/sol/blob/master/LICENSE
 [Free Software Foundation]:https://www.fsf.org
+[fvcproductions/sampleREADME.md]:https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46
 [GCC]:https://gcc.gnu.org
 [Git]:https://git-scm.com
 [GitHub]:https://github.com
 [GNU General Public License]:https://choosealicense.com/licenses/gpl-3.0
 [issue tracker]:https://github.com/achakravarti/sol/issues
+[Linux]:https://www.kernel.org
 [macOS]:https://www.apple.com/macos
+[Make A README]:https://makeareadme.com
+[Naereen/badges]:https://github.com/Naereen/badges
+[PurpleBooth/README-Template]:https://gist.github.com/PurpleBooth/109311bb0361f32d87a2
 [releases]:https://github.com/achakravarti/sol/releases
 [repository]:https://github.com/achakravarti/sol
 [Semantic Versioning]:http://semver.org
 [Travis CI]:https://travis-ci.org
 [version 3]:https://www.gnu.org/licenses/gpl-3.0.en.html
 [Ubuntu Trusty 14.04]:http://releases.ubuntu.com/14.04
+[Vim]:https://www.vim.org
 [Windows Server 1803]:https://docs.microsoft.com/en-us/windows-server/get-started/get-started-with-1803
 
