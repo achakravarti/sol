@@ -28,6 +28,25 @@ Chakravarti][], at <abhishek@taranjali.org>.
 ## Features
 
 
+## Development
+[![Build Status](https://travis-ci.org/achakravarti/sol.svg?branch=master)](https://travis-ci.org/achakravarti/sol) [![codecov](https://codecov.io/gh/achakravarti/sol/branch/master/graph/badge.svg)](https://codecov.io/gh/achakravarti/sol) [![GitHub last commit](https://img.shields.io/github/last-commit/achakravarti/sol.svg)](https://github.com/achakravarti/sol/graphs/commit-activity)
+
+The Sol Library source code is available via [Git][] from its [GitHub][]
+[repository][]. The release versions are tagged on the `release` branch, and are
+also available as [GitHub][] [releases][]. The latest development rolling 
+release is always available on the `master` branch, which is built by 
+integrating the issue  branches. All versions, release and development, adhere
+to the [Semantic Versioning][] scheme.
+
+Sol has been developed and tested on a 64-bit machine running [Arch Linux][]
+with [GCC][] as the compiler. Additional testing has been done through the
+[Travis CI][] continuous integration tool running [Ubuntu Trusty 14.04][],
+[macOS][], and [Windows Server 1803][] with [GCC][] and [Clang][] as compilers.
+
+Please see the [CONTRIBUTING.md][] file if you are interested in learning more
+about the development process and tools used to build Sol.
+
+
 ## Getting Started
 
 
@@ -55,9 +74,6 @@ While every effort would be taken to address all support requests, please note
 that no guarantee is given that your support request would be resolved.
 
 
-## Development
-
-
 ## Contributing
 
 
@@ -74,9 +90,22 @@ The Sol Library was written, and is currently maintained, by [Abhishek Chakravar
 
 
 [Abhishek Chakravarti]:https://github.com/achakravarti
+[Arch Linux]:https://www.archlinux.org
+[Clang]:https://clang.llvm.org
+[CONTRIBUTING.md]:https://github.com/achakravarti/sol/blob/master/CONTRIBUTING.md/
 [copy]:https://github.com/achakravarti/sol/blob/master/LICENSE
 [Free Software Foundation]:https://www.fsf.org
+[GCC]:https://gcc.gnu.org
+[Git]:https://git-scm.com
+[GitHub]:https://github.com
 [GNU General Public License]:https://choosealicense.com/licenses/gpl-3.0
 [issue tracker]:https://github.com/achakravarti/sol/issues
+[macOS]:https://www.apple.com/macos
+[releases]:https://github.com/achakravarti/sol/releases
+[repository]:https://github.com/achakravarti/sol
+[Semantic Versioning]:http://semver.org
+[Travis CI]:https://travis-ci.org
 [version 3]:https://www.gnu.org/licenses/gpl-3.0.en.html
+[Ubuntu Trusty 14.04]:http://releases.ubuntu.com/14.04
+[Windows Server 1803]:https://docs.microsoft.com/en-us/windows-server/get-started/get-started-with-1803
 
