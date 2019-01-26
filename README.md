@@ -41,6 +41,9 @@ Chakravarti][], at <abhishek@taranjali.org>.
 
 
 ## Contributors
+[![GitHub contributors](https://img.shields.io/github/contributors/achakravarti/sol.svg)](https://github.com/achakravarti/sol/graphs/contributors/)
+
+The Sol Library was written, and is currently maintained, by [Abhishek Chakravarti][].
 
 
 ## Acknowledgements
@@ -49,6 +52,7 @@ Chakravarti][], at <abhishek@taranjali.org>.
 * * *
 
 
+[Abhishek Chakravarti]:https://github.com/achakravarti
 [copy]:https://github.com/achakravarti/sol/blob/master/LICENSE
 [Free Software Foundation]:https://www.fsf.org
 [GNU General Public License]:https://choosealicense.com/licenses/gpl-3.0
