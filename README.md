@@ -75,12 +75,26 @@ that no guarantee is given that your support request would be resolved.
 
 
 ## Contributing
+[![GitHub pull-requests](https://img.shields.io/github/issues-pr/achakravarti/sol.svg)](https://github.com/achakravarti/sol/pull/) [![GitHub pull-requests closed](https://img.shields.io/github/issues-pr-closed/achakravarti/sol.svg)](https://github.com/achakravart/sol/pull/) [![PRs Welcome](https://img.shields.io/badge/pull%20requests-welcome-blue.svg)](http://makeapullrequest.com)
+
+Contributions to the development of the Sol Library within the scope of its
+objectives are encouraged and appreciated. Contributions can take one of the
+following forms:  
+  * Development
+  * Documentation
+  * Reviews
+  * Testing
+
+If you are interested in contributing to this Library, a good starting point
+would be to read the [CONTRIBUTING.md][] file. This file provides guidelines on
+the code of conduct, and on the development process and tools.
 
 
 ## Contributors
 [![GitHub contributors](https://img.shields.io/github/contributors/achakravarti/sol.svg)](https://github.com/achakravarti/sol/graphs/contributors/)
 
-The Sol Library was written, and is currently maintained, by [Abhishek Chakravarti][].
+The Sol Library was written, and is currently maintained, by 
+[Abhishek Chakravarti][].
 
 
 ## Acknowledgements
