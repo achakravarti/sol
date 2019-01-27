@@ -47,6 +47,17 @@ are achieved through **five modules**, which are described in the
 [Features](#features) section of this document.
 
 
+## Documentation
+
+The documentation for the Sol Library is structured as follows:
+  * General information and guidelines are covered in this [README.md][] file
+  * License details are covered in the [LICENSE][] file
+  * Changes are logged in the [CHANGELOG.md][] file
+  * Build and usage instructions are provided in the [Makefile][]
+  * Contribution guidelines are detailed in the [CONTRIBUTING.md][] file
+  * The API reference is in the header files of the `inc/` directory
+
+
 ## Features
 
 The Sol Library is designed as a set of modules, with each module responsible
@@ -196,6 +207,7 @@ influenced the development of the Sol Library:
 
 [Abhishek Chakravarti]:https://github.com/achakravarti
 [Arch Linux]:https://www.archlinux.org
+[CHANGELOG.md]:https://github.com/achakravarti/sol/blob/master/CHANGELOG.md/
 [Clang]:https://clang.llvm.org
 [Codecov]:https://codecov.io
 [CONTRIBUTING.md]:https://github.com/achakravarti/sol/blob/master/CONTRIBUTING.md/
@@ -207,11 +219,15 @@ influenced the development of the Sol Library:
 [GitHub]:https://github.com
 [GNU General Public License]:https://choosealicense.com/licenses/gpl-3.0
 [issue tracker]:https://github.com/achakravarti/sol/issues
+[LICENSE]:https://github.com/achakravarti/sol/blob/master/LICENSE
 [Linux]:https://www.kernel.org
 [macOS]:https://www.apple.com/macos
 [Make A README]:https://makeareadme.com
+[Makefile]:https://github.com/achakravarti/sol/blob/master/Makefile/
 [Naereen/badges]:https://github.com/Naereen/badges
 [PurpleBooth/README-Template]:https://gist.github.com/PurpleBooth/109311bb0361f32d87a2
+[Raspberry Pi]:https://www.raspberrypi.org/
+[README.md]:https://github.com/achakravarti/sol/blob/master/README.md/
 [releases]:https://github.com/achakravarti/sol/releases
 [repository]:https://github.com/achakravarti/sol
 [Semantic Versioning]:http://semver.org
