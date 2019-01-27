@@ -1,9 +1,10 @@
 # Sol Library
-> Progressive toolkit for rapid application development in C
+> Primitives for progressive software development in C
 
 
-[![GitHub license](https://img.shields.io/github/license/achakravarti/sol.svg)](https://github.com/achakravarti/sol/blob/master/LICENSE)[![Build Status](https://travis-ci.org/achakravarti/sol.svg?branch=master)](https://travis-ci.org/achakravarti/sol) [![codecov](https://codecov.io/gh/achakravarti/sol/branch/master/graph/badge.svg)](https://codecov.io/gh/achakravarti/sol) [![GitHub last commit](https://img.shields.io/github/last-commit/achakravarti/sol.svg)](https://github.com/achakravarti/sol/graphs/commit-activity)
-[![Issues](http://img.shields.io/github/issues/achakravarti/sol.svg)](https://github.com/achakravarti/sol/issues) [![GitHub issues-closed](https://img.shields.io/github/issues-closed/achakravarti/sol.svg)](https://github.com/achakravarti/sol/issues?q=is%3Aissue+is%3Aclosed)[![GitHub pull-requests](https://img.shields.io/github/issues-pr/achakravarti/sol.svg)](https://github.com/achakravarti/sol/pull/) [![GitHub pull-requests closed](https://img.shields.io/github/issues-pr-closed/achakravarti/sol.svg)](https://github.com/achakravart/sol/pull/) [![PRs Welcome](https://img.shields.io/badge/pull%20requests-welcome-blue.svg)](http://makeapullrequest.com)[![GitHub contributors](https://img.shields.io/github/contributors/achakravarti/sol.svg)](https://github.com/achakravarti/sol/graphs/contributors/)
+[![GitHub license](https://img.shields.io/github/license/achakravarti/sol.svg)](https://github.com/achakravarti/sol/blob/master/LICENSE) [![GitHub release](https://img.shields.io/github/release/achakravarti/sol.svg)](https://img.shields.io/github/release/achakravarti/sol) [![GitHub release date](https://img.shields.io/github/release-date/achakravarti/sol.svg)](https://img.shields.io/github/release-date/achakravarti/sol) 
+[![Build Status](https://travis-ci.org/achakravarti/sol.svg?branch=master)](https://travis-ci.org/achakravarti/sol) [![codecov](https://codecov.io/gh/achakravarti/sol/branch/master/graph/badge.svg)](https://codecov.io/gh/achakravarti/sol) [![GitHub last commit](https://img.shields.io/github/last-commit/achakravarti/sol.svg)](https://github.com/achakravarti/sol/graphs/commit-activity) [![Issues](http://img.shields.io/github/issues/achakravarti/sol.svg)](https://github.com/achakravarti/sol/issues) [![GitHub issues-closed](https://img.shields.io/github/issues-closed/achakravarti/sol.svg)](https://github.com/achakravarti/sol/issues?q=is%3Aissue+is%3Aclosed) 
+[![GitHub pull-requests](https://img.shields.io/github/issues-pr/achakravarti/sol.svg)](https://github.com/achakravarti/sol/pull/) [![GitHub pull-requests closed](https://img.shields.io/github/issues-pr-closed/achakravarti/sol.svg)](https://github.com/achakravart/sol/pull/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](http://makeapullrequest.com) [![GitHub contributors](https://img.shields.io/github/contributors/achakravarti/sol.svg)](https://github.com/achakravarti/sol/graphs/contributors/)
 
 
 ## License
@@ -38,13 +39,13 @@ challenge to build a simple web application that could run on a [Raspberry Pi][]
 SoC. I succeeded, and the insights that I gleaned led to the development of the
 Sol Library.
 
-The primary goal of the Sol Library is to provide a framework for software
-development that leverages the power of C without sacrificing on best practices.
-The secondary goal of the Library is that it should be usable on a freestanding
-environment; although I don't have any experience in embedded programming, it's
-nice to envision that this Library is usable in such environments. These goals
-are achieved through **five modules**, which are described in the
-[Features](#features) section of this document.
+The primary goal of the Sol Library is to provide a set of primitives for 
+software development that leverages the power of C without sacrificing on 
+progressive best practices. The secondary goal of the Library is that it should
+be usable on a freestanding environment; although I don't have any experience in 
+embedded programming, it's nice to envision that this Library is usable in such
+environments. These goals are achieved through **five modules**, which are 
+described in the [Features](#features) section of this document.
 
 
 ## Documentation
