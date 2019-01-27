@@ -27,12 +27,31 @@ Chakravarti][], at <abhishek@taranjali.org>.
 
 ## Overview
 
+The Sol Library started out as a hobby project to explore the possibility of
+building web applications that can run on resource constrained devices. When I
+conceived of this project, I was heavily entrenched in the building of web
+applications in the .NET ecosystem, and I became interested in the potential
+carbon footprint of running such applications. 
+
+Although I never actually measured the power requirements, I set out on a 
+challenge to build a simple web application that could run on a [Raspberry Pi][]
+SoC. I succeeded, and the insights that I gleaned led to the development of the
+Sol Library.
+
+The primary goal of the Sol Library is to provide a framework for software
+development that leverages the power of C without sacrificing on best practices.
+The secondary goal of the Library is that it should be usable on a freestanding
+environment; although I don't have any experience in embedded programming, it's
+nice to envision that this Library is usable in such environments. These goals
+are achieved through **five modules**, which are described in the
+[Features](#features) section of this document.
+
 
 ## Features
 
 The Sol Library is designed as a set of modules, with each module responsible
 for providing a specific set of related functionality:
-  1. The **Environment Module** helps identity the compiler and host environment
+  1. The **Environment Module** helps identify the compiler and host environment
   2. The **Compiler Hints Module** provides compiler hints that can potentially
      optimise code
   3. The **Primitive Data Types Module** defines the primitive data types along
@@ -40,6 +59,22 @@ for providing a specific set of related functionality:
   4. The **Exception Handling Module** provides a basic structure to handle
      exceptions
   5. The **Unit Testing Module** provides a framework for executing unit tests
+
+This Library does not have any external dependencies that require a hosted
+environment, and so may be used even in freestanding environments. The `stdio.h`
+header file is required for running the unit tests, but is __not__ required by
+the Library otherwise.
+
+Every attempt has been made to make this Library as portable as possible. A
+deliberate choice was taken to use the C99 standard in order to take advantage
+of the new types introduced by it. Until a specific use case arises for the use
+of the C89 standard (or any other), C99 will be considered the default standard.
+
+The enhanced features of compiler hints and support for 64-bit integers are
+considered to be optional, and are available only when GCC/Clang or a GCC-
+compatible compiler is used. However, given the fact that GCC is the most widely
+ported compiler, the enhanced features are likely to be available on most 
+platforms.
 
 
 ## Development
