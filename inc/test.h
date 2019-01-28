@@ -1,9 +1,3 @@
-typedef enum sol_test_status {
-        SOL_TEST_STATUS_PENDING = -1,
-        SOL_TEST_STATUS_PASS,
-        SOL_TEST_STATUS_FAIL
-} SOL_TEST_STATUS;
-
 typedef int
 (sol_test_unit)(void);
 
@@ -27,9 +21,6 @@ sol_test_exec(char          const *desc,
               sol_test_unit const *cbk
              );
 
-
-extern void
-sol_test_status(SOL_TEST_STATUS *status);
 
 extern void
 sol_test_exit(int *pass,

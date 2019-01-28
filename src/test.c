@@ -3,11 +3,20 @@
 
 static int unit_pass = 0;
 static int unit_fail = 0;
-static SOL_TEST_STATUS unit_stat = SOL_TEST_STATUS_PENDING;
 
 #define LOG_MAXPATHLEN 256
 static sol_test_log *log_cbk;
 static char log_path[LOG_MAXPATHLEN];
+
+
+
+
+static inline void
+unit_init(void)
+{
+        unit_pass = 0;
+        unit_fail = 0;
+}
 
 
 
@@ -31,9 +40,7 @@ log_init(char         const *path,
 extern void
 sol_test_init(void)
 {
-        unit_pass = 0;
-        unit_fail = 0;
-        unit_stat = SOL_TEST_STATUS_PENDING;
+        unit_init();
 }
 
 
@@ -44,7 +51,7 @@ sol_test_init2(char         const *path,
                sol_test_log const *cbk
               )
 {
-        sol_test_init ();
+        unit_init ();
         log_init (path, cbk);
 }
 
@@ -82,14 +89,5 @@ sol_test_exec(char          const *desc,
                 log_cbk (desc, erno);
 
         return erno;
-}
-
-
-
-
-extern void
-sol_test_status(SOL_TEST_STATUS *status)
-{
-        *status = unit_stat;
 }
 
