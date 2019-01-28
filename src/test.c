@@ -46,3 +46,16 @@ sol_test_init2(char         const *path,
         log_init      (path, cbk);
 }
 
+
+
+
+extern void
+sol_test_exit(int *pass,
+              int *fail
+             )
+{
+        *pass = (unit_pass);
+        *fail = (unit_fail);
+}
+
+
