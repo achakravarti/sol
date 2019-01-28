@@ -12,10 +12,15 @@ typedef void
                char const *res
               );
 
+
 extern void
-sol_test_init(char         const *fpath,
-              sol_test_log const *cbk
-             );
+sol_test_init(void);
+
+
+extern void
+sol_test_init2(char         const *fpath,
+               sol_test_log const *cbk
+              );
 
 extern void
 sol_test_exec(sol_test_unit const *cbk,
