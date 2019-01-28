@@ -1,9 +1,9 @@
 #include "../inc/test.h"
 
 
-static int unit_pass;
-static int unit_fail;
-static SOL_TEST_STATUS unit_stat;
+static int unit_pass = 0;
+static int unit_fail = 0;
+static SOL_TEST_STATUS unit_stat = SOL_TEST_STATUS_PENDING;
 
 #define LOG_MAXPATHLEN 256
 static sol_test_log *log_cbk;
@@ -58,4 +58,12 @@ sol_test_exit(int *pass,
         *fail = (unit_fail);
 }
 
+
+
+
+extern void
+sol_test_status(SOL_TEST_STATUS *status)
+{
+        *status = (unit_stat);
+}
 
