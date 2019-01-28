@@ -9,7 +9,7 @@ typedef int
 
 typedef void
 (sol_test_log)(char const *desc,
-               char const *res
+               int  const erno
               );
 
 
@@ -18,14 +18,15 @@ sol_test_init(void);
 
 
 extern void
-sol_test_init2(char         const *fpath,
+sol_test_init2(char         const *path,
                sol_test_log const *cbk
               );
 
-extern void
-sol_test_exec(sol_test_unit const *cbk,
-              char          const *desc
+extern int
+sol_test_exec(char          const *desc,
+              sol_test_unit const *cbk
              );
+
 
 extern void
 sol_test_status(SOL_TEST_STATUS *status);
