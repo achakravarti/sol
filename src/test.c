@@ -33,6 +33,27 @@
 
 
 
+
+/*
+ *      mod_init - module intialisation flag
+ *
+ *      The mod_init global variable keeps track whether or not the unit testing
+ *      module has been initialised by a call to either the sol_test_init() or
+ *      sol_test_init2() interface functions.
+ *
+ *      Although this flag is not strictly required, it helps to improve best
+ *      practices by ensuring that the module is first initialised before it is
+ *      used by client code.
+ *
+ *      The initial value of of mod_init defaults to 0 to indicate that the unit
+ *      testing module has not been initialised. On the contrary, a value of 1
+ *      indicates that the unit testing module has been initialised.
+ */
+static int mod_init = 0;
+
+
+
+
 /*
  *      unit_pass - passed unit test counter
  *
@@ -150,11 +171,19 @@ log_init(char         const *path,
  *
  *      The sol_test_init() interface function needs only to initialise the unit
  *      test counters; it does so by calling the unit_init() utility function.
+ *      It also sets the mod_init flag to 1 to indicate that unit testing module
+ *      has been intialised.
+ *
+ *      The sol_test_init() function can't fail, so it always returns 0 to
+ *      indicate that no error has occured.
  */
-extern void
+extern int
 sol_test_init(void)
 {
-        unit_init();
+        unit_init ();
+        mod_init = 1;
+
+        return 0;
 }
 
 
@@ -167,17 +196,22 @@ sol_test_init(void)
  *      unit test counters and the logging global variables through the
  *      unit_init() and log_init() utility functions respectively. The logging
  *      variables are initialised only if the arguments to the parameters @path
- *      and @cbk are valid.
+ *      and @cbk are valid. Once initialisation is complete, the mod_init flag
+ *      is set to 1 to indicate that the unit testing module has been set up.
  */
-extern void
+extern int
 sol_test_init2(char         const *path,
                sol_test_log const *cbk
               )
 {
-        unit_init ();
+        if (!(cbk && path && *path))
+                return -1;
 
-        if (cbk && path && *path)
-                log_init (path, cbk);
+        unit_init ();
+        log_init (path, cbk);
+        mod_init = 1;
+
+        return 0;
 }
 
 
@@ -187,13 +221,18 @@ sol_test_init2(char         const *path,
  *      sol_test_exit() - declared in sol/inc/test.h
  *
  *      The sol_test_exit() interface function resets the unit test counters to
- *      their default value. This isn't strictly necessary, but doing so keeps
- *      the internal state of the unit testing module clean.
+ *      their default value, and sets the internal module initialisation flag to
+ *      0 to indicate that unit testing module has been torn down.
+ *
+ *      This isn't  strictly necessary, but doing so keeps the internal state of
+ *      the unit  testing module clean, and ensures that the other interface
+ *      functions can't be called without first re-initialising the module.
  */
 extern void
 sol_test_exit(void)
 {
         unit_init ();
+        mod_init = 0;
 }
 
 
@@ -203,13 +242,17 @@ sol_test_exit(void)
  *      sol_test_pass() - declared in sol/inc/test.h
  *
  *      The sol_test_pass() interface function returns the unit test pass
- *      counter through @pass after checking if @pass is valid.
+ *      counter through @pass after checking whether the unit testing module has
+ *      been initialised and if @pass is valid.
  */
-extern void
+extern int
 sol_test_pass(int *pass)
 {
-        if (pass)
-                *pass = unit_pass;
+        if (!(mod_init && pass))
+                return -1;
+
+        *pass = unit_pass;
+        return 0;
 }
 
 
@@ -219,13 +262,17 @@ sol_test_pass(int *pass)
  *      sol_test_fail() - declared in sol/inc/test.h
  *
  *      The sol_test_fail() interface function returns the unit test fail
- *      counter through @fail after checking if @fail is valid.
+ *      counter through @fail after checking whether the unit testing module has
+ *      been initialised and if @fail is valid.
  */
-extern void
+extern int
 sol_test_fail(int *fail)
 {
-        if (fail)
-                *fail = unit_fail;
+        if (!(mod_init && fail))
+                return -1;
+
+        *fail = unit_fail;
+        return 0;
 }
 
 
@@ -237,8 +284,9 @@ sol_test_fail(int *fail)
  *      The sol_test_exec() interface function runs the unit test @cbk, updating
  *      the appropriate test counter depending on whether @cbk passed or failed.
  *      Furthermore, the test result is logged by calling the logging callback
- *      function (if it's available). Both @desc and @cbk are checked for
- *      validity at the outset.
+ *      function (if it's available). At the outset, this function checks  if
+ *      the unit testing module has been intialised, and whether the arguments
+ *      for @desc and @cbk are valid.
  */
 extern int
 sol_test_exec(char          const *desc,
@@ -247,7 +295,7 @@ sol_test_exec(char          const *desc,
 {
         auto int erno;
 
-        if (!(cbk && desc && *desc))
+        if (!(mod_init && cbk && desc && *desc))
                 return -1;
 
         if ((erno = cbk ()))

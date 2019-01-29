@@ -86,8 +86,12 @@ typedef void
  *      environments, or in situations where logging of the unit tests is not
  *      required. If logging of the unit test results is required, then the
  *      overloaded version sol_test_init2() should be used instead.
+ *
+ *      Return:
+ *        - 0 if no error occurs
+ *        - -1 if an error occurs
  */
-extern void
+extern int
 sol_test_init(void);
 
 
@@ -107,8 +111,12 @@ sol_test_init(void);
  *      Both @path and @cbk are required to be valid pointers, and @path is
  *      additionally required to be a non-null string. However, if these
  *      conditions are not met, then a safe no-op occurs.
+ *
+ *      Return:
+ *        - 0 if no error occurs
+ *        - -1 if an error occurs
  */
-extern void
+extern int
 sol_test_init2(char         const *path,
                sol_test_log const *cbk
               );
@@ -138,10 +146,15 @@ sol_test_exit(void);
  *      interface function.
  *
  *      The count of successful unit tests is returned through @pass, which is
- *      expected to be a valid pointer. In case @pass is invalid, then a safe
- *      no-op occurs.
+ *      required to be a valid pointer. Furthermore, the unit testing module
+ *      must have been first initialised by a call to either sol_test_init() or
+ *      sol_test_init2().
+ *
+ *      Return:
+ *        - 0 if no error occurs
+ *        - -1 if an error occurs
  */
-extern void
+extern int
 sol_test_pass(int *pass);
 
 
@@ -156,10 +169,15 @@ sol_test_pass(int *pass);
  *      interface function.
  *
  *      The count of unsuccessful unit tests is returned through @fail, which is
- *      expected to be a valid pointer. In case @fail is invalid, then a safe
- *      no-op occurs.
+ *      expected to be a valid pointer. Furthermore, the unit testing module
+ *      must have been first initialised by a call to either sol_test_init() or
+ *      sol_test_init2().
+ *
+ *      Return:
+ *        - 0 if no error occurs
+ *        - -1 if an error occurs
  */
-extern void
+extern int
 sol_test_fail(int *fail);
 
 
@@ -181,9 +199,9 @@ sol_test_fail(int *fail);
  *      is not met, then an exception is thrown.
  *
  *      Return:
- *        - -1 if an error occurs on executing the unit test
  *        - 0 if the unit test passes
  *        - 1 if the unit test fails
+ *        - -1 if an error occurs on executing the unit test
  */
 extern int
 sol_test_exec(char          const *desc,
