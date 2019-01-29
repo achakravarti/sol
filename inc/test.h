@@ -16,6 +16,10 @@ sol_test_init2(char         const *path,
                sol_test_log const *cbk
               );
 
+
+extern void
+sol_test_pass(int *pass);
+
 extern int
 sol_test_exec(char          const *desc,
               sol_test_unit const *cbk
@@ -23,7 +27,5 @@ sol_test_exec(char          const *desc,
 
 
 extern void
-sol_test_exit(int *pass,
-              int *fail
-             );
+sol_test_exit(void);
 

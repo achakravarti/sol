@@ -186,16 +186,30 @@ sol_test_init2(char         const *path,
 /*
  *      sol_test_exit() - declared in sol/inc/test.h
  *
- *      The sol_test_exit() interface function works by returning the unit test
- *      counters through @pass and @fail.
+ *      The sol_test_exit() interface function resets the unit test counters to
+ *      their default value. This isn't strictly necessary, but doing so keeps
+ *      the internal state of the unit testing module clean.
  */
 extern void
-sol_test_exit(int *pass,
-              int *fail
-             )
+sol_test_exit(void)
 {
-        *pass = unit_pass;
-        *fail = unit_fail;
+        unit_init ();
+}
+
+
+
+
+/*
+ *      sol_test_pass() - declared in sol/inc/test.h
+ *
+ *      The sol_test_pass() interface function returns the unit test pass
+ *      counter through @pass after checking if @pass is valid.
+ */
+extern void
+sol_test_pass(int *pass)
+{
+        if (pass)
+                *pass = unit_pass;
 }
 
 
