@@ -216,6 +216,22 @@ sol_test_pass(int *pass)
 
 
 /*
+ *      sol_test_fail() - declared in sol/inc/test.h
+ *
+ *      The sol_test_fail() interface function returns the unit test fail
+ *      counter through @fail after checking if @fail is valid.
+ */
+extern void
+sol_test_fail(int *fail)
+{
+        if (fail)
+                *fail = unit_fail;
+}
+
+
+
+
+/*
  *      sol_test_exec() - declared in sol/inc/test.h
  *
  *      The sol_test_exec() interface function runs the unit test @cbk, updating

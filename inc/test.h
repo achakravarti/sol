@@ -20,6 +20,11 @@ sol_test_init2(char         const *path,
 extern void
 sol_test_pass(int *pass);
 
+
+extern void
+sol_test_fail(int *fail);
+
+
 extern int
 sol_test_exec(char          const *desc,
               sol_test_unit const *cbk
