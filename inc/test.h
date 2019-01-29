@@ -33,12 +33,31 @@
 
 
 /*
+ *      SOL_ERNO_TEST - unit testing module error
+ *
+ *      The SOL_ERNO_TEST error code indicates that an error has occured with
+ *      the unit testing module while calling one of its interface functions.
+ *      Note the this error code is **not** used to indicate a unit test that
+ *      has failed, as it would have been successfully executed as far as the
+ *      module interface is concerned.
+ */
+#define SOL_ERNO_TEST -1
+
+
+
+
+/*
  *      sol_test_unit - unit test callback
  *
  *      The sol_test_unit callback function defines the unit test that is to be
  *      executed by the unit testing module of the Sol Library. The unit test
  *      callback is defined by the client code, and executed through the
  *      sol_test_exec() function declared below.
+ *
+ *      The unit test callback is expected to return an error code indicating
+ *      whether or not the test passed. The callback must return a non-zero
+ *      error code (except those reserved by the Sol Library) to indicate that
+ *      the unit test has failed.
  *
  *      Return:
  *        - 0 if the unit test passes
@@ -89,7 +108,7 @@ typedef void
  *
  *      Return:
  *        - 0 if no error occurs
- *        - -1 if an error occurs
+ *        - SOL_ERNO_TEST if an error occurs
  */
 extern int
 sol_test_init(void);
@@ -114,7 +133,7 @@ sol_test_init(void);
  *
  *      Return:
  *        - 0 if no error occurs
- *        - -1 if an error occurs
+ *        - SOL_ERNO_TEST if an error occurs
  */
 extern int
 sol_test_init2(char         const *path,
@@ -152,7 +171,7 @@ sol_test_exit(void);
  *
  *      Return:
  *        - 0 if no error occurs
- *        - -1 if an error occurs
+ *        - SOL_ERNO_TEST if an error occurs
  */
 extern int
 sol_test_pass(int *pass);
@@ -175,7 +194,7 @@ sol_test_pass(int *pass);
  *
  *      Return:
  *        - 0 if no error occurs
- *        - -1 if an error occurs
+ *        - SOL_ERNO_TEST if an error occurs
  */
 extern int
 sol_test_fail(int *fail);
@@ -201,7 +220,7 @@ sol_test_fail(int *fail);
  *      Return:
  *        - 0 if the unit test passes
  *        - 1 if the unit test fails
- *        - -1 if an error occurs on executing the unit test
+ *        - SOL_ERNO_TEST if an error occurs on executing the unit test
  */
 extern int
 sol_test_exec(char          const *desc,

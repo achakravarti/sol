@@ -205,7 +205,7 @@ sol_test_init2(char         const *path,
               )
 {
         if (!(cbk && path && *path))
-                return -1;
+                return SOL_ERNO_TEST;
 
         unit_init ();
         log_init (path, cbk);
@@ -249,7 +249,7 @@ extern int
 sol_test_pass(int *pass)
 {
         if (!(mod_init && pass))
-                return -1;
+                return SOL_ERNO_TEST;
 
         *pass = unit_pass;
         return 0;
@@ -269,7 +269,7 @@ extern int
 sol_test_fail(int *fail)
 {
         if (!(mod_init && fail))
-                return -1;
+                return SOL_ERNO_TEST;
 
         *fail = unit_fail;
         return 0;
@@ -296,7 +296,7 @@ sol_test_exec(char          const *desc,
         auto int erno;
 
         if (!(mod_init && cbk && desc && *desc))
-                return -1;
+                return SOL_ERNO_TEST;
 
         if ((erno = cbk ()))
                 unit_fail ++;
