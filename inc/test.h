@@ -32,10 +32,6 @@
 
 
 
-
-
-
-
 /*
  *      SOL_ERNO_TEST - unit testing module error
  *
@@ -149,8 +145,8 @@ sol_test_init(sol_test *ctx);
  *        - SOL_ERNO_TEST if an error occurs
  */
 extern int
-sol_test_init2(char         const *path,
-               sol_test_log const *cbk
+sol_test_init2(sol_test           *ctx,
+               sol_test_log const *lcbk
               );
 
 

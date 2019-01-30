@@ -178,7 +178,7 @@ log_init(char         const *path,
  *      indicate that no error has occured.
  */
 extern int
-sol_test_init(sol_test *ctx)
+sol_test_(sol_test *ctx)
 {
         if (!ctx)
                 return SOL_ERNO_TEST;
@@ -204,16 +204,16 @@ sol_test_init(sol_test *ctx)
  *      is set to 1 to indicate that the unit testing module has been set up.
  */
 extern int
-sol_test_init2(char         const *path,
-               sol_test_log const *cbk
+sol_test_init2(sol_test           *ctx,
+               sol_test_log const *lcbk
               )
 {
-        if (!(cbk && path && *path))
+        if (!(ctx && lcbk))
                 return SOL_ERNO_TEST;
 
-        unit_init ();
-        log_init (path, cbk);
-        mod_init = 1;
+        ctx->pass = 0;
+        ctx->fail = 0;
+        ctx->lcbk = lcbk;
 
         return 0;
 }
