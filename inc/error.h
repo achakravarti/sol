@@ -80,6 +80,15 @@ typedef size_t sol_erno;
 
 
 
+#define /* void */ sol_try(p) \
+        do { \
+                if ((__sol_erno = (p))) \
+                        goto __SOL_CATCH; \
+        } while (0)
+
+
+
+
 #endif /* !defined __SOL_EXCEPTION_HANDLING_MODULE */
 
 
