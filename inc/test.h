@@ -161,7 +161,7 @@ sol_test_init2(sol_test           *ctx,
  *      code.
  */
 extern void
-sol_test_exit(void);
+sol_test_term(sol_test *ctx);
 
 
 

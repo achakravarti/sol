@@ -233,10 +233,13 @@ sol_test_init2(sol_test           *ctx,
  *      functions can't be called without first re-initialising the module.
  */
 extern void
-sol_test_exit(void)
+sol_test_term(sol_test *ctx)
 {
-        unit_init ();
-        mod_init = 0;
+        if (ctx) {
+                ctx->pass = 0;
+                ctx->fail = 0;
+                ctx->lcbk = 0;
+        }
 }
 
 
