@@ -253,12 +253,13 @@ sol_test_term(sol_test *ctx)
  *      been initialised and if @pass is valid.
  */
 extern int
-sol_test_pass(int *pass)
+sol_test_pass(sol_test const *ctx,
+              int            *pass)
 {
-        if (!(mod_init && pass))
+        if (!(ctx && pass))
                 return SOL_ERNO_TEST;
 
-        *pass = unit_pass;
+        *pass = ctx->pass;
         return 0;
 }
 
