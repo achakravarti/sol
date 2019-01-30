@@ -99,7 +99,7 @@ typedef void
 typedef struct __sol_test {
         int          pass;
         int          fail;
-        sol_test_log *cbk;
+        sol_test_log *lcbk;
 } sol_test;
 
 
@@ -124,7 +124,7 @@ typedef struct __sol_test {
  *        - SOL_ERNO_TEST if an error occurs
  */
 extern int
-sol_test_init(void);
+sol_test_init(sol_test *ctx);
 
 
 

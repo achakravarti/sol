@@ -178,10 +178,14 @@ log_init(char         const *path,
  *      indicate that no error has occured.
  */
 extern int
-sol_test_init(void)
+sol_test_init(sol_test *ctx)
 {
-        unit_init ();
-        mod_init = 1;
+        if (!ctx)
+                return SOL_ERNO_TEST;
+
+        ctx->pass = 0;
+        ctx->fail = 0;
+        ctx->lcbk = 0;
 
         return 0;
 }
