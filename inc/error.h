@@ -38,16 +38,54 @@
 
 
 
+/*
+ *      sol_erno - generic error code
+ *
+ *      The sol_erno concrete data type is used to hold error codes. Error codes
+ *      may be defined by client code as unsigned integers, with the exception
+ *      of the error codes defined below. This type aligns itself to the native
+ *      word size of its compilation environment. Any function returning this
+ *      type can take advantage of the exception handling features provided by
+ *      this module.
+ */
 typedef size_t sol_erno;
 
 
 
 
+/*
+ *      SOL_ERNO_NULL - no error
+ *
+ *      The SOL_ERNO_NULL symbolic constant indicates that no error has
+ *      occurred. This error code is reserved by the Sol Library, and should
+ *      **not** be redefined by client code. Functions that take advantage of
+ *      the try-catch mechanism implemented by this module (through the SOL_TRY
+ *      and SOL_CATCH labels) return this symbolic constant by default if they
+ *      don't encounter any errors during execution.
+ */
 #define SOL_ERNO_NULL ((sol_erno) 0x0)
 
 
 
 
+/*
+ *      SOL_TRY - start of try block
+ *
+ *      The SOL_TRY label identifies the starting point of the try block within
+ *      a function that returns a sol_erno value. The try block contains the
+ *      normal flow of code that may throw exceptions. It must be placed at the
+ *      beginning of the function body, right after declaring any required local
+ *      variables and constants, and terminated by a SOL_CATCH block.
+ *
+ *      The code that may throw exceptions within this block must be tested
+ *      through the sol_assert() and sol_try() macros defined below. In case an
+ *      exception occurs, then control is passed to the adjacent SOL_CATCH
+ *      block without executing the remaining code in the try block.
+ *
+ *      If no error occurs, then control automatically returns to the calling
+ *      function with a SOL_ERNO_NULL error code; there is no need for client
+ *      code to place an explicit return statement.
+ */
 #define SOL_TRY                                       \
         register sol_erno __sol_erno = SOL_ERNO_NULL; \
         __SOL_TRY
@@ -55,6 +93,20 @@ typedef size_t sol_erno;
 
 
 
+/*
+ *      SOL_CATCH - start of catch block
+ *
+ *      The SOL_CATCH label identifies the starting point of a catch block
+ *      within a function that returns a sol_erno value. The catch block
+ *      contains the error handling code, and must be placed immediately at the
+ *      end of a SOL_TRY block.
+ *
+ *      The SOL_CATCH block must be terminated by a call to the sol_throw()
+ *      macro defined below in order to throw the current error code back to the
+ *      calling function. At no point should the sol_assert() and sol_try()
+ *      macros be used in the SOL_CATCH block, as this would potentially lead to
+ *      an infinite loop.
+ */
 #define SOL_CATCH             \
         return SOL_ERNO_NULL; \
         __SOL_CATCH
@@ -62,18 +114,55 @@ typedef size_t sol_erno;
 
 
 
+/*
+ *      sol_throw() - throws current error code
+ *
+ *      The sol_throw() macro throws the current error code back to the calling
+ *      function. This macro should only be invoked at the end of a SOL_CATCH
+ *      block after all error handling code has been excecuted. Terminating
+ *      catch blocks with this macro helps to unwind exceptions up the call
+ *      stack.
+ *
+ *      Return:
+ *        - SOL_ERNO_NULL if no error has occured
+ *        - The current error code if an error has occured
+ */
 #define /* sol_erno */ sol_throw(/* void */) \
         return __sol_erno
 
 
 
 
+/*
+ *      sol_erno_now() - gets current error code
+ *
+ *      The sol_erno_now() macro returns the current sol_erno error code within
+ *      the context of the thread in which it is called. This macro is designed
+ *      to be used primarily within SOL_CATCH blocks, but if required, may also
+ *      be used within SOL_TRY blocks.
+ *
+ *      Return:
+ *        - SOL_ERNO if no error has occured
+ *        - The current error code if an error has occured
+ */
 #define /* const sol_erno */ sol_erno_now(/* void */) \
         ((const sol_erno) __sol_erno)
 
 
 
 
+/*
+ *      sol_assert() - verifies precondition
+ *        - p: precondition predicate being asserted
+ *        - e: error code to be thrown if assertion fails
+ *
+ *      The sol_assert() macro verifies whether a precondition, expressed as a
+ *      predicate @p, is true before any further processing takes place. This
+ *      macro can only be called within a SOL_TRY block. If the assertion fails,
+ *      then a sol_erno error code @e is thrown and control jumps to the
+ *      adjacent SOL_CATCH block. This macro should **never** be called within a
+ *      SOL_CATCH block as it may potentially lead to an infinite loop.
+ */
 #define /* void */ sol_assert(p, /* sol_erno */ e) \
         do {                                       \
                 if (!(p)) {                        \
@@ -85,9 +174,22 @@ typedef size_t sol_erno;
 
 
 
-#define /* void */ sol_try(p) \
-        do { \
-                if ((__sol_erno = (p))) \
+/*
+ *      sol_try() - validates postcondition
+ *        - p: postcondition being evaluated
+ *
+ *      The sol_try() macro validates whether a postcondition @p, expressed as a
+ *      function returning a sol_erno value, has not failed. The function is
+ *      deemed to have run successfully if it has not thrown any exception as
+ *      flagged by the returned error code. This macro can only be called within
+ *      a SOL_TRY block. If the validation fails, then control will jump to the
+ *      adjacent SOL_CATCH block. As with the sol_assert() macro, this macro
+ *      should **never** be called within a SOL_CATCH block as it may
+ *      potentially lead to an infinite loop.
+ */
+#define /* void */ sol_try(p)             \
+        do {                              \
+                if ((__sol_erno = (p)))   \
                         goto __SOL_CATCH; \
         } while (0)
 
