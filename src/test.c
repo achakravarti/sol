@@ -177,17 +177,18 @@ log_init(char         const *path,
  *      The sol_test_init() function can't fail, so it always returns 0 to
  *      indicate that no error has occured.
  */
-extern int
+extern sol_erno
 sol_test_(sol_test *ctx)
 {
-        if (!ctx)
-                return SOL_ERNO_TEST;
+SOL_TRY:
+        sol_assert (ctx, SOL_ERNO_TEST);
 
         ctx->pass = 0;
         ctx->fail = 0;
         ctx->lcbk = 0;
 
-        return 0;
+SOL_CATCH:
+        sol_throw ();
 }
 
 
@@ -203,19 +204,20 @@ sol_test_(sol_test *ctx)
  *      and @cbk are valid. Once initialisation is complete, the mod_init flag
  *      is set to 1 to indicate that the unit testing module has been set up.
  */
-extern int
+extern sol_erno
 sol_test_init2(sol_test           *ctx,
                sol_test_log const *lcbk
               )
 {
-        if (!(ctx && lcbk))
-                return SOL_ERNO_TEST;
+SOL_TRY:
+        sol_assert (ctx && lcbk, SOL_ERNO_TEST);
 
         ctx->pass = 0;
         ctx->fail = 0;
         ctx->lcbk = lcbk;
 
-        return 0;
+SOL_CATCH:
+        sol_throw ();
 }
 
 
@@ -252,15 +254,17 @@ sol_test_term(sol_test *ctx)
  *      counter through @pass after checking whether the unit testing module has
  *      been initialised and if @pass is valid.
  */
-extern int
+extern sol_erno
 sol_test_pass(sol_test const *ctx,
               int            *pass)
 {
-        if (!(ctx && pass))
-                return SOL_ERNO_TEST;
+SOL_TRY:
+        sol_assert (ctx && pass, SOL_ERNO_TEST);
 
         *pass = ctx->pass;
-        return 0;
+
+SOL_CATCH:
+        sol_throw ();
 }
 
 
@@ -273,16 +277,18 @@ sol_test_pass(sol_test const *ctx,
  *      counter through @fail after checking whether the unit testing module has
  *      been initialised and if @fail is valid.
  */
-extern int
+extern sol_erno
 sol_test_fail(sol_test const *ctx,
               int            *fail
              )
 {
-        if (!(ctx && fail))
-                return SOL_ERNO_TEST;
+SOL_TRY:
+        sol_assert (ctx && fail, SOL_ERNO_TEST);
 
         *fail = ctx->fail;
-        return 0;
+
+SOL_CATCH:
+        sol_throw ();
 }
 
 
@@ -298,7 +304,7 @@ sol_test_fail(sol_test const *ctx,
  *      the unit testing module has been intialised, and whether the arguments
  *      for @desc and @cbk are valid.
  */
-extern int
+extern sol_erno
 sol_test_exec(sol_test            *ctx,
               char          const *desc,
               sol_test_unit const *cbk
@@ -306,8 +312,8 @@ sol_test_exec(sol_test            *ctx,
 {
         auto int erno;
 
-        if (!(ctx && cbk && desc && *desc))
-                return SOL_ERNO_TEST;
+SOL_TRY:
+        sol_assert (ctx && cbk && desc && *desc, SOL_ERNO_TEST);
 
         if ((erno = cbk ()))
                 ctx->fail++;
@@ -317,7 +323,8 @@ sol_test_exec(sol_test            *ctx,
         if (ctx->lcbk)
                 ctx->lcbk (desc, erno);
 
-        return erno;
+SOL_CATCH:
+        sol_throw ();
 }
 
 

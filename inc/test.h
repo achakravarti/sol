@@ -32,6 +32,11 @@
 
 
 
+#include "./error.h"
+
+
+
+
 /*
  *      SOL_ERNO_TEST - unit testing module error
  *
@@ -119,7 +124,7 @@ typedef struct __sol_test {
  *        - 0 if no error occurs
  *        - SOL_ERNO_TEST if an error occurs
  */
-extern int
+extern sol_erno
 sol_test_init(sol_test *ctx);
 
 
@@ -144,7 +149,7 @@ sol_test_init(sol_test *ctx);
  *        - 0 if no error occurs
  *        - SOL_ERNO_TEST if an error occurs
  */
-extern int
+extern sol_erno
 sol_test_init2(sol_test           *ctx,
                sol_test_log const *lcbk
               );
@@ -183,7 +188,7 @@ sol_test_term(sol_test *ctx);
  *        - 0 if no error occurs
  *        - SOL_ERNO_TEST if an error occurs
  */
-extern int
+extern sol_erno
 sol_test_pass(sol_test const *ctx,
               int            *pass
              );
@@ -208,7 +213,7 @@ sol_test_pass(sol_test const *ctx,
  *        - 0 if no error occurs
  *        - SOL_ERNO_TEST if an error occurs
  */
-extern int
+extern sol_erno
 sol_test_fail(sol_test const *ctx,
               int            *fail
              );
@@ -236,7 +241,7 @@ sol_test_fail(sol_test const *ctx,
  *        - SOL_ERNO_TEST if an error occurs on executing the unit test
  *        - An contextual error code if the unit test fails
  */
-extern int
+extern sol_erno
 sol_test_exec(sol_test            *ctx,
               char          const *desc,
               sol_test_unit const *cbk
