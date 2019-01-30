@@ -88,6 +88,7 @@ typedef size_t sol_erno;
  */
 #define SOL_TRY                                       \
         register sol_erno __sol_erno = SOL_ERNO_NULL; \
+        goto __SOL_TRY;                               \
         __SOL_TRY
 
 
@@ -167,7 +168,7 @@ typedef size_t sol_erno;
         do {                                       \
                 if (!(p)) {                        \
                         __sol_erno = (e);          \
-                        goto __SOL_CATCH:          \
+                        goto __SOL_CATCH;          \
                 }                                  \
         } while (0)
 
