@@ -69,6 +69,17 @@ typedef size_t sol_erno;
 
 
 
+#define /* void */ sol_assert(p, /* sol_erno */ e) \
+        do {                                       \
+                if (!(p)) {                        \
+                        __sol_erno = (e);          \
+                        goto __SOL_CATCH:          \
+                }                                  \
+        } while (0)
+
+
+
+
 #endif /* !defined __SOL_EXCEPTION_HANDLING_MODULE */
 
 
