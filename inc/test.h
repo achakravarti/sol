@@ -32,6 +32,10 @@
 
 
 
+
+
+
+
 /*
  *      SOL_ERNO_TEST - unit testing module error
  *
@@ -88,6 +92,15 @@ typedef void
 (sol_test_log)(char const *desc,
                int  const erno
               );
+
+
+
+
+typedef struct __sol_test {
+        int          pass;
+        int          fail;
+        sol_test_log *cbk;
+} sol_test;
 
 
 
