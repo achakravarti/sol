@@ -43,15 +43,20 @@ typedef size_t sol_erno;
 
 
 
-#define SOL_TRY                                      \
-        register sol_erno __sol_erno = (sol_erno) 0; \
+#define SOL_ERNO_NULL ((sol_erno) 0x0)
+
+
+
+
+#define SOL_TRY                                       \
+        register sol_erno __sol_erno = SOL_ERNO_NULL; \
         __SOL_TRY
 
 
 
 
-#define SOL_CATCH            \
-        return (sol_erno) 0; \
+#define SOL_CATCH             \
+        return SOL_ERNO_NULL; \
         __SOL_CATCH
 
 
