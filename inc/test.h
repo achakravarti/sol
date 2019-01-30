@@ -237,7 +237,8 @@ sol_test_fail(sol_test const *ctx,
  *        - An contextual error code if the unit test fails
  */
 extern int
-sol_test_exec(char          const *desc,
+sol_test_exec(sol_test            *ctx,
+              char          const *desc,
               sol_test_unit const *cbk
              );
 

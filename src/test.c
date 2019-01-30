@@ -299,22 +299,23 @@ sol_test_fail(sol_test const *ctx,
  *      for @desc and @cbk are valid.
  */
 extern int
-sol_test_exec(char          const *desc,
+sol_test_exec(sol_test            *ctx,
+              char          const *desc,
               sol_test_unit const *cbk
              )
 {
         auto int erno;
 
-        if (!(mod_init && cbk && desc && *desc))
+        if (!(ctx && cbk && desc && *desc))
                 return SOL_ERNO_TEST;
 
         if ((erno = cbk ()))
-                unit_fail ++;
+                ctx->fail++;
         else
-                unit_pass ++;
+                ctx->pass++;
 
-        if (log_cbk)
-                log_cbk (desc, erno);
+        if (ctx->lcbk)
+                ctx->lcbk (desc, erno);
 
         return erno;
 }
