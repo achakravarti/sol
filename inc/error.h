@@ -63,6 +63,12 @@ typedef size_t sol_erno;
 
 
 
+#define /* const sol_erno */ sol_erno_now(/* void */) \
+        ((const sol_erno) __sol_erno)
+
+
+
+
 #endif /* !defined __SOL_EXCEPTION_HANDLING_MODULE */
 
 
