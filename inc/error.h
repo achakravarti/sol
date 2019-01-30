@@ -57,6 +57,12 @@ typedef size_t sol_erno;
 
 
 
+#define /* sol_erno */ sol_throw(/* void */) \
+        return __sol_erno
+
+
+
+
 #endif /* !defined __SOL_EXCEPTION_HANDLING_MODULE */
 
 
