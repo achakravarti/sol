@@ -209,7 +209,9 @@ sol_test_pass(sol_test const *ctx,
  *        - SOL_ERNO_TEST if an error occurs
  */
 extern int
-sol_test_fail(int *fail);
+sol_test_fail(sol_test const *ctx,
+              int            *fail
+             );
 
 
 

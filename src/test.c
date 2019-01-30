@@ -274,12 +274,14 @@ sol_test_pass(sol_test const *ctx,
  *      been initialised and if @fail is valid.
  */
 extern int
-sol_test_fail(int *fail)
+sol_test_fail(sol_test const *ctx,
+              int            *fail
+             )
 {
-        if (!(mod_init && fail))
+        if (!(ctx && fail))
                 return SOL_ERNO_TEST;
 
-        *fail = unit_fail;
+        *fail = ctx->fail;
         return 0;
 }
 
