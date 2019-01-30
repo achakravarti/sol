@@ -219,8 +219,8 @@ sol_test_fail(int *fail);
  *
  *      Return:
  *        - 0 if the unit test passes
- *        - 1 if the unit test fails
  *        - SOL_ERNO_TEST if an error occurs on executing the unit test
+ *        - An contextual error code if the unit test fails
  */
 extern int
 sol_test_exec(char          const *desc,

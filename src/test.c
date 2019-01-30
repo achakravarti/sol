@@ -143,8 +143,8 @@ unit_init(void)
  *      The log_init() utility function initialises the logging global
  *      variables. It does so by assigning these variables the arguments passed
  *      through its parameters @path and @cbk. @path is copied on to the log
- *      file path global using the standard strcpy() algorithm. We're not calling
- *      strcpy() directly as we would have to include the standard <string.h>
+ *      file path global using the standard strncpy() algorithm. I'm not calling
+ *      strncpy() directly as I would have to include the standard <string.h>
  *      header file which isn't available in freestanding environments.
  *
  *      This function assumes that both @path and @cbk are valid, leaving it up
@@ -155,12 +155,12 @@ log_init(char         const *path,
          sol_test_log const *cbk
         )
 {
-        register char *itr;
+        register char *itr = log_path;
+        auto     int  len  = LOG_MAXPATHLEN;
 
         log_cbk = cbk;
 
-        itr = log_path;
-        while ((*itr++ = *path++));
+        while (len-- && (*itr++ = *path++));
 }
 
 
