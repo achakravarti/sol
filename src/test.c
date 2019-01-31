@@ -178,7 +178,7 @@ log_init(char         const *path,
  *      indicate that no error has occured.
  */
 extern sol_erno
-sol_test_(sol_test *ctx)
+sol_tsuite_init(sol_tsuite *ctx)
 {
 SOL_TRY:
         sol_assert (ctx, SOL_ERNO_TEST);
@@ -205,9 +205,9 @@ SOL_CATCH:
  *      is set to 1 to indicate that the unit testing module has been set up.
  */
 extern sol_erno
-sol_test_init2(sol_test           *ctx,
-               sol_test_log const *lcbk
-              )
+sol_tsuite_init2(sol_tsuite         *ctx,
+                 sol_test_log const *lcbk
+                )
 {
 SOL_TRY:
         sol_assert (ctx && lcbk, SOL_ERNO_TEST);
@@ -235,7 +235,7 @@ SOL_CATCH:
  *      functions can't be called without first re-initialising the module.
  */
 extern void
-sol_test_term(sol_test *ctx)
+sol_tsuite_term(sol_tsuite *ctx)
 {
         if (ctx) {
                 ctx->pass = 0;
@@ -255,8 +255,9 @@ sol_test_term(sol_test *ctx)
  *      been initialised and if @pass is valid.
  */
 extern sol_erno
-sol_test_pass(sol_test const *ctx,
-              int            *pass)
+sol_tsuite_pass(sol_tsuite const *ctx,
+                int              *pass
+               )
 {
 SOL_TRY:
         sol_assert (ctx && pass, SOL_ERNO_TEST);
@@ -278,9 +279,9 @@ SOL_CATCH:
  *      been initialised and if @fail is valid.
  */
 extern sol_erno
-sol_test_fail(sol_test const *ctx,
-              int            *fail
-             )
+sol_tsuite_fail(sol_tsuite const *ctx,
+                int              *fail
+               )
 {
 SOL_TRY:
         sol_assert (ctx && fail, SOL_ERNO_TEST);
@@ -305,10 +306,10 @@ SOL_CATCH:
  *      for @desc and @cbk are valid.
  */
 extern sol_erno
-sol_test_exec(sol_test            *ctx,
-              char          const *desc,
-              sol_test_unit const *cbk
-             )
+sol_tsuite_exec(sol_tsuite          *ctx,
+                char          const *desc,
+                sol_test_unit const *cbk
+               )
 {
         auto int erno;
 

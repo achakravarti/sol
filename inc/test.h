@@ -97,11 +97,11 @@ typedef void
 
 
 
-typedef struct __sol_test {
+typedef struct __sol_tsuite {
         int          pass;
         int          fail;
         sol_test_log *lcbk;
-} sol_test;
+} sol_tsuite;
 
 
 
@@ -125,7 +125,7 @@ typedef struct __sol_test {
  *        - SOL_ERNO_TEST if an error occurs
  */
 extern sol_erno
-sol_test_init(sol_test *ctx);
+sol_tsuite_init(sol_tsuite *ctx);
 
 
 
@@ -150,9 +150,9 @@ sol_test_init(sol_test *ctx);
  *        - SOL_ERNO_TEST if an error occurs
  */
 extern sol_erno
-sol_test_init2(sol_test           *ctx,
-               sol_test_log const *lcbk
-              );
+sol_tsuite_init2(sol_tsuite         *ctx,
+                 sol_test_log const *lcbk
+                );
 
 
 
@@ -166,7 +166,7 @@ sol_test_init2(sol_test           *ctx,
  *      code.
  */
 extern void
-sol_test_term(sol_test *ctx);
+sol_tsuite_term(sol_tsuite *ctx);
 
 
 
@@ -189,9 +189,9 @@ sol_test_term(sol_test *ctx);
  *        - SOL_ERNO_TEST if an error occurs
  */
 extern sol_erno
-sol_test_pass(sol_test const *ctx,
-              int            *pass
-             );
+sol_tsuite_pass(sol_tsuite const *ctx,
+                int              *pass
+               );
 
 
 
@@ -214,9 +214,9 @@ sol_test_pass(sol_test const *ctx,
  *        - SOL_ERNO_TEST if an error occurs
  */
 extern sol_erno
-sol_test_fail(sol_test const *ctx,
-              int            *fail
-             );
+sol_tsuite_fail(sol_tsuite const *ctx,
+                int              *fail
+               );
 
 
 
@@ -242,10 +242,10 @@ sol_test_fail(sol_test const *ctx,
  *        - An contextual error code if the unit test fails
  */
 extern sol_erno
-sol_test_exec(sol_test            *ctx,
-              char          const *desc,
-              sol_test_unit const *cbk
-             );
+sol_tsuite_exec(sol_tsuite          *ctx,
+                char          const *desc,
+                sol_test_unit const *cbk
+               );
 
 
 
