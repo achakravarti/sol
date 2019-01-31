@@ -68,8 +68,8 @@
  *        - 0 if the unit test passes
  *        - Non-zero if the unit test fails
  */
-typedef int
-(sol_test_unit)(void);
+typedef sol_erno
+(sol_tcase)(void);
 
 
 
@@ -95,11 +95,15 @@ typedef void
               );
 
 
+#define SOL_TSUITE_MAXTCASE 128
+#define SOL_TCASE_MAXDESCLEN 128
 
 
 typedef struct __sol_tsuite {
-        int          pass;
+        int          total;
         int          fail;
+        char         desc   [SOL_TSUITE_MAXTCASE] [SOL_TCASE_MAXDESCLEN];
+        sol_tcase    *tcase [SOL_TSUITE_MAXTCASE];
         sol_test_log *lcbk;
 } sol_tsuite;
 
@@ -125,7 +129,7 @@ typedef struct __sol_tsuite {
  *        - SOL_ERNO_TEST if an error occurs
  */
 extern sol_erno
-sol_tsuite_init(sol_tsuite *ctx);
+sol_tsuite_init(sol_tsuite *tsuite);
 
 
 
@@ -150,7 +154,7 @@ sol_tsuite_init(sol_tsuite *ctx);
  *        - SOL_ERNO_TEST if an error occurs
  */
 extern sol_erno
-sol_tsuite_init2(sol_tsuite         *ctx,
+sol_tsuite_init2(sol_tsuite         *tsuite,
                  sol_test_log const *lcbk
                 );
 
@@ -167,6 +171,15 @@ sol_tsuite_init2(sol_tsuite         *ctx,
  */
 extern void
 sol_tsuite_term(sol_tsuite *ctx);
+
+
+
+
+extern sol_erno
+sol_tsuite_register(sol_tsuite       *tsuite,
+                    sol_tcase  const *tcase,
+                    char       const *desc
+                   );
 
 
 
@@ -189,7 +202,7 @@ sol_tsuite_term(sol_tsuite *ctx);
  *        - SOL_ERNO_TEST if an error occurs
  */
 extern sol_erno
-sol_tsuite_pass(sol_tsuite const *ctx,
+sol_tsuite_pass(sol_tsuite const *tsuite,
                 int              *pass
                );
 
@@ -214,7 +227,7 @@ sol_tsuite_pass(sol_tsuite const *ctx,
  *        - SOL_ERNO_TEST if an error occurs
  */
 extern sol_erno
-sol_tsuite_fail(sol_tsuite const *ctx,
+sol_tsuite_fail(sol_tsuite const *tsuite,
                 int              *fail
                );
 
@@ -242,10 +255,7 @@ sol_tsuite_fail(sol_tsuite const *ctx,
  *        - An contextual error code if the unit test fails
  */
 extern sol_erno
-sol_tsuite_exec(sol_tsuite          *ctx,
-                char          const *desc,
-                sol_test_unit const *cbk
-               );
+sol_tsuite_exec(sol_tsuite *tsuite);
 
 
 

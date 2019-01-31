@@ -164,6 +164,23 @@ log_init(char         const *path,
 }
 
 
+static void
+tsuite_init(sol_tsuite         *tsuite,
+            sol_test_log const *lcbk
+           )
+{
+        register int i;
+
+        tsuite->total = 0;
+        tsuite->fail  = 0;
+        tsuite->lcbk  = lcbk;
+
+        for (i = 0; i < SOL_TSUITE_MAXTCASE; i++) {
+                *tsuite->desc [i] = '\0';
+                tsuite->tcase [i] = 0;
+        }
+}
+
 
 
 /*
@@ -178,14 +195,12 @@ log_init(char         const *path,
  *      indicate that no error has occured.
  */
 extern sol_erno
-sol_tsuite_init(sol_tsuite *ctx)
+sol_tsuite_init(sol_tsuite *tsuite)
 {
 SOL_TRY:
-        sol_assert (ctx, SOL_ERNO_TEST);
+        sol_assert (tsuite, SOL_ERNO_TEST);
 
-        ctx->pass = 0;
-        ctx->fail = 0;
-        ctx->lcbk = 0;
+        tsuite_init (tsuite, 0);
 
 SOL_CATCH:
         sol_throw ();
@@ -205,16 +220,14 @@ SOL_CATCH:
  *      is set to 1 to indicate that the unit testing module has been set up.
  */
 extern sol_erno
-sol_tsuite_init2(sol_tsuite         *ctx,
+sol_tsuite_init2(sol_tsuite         *tsuite,
                  sol_test_log const *lcbk
                 )
 {
 SOL_TRY:
-        sol_assert (ctx && lcbk, SOL_ERNO_TEST);
+        sol_assert (tsuite && lcbk, SOL_ERNO_TEST);
 
-        ctx->pass = 0;
-        ctx->fail = 0;
-        ctx->lcbk = lcbk;
+        tsuite_init (tsuite, lcbk);
 
 SOL_CATCH:
         sol_throw ();
@@ -235,13 +248,38 @@ SOL_CATCH:
  *      functions can't be called without first re-initialising the module.
  */
 extern void
-sol_tsuite_term(sol_tsuite *ctx)
+sol_tsuite_term(sol_tsuite *tsuite)
 {
-        if (ctx) {
-                ctx->pass = 0;
-                ctx->fail = 0;
-                ctx->lcbk = 0;
-        }
+        if (tsuite)
+                tsuite_init (tsuite, 0);
+}
+
+
+
+
+extern sol_erno
+sol_tsuite_register(sol_tsuite       *tsuite,
+                    sol_tcase  const *tcase,
+                    char       const *desc
+                   )
+{
+        register char *itr;
+        auto     int  len;
+
+SOL_TRY:
+        sol_assert (tsuite && tcase && desc && *desc, SOL_ERNO_TEST);
+        sol_assert (tsuite->total <= SOL_TSUITE_MAXTCASE, SOL_ERNO_TEST);
+
+        tsuite->tcase [tsuite->total] = tcase;
+
+        itr = tsuite->desc [tsuite -> total];
+        len = SOL_TCASE_MAXDESCLEN;
+        while (len-- && (*itr++ = *desc++));
+
+        tsuite->total++;
+
+SOL_CATCH:
+        sol_throw ();
 }
 
 
@@ -255,14 +293,14 @@ sol_tsuite_term(sol_tsuite *ctx)
  *      been initialised and if @pass is valid.
  */
 extern sol_erno
-sol_tsuite_pass(sol_tsuite const *ctx,
+sol_tsuite_pass(sol_tsuite const *tsuite,
                 int              *pass
                )
 {
 SOL_TRY:
-        sol_assert (ctx && pass, SOL_ERNO_TEST);
+        sol_assert (tsuite && pass, SOL_ERNO_TEST);
 
-        *pass = ctx->pass;
+        *pass = tsuite->total - tsuite->fail;
 
 SOL_CATCH:
         sol_throw ();
@@ -279,14 +317,14 @@ SOL_CATCH:
  *      been initialised and if @fail is valid.
  */
 extern sol_erno
-sol_tsuite_fail(sol_tsuite const *ctx,
+sol_tsuite_fail(sol_tsuite const *tsuite,
                 int              *fail
                )
 {
 SOL_TRY:
-        sol_assert (ctx && fail, SOL_ERNO_TEST);
+        sol_assert (tsuite && fail, SOL_ERNO_TEST);
 
-        *fail = ctx->fail;
+        *fail = tsuite->fail;
 
 SOL_CATCH:
         sol_throw ();
@@ -306,23 +344,23 @@ SOL_CATCH:
  *      for @desc and @cbk are valid.
  */
 extern sol_erno
-sol_tsuite_exec(sol_tsuite          *ctx,
-                char          const *desc,
-                sol_test_unit const *cbk
-               )
+sol_tsuite_exec(sol_tsuite *tsuite)
 {
-        auto int erno;
+        register int      i;
+        auto     sol_erno erno;
 
 SOL_TRY:
-        sol_assert (ctx && cbk && desc && *desc, SOL_ERNO_TEST);
+        sol_assert (tsuite, SOL_ERNO_TEST);
 
-        if ((erno = cbk ()))
-                ctx->fail++;
-        else
-                ctx->pass++;
+        tsuite->fail = 0;
 
-        if (ctx->lcbk)
-                ctx->lcbk (desc, erno);
+        for (i = 0; i < tsuite->total; i++) {
+                if ((erno = tsuite->tcase [i] ()))
+                        tsuite->fail++;
+
+                if (tsuite->lcbk)
+                        tsuite->lcbk (tsuite->desc [i], erno);
+        }
 
 SOL_CATCH:
         sol_throw ();
