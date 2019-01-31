@@ -90,9 +90,9 @@ typedef sol_erno
  *      returned by the unit test.
  */
 typedef void
-(sol_test_log)(char const *desc,
-               int  const erno
-              );
+(sol_tlog)(char     const *desc,
+           sol_erno const erno
+          );
 
 
 #define SOL_TSUITE_MAXTCASE 128
@@ -100,11 +100,11 @@ typedef void
 
 
 typedef struct __sol_tsuite {
-        int          total;
-        int          fail;
-        char         desc   [SOL_TSUITE_MAXTCASE] [SOL_TCASE_MAXDESCLEN];
-        sol_tcase    *tcase [SOL_TSUITE_MAXTCASE];
-        sol_test_log *lcbk;
+        int       total;
+        int       fail;
+        char      desc   [SOL_TSUITE_MAXTCASE] [SOL_TCASE_MAXDESCLEN];
+        sol_tcase *tcase [SOL_TSUITE_MAXTCASE];
+        sol_tlog  *tlog;
 } sol_tsuite;
 
 
@@ -154,8 +154,8 @@ sol_tsuite_init(sol_tsuite *tsuite);
  *        - SOL_ERNO_TEST if an error occurs
  */
 extern sol_erno
-sol_tsuite_init2(sol_tsuite         *tsuite,
-                 sol_test_log const *lcbk
+sol_tsuite_init2(sol_tsuite        *tsuite,
+                 sol_tlog    const *tlog
                 );
 
 
@@ -170,7 +170,7 @@ sol_tsuite_init2(sol_tsuite         *tsuite,
  *      code.
  */
 extern void
-sol_tsuite_term(sol_tsuite *ctx);
+sol_tsuite_term(sol_tsuite *tsuite);
 
 
 
@@ -230,6 +230,14 @@ extern sol_erno
 sol_tsuite_fail(sol_tsuite const *tsuite,
                 int              *fail
                );
+
+
+
+
+extern sol_erno
+sol_tsuite_total(sol_tsuite const *tsuite,
+                 int              *total
+                );
 
 
 
