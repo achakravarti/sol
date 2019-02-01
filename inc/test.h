@@ -38,20 +38,6 @@
 
 
 /*
- *      SOL_ERNO_TEST - unit testing module error
- *
- *      The SOL_ERNO_TEST error code indicates that an error has occured with
- *      the unit testing module while calling one of its interface functions.
- *      Note the this error code is **not** used to indicate a unit test that
- *      has failed, as it would have been successfully executed as far as the
- *      module interface is concerned.
- */
-#define SOL_ERNO_TEST -1
-
-
-
-
-/*
  *      sol_test_unit - unit test callback
  *
  *      The sol_test_unit callback function defines the unit test that is to be

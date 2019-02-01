@@ -69,6 +69,47 @@ typedef size_t sol_erno;
 
 
 /*
+ *      SOL_ERNO_PTR - invalid pointer
+ *
+ *      The SOL_ERNO_PTR symbolic constant indicates that an invalid pointer has
+ *      been passed to an interface function or macro. This error code is
+ *      reserved by the Sol Library, and should **not** be redefined by client
+ *      code.
+ */
+#define SOL_ERNO_PTR ((sol_erno) 0x1)
+
+
+
+
+/*
+ *      SOL_ERNO_STR - invalid string
+ *
+ *      The SOL_ERNO_STR symbolic constant indicates that an invalid string has
+ *      been passed to an interface function or macro. An invalid string is not
+ *      necessarily a null string, and will depend on the context. Note that
+ *      this error code should not be used to indicate null string pointers, and
+ *      should be indicated by SOL_ERNO_PTR instead. This error code is reserved
+ *      by the Sol Library, and should **not** be redefined by client code.
+ */
+#define SOL_ERNO_STR ((sol_erno) 0x2)
+
+
+
+
+/*
+ *      SOL_ERNO_RANGE - range error
+ *
+ *      The SOL_ERNO_RANGE symbolic constant indicates that a value that is
+ *      outside its acceptable range has been passed to an interface function or
+ *      macro. This error code is reserved by the Sol Library, and should
+ *      **not** be redefined by client code.
+ */
+#define SOL_ERNO_RANGE ((sol_erno) 0x3)
+
+
+
+
+/*
  *      SOL_TRY - start of try block
  *
  *      The SOL_TRY label identifies the starting point of the try block within

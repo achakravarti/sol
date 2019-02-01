@@ -68,7 +68,7 @@ extern sol_erno
 sol_tsuite_init(sol_tsuite *tsuite)
 {
 SOL_TRY:
-        sol_assert (tsuite, SOL_ERNO_TEST);
+        sol_assert (tsuite, SOL_ERNO_PTR);
 
         tsuite_init (tsuite, 0);
 
@@ -95,7 +95,7 @@ sol_tsuite_init2(sol_tsuite       *tsuite,
                 )
 {
 SOL_TRY:
-        sol_assert (tsuite && tlog, SOL_ERNO_TEST);
+        sol_assert (tsuite && tlog, SOL_ERNO_PTR);
 
         tsuite_init (tsuite, tlog);
 
@@ -137,8 +137,9 @@ sol_tsuite_register(sol_tsuite       *tsuite,
         auto     int  len;
 
 SOL_TRY:
-        sol_assert (tsuite && tcase && desc && *desc, SOL_ERNO_TEST);
-        sol_assert (tsuite->total <= SOL_TSUITE_MAXTCASE, SOL_ERNO_TEST);
+        sol_assert (tsuite && tcase && desc, SOL_ERNO_PTR);
+        sol_assert (*desc, SOL_ERNO_STR);
+        sol_assert (tsuite->total <= SOL_TSUITE_MAXTCASE, SOL_ERNO_RANGE);
 
         tsuite->tcase [tsuite->total] = tcase;
 
@@ -168,7 +169,7 @@ sol_tsuite_pass(sol_tsuite const *tsuite,
                )
 {
 SOL_TRY:
-        sol_assert (tsuite && pass, SOL_ERNO_TEST);
+        sol_assert (tsuite && pass, SOL_ERNO_PTR);
 
         *pass = tsuite->total - tsuite->fail;
 
@@ -192,7 +193,7 @@ sol_tsuite_fail(sol_tsuite const *tsuite,
                )
 {
 SOL_TRY:
-        sol_assert (tsuite && fail, SOL_ERNO_TEST);
+        sol_assert (tsuite && fail, SOL_ERNO_PTR);
 
         *fail = tsuite->fail;
 
@@ -209,7 +210,7 @@ sol_tsuite_total(sol_tsuite const *tsuite,
                 )
 {
 SOL_TRY:
-        sol_assert (tsuite && total, SOL_ERNO_TEST);
+        sol_assert (tsuite && total, SOL_ERNO_PTR);
 
         *total = tsuite->total;
 
@@ -237,7 +238,7 @@ sol_tsuite_exec(sol_tsuite *tsuite)
         auto     sol_erno erno;
 
 SOL_TRY:
-        sol_assert (tsuite, SOL_ERNO_TEST);
+        sol_assert (tsuite, SOL_ERNO_PTR);
 
         tsuite->fail = 0;
 
