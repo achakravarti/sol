@@ -34,17 +34,22 @@
 
 
 
+/*
+ *      tsuite_init() - initialises test suite member fields
+ */
 static void
-tsuite_init(sol_tsuite       *tsuite,
-            sol_tlog   const *tlog
+tsuite_init(sol_tsuite       *tsuite, /* contextual test suite */
+            sol_tlog   const *tlog    /* logging callback      */
            )
 {
         register int i;
 
+                /* initialise counters and logging callback */
         tsuite->total = 0;
         tsuite->fail  = 0;
         tsuite->tlog  = tlog;
 
+                /* initialise test case callback and description arrays */
         for (i = 0; i < SOL_TSUITE_MAXTCASE; i++) {
                 *tsuite->desc [i] = '\0';
                 tsuite->tcase [i] = 0;
@@ -53,26 +58,23 @@ tsuite_init(sol_tsuite       *tsuite,
 
 
 
+
 /*
- *      sol_test_init() - declared in sol/inc/test.h
- *
- *      The sol_test_init() interface function needs only to initialise the unit
- *      test counters; it does so by calling the unit_init() utility function.
- *      It also sets the mod_init flag to 1 to indicate that unit testing module
- *      has been intialised.
- *
- *      The sol_test_init() function can't fail, so it always returns 0 to
- *      indicate that no error has occured.
+ *      sol_tsuite_init() - declared in sol/inc/test.h
  */
 extern sol_erno
 sol_tsuite_init(sol_tsuite *tsuite)
 {
 SOL_TRY:
+                /* check preconditions */
         sol_assert (tsuite, SOL_ERNO_PTR);
 
+                /* initialise member fields, setting the logging callback to
+                 * null as we don't require it */
         tsuite_init (tsuite, 0);
 
 SOL_CATCH:
+                /* throw exceptions */
         sol_throw ();
 }
 
@@ -80,14 +82,7 @@ SOL_CATCH:
 
 
 /*
- *      sol_test_init2() - declared in sol/inc/test.h
- *
- *      The sol_test_init2() interface function needs to initialise both the
- *      unit test counters and the logging global variables through the
- *      unit_init() and log_init() utility functions respectively. The logging
- *      variables are initialised only if the arguments to the parameters @path
- *      and @cbk are valid. Once initialisation is complete, the mod_init flag
- *      is set to 1 to indicate that the unit testing module has been set up.
+ *      sol_tsuite_init2() - declared in sol/inc/test.h
  */
 extern sol_erno
 sol_tsuite_init2(sol_tsuite       *tsuite,
@@ -95,11 +90,15 @@ sol_tsuite_init2(sol_tsuite       *tsuite,
                 )
 {
 SOL_TRY:
+                /* check preconditions */
         sol_assert (tsuite && tlog, SOL_ERNO_PTR);
 
+                /* initialise member fields, setting the logging callback to
+                 * @tlog */
         tsuite_init (tsuite, tlog);
 
 SOL_CATCH:
+                /* throw exceptions */
         sol_throw ();
 }
 
@@ -107,19 +106,13 @@ SOL_CATCH:
 
 
 /*
- *      sol_test_exit() - declared in sol/inc/test.h
- *
- *      The sol_test_exit() interface function resets the unit test counters to
- *      their default value, and sets the internal module initialisation flag to
- *      0 to indicate that unit testing module has been torn down.
- *
- *      This isn't  strictly necessary, but doing so keeps the internal state of
- *      the unit  testing module clean, and ensures that the other interface
- *      functions can't be called without first re-initialising the module.
+ *      sol_tsuite_term() - declared in sol/inc/test.h
  */
 extern void
 sol_tsuite_term(sol_tsuite *tsuite)
 {
+                /* reset member fields, including logging callback, if @tsuite
+                 * is valid */
         if (tsuite)
                 tsuite_init (tsuite, 0);
 }
@@ -127,6 +120,9 @@ sol_tsuite_term(sol_tsuite *tsuite)
 
 
 
+/*
+ *      sol_tsuite_register() - declared in sol/inc/test.h
+ */
 extern sol_erno
 sol_tsuite_register(sol_tsuite       *tsuite,
                     sol_tcase  const *tcase,
@@ -137,19 +133,28 @@ sol_tsuite_register(sol_tsuite       *tsuite,
         auto     int  len;
 
 SOL_TRY:
+                /* check preconditions */
         sol_assert (tsuite && tcase && desc, SOL_ERNO_PTR);
         sol_assert (*desc, SOL_ERNO_STR);
         sol_assert (tsuite->total <= SOL_TSUITE_MAXTCASE, SOL_ERNO_RANGE);
 
+                /* add @tcase to first free slot in test case array; the index
+                 * of this slot will be equal to the current total number of
+                 * registed test cases */
         tsuite->tcase [tsuite->total] = tcase;
 
+                /* add @desc to the first free slot in the test description
+                 * array using the strncpy() algorithm; its index will be the
+                 * same as that of the test case */
         itr = tsuite->desc [tsuite -> total];
         len = SOL_TCASE_MAXDESCLEN;
         while (len-- && (*itr++ = *desc++));
 
+                /* update total number of registered test cases */
         tsuite->total++;
 
 SOL_CATCH:
+                /* throw exceptions */
         sol_throw ();
 }
 
@@ -157,11 +162,7 @@ SOL_CATCH:
 
 
 /*
- *      sol_test_pass() - declared in sol/inc/test.h
- *
- *      The sol_test_pass() interface function returns the unit test pass
- *      counter through @pass after checking whether the unit testing module has
- *      been initialised and if @pass is valid.
+ *      sol_tsuite_pass() - declared in sol/inc/test.h
  */
 extern sol_erno
 sol_tsuite_pass(sol_tsuite const *tsuite,
@@ -169,11 +170,14 @@ sol_tsuite_pass(sol_tsuite const *tsuite,
                )
 {
 SOL_TRY:
+                /* check preconditions */
         sol_assert (tsuite && pass, SOL_ERNO_PTR);
 
+                /* return count of passed tests */
         *pass = tsuite->total - tsuite->fail;
 
 SOL_CATCH:
+                /* throw exceptions */
         sol_throw ();
 }
 
@@ -181,11 +185,7 @@ SOL_CATCH:
 
 
 /*
- *      sol_test_fail() - declared in sol/inc/test.h
- *
- *      The sol_test_fail() interface function returns the unit test fail
- *      counter through @fail after checking whether the unit testing module has
- *      been initialised and if @fail is valid.
+ *      sol_tsuite_fail() - declared in sol/inc/test.h
  */
 extern sol_erno
 sol_tsuite_fail(sol_tsuite const *tsuite,
@@ -193,28 +193,14 @@ sol_tsuite_fail(sol_tsuite const *tsuite,
                )
 {
 SOL_TRY:
+                /* check preconditions */
         sol_assert (tsuite && fail, SOL_ERNO_PTR);
 
+                /* return count of failed tests */
         *fail = tsuite->fail;
 
 SOL_CATCH:
-        sol_throw ();
-}
-
-
-
-
-extern sol_erno
-sol_tsuite_total(sol_tsuite const *tsuite,
-                 int              *total
-                )
-{
-SOL_TRY:
-        sol_assert (tsuite && total, SOL_ERNO_PTR);
-
-        *total = tsuite->total;
-
-SOL_CATCH:
+                /* throw exceptions */
         sol_throw ();
 }
 
@@ -222,14 +208,30 @@ SOL_CATCH:
 
 
 /*
- *      sol_test_exec() - declared in sol/inc/test.h
- *
- *      The sol_test_exec() interface function runs the unit test @cbk, updating
- *      the appropriate test counter depending on whether @cbk passed or failed.
- *      Furthermore, the test result is logged by calling the logging callback
- *      function (if it's available). At the outset, this function checks  if
- *      the unit testing module has been intialised, and whether the arguments
- *      for @desc and @cbk are valid.
+ *      sol_tsuite_total() - declared in sol/inc/test.h
+ */
+extern sol_erno
+sol_tsuite_total(sol_tsuite const *tsuite,
+                 int              *total
+                )
+{
+SOL_TRY:
+                /* check preconditions */
+        sol_assert (tsuite && total, SOL_ERNO_PTR);
+
+                /* return count of total tests */
+        *total = tsuite->total;
+
+SOL_CATCH:
+                /* throw exceptions */
+        sol_throw ();
+}
+
+
+
+
+/*
+ *      sol_tsuite_exec() - declared in sol/inc/test.h
  */
 extern sol_erno
 sol_tsuite_exec(sol_tsuite *tsuite)
@@ -238,10 +240,15 @@ sol_tsuite_exec(sol_tsuite *tsuite)
         auto     sol_erno erno;
 
 SOL_TRY:
+                /* check preconditions */
         sol_assert (tsuite, SOL_ERNO_PTR);
 
+                /* reset count of failed test cases */
         tsuite->fail = 0;
 
+                /* iterate through test case array, executing each in turn and
+                 * logging it if the logging callback is available; update count
+                 * of failed test cases as required */
         for (i = 0; i < tsuite->total; i++) {
                 if ((erno = tsuite->tcase [i] ()))
                         tsuite->fail++;
@@ -251,6 +258,7 @@ SOL_TRY:
         }
 
 SOL_CATCH:
+                /* throw exceptions */
         sol_throw ();
 }
 
