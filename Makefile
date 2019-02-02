@@ -4,8 +4,8 @@ all:
 	gcc -coverage -shared bin/test.o -o bin/libsol.so
 	gcc -coverage test/runner.c bin/libsol.so -o bin/runner
 	./bin/runner
-	gcov *.gcda
-	gcov bin/*.gcda
+	mv *.gcno *.gcda bin/
+	gcov bin/*gcno
 	ls
 	ls bin
 
