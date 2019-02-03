@@ -32,10 +32,9 @@ language: c
 
 
 
-#       Set compilers; we're using both GCC and Clang
+#       Set compilers; we're using only GCC for the time being
 compiler:
         - gcc
-        - clang
 
 
 

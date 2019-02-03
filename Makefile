@@ -98,13 +98,13 @@ integration: $(OUT_LD)
 	./$(OUT_LD)
 	mv *.gcno *.gcda $(DIR_BLD)
 	$(CMD_COV) $(OPT_COV) $(INP_COV)
-	mv *.gcov $(DIR_BLD)
 
 
 
 
 # 	Rule to clean build artefacts
 clean:
+	mv *.gcov $(DIR_BLD)
 	rm -r $(DIR_BLD)
 
 
