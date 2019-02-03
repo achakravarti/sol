@@ -97,14 +97,16 @@ $(DIR_BLD)/%.o: $(DIR_SRC)/%.c
 integration: $(OUT_LD)
 	./$(OUT_LD)
 	mv *.gcno *.gcda $(DIR_BLD)
-	$(CMD_COV) $(OPT_COV) $(INP_COV)
+	#$(CMD_COV) $(OPT_COV) $(INP_COV)
+	$(CMD_COV) $(OPT_COV) $(DIR_BLD)/runner.gcda
+	$(CMD_COV) $(OPT_COV) $(DIR_BLD)/test.gcda
+	mv *.gcov $(DIR_BLD)
 
 
 
 
 # 	Rule to clean build artefacts
 clean:
-	mv *.gcov $(DIR_BLD)
 	rm -r $(DIR_BLD)
 
 
