@@ -1,12 +1,48 @@
+################################################################################
+#                              SOL LIBRARY v1.0.0+41
+#
+# File: sol/.travis.yml
+#
+# Description:
+# 	This YAML file is part of the Sol Library. It defines the Travis-CI
+# 	build matrix.
+#
+# Authors:
+# 	Abhishek Chakravarti <abhishek@taranjali.org>
+#
+# Copyright:
+# 	(c) 2019, Abhishek Chakravarti.
+# 	<abhishek@taranjali.org>
+#
+# License:
+# 	Released under the GNU General Public License version 3 (GPLv3).
+# 	<http://opensource.org/licenses/GPL-3.0>
+# 	See the accompanying README.md file for complete licensing details.
+#
+# 	By continuing to use and/or distribute this file, you acknowledge that
+# 	you have understood these license terms and accept them.
+################################################################################
 
+
+
+
+#       Set programming language
 language: c
 
+
+
+
+#       Set compilers; we're using both GCC and Clang
 compiler:
         - gcc
         - clang
 
-# update GCC and GCov to version 8
-# ref: https://gist.github.com/application2000/73fd6f4bf1be6600a2cf9f56315a2d91
+
+
+
+#       Update GCC and GCov to version 8; this is needed for gcov to work
+#       properly; refer to the following site:
+#       https://gist.github.com/application2000/73fd6f4bf1be6600a2cf9f56315a2d91
 before_install:
         - sudo apt-get update
         - sudo apt-get install build-essential software-properties-common -y
@@ -17,9 +53,25 @@ before_install:
         - sudo apt-get install gcc-8 -y
         - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 60 --slave /usr/bin/gcov gcov /usr/bin/gcov-8
 
-script:
-        - make
 
+
+
+#       Build target
+script:
+        - make integration
+
+
+
+
+#       Generate coverage statistics for CodeCov
 after_success:
         - bash <(curl -s https://codecov.io/bash)
+
+
+
+
+################################################################################
+#				      EOF
+#               Built on hyperion [Tue Jan 29 02:37:24 UTC 2019]
+################################################################################
 

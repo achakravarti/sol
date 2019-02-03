@@ -1,4 +1,5 @@
-bin/
+# Build directory
+bld/
 
 # Prerequisites
 *.d
@@ -57,3 +58,4 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
