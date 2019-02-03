@@ -6,7 +6,15 @@ compiler:
         - clang
 
 before_install:
-        - sudo apt-get update -qq
+        - sudo apt-get update
+        - sudo apt-get install build-essential software-properties-common -y
+        - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+        - sudo apt-get update
+        - sudo apt-get install gcc-snapshot -y
+        - sudo apt-get update
+        - sudo apt-get install gcc-8 gcov-8 -y
+        - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 60
+        - sudo update-alternatives --install /usr/bin/gcc gcov /usr/bin/gcov-8 60
 
 script:
         - make
