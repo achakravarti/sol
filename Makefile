@@ -53,21 +53,23 @@ OPT_COV = -o $(DIR_BLD)
 
 # 	Set command inputs
 INP_SO  = $(DIR_BLD)/test.o
-INP_LD = $(DIR_TEST)/runner.c
+INP_LD  = $(DIR_TEST)/runner.c
 INP_COV = $(DIR_BLD)/runner.gcda $(DIR_BLD)/test.gcda
 
 
 
 
 # 	Set command dependencies
-DEP_LD = $(OUT_SO) -lgcov
+DEP_LD  = $(OUT_SO) -lgcov
+DEP_COV = *.gcno *.gcda
 
 
 
 
 # 	Set command outputs
-OUT_SO = $(DIR_BLD)/libsol.so
-OUT_LD = $(DIR_BLD)/runner
+OUT_SO  = $(DIR_BLD)/libsol.so
+OUT_LD  = $(DIR_BLD)/runner
+OUT_COV = *.gcov
 
 
 
@@ -96,16 +98,16 @@ $(DIR_BLD)/%.o: $(DIR_SRC)/%.c
 # 	Rule to generate integration build
 integration: $(OUT_LD)
 	./$(OUT_LD)
-	mv *.gcno *.gcda $(DIR_BLD)
+	mv $(DEP_COV) $(DIR_BLD)
 	$(CMD_COV) $(OPT_COV) $(INP_COV)
-	mv *.gcov $(DIR_BLD)
+	mv $(OUT_COV) $(DIR_BLD)
 
 
 
 
 # 	Rule to clean build artefacts
 clean:
-	rm -r $(DIR_BLD)
+	rm -rf $(DIR_BLD)
 
 
 
