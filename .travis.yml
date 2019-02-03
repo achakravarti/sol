@@ -5,6 +5,8 @@ compiler:
         - gcc
         - clang
 
+# update GCC and GCov to version 8
+# ref: https://gist.github.com/application2000/73fd6f4bf1be6600a2cf9f56315a2d91
 before_install:
         - sudo apt-get update
         - sudo apt-get install build-essential software-properties-common -y
@@ -13,8 +15,7 @@ before_install:
         - sudo apt-get install gcc-snapshot -y
         - sudo apt-get update
         - sudo apt-get install gcc-8 -y
-        - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 60 \
-          --slave /usr/bin/gcov gcov /usr/bin/gcov-8
+        - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 60 --slave /usr/bin/gcov gcov /usr/bin/gcov-8
 
 script:
         - make
