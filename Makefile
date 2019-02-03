@@ -5,7 +5,7 @@ all:
 	gcc -coverage test/runner.c bin/libsol.so -o bin/runner
 	bin/runner
 	mv *gcda *gcno bin
-	gcov bin/*gcda
+	gcov -o bin src/*.c
 	ls
 	ls bin
 	gcc --version
