@@ -9,5 +9,6 @@ all:
 	ls
 	ls bin
 	gcc --version
+	gcov --version
 	find  /usr/lib/gcc -name libgcov.a
 
