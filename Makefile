@@ -53,7 +53,7 @@ OPT_COV = -o $(DIR_BLD)
 
 # 	Set command inputs
 INP_SO  = $(DIR_BLD)/test.o
-INP_COV = $(DIR_BLD)/*.gcda
+INP_COV = $(DIR_BLD)/runner.gcda $(DIR_BLD)/test.gcda
 INP_LD = $(DIR_TEST)/runner.c
 
 
@@ -97,9 +97,9 @@ $(DIR_BLD)/%.o: $(DIR_SRC)/%.c
 integration: $(OUT_LD)
 	./$(OUT_LD)
 	mv *.gcno *.gcda $(DIR_BLD)
-	#$(CMD_COV) $(OPT_COV) $(INP_COV)
-	$(CMD_COV) $(OPT_COV) $(DIR_BLD)/runner.gcda
-	$(CMD_COV) $(OPT_COV) $(DIR_BLD)/test.gcda
+	$(CMD_COV) $(OPT_COV) $(INP_COV)
+	#$(CMD_COV) $(OPT_COV) $(DIR_BLD)/runner.gcda
+	#$(CMD_COV) $(OPT_COV) $(DIR_BLD)/test.gcda
 	mv *.gcov $(DIR_BLD)
 
 
