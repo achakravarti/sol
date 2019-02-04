@@ -47,17 +47,17 @@ typedef sol_erno     /* error code                */
 
 
 /*
- *      TS_COUNT - count of test suites
+ *      SUITE_COUNT - count of test suites
  */
-#define TS_COUNT 1
+#define SUITE_COUNT 1
 
 
 
 
 /*
- *      TS_ERROR - index of exception handling test suite
+ *      SUITE_ERROR - index of exception handling test suite
  */
-#define TS_ERROR 0
+#define SUITE_ERROR 0
 
 
 
@@ -81,7 +81,7 @@ typedef sol_erno     /* error code                */
 /*
  *      LOG_SIGMAMSG - log message for sigma test counters
  */
-#define LOG_SIGMAMSG "%d test(s) run, %d passed, %d failed\n"
+#define LOG_SIGMAMSG "\n%d test(s) run, %d passed, %d failed\n"
 
 
 
@@ -103,33 +103,33 @@ typedef sol_erno     /* error code                */
 
 
 /*
- *      ts_hnd - test suite handles
+ *      suite_hnd - test suite handles
  */
-static ts *ts_hnd [TS_COUNT];
+static ts *suite_hnd [SUITE_COUNT];
 
 
 
 
 /*
- *      ts_pass - count of passed test cases per suite
+ *      stat__suite - test case statistics for each test suite
  */
-static int ts_pass [TS_COUNT];
+static struct {
+        int pass   [SUITE_COUNT]; /* passed test cases per suite */
+        int fail   [SUITE_COUNT]; /* failed test cases per suite */
+        int total  [SUITE_COUNT]; /* total test cases per suite  */
+} stat_suite;
 
 
 
 
 /*
- *      ts_fail - count of failed test cases per suite
+ *      stat_sigma - summation statistics for all test suites
  */
-static int ts_fail [TS_COUNT];
-
-
-
-
-/*
- *      ts_total - count of total test cases per suite
- */
-static int ts_total [TS_COUNT];
+static struct {
+        int pass;  /* sigma of passed test cases */
+        int fail;  /* sigma of failed test cases */
+        int total; /* sigma of total test cases  */
+} stat_sigma;
 
 
 
@@ -143,52 +143,12 @@ static FILE *log_hnd;
 
 
 /*
- *      log_cbk() - callback to log test result
+ *      log_init() - initialise test log file
  */
-static void
-log_cbk(char     const *desc, /* test case description            */
-        sol_erno const erno   /* error code returned by test case */
-       )
+static inline void
+log_init(void)
 {
-                /* break out if log file isn't open */
-        if (!log_hnd) {
-                return;
-        }
-
-                /* log message according to test execution status */
-        if (erno) {
-                fprintf (log_hnd, LOG_FAILMSG, desc, erno);
-        }
-        else {
-                fprintf (log_hnd, LOG_PASSMSG, desc);
-        }
-}
-
-
-
-
-
-
-
-
-/*
- *      ts_init() - initialises test suites
- */
-static void
-ts_init(void)
-{
-        register int i; /* iterator */
-
-                /* register test suites */
-        ts_hnd [TS_ERROR] = __sol_tsuite_error;
-
-                /* initialise test counters */
-        for (i = 0; i < TS_COUNT; i++) {
-                ts_pass  [i] = 0;
-                ts_fail  [i] = 0;
-                ts_total [i] = 0;
-        }
-
+                /* open test log file; show error if failed */
         if (!(log_hnd = fopen (LOG_FPATH, "a+e"))) {
                 printf (LOG_ERRMSG);
         }
@@ -198,35 +158,14 @@ ts_init(void)
 
 
 /*
- *      ts_term() - winds up test suites
+ *      log_term() - terminate test log file
  */
-static void
-ts_term(void)
+static inline void
+log_term(void)
 {
-        register int i;      /* iterator                   */
-        auto     int sigmap; /* sigma of passed test cases */
-        auto     int sigmaf; /* sigma of failed test cases */
-        auto     int sigmat; /* sigma of total test cases  */
-
-                /* initialise sigma test counters */
-        sigmap = 0;
-        sigmaf = 0;
-        sigmat = 0;
-
-                /* compute sigma test counters */
-        for (i = 0; i < TS_COUNT; i++) {
-                sigmap += ts_pass  [i];
-                sigmaf += ts_fail  [i];
-                sigmat += ts_total [i];
-        }
-
-                /* print sigma test counters */
-        printf (LOG_SIGMAMSG, sigmat, sigmap, sigmaf);
-
-                /* release log file after logging sigma test counters */
+                /* release log file if it's open */
         if (log_hnd) {
-                fprintf (log_hnd, LOG_SIGMAMSG, sigmat, sigmap, sigmaf);
-                fclose  (log_hnd);
+                fclose (log_hnd);
         }
 }
 
@@ -234,16 +173,122 @@ ts_term(void)
 
 
 /*
- *      ts_exec() - executes test suites
+ *      log_tcase() - callback to log test case result
+ */
+static inline void
+log_tcase(char     const *desc, /* test case description            */
+          sol_erno const erno   /* error code returned by test case */
+         )
+{
+                /* log message according to test execution status */
+        if (log_hnd) {
+                erno ? fprintf (log_hnd, LOG_FAILMSG, desc, erno)
+                     : fprintf (log_hnd, LOG_PASSMSG, desc);
+        }
+}
+
+
+
+
+/*
+ *      log_sigma() - prints and logs sigma statistics
  */
 static void
-ts_exec(void)
+log_sigma(void)
+{
+
+                /* print sigma statistics */
+        printf (LOG_SIGMAMSG,
+                stat_sigma.total,
+                stat_sigma.pass,
+                stat_sigma.fail
+               );
+
+                /* log sigma statistics */
+        if (log_hnd) {
+                fprintf (log_hnd,
+                         LOG_SIGMAMSG,
+                         stat_sigma.total,
+                         stat_sigma.pass,
+                         stat_sigma.fail
+                        );
+        }
+}
+
+
+
+
+/*
+ *      stat_init() - initialise test statistics
+ */
+static void
+stat_init(void)
+{
+        register int i; /* iterator */
+
+                /* initialise test suite statistics */
+        for (i = 0; i < SUITE_COUNT; i++) {
+                stat_suite.pass  [i] = 0;
+                stat_suite.fail  [i] = 0;
+                stat_suite.total [i] = 0;
+        }
+
+                /* initialise sigma statistics */
+        stat_sigma.pass  = 0;
+        stat_sigma.fail  = 0;
+        stat_sigma.total = 0;
+}
+
+
+
+
+/*
+ *      stat_sum() - calculates sigma statistics
+ */
+static void
+stat_sum(void)
+{
+        register int i; /* iterator */
+
+                /* sum test suite statistics */
+        for (i = 0; i < SUITE_COUNT; i++) {
+                stat_sigma.pass  += stat_suite.pass  [i];
+                stat_sigma.fail  += stat_suite.fail  [i];
+                stat_sigma.total += stat_suite.total [i];
+        }
+}
+
+
+
+
+/*
+ *      suite_init() - initialises test suites
+ */
+static void
+suite_init(void)
+{
+                /* register test suites */
+        suite_hnd [SUITE_ERROR] = __sol_tsuite_error;
+}
+
+
+
+
+/*
+ *      suite_exec() - executes test suites
+ */
+static void
+suite_exec(void)
 {
         register int i; /* iterator */
 
                 /* execute test suites */
-        for (i = 0; i < TS_COUNT; i++) {
-                ts_hnd [i] (log_cbk, ts_pass + i, ts_fail + i, ts_total + i);
+        for (i = 0; i < SUITE_COUNT; i++) {
+                suite_hnd [i] (log_tcase,
+                               stat_suite.pass  + i,
+                               stat_suite.fail  + i,
+                               stat_suite.total + i
+                              );
         }
 }
 
@@ -255,12 +300,18 @@ ts_exec(void)
  */
 int main( void )
 {
-                /* run test suites */
-        ts_init ();
-        ts_exec ();
-        ts_term ();
+                /* initialise */
+        log_init   ();
+        stat_init  ();
+        suite_init ();
 
-                /* everything's OK */
+                /* execute */
+        suite_exec ();
+        stat_sum   ();
+        log_sigma  ();
+
+                /* terminate */
+        log_term ();
         return 0;
 }
 
