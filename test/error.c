@@ -35,15 +35,15 @@
  *      assert_pass() - simulates success of sol_assert()
  */
 static sol_erno
-assert_pass( void )
+assert_pass(void)
 {
 SOL_TRY:
                 /* this condition will always pass */
-        sol_assert( 1 == 1, SOL_ERNO_TEST );
+        sol_assert (1 == 1, SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* control will never reach here */
-        sol_throw();
+        sol_throw ();
 }
 
 
@@ -53,15 +53,15 @@ SOL_CATCH:
  *      assert_fail() - simulates failure of sol_assert()
  */
 static sol_erno
-assert_fail( void )
+assert_fail(void)
 {
 SOL_TRY:
                 /* this condition will always fail */
-        sol_assert( 1 != 1, SOL_ERNO_TEST );
+        sol_assert (1 != 1, SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* control will always reach here */
-        sol_throw();
+        sol_throw ();
 }
 
 
@@ -71,15 +71,15 @@ SOL_CATCH:
  *      try_pass() - simulates success of sol_try()
  */
 static sol_erno
-try_pass( void )
+try_pass(void)
 {
 SOL_TRY:
                 /* assert_pass() is guaranteed to succeed */
-        sol_try( assert_pass() );
+        sol_try (assert_pass ());
 
 SOL_CATCH:
                 /* control will never reach here */
-        sol_throw();
+        sol_throw ();
 }
 
 
@@ -89,15 +89,15 @@ SOL_CATCH:
  *      try_fail() - simulates failure of sol_try()
  */
 static sol_erno
-try_fail( void )
+try_fail(void)
 {
 SOL_TRY:
                 /* assert_fail() is guaranteed to fail */
-        sol_try( assert_fail() );
+        sol_try (assert_fail ());
 
 SOL_CATCH:
                 /* control will always reach here */
-        sol_throw();
+        sol_throw ();
 }
 
 
@@ -107,15 +107,15 @@ SOL_CATCH:
  *      __test_assert_01() - declared in sol/test/error.h
  */
 extern sol_erno
-__test_assert_01( void )
+__test_assert_01(void)
 {
 SOL_TRY:
                 /* check test condition described by __DESC_ASSERT_01 */
-        sol_assert( !assert_pass(), SOL_ERNO_TEST );
+        sol_assert (!assert_pass (), SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* catch exceptions */
-        sol_throw();
+        sol_throw ();
 }
 
 
@@ -125,15 +125,15 @@ SOL_CATCH:
  *      __test_assert_02() - declared in sol/test/error.h
  */
 extern sol_erno
-__test_assert_02( void )
+__test_assert_02(void)
 {
 SOL_TRY:
                 /* check test condition described by __DESC_ASSERT_02 */
-        sol_assert( assert_fail(), SOL_ERNO_TEST );
+        sol_assert (assert_fail (), SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* catch exceptions */
-        sol_throw();
+        sol_throw ();
 }
 
 
@@ -143,15 +143,15 @@ SOL_CATCH:
  *      __test_try_01() - declared in sol/test/error.h
  */
 extern sol_erno
-__test_try_01( void )
+__test_try_01(void)
 {
 SOL_TRY:
                 /* check test condition described by __DESC_TRY_01 */
-        sol_assert( !try_pass(), SOL_ERNO_TEST );
+        sol_assert (!try_pass (), SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* catch exceptions */
-        sol_throw();
+        sol_throw ();
 }
 
 
@@ -161,15 +161,15 @@ SOL_CATCH:
  *      __test_try_02() - declared in sol/test/error.h
  */
 extern sol_erno
-__test_try_02( void )
+__test_try_02(void)
 {
 SOL_TRY:
                 /* check test condition described by __DESC_TRY_01 */
-        sol_assert( try_fail(), SOL_ERNO_TEST );
+        sol_assert (try_fail (), SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* catch exceptions */
-        sol_throw();
+        sol_throw ();
 }
 
 
