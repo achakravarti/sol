@@ -38,8 +38,8 @@
  *      tsuite_init() - initialises test suite member fields
  */
 static void
-tsuite_init(sol_tsuite       *tsuite, /* contextual test suite */
-            sol_tlog   const *tlog    /* logging callback      */
+tsuite_init(sol_tsuite *tsuite, /* contextual test suite */
+            sol_tlog   *tlog    /* logging callback      */
            )
 {
         register int i;
@@ -85,8 +85,8 @@ SOL_CATCH:
  *      sol_tsuite_init2() - declared in sol/inc/test.h
  */
 extern sol_erno
-sol_tsuite_init2(sol_tsuite       *tsuite,
-                 sol_tlog   const *tlog
+sol_tsuite_init2(sol_tsuite *tsuite,
+                 sol_tlog   *tlog
                 )
 {
 SOL_TRY:
@@ -113,8 +113,9 @@ sol_tsuite_term(sol_tsuite *tsuite)
 {
                 /* reset member fields, including logging callback, if @tsuite
                  * is valid */
-        if (tsuite)
+        if (tsuite) {
                 tsuite_init (tsuite, 0);
+        }
 }
 
 
@@ -125,7 +126,7 @@ sol_tsuite_term(sol_tsuite *tsuite)
  */
 extern sol_erno
 sol_tsuite_register(sol_tsuite       *tsuite,
-                    sol_tcase  const *tcase,
+                    sol_tcase        *tcase,
                     char       const *desc
                    )
 {
@@ -148,7 +149,9 @@ SOL_TRY:
                  * same as that of the test case */
         itr = tsuite->desc [tsuite -> total];
         len = SOL_TCASE_MAXDESCLEN;
-        while (len-- && (*itr++ = *desc++));
+        while (len-- && (*itr++ = *desc++)) {
+                ;
+        }
 
                 /* update total number of registered test cases */
         tsuite->total++;
@@ -250,11 +253,13 @@ SOL_TRY:
                  * logging it if the logging callback is available; update count
                  * of failed test cases as required */
         for (i = 0; i < tsuite->total; i++) {
-                if ((erno = tsuite->tcase [i] ()))
+                if ((erno = tsuite->tcase [i] ())) {
                         tsuite->fail++;
+                }
 
-                if (tsuite->tlog)
+                if (tsuite->tlog) {
                         tsuite->tlog (tsuite->desc [i], erno);
+                }
         }
 
 SOL_CATCH:
