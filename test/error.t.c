@@ -5,7 +5,7 @@
  *
  * Description:
  *      This file is part of the internal quality checking of the Sol Library.
- *      It implements the test cases for the exception handling module.
+ *      It implements the test suite for the exception handling module.
  *
  * Authors:
  *      Abhishek Chakravarti <abhishek@taranjali.org>
@@ -26,7 +26,44 @@
 
 
 
-#include "./error.t.h"
+#include "../inc/test.h"
+#include "./suite.h"
+
+
+
+
+/*
+ *      DESC_ASSERT_01 - description for sol_assert() unit test #1
+ */
+#define DESC_ASSERT_01 "sol_assert() must not throw an error for a" \
+                       " predicate that evaluates to true"
+
+
+
+
+/*
+ *      DESC_ASSERT_02 - description for sol_assert() unit test #2
+ */
+#define DESC_ASSERT_02 "sol_assert() must throw an error for a" \
+                         " predicate that evaluates to false"
+
+
+
+
+/*
+ *      DESC_TRY_01 - description for sol_try() unit test #1
+ */
+#define DESC_TRY_01 "sol_try() must not throw an error for a function that" \
+                    " returns a SOL_ERNO_NULL error code"
+
+
+
+
+/*
+ *      DESC_TRY_02 - description for sol_try() unit test #2
+ */
+#define DESC_TRY_02 "sol_try() must throw an error for a function that" \
+                    " returns an error code other than SOL_ERNO_NULL"
 
 
 
@@ -104,13 +141,13 @@ SOL_CATCH:
 
 
 /*
- *      __test_assert_01() - declared in sol/test/error.h
+ *      test_assert_01() - sol_assert() unit test #1
  */
-extern sol_erno
-__test_assert_01(void)
+static sol_erno
+test_assert_01(void)
 {
 SOL_TRY:
-                /* check test condition described by __DESC_ASSERT_01 */
+                /* check test condition described by DESC_ASSERT_01 */
         sol_assert (!assert_pass (), SOL_ERNO_TEST);
 
 SOL_CATCH:
@@ -122,13 +159,13 @@ SOL_CATCH:
 
 
 /*
- *      __test_assert_02() - declared in sol/test/error.h
+ *      test_assert_02() - sol_assert() unit test #2
  */
-extern sol_erno
-__test_assert_02(void)
+static sol_erno
+test_assert_02(void)
 {
 SOL_TRY:
-                /* check test condition described by __DESC_ASSERT_02 */
+                /* check test condition described by DESC_ASSERT_02 */
         sol_assert (assert_fail (), SOL_ERNO_TEST);
 
 SOL_CATCH:
@@ -140,13 +177,13 @@ SOL_CATCH:
 
 
 /*
- *      __test_try_01() - declared in sol/test/error.h
+ *      test_try_01() - sol_try() unit test #1
  */
-extern sol_erno
-__test_try_01(void)
+static sol_erno
+test_try_01(void)
 {
 SOL_TRY:
-                /* check test condition described by __DESC_TRY_01 */
+                /* check test condition described by DESC_TRY_01 */
         sol_assert (!try_pass (), SOL_ERNO_TEST);
 
 SOL_CATCH:
@@ -158,13 +195,13 @@ SOL_CATCH:
 
 
 /*
- *      __test_try_02() - declared in sol/test/error.h
+ *      test_try_02() - sol_try() unit test #2
  */
-extern sol_erno
-__test_try_02(void)
+static sol_erno
+test_try_02(void)
 {
 SOL_TRY:
-                /* check test condition described by __DESC_TRY_01 */
+                /* check test condition described by DESC_TRY_01 */
         sol_assert (try_fail (), SOL_ERNO_TEST);
 
 SOL_CATCH:
@@ -174,4 +211,40 @@ SOL_CATCH:
 
 
 
+
+/*
+ *      test_try_02() - declared in sol/test/suite.h
+ */
+extern sol_erno
+__sol_tsuite_error(void)
+{
+        auto sol_tsuite tsuite, *ts = &tsuite;
+
+SOL_TRY:
+                /* initialise test suite */
+        sol_try (sol_tsuite_init (ts));
+
+                /* register test cases */
+        sol_try (sol_tsuite_register (ts, test_assert_01, DESC_ASSERT_01));
+        sol_try (sol_tsuite_register (ts, test_assert_02, DESC_ASSERT_02));
+        sol_try (sol_tsuite_register (ts, test_try_01, DESC_TRY_01));
+        sol_try (sol_tsuite_register (ts, test_try_02, DESC_TRY_02));
+
+                /* execute registered test cases and wind up */
+        sol_try (sol_tsuite_exec (ts));
+        sol_tsuite_term (ts);
+
+SOL_CATCH:
+                /* wind up and throw exceptions */
+        sol_tsuite_term (ts);
+        sol_throw ();
+}
+
+
+
+
+/******************************************************************************
+ *                                    EOF
+ *          Built on hyperion [Tue Jan 29 02:37:24 UTC 2019]
+ ******************************************************************************/
 

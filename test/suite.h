@@ -1,11 +1,11 @@
 /******************************************************************************
  *                           SOL LIBRARY v1.0.0+41
  *
- * File: sol/test/runner.c
+ * File: sol/test/suite.h
  *
  * Description:
  *      This file is part of the internal quality checking of the Sol Library.
- *      It implements the test runner to execute all the module test suites.
+ *      It declares the test suites for all the component modules.
  *
  * Authors:
  *      Abhishek Chakravarti <abhishek@taranjali.org>
@@ -26,22 +26,24 @@
 
 
 
-#include "./suite.h"
+#if !defined __SOL_LIBRARY_TEST_SUITES
+#define      __SOL_LIBRARY_TEST_SUITES
 
 
 
 
-/*
- *      main() - main entry point of test runner
- */
-int main( void )
-{
-                /* execute test suites */
-        (void) __sol_tsuite_error ();
+#include "../inc/error.h"
 
-                /* everything's OK */
-        return 0;
-}
+
+
+
+extern sol_erno
+__sol_tsuite_error(void);
+
+
+
+
+#endif /* !defined __SOL_LIBRARY_TEST_SUITES */
 
 
 
