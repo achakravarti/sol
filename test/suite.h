@@ -19,7 +19,7 @@
  *      <http://opensource.org/licenses/GPL-3.0>. See the accompanying LICENSE
  *      file for complete licensing details.
  *
- *      BY CONTINUING TO USE AND/OR DISTRIBUTE THIS FILE, YOU ACKNOWLEDGE THAt
+ *      BY CONTINUING TO USE AND/OR DISTRIBUTE THIS FILE, YOU ACKNOWLEDGE THAT
  *      YOU HAVE UNDERSTOOD THESE LICENSE TERMS AND ACCEPT THEM.
  ******************************************************************************/
 
@@ -38,7 +38,10 @@
 
 
 extern sol_erno
-__sol_tsuite_error(void);
+__sol_tsuite_error(int *pass,
+                   int *fail,
+                   int *total
+                  );
 
 
 

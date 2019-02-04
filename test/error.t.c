@@ -19,7 +19,7 @@
  *      <http://opensource.org/licenses/GPL-3.0>. See the accompanying LICENSE
  *      file for complete licensing details.
  *
- *      BY CONTINUING TO USE AND/OR DISTRIBUTE THIS FILE, YOU ACKNOWLEDGE THAt
+ *      BY CONTINUING TO USE AND/OR DISTRIBUTE THIS FILE, YOU ACKNOWLEDGE THAT
  *      YOU HAVE UNDERSTOOD THESE LICENSE TERMS AND ACCEPT THEM.
  ******************************************************************************/
 
@@ -243,12 +243,15 @@ SOL_CATCH:
 
 
 /*
- *      test_try_02() - declared in sol/test/suite.h
+ *      __sol_tsuite_error() - declared in sol/test/suite.h
  */
 extern sol_erno
-__sol_tsuite_error(void)
+__sol_tsuite_error(int *pass,
+                   int *fail,
+                   int *total
+                  )
 {
-        auto sol_tsuite tsuite, *ts = &tsuite;
+        auto sol_tsuite __ts, *ts = &__ts;
 
 SOL_TRY:
                 /* initialise test suite */
@@ -257,18 +260,25 @@ SOL_TRY:
                 /* register test cases */
         sol_try (sol_tsuite_register (ts, test_assert_01, DESC_ASSERT_01));
         sol_try (sol_tsuite_register (ts, test_assert_02, DESC_ASSERT_02));
-        sol_try (sol_tsuite_register (ts, test_try_01, DESC_TRY_01));
-        sol_try (sol_tsuite_register (ts, test_try_02, DESC_TRY_02));
-        sol_try (sol_tsuite_register (ts, test_now_01, DESC_NOW_01));
+        sol_try (sol_tsuite_register (ts, test_try_01,    DESC_TRY_01));
+        sol_try (sol_tsuite_register (ts, test_try_02,    DESC_TRY_02));
+        sol_try (sol_tsuite_register (ts, test_now_01,    DESC_NOW_01));
 
-                /* execute registered test cases and wind up */
+                /* execute test cases */
         sol_try (sol_tsuite_exec (ts));
+
+                /* return test counts */
+        sol_try (sol_tsuite_pass  (ts, pass));
+        sol_try (sol_tsuite_fail  (ts, fail));
+        sol_try (sol_tsuite_total (ts, total));
+
+                /* wind up */
         sol_tsuite_term (ts);
 
 SOL_CATCH:
-                /* wind up and throw exceptions */
+                /* wind up and throw current exception */
         sol_tsuite_term (ts);
-        sol_throw ();
+        sol_throw       ();
 }
 
 
