@@ -69,6 +69,15 @@
 
 
 /*
+ *      DESC_NOW_01 - description for sol_erno_now() unit test #1
+ */
+#define DESC_NOW_01 "sol_erno_now() must return the current error code that" \
+                    " was thrown by the last calling function"
+
+
+
+
+/*
  *      assert_pass() - simulates success of sol_assert()
  */
 static sol_erno
@@ -213,6 +222,27 @@ SOL_CATCH:
 
 
 /*
+ *      test_now_01() - sol_erno_now() unit test #1
+ */
+static sol_erno
+test_now_01(void)
+{
+        auto sol_erno erno;
+
+SOL_TRY:
+                /* check test condition described by DESC_NOW_01 */
+        erno = assert_fail ();
+        sol_assert (erno == sol_erno_now (), SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* catch exceptions */
+        sol_throw ();
+}
+
+
+
+
+/*
  *      test_try_02() - declared in sol/test/suite.h
  */
 extern sol_erno
@@ -229,6 +259,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register (ts, test_assert_02, DESC_ASSERT_02));
         sol_try (sol_tsuite_register (ts, test_try_01, DESC_TRY_01));
         sol_try (sol_tsuite_register (ts, test_try_02, DESC_TRY_02));
+        sol_try (sol_tsuite_register (ts, test_now_01, DESC_NOW_01));
 
                 /* execute registered test cases and wind up */
         sol_try (sol_tsuite_exec (ts));
