@@ -32,15 +32,16 @@
 
 
 
-#include "../inc/error.h"
+#include "../inc/test.h"
 
 
 
 
 extern sol_erno
-__sol_tsuite_error(int *pass,
-                   int *fail,
-                   int *total
+__sol_tsuite_error(sol_tlog *log,
+                   int      *pass,
+                   int      *fail,
+                   int      *total
                   );
 
 

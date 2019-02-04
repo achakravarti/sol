@@ -246,16 +246,20 @@ SOL_CATCH:
  *      __sol_tsuite_error() - declared in sol/test/suite.h
  */
 extern sol_erno
-__sol_tsuite_error(int *pass,
-                   int *fail,
-                   int *total
+__sol_tsuite_error(sol_tlog *log,
+                   int      *pass,
+                   int      *fail,
+                   int      *total
                   )
 {
         auto sol_tsuite __ts, *ts = &__ts;
 
 SOL_TRY:
+                /* check preconditions */
+        sol_assert (log && pass && fail && total, SOL_ERNO_PTR);
+
                 /* initialise test suite */
-        sol_try (sol_tsuite_init (ts));
+        sol_try (sol_tsuite_init2 (ts, log));
 
                 /* register test cases */
         sol_try (sol_tsuite_register (ts, test_assert_01, DESC_ASSERT_01));

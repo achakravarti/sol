@@ -27,6 +27,7 @@
 
 
 #include "./suite.h"
+#include <stdarg.h>
 #include <stdio.h>
 
 
@@ -35,10 +36,11 @@
 /*
  *      ts - function pointer to test suites
  */
-typedef sol_erno /* error code                */
-(ts)(int *pass,  /* passed test cases         */
-     int *fail,  /* failed test cases         */
-     int *total  /* total test cases executed */
+typedef sol_erno     /* error code                */
+(ts)(sol_tlog *log,  /* logging callback          */
+     int      *pass, /* passed test cases         */
+     int      *fail, /* failed test cases         */
+     int      *total /* total test cases executed */
     );
 
 
@@ -56,6 +58,46 @@ typedef sol_erno /* error code                */
  *      TS_ERROR - index of exception handling test suite
  */
 #define TS_ERROR 0
+
+
+
+
+/*
+ *      LOG_FPATH - path to log file
+ */
+#define LOG_FPATH "bld/build.log"
+
+
+
+
+/*
+ *      LOG_ERRMSG - message to indicate error in opening log file
+ */
+#define LOG_ERRMSG "[!] Warning: couldn\'t open log file for unit tests\n"
+
+
+
+
+/*
+ *      LOG_SIGMAMSG - log message for sigma test counters
+ */
+#define LOG_SIGMAMSG "%d test(s) run, %d passed, %d failed\n"
+
+
+
+
+/*
+ *      LOG_PASSMSG - log message for passed test cases
+ */
+#define LOG_PASSMSG "Passed: %s\n"
+
+
+
+
+/*
+ *      LOG_FAILMSG - log message for failed test cases
+ */
+#define LOG_FAILMSG "[!] Failed: %s [0x%.8lx]\n"
 
 
 
@@ -93,6 +135,43 @@ static int ts_total [TS_COUNT];
 
 
 /*
+ *      log_hnd - handle to test log file
+ */
+static FILE *log_hnd;
+
+
+
+
+/*
+ *      log_cbk() - callback to log test result
+ */
+static void
+log_cbk(char     const *desc, /* test case description            */
+        sol_erno const erno   /* error code returned by test case */
+       )
+{
+                /* break out if log file isn't open */
+        if (!log_hnd) {
+                return;
+        }
+
+                /* log message according to test execution status */
+        if (erno) {
+                fprintf (log_hnd, LOG_FAILMSG, desc, erno);
+        }
+        else {
+                fprintf (log_hnd, LOG_PASSMSG, desc);
+        }
+}
+
+
+
+
+
+
+
+
+/*
  *      ts_init() - initialises test suites
  */
 static void
@@ -109,22 +188,9 @@ ts_init(void)
                 ts_fail  [i] = 0;
                 ts_total [i] = 0;
         }
-}
 
-
-
-
-/*
- *      ts_exec() - executes test suites
- */
-static void
-ts_exec(void)
-{
-        register int i; /* iterator */
-
-                /* execute test suites */
-        for (i = 0; i < TS_COUNT; i++) {
-                ts_hnd [i] (ts_pass + i, ts_fail + i, ts_total + i);
+        if (!(log_hnd = fopen (LOG_FPATH, "a+e"))) {
+                printf (LOG_ERRMSG);
         }
 }
 
@@ -155,11 +221,30 @@ ts_term(void)
         }
 
                 /* print sigma test counters */
-        printf ("%d test(s) run, %d passed, %d failed\n",
-                sigmat,
-                sigmap,
-                sigmaf
-               );
+        printf (LOG_SIGMAMSG, sigmat, sigmap, sigmaf);
+
+                /* release log file after logging sigma test counters */
+        if (log_hnd) {
+                fprintf (log_hnd, LOG_SIGMAMSG, sigmat, sigmap, sigmaf);
+                fclose  (log_hnd);
+        }
+}
+
+
+
+
+/*
+ *      ts_exec() - executes test suites
+ */
+static void
+ts_exec(void)
+{
+        register int i; /* iterator */
+
+                /* execute test suites */
+        for (i = 0; i < TS_COUNT; i++) {
+                ts_hnd [i] (log_cbk, ts_pass + i, ts_fail + i, ts_total + i);
+        }
 }
 
 
