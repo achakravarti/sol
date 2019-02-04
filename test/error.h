@@ -11,7 +11,7 @@
  *      Abhishek Chakravarti <abhishek@taranjali.org>
  *
  * Copyright:
- *      (c) 2018 Abhishek Chakravarti
+ *      (c) 2019 Abhishek Chakravarti
  *      <abhishek@taranjali.org>
  *
  * License:
@@ -95,7 +95,8 @@
  *        - SOL_ERNO_NULL if no error occurs
  *        - SOL_ERNO_TEST if this test fails
  */
-extern sol_erno __test_assert_01(void);
+extern sol_erno
+__test_assert_01(void);
 
 
 
@@ -110,7 +111,8 @@ extern sol_erno __test_assert_01(void);
  *        - SOL_ERNO_NULL if no error occurs
  *        - SOL_ERNO_TEST if this test fails
  */
-extern sol_erno __test_assert_02(void);
+extern sol_erno
+__test_assert_02(void);
 
 
 
@@ -125,7 +127,8 @@ extern sol_erno __test_assert_02(void);
  *        - SOL_ERNO_NULL if no error occurs
  *        - SOL_ERNO_TEST if this test fails
  */
-extern sol_erno __test_try_01(void);
+extern sol_erno
+__test_try_01(void);
 
 
 
@@ -140,7 +143,8 @@ extern sol_erno __test_try_01(void);
  *        - SOL_ERNO_NULL if no error occurs
  *        - SOL_ERNO_TEST if this test fails
  */
-extern sol_erno __test_try_02(void);
+extern sol_erno
+__test_try_02(void);
 
 
 
