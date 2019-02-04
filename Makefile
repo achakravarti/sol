@@ -53,8 +53,8 @@ OPT_COV = -o $(DIR_BLD)
 
 # 	Set command inputs
 INP_SO  = $(DIR_BLD)/test.o
-INP_LD  = $(DIR_TEST)/runner.c $(DIR_TEST)/error.c
-INP_COV = $(DIR_BLD)/runner.gcda $(DIR_BLD)/test.gcda
+INP_LD  = $(DIR_TEST)/runner.c $(DIR_TEST)/error.t.c
+INP_COV = $(DIR_BLD)/test.gcda $(DIR_BLD)/runner.gcda $(DIR_BLD)/error.t.gcda
 
 
 

@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "../inc/test.h"
-#include "../test/error.h"
+#include "../test/error.t.h"
 
 
 
@@ -37,12 +37,17 @@ SOL_CATCH:
 
 
 
+/*
+ *      main() - main entry point of test runner
+ */
 int main( void )
 {
+                /* execute exception handling test suite */
         if (eh_exec ()) {
                 return -1;
         }
 
+                /* everything's OK */
         return 0;
 }
 
