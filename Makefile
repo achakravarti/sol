@@ -4,22 +4,22 @@
 # File: sol/Makefile
 #
 # Description:
-# 	This Makefile is part of the Sol Library. It defines the build rules
+# 	This Makefile is part of the Sol Library. It defines the build rules.
 #
 # Authors:
 # 	Abhishek Chakravarti <abhishek@taranjali.org>
 #
 # Copyright:
-# 	(c) 2018, Abhishek Chakravarti.
+# 	(c) 2019, Abhishek Chakravarti.
 # 	<abhishek@taranjali.org>
 #
 # License:
-# 	Released under the GNU General Public License version 3 (GPLv3).
-# 	<http://opensource.org/licenses/GPL-3.0>
-# 	See the accompanying README.md file for complete licensing details.
+# 	Released under the GNU General Public License version 3 (GPLv3)
+# 	<http://opensource.org/licenses/GPL-3.0>. See the accompanying LICENSE
+# 	file for complete licensing details.
 #
-# 	By continuing to use and/or distribute this file, you acknowledge that
-# 	you have understood these license terms and accept them.
+# 	BY CONTINUING TO USE AND/OR DISTRIBUTE THIS FILE, YOU ACKNOWLEDGE THAT
+# 	YOU HAVE UNDERSTOOD THESE LICENSE TERMS AND ACCEPT THEM.
 ################################################################################
 
 
@@ -44,9 +44,9 @@ CMD_RUN = ./$(OUT_LD)
 
 
 # 	Set command options
-OPT_CC = -c -fPIC -std=c99 -Wall -g -O0 -coverage
-OPT_SO = -shared -g -O0 -coverage
-OPT_LD = -std=c99 -Wall -g -O0 -coverage
+OPT_CC  = -c -fPIC -std=c99 -Wall -g -O0 -coverage
+OPT_SO  = -shared -g -O0 -coverage
+OPT_LD  = -std=c99 -Wall -g -O0 -coverage
 OPT_COV = -o $(DIR_BLD)
 
 
