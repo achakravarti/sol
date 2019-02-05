@@ -173,8 +173,8 @@ sol_tsuite_init(sol_tsuite *tsuite);
  *       - SOL_ERNO_PTR if an invalid pointer is passed as an argument
  */
 extern sol_erno
-sol_tsuite_init2(sol_tsuite        *tsuite,
-                 sol_tlog    const *tlog
+sol_tsuite_init2(sol_tsuite *tsuite,
+                 sol_tlog   *tlog
                 );
 
 
@@ -221,7 +221,7 @@ sol_tsuite_term(sol_tsuite *tsuite);
  */
 extern sol_erno
 sol_tsuite_register(sol_tsuite       *tsuite,
-                    sol_tcase  const *tcase,
+                    sol_tcase        *tcase,
                     char       const *desc
                    );
 

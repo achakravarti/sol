@@ -110,6 +110,20 @@ typedef size_t sol_erno;
 
 
 /*
+ *      SOL_ERNO_TEST - unit test failure
+ *
+ *      The SOL_ERNO_TEST symbolic constant indicates that a unit test failed.
+ *      Note that this error code does not indicate an exception with the
+ *      exception handling system, but rather that the condition that a unit
+ *      test is checking has not been fulfilled. This error code is reserved by
+ *      the Sol Library, and should **not** be redefined by client code.
+ */
+#define SOL_ERNO_TEST ( (sol_erno)0x4 )
+
+
+
+
+/*
  *      SOL_TRY - start of try block
  *
  *      The SOL_TRY label identifies the starting point of the try block within
