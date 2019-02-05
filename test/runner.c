@@ -27,7 +27,6 @@
 
 
 #include "./suite.h"
-#include <stdarg.h>
 #include <stdio.h>
 
 
@@ -49,15 +48,22 @@ typedef sol_erno        /* error code                */
 /*
  *      SUITE_COUNT - count of test suites
  */
-#define SUITE_COUNT 1
+#define SUITE_COUNT 2
 
 
 
 
 /*
- *      SUITE_ERROR - index of exception handling test suite
+ *      SUITE_ERROR - index of exception handling module test suite
  */
 #define SUITE_ERROR 0
+
+
+
+/*
+ *      SUITE_TEST - index of unit testing module test suite
+ */
+#define SUITE_TEST 1
 
 
 
@@ -263,6 +269,7 @@ suite_init(void)
 {
                 /* register test suites */
         suite_hnd [SUITE_ERROR] = __sol_tsuite_error;
+        suite_hnd [SUITE_TEST]  = __sol_tsuite_test;
 }
 
 

@@ -1,11 +1,11 @@
 /******************************************************************************
  *                           SOL LIBRARY v1.0.0+41
  *
- * File: sol/test/suite.h
+ * File: sol/test/test.t.c
  *
  * Description:
  *      This file is part of the internal quality checking of the Sol Library.
- *      It declares the test suites for all the component modules.
+ *      It implements the test suite for the unit testing module.
  *
  * Authors:
  *      Abhishek Chakravarti <abhishek@taranjali.org>
@@ -26,44 +26,49 @@
 
 
 
-#if !defined __SOL_LIBRARY_TEST_SUITES
-#define      __SOL_LIBRARY_TEST_SUITES
-
-
-
-
-#include "../inc/test.h"
+#include "./suite.h"
 
 
 
 
 /*
- *      __sol_tsuite_error() - test suite for exception handling module
- */
-extern sol_erno
-__sol_tsuite_error(sol_tlog *log,
-                   int      *pass,
-                   int      *fail,
-                   int      *total
-                  );
-
-
-
-
-/*
- *      __sol_tsuite_test() - test suite for unit testing module
+ *      __sol_tsuite_test() - declared in sol/test/suite.h
  */
 extern sol_erno
 __sol_tsuite_test(sol_tlog *log,
                   int      *pass,
                   int      *fail,
                   int      *total
-                 );
+                 )
+{
+        auto sol_tsuite __ts, *ts = &__ts;
 
+SOL_TRY:
+                /* check preconditions */
+        sol_assert (log && pass && fail && total, SOL_ERNO_PTR);
 
+                /* initialise test suite */
+        sol_try (sol_tsuite_init2 (ts, log));
 
+                /* register test cases */
+                /* TODO */
 
-#endif /* !defined __SOL_LIBRARY_TEST_SUITES */
+                /* execute test cases */
+        sol_try (sol_tsuite_exec (ts));
+
+                /* return test counts */
+        sol_try (sol_tsuite_pass  (ts, pass));
+        sol_try (sol_tsuite_fail  (ts, fail));
+        sol_try (sol_tsuite_total (ts, total));
+
+                /* wind up */
+        sol_tsuite_term (ts);
+
+SOL_CATCH:
+                /* wind up and throw current exception */
+        sol_tsuite_term (ts);
+        sol_throw       ();
+}
 
 
 
