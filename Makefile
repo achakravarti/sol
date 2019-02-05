@@ -34,10 +34,11 @@ DIR_TEST = test
 
 
 # 	Set commands
-CMD_CC = $(CC)
-CMD_SO = $(CC)
-CMD_LD = $(CC)
+CMD_CC  = $(CC)
+CMD_SO  = $(CC)
+CMD_LD  = $(CC)
 CMD_COV = gcov
+CMD_RUN = ./$(OUT_LD)
 
 
 
@@ -55,6 +56,7 @@ OPT_COV = -o $(DIR_BLD)
 INP_SO  = $(DIR_BLD)/test.o
 INP_LD  = $(DIR_TEST)/runner.c $(DIR_TEST)/error.t.c
 INP_COV = $(DIR_BLD)/test.gcda $(DIR_BLD)/runner.gcda $(DIR_BLD)/error.t.gcda
+INP_RUN = $(DIR_BLD)/test.log
 
 
 
@@ -97,7 +99,7 @@ $(DIR_BLD)/%.o: $(DIR_SRC)/%.c
 
 # 	Rule to generate integration build
 integration: $(OUT_LD)
-	./$(OUT_LD)
+	$(CMD_RUN) $(INP_RUN)
 	mv $(DEP_COV) $(DIR_BLD)
 	$(CMD_COV) $(OPT_COV) $(INP_COV)
 	mv $(OUT_COV) $(DIR_BLD)

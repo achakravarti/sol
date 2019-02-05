@@ -34,14 +34,14 @@
 
 
 /*
- *      ts - function pointer to test suites
+ *      suite - function pointer to test suites
  */
-typedef sol_erno     /* error code                */
-(ts)(sol_tlog *log,  /* logging callback          */
-     int      *pass, /* passed test cases         */
-     int      *fail, /* failed test cases         */
-     int      *total /* total test cases executed */
-    );
+typedef sol_erno        /* error code                */
+(suite)(sol_tlog *log,  /* logging callback          */
+        int      *pass, /* passed test cases         */
+        int      *fail, /* failed test cases         */
+        int      *total /* total test cases executed */
+       );
 
 
 
@@ -58,14 +58,6 @@ typedef sol_erno     /* error code                */
  *      SUITE_ERROR - index of exception handling test suite
  */
 #define SUITE_ERROR 0
-
-
-
-
-/*
- *      LOG_FPATH - path to log file
- */
-#define LOG_FPATH "bld/build.log"
 
 
 
@@ -89,7 +81,7 @@ typedef sol_erno     /* error code                */
 /*
  *      LOG_PASSMSG - log message for passed test cases
  */
-#define LOG_PASSMSG "Passed: %s\n"
+#define LOG_PASSMSG "OK: %s\n"
 
 
 
@@ -97,7 +89,7 @@ typedef sol_erno     /* error code                */
 /*
  *      LOG_FAILMSG - log message for failed test cases
  */
-#define LOG_FAILMSG "[!] Failed: %s [0x%.8lx]\n"
+#define LOG_FAILMSG "[!] FAILED: %s [0x%.8lx]\n"
 
 
 
@@ -105,7 +97,7 @@ typedef sol_erno     /* error code                */
 /*
  *      suite_hnd - test suite handles
  */
-static ts *suite_hnd [SUITE_COUNT];
+static suite *suite_hnd [SUITE_COUNT];
 
 
 
@@ -146,10 +138,12 @@ static FILE *log_hnd;
  *      log_init() - initialise test log file
  */
 static inline void
-log_init(void)
+log_init(int  argc,  /* count of command line arguments */
+         char **argv /* command line arguments          */
+         )
 {
                 /* open test log file; show error if failed */
-        if (!(log_hnd = fopen (LOG_FPATH, "a+e"))) {
+        if (argc == 2 && !(log_hnd = fopen (argv [1], "a+e"))) {
                 printf (LOG_ERRMSG);
         }
 }
@@ -298,10 +292,10 @@ suite_exec(void)
 /*
  *      main() - main entry point of test runner
  */
-int main( void )
+int main(int argc, char **argv)
 {
                 /* initialise */
-        log_init   ();
+        log_init   (argc, argv);
         stat_init  ();
         suite_init ();
 
