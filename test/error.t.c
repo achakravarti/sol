@@ -45,7 +45,7 @@
  *      DESC_ASSERT_02 - description for sol_assert() unit test #2
  */
 #define DESC_ASSERT_02 "sol_assert() must throw an error for a" \
-                         " predicate that evaluates to false"
+                       " predicate that evaluates to false"
 
 
 
@@ -227,16 +227,15 @@ SOL_CATCH:
 static sol_erno
 test_now_01(void)
 {
-        auto sol_erno erno;
-
 SOL_TRY:
-                /* check test condition described by DESC_NOW_01 */
-        erno = assert_fail ();
-        sol_assert (erno == sol_erno_now (), SOL_ERNO_TEST);
+                /* assert_fail () is guaranteed to fail with SOL_ERNO_TEST */
+        sol_try (assert_fail ());
 
 SOL_CATCH:
-                /* catch exceptions */
-        sol_throw ();
+                /* the current error code should be SOL_ERNO_TEST */
+        return SOL_ERNO_TEST == sol_erno_now ()
+               ? SOL_ERNO_NULL
+               : SOL_ERNO_TEST;
 }
 
 
