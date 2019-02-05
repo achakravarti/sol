@@ -32,6 +32,35 @@
 
 
 /*
+ *      DESC_INIT_01 - description for sol_tsuite_init() unit test #1
+ */
+#define DESC_INIT_01 "sol_tsuite_init() should through SOL_ERNO_PTR when" \
+                     " passed a null pointer for @tsuite"
+
+
+
+
+/*
+ *      test_init_01() - sol_tsuite_init() unit test #1
+ */
+static sol_erno
+test_init_01(void)
+{
+SOL_TRY:
+                /* sol_tsuite_init() should fail with SOL_ERNO_PTR */
+        sol_try (sol_tsuite_init (0));
+
+SOL_CATCH:
+                /* check test condition described by DESC_INIT_01 */
+        return SOL_ERNO_PTR == sol_erno_now ()
+               ? SOL_ERNO_NULL
+               : SOL_ERNO_TEST;
+}
+
+
+
+
+/*
  *      __sol_tsuite_test() - declared in sol/test/suite.h
  */
 extern sol_erno
@@ -51,7 +80,7 @@ SOL_TRY:
         sol_try (sol_tsuite_init2 (ts, log));
 
                 /* register test cases */
-                /* TODO */
+        sol_try (sol_tsuite_register (ts, test_init_01, DESC_INIT_01));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec (ts));
