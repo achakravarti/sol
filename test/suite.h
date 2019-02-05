@@ -37,12 +37,28 @@
 
 
 
+/*
+ *      __sol_tsuite_error() - test suite for exception handling module
+ */
 extern sol_erno
 __sol_tsuite_error(sol_tlog *log,
                    int      *pass,
                    int      *fail,
                    int      *total
                   );
+
+
+
+
+/*
+ *      __sol_tsuite_test() - test suite for unit testing module
+ */
+extern sol_erno
+__sol_tsuite_test(sol_tlog *log,
+                  int      *pass,
+                  int      *fail,
+                  int      *total
+                 );
 
 
 
