@@ -232,7 +232,7 @@ SOL_TRY:
         sol_try (assert_fail ());
 
 SOL_CATCH:
-                /* the current error code should be SOL_ERNO_TEST */
+                /* check test condition described by DESC_NOW_01 */
         return SOL_ERNO_TEST == sol_erno_now ()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
