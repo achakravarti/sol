@@ -103,6 +103,15 @@
 
 
 /*
+ *      DESC_PASS_02 - description for sol_tsuite_pass() unit test #2
+ */
+#define DESC_PASS_02 "sol_tsuite_pass() should throw SOL_ERNO_PTR when passed" \
+                     " a null pointer for @pass"
+
+
+
+
+/*
  *      tlog_dummy() - dummy test suite logging callback
  */
 static void
@@ -280,8 +289,31 @@ test_pass_01(void)
 
 SOL_TRY:
                 /* sol_tsuite_pass() should fail with SOL_ERNO_PTR */
-        sol_try (sol_tsuite_init2    (&ts, tlog_dummy));
-        sol_try (sol_tsuite_pass (0, &pass));
+        sol_try (sol_tsuite_init2 (&ts, tlog_dummy));
+        sol_try (sol_tsuite_pass  (0, &pass));
+
+SOL_CATCH:
+                /* check test condition described by DESC_REGISTER_01 */
+        return SOL_ERNO_PTR == sol_erno_now ()
+               ? SOL_ERNO_NULL
+               : SOL_ERNO_TEST;
+}
+
+
+
+
+/*
+ *      test_pass_02() - sol_tsuite_pass() unit test #2
+ */
+static sol_erno
+test_pass_02(void)
+{
+        auto sol_tsuite ts;   /* dummy test suite */
+
+SOL_TRY:
+                /* sol_tsuite_pass() should fail with SOL_ERNO_PTR */
+        sol_try (sol_tsuite_init2 (&ts, tlog_dummy));
+        sol_try (sol_tsuite_pass  (&ts, 0));
 
 SOL_CATCH:
                 /* check test condition described by DESC_REGISTER_01 */
@@ -321,6 +353,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register (ts, test_register_03, DESC_REGISTER_03));
         sol_try (sol_tsuite_register (ts, test_register_04, DESC_REGISTER_04));
         sol_try (sol_tsuite_register (ts, test_pass_01,     DESC_PASS_01));
+        sol_try (sol_tsuite_register (ts, test_pass_02,     DESC_PASS_02));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec (ts));
