@@ -113,6 +113,26 @@
 
 
 /*
+ *      DESC_PASS_03 - description for sol_tsuite_pass() unit test #3
+ */
+#define DESC_PASS_03 "sol_tsuite_pass() should set an initial value of 0 for"  \
+                     " the total number of passed test cases when initialised" \
+                     " through sol_tsuite_init()"
+
+
+
+
+/*
+ *      DESC_PASS_04 - description for sol_tsuite_pass() unit test #4
+ */
+#define DESC_PASS_04 "sol_tsuite_pass() should set an initial value of 0 for"  \
+                     " the total number of passed test cases when initialised" \
+                     " through sol_tsuite_init2()"
+
+
+
+
+/*
  *      DESC_FAIL_01 - description for sol_tsuite_fail() unit test #1
  */
 #define DESC_FAIL_01 "sol_tsuite_fail() should throw SOL_ERNO_PTR when passed" \
@@ -419,6 +439,52 @@ SOL_CATCH:
 
 
 /*
+ *      test_pass_03() - sol_tsuite_pass() unit test #3
+ */
+static sol_erno
+test_pass_03(void)
+{
+        auto sol_tsuite ts;   /* dummy test suite  */
+        auto int        pass; /* passed test cases */
+
+SOL_TRY:
+                /* check test condition described by DESC_PASS_03 */
+        sol_try (sol_tsuite_init (&ts));
+        sol_try (sol_tsuite_pass (&ts, &pass));
+        sol_assert (!pass, SOL_ERNO_TEST );
+
+SOL_CATCH:
+                /* throw current exception, if any */
+        sol_throw ();
+}
+
+
+
+
+/*
+ *      test_pass_04() - sol_tsuite_pass() unit test #4
+ */
+static sol_erno
+test_pass_04(void)
+{
+        auto sol_tsuite ts;   /* dummy test suite  */
+        auto int        pass; /* passed test cases */
+
+SOL_TRY:
+                /* check test condition described by DESC_PASS_04 */
+        sol_try (sol_tsuite_init2 (&ts, &tlog_dummy));
+        sol_try (sol_tsuite_pass (&ts, &pass));
+        sol_assert (!pass, SOL_ERNO_TEST );
+
+SOL_CATCH:
+                /* throw current exception, if any */
+        sol_throw ();
+}
+
+
+
+
+/*
  *      test_fail_01() - sol_tsuite_fail() unit test #1
  */
 static sol_erno
@@ -592,6 +658,8 @@ SOL_TRY:
         sol_try (sol_tsuite_register (ts, test_register_04, DESC_REGISTER_04));
         sol_try (sol_tsuite_register (ts, test_pass_01, DESC_PASS_01));
         sol_try (sol_tsuite_register (ts, test_pass_02, DESC_PASS_02));
+        sol_try (sol_tsuite_register (ts, test_pass_03, DESC_PASS_03));
+        sol_try (sol_tsuite_register (ts, test_pass_04, DESC_PASS_04));
         sol_try (sol_tsuite_register (ts, test_fail_01, DESC_FAIL_01));
         sol_try (sol_tsuite_register (ts, test_fail_02, DESC_FAIL_02));
         sol_try (sol_tsuite_register (ts, test_total_01, DESC_TOTAL_01));
