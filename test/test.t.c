@@ -149,6 +149,26 @@
 
 
 
+
+/*
+ *      DESC_FAIL_03 - description for sol_tsuite_fail() unit test #3
+ */
+#define DESC_FAIL_03 "sol_tsuite_fail() should set an initial value of 0 for"  \
+                     " the total number of failed test cases when initialised" \
+                     " through sol_tsuite_init()"
+
+
+
+
+/*
+ *      DESC_FAIL_04 - description for sol_tsuite_fail() unit test #4
+ */
+#define DESC_FAIL_04 "sol_tsuite_fail() should set an initial value of 0 for"  \
+                     " the total number of failed test cases when initialised" \
+                     " through sol_tsuite_init2()"
+
+
+
 /*
  *      DESC_TOTAL_01 - description for sol_tsuite_total() unit test #1
  */
@@ -283,7 +303,7 @@ SOL_CATCH:
 static sol_erno
 test_init2_02(void)
 {
-        auto sol_tsuite ts; /* dummy test suite */
+        auto sol_tsuite ts; /* test suite */
 
 SOL_TRY:
                 /* sol_tsuite_init2() should fail with SOL_ERNO_PTR */
@@ -305,11 +325,11 @@ SOL_CATCH:
 static sol_erno
 test_register_01(void)
 {
-        auto sol_tsuite ts; /* dummy test suite */
+        auto sol_tsuite ts; /* test suite */
 
 SOL_TRY:
                 /* sol_tsuite_register() should fail with SOL_ERNO_PTR */
-        sol_try (sol_tsuite_init2    (&ts, tlog_dummy));
+        sol_try (sol_tsuite_init2 (&ts, tlog_dummy));
         sol_try (sol_tsuite_register (0, test_init_01, "Dummy"));
 
 SOL_CATCH:
@@ -328,11 +348,11 @@ SOL_CATCH:
 static sol_erno
 test_register_02(void)
 {
-        auto sol_tsuite ts; /* dummy test suite */
+        auto sol_tsuite ts; /* test suite */
 
 SOL_TRY:
                 /* sol_tsuite_register() should fail with SOL_ERNO_PTR */
-        sol_try (sol_tsuite_init2    (&ts, tlog_dummy));
+        sol_try (sol_tsuite_init2 (&ts, tlog_dummy));
         sol_try (sol_tsuite_register (&ts, 0, "Dummy"));
 
 SOL_CATCH:
@@ -351,11 +371,11 @@ SOL_CATCH:
 static sol_erno
 test_register_03(void)
 {
-        auto sol_tsuite ts; /* dummy test suite */
+        auto sol_tsuite ts; /* test suite */
 
 SOL_TRY:
                 /* sol_tsuite_register() should fail with SOL_ERNO_PTR */
-        sol_try (sol_tsuite_init2    (&ts, tlog_dummy));
+        sol_try (sol_tsuite_init2 (&ts, tlog_dummy));
         sol_try (sol_tsuite_register (&ts, test_register_01, 0));
 
 SOL_CATCH:
@@ -374,11 +394,11 @@ SOL_CATCH:
 static sol_erno
 test_register_04(void)
 {
-        auto sol_tsuite ts; /* dummy test suite */
+        auto sol_tsuite ts; /*  test suite */
 
 SOL_TRY:
                 /* sol_tsuite_register() should fail with SOL_ERNO_STR */
-        sol_try (sol_tsuite_init2    (&ts, tlog_dummy));
+        sol_try (sol_tsuite_init2 (&ts, tlog_dummy));
         sol_try (sol_tsuite_register (&ts, test_register_01, ""));
 
 SOL_CATCH:
@@ -397,13 +417,13 @@ SOL_CATCH:
 static sol_erno
 test_pass_01(void)
 {
-        auto sol_tsuite ts;   /* dummy test suite   */
-        auto int        pass; /* dummy passed count */
+        auto sol_tsuite ts;   /* test suite   */
+        auto int        pass; /* passed count */
 
 SOL_TRY:
                 /* sol_tsuite_pass() should fail with SOL_ERNO_PTR */
         sol_try (sol_tsuite_init2 (&ts, tlog_dummy));
-        sol_try (sol_tsuite_pass  (0, &pass));
+        sol_try (sol_tsuite_pass (0, &pass));
 
 SOL_CATCH:
                 /* check test condition described by DESC_PASS_01 */
@@ -421,12 +441,12 @@ SOL_CATCH:
 static sol_erno
 test_pass_02(void)
 {
-        auto sol_tsuite ts; /* dummy test suite */
+        auto sol_tsuite ts; /* test suite */
 
 SOL_TRY:
                 /* sol_tsuite_pass() should fail with SOL_ERNO_PTR */
         sol_try (sol_tsuite_init2 (&ts, tlog_dummy));
-        sol_try (sol_tsuite_pass  (&ts, 0));
+        sol_try (sol_tsuite_pass (&ts, 0));
 
 SOL_CATCH:
                 /* check test condition described by DESC_PASS_02 */
@@ -444,7 +464,7 @@ SOL_CATCH:
 static sol_erno
 test_pass_03(void)
 {
-        auto sol_tsuite ts;   /* dummy test suite  */
+        auto sol_tsuite ts;   /* test suite  */
         auto int        pass; /* passed test cases */
 
 SOL_TRY:
@@ -467,7 +487,7 @@ SOL_CATCH:
 static sol_erno
 test_pass_04(void)
 {
-        auto sol_tsuite ts;   /* dummy test suite  */
+        auto sol_tsuite ts;   /* test suite  */
         auto int        pass; /* passed test cases */
 
 SOL_TRY:
@@ -490,13 +510,13 @@ SOL_CATCH:
 static sol_erno
 test_fail_01(void)
 {
-        auto sol_tsuite ts;   /* dummy test suite   */
-        auto int        fail; /* dummy failed count */
+        auto sol_tsuite ts;   /* test suite   */
+        auto int        fail; /* failed count */
 
 SOL_TRY:
                 /* sol_tsuite_fail() should fail with SOL_ERNO_PTR */
         sol_try (sol_tsuite_init2 (&ts, tlog_dummy));
-        sol_try (sol_tsuite_fail  (0, &fail));
+        sol_try (sol_tsuite_fail (0, &fail));
 
 SOL_CATCH:
                 /* check test condition described by DESC_FAIL_01 */
@@ -514,12 +534,12 @@ SOL_CATCH:
 static sol_erno
 test_fail_02(void)
 {
-        auto sol_tsuite ts; /* dummy test suite */
+        auto sol_tsuite ts; /* test suite */
 
 SOL_TRY:
                 /* sol_tsuite_fail() should fail with SOL_ERNO_PTR */
         sol_try (sol_tsuite_init2 (&ts, tlog_dummy));
-        sol_try (sol_tsuite_fail  (&ts, 0));
+        sol_try (sol_tsuite_fail (&ts, 0));
 
 SOL_CATCH:
                 /* check test condition described by DESC_FAIL_02 */
@@ -532,13 +552,59 @@ SOL_CATCH:
 
 
 /*
+ *      test_fail_03() - sol_tsuite_fail() unit test #3
+ */
+static sol_erno
+test_fail_03(void)
+{
+        auto sol_tsuite ts;   /* test suite        */
+        auto int        fail; /* failed test cases */
+
+SOL_TRY:
+                /* check test condition described by DESC_PASS_03 */
+        sol_try (sol_tsuite_init(&ts));
+        sol_try (sol_tsuite_pass(&ts, &fail));
+        sol_assert (!fail, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* throw current exception, if any */
+        sol_throw();
+}
+
+
+
+
+/*
+ *      test_fail_04() - sol_tsuite_fail() unit test #4
+ */
+static sol_erno
+test_fail_04(void)
+{
+    auto sol_tsuite ts;   /* test suite        */
+    auto int        fail; /* failed test cases */
+
+SOL_TRY:
+                /* check test condition described by DESC_FAIL_04 */
+        sol_try (sol_tsuite_init2 (&ts, &tlog_dummy));
+        sol_try (sol_tsuite_fail (&ts, &fail));
+        sol_assert (!fail, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* throw current exception, if any */
+        sol_throw ();
+}
+
+
+
+
+/*
  *      test_total_01() - sol_tsuite_total() unit test #1
  */
 static sol_erno
 test_total_01(void)
 {
-        auto sol_tsuite ts;    /* dummy test suite  */
-        auto int        total; /* dummy total count */
+        auto sol_tsuite ts;    /* test suite  */
+        auto int        total; /* total count */
 
 SOL_TRY:
                 /* sol_tsuite_total() should fail with SOL_ERNO_PTR */
@@ -561,7 +627,7 @@ SOL_CATCH:
 static sol_erno
 test_total_02(void)
 {
-        auto sol_tsuite ts; /* dummy test suite */
+        auto sol_tsuite ts; /*  test suite */
 
 SOL_TRY:
                 /* sol_tsuite_fail() should fail with SOL_ERNO_PTR */
@@ -584,7 +650,7 @@ SOL_CATCH:
 static sol_erno
 test_exec_01(void)
 {
-        auto sol_tsuite ts; /* dummy test suite */
+        auto sol_tsuite ts; /*  test suite */
 
 SOL_TRY:
                 /* sol_tsuite_exec() should fail with SOL_ERNO_PTR */
@@ -607,7 +673,7 @@ SOL_CATCH:
 static sol_erno
 test_exec_02(void)
 {
-        auto sol_tsuite ts; /* dummy test suite */
+        auto sol_tsuite ts; /* test suite */
 
 SOL_TRY:
                 /* initialise test suite */
@@ -662,6 +728,8 @@ SOL_TRY:
         sol_try (sol_tsuite_register (ts, test_pass_04, DESC_PASS_04));
         sol_try (sol_tsuite_register (ts, test_fail_01, DESC_FAIL_01));
         sol_try (sol_tsuite_register (ts, test_fail_02, DESC_FAIL_02));
+        sol_try (sol_tsuite_register (ts, test_fail_03, DESC_FAIL_03));
+        sol_try (sol_tsuite_register (ts, test_fail_04, DESC_FAIL_04));
         sol_try (sol_tsuite_register (ts, test_total_01, DESC_TOTAL_01));
         sol_try (sol_tsuite_register (ts, test_total_02, DESC_TOTAL_02));
         sol_try (sol_tsuite_register (ts, test_exec_01, DESC_EXEC_01));
