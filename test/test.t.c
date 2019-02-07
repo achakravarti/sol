@@ -91,11 +91,11 @@ static sol_erno init_01(void)
         #define INIT_01 "sol_tsuite_init() throws SOL_ERNO_PTR when passed" \
                         " a null pointer for @tsuite"
 SOL_TRY:
-                /* sol_tsuite_init() should fail with SOL_ERNO_PTR */
+                /* set up test scenario */
         sol_try (sol_tsuite_init(0));
 
 SOL_CATCH:
-                /* check test condition described by INIT_01 */
+                /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
@@ -110,11 +110,11 @@ static sol_erno init2_01(void)
         #define INIT2_01 "sol_tsuite_init2() throws SOL_ERNO_PTR when passed" \
                          " a null pointer for @tsuite"
 SOL_TRY:
-                /* sol_tsuite_init2() should fail with SOL_ERNO_PTR */
+                /* set up test scenario */
         sol_try (sol_tsuite_init2(0, tlog_dummy));
 
 SOL_CATCH:
-                /* check test condition described by INIT2_01 */
+                /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
@@ -131,11 +131,11 @@ static sol_erno init2_02(void)
         auto sol_tsuite ts;
 
 SOL_TRY:
-                /* sol_tsuite_init2() should fail with SOL_ERNO_PTR */
+                /* set up test scenario */
         sol_try (sol_tsuite_init2(&ts, 0));
 
 SOL_CATCH:
-                /* check test condition described by INIT2_02 */
+                /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
@@ -152,12 +152,12 @@ static sol_erno register_01(void)
         auto sol_tsuite ts;
 
 SOL_TRY:
-                /* sol_tsuite_register() should fail with SOL_ERNO_PTR */
+                /* set up test scenario */
         sol_try (sol_tsuite_init2(&ts, tlog_dummy));
         sol_try (sol_tsuite_register(0, init_01, "Dummy"));
 
 SOL_CATCH:
-                /* check test condition described by REGISTER_01 */
+                /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
@@ -174,12 +174,12 @@ static sol_erno register_02(void)
         auto sol_tsuite ts;
 
 SOL_TRY:
-                /* sol_tsuite_register() should fail with SOL_ERNO_PTR */
+                /* set up test scenario */
         sol_try (sol_tsuite_init2(&ts, tlog_dummy));
         sol_try (sol_tsuite_register(&ts, 0, "Dummy"));
 
 SOL_CATCH:
-                /* check test condition described by REGISTER_02 */
+                /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
@@ -196,12 +196,12 @@ static sol_erno register_03(void)
         auto sol_tsuite ts;
 
 SOL_TRY:
-                /* sol_tsuite_register() should fail with SOL_ERNO_PTR */
+                /* set up test scenario */
         sol_try (sol_tsuite_init2(&ts, tlog_dummy));
         sol_try (sol_tsuite_register(&ts, register_01, 0));
 
 SOL_CATCH:
-                /* check test condition described by REGISTER_03 */
+                /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
@@ -218,12 +218,12 @@ static sol_erno register_04(void)
         auto sol_tsuite ts;
 
 SOL_TRY:
-                /* sol_tsuite_register() should fail with SOL_ERNO_STR */
+                /* set up test scenario */
         sol_try (sol_tsuite_init2(&ts, tlog_dummy));
         sol_try (sol_tsuite_register(&ts, register_01, ""));
 
 SOL_CATCH:
-                /* check test condition described by REGISTER_04 */
+                /* check test condition */
         return SOL_ERNO_STR == sol_erno_now()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
@@ -241,12 +241,12 @@ static sol_erno pass_01(void)
         auto int pass;
 
 SOL_TRY:
-                /* sol_tsuite_pass() should fail with SOL_ERNO_PTR */
+                /* set up test scenario */
         sol_try (sol_tsuite_init2(&ts, tlog_dummy));
         sol_try (sol_tsuite_pass(0, &pass));
 
 SOL_CATCH:
-                /* check test condition described by PASS_01 */
+                /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
@@ -263,12 +263,12 @@ static sol_erno pass_02(void)
         auto sol_tsuite ts;
 
 SOL_TRY:
-                /* sol_tsuite_pass() should fail with SOL_ERNO_PTR */
+                /* set up test scenario */
         sol_try (sol_tsuite_init2(&ts, tlog_dummy));
         sol_try (sol_tsuite_pass(&ts, 0));
 
 SOL_CATCH:
-                /* check test condition described by PASS_02 */
+                /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
@@ -283,17 +283,23 @@ static sol_erno pass_03(void)
         #define PASS_03 "sol_tsuite_pass() reports 0 for the number of passed" \
                         " test cases if @tsuite has been initialised by"       \
                         " sol_tsuite_init()"
-        auto sol_tsuite ts;
+        auto sol_tsuite __ts, *ts = &__ts;
         auto int pass;
 
 SOL_TRY:
-                /* check test condition described by PASS_03 */
-        sol_try (sol_tsuite_init(&ts));
-        sol_try (sol_tsuite_pass(&ts, &pass));
+                /* set up test scenario */
+        sol_try (sol_tsuite_init(ts));
+        sol_try (sol_tsuite_pass(ts, &pass));
+
+                /* check test condition */
         sol_assert (!pass, SOL_ERNO_TEST);
+
+                /* tear down scenario */
+        sol_tsuite_term(ts);
 
 SOL_CATCH:
                 /* throw current exception, if any */
+        sol_tsuite_term(ts);
         sol_throw();
 }
 
@@ -306,14 +312,19 @@ static sol_erno pass_04(void)
         #define PASS_04 "sol_tsuite_pass() reports 0 for the number of passed" \
                         " test cases if @tsuite has been initialised by"       \
                         " sol_tsuite_init2()"
-        auto sol_tsuite ts;
+        auto sol_tsuite __ts, *ts = &__ts;
         auto int pass;
 
 SOL_TRY:
-                /* check test condition described by PASS_04 */
-        sol_try (sol_tsuite_init2(&ts, &tlog_dummy));
-        sol_try (sol_tsuite_pass(&ts, &pass));
+                /* set up test scenario */
+        sol_try (sol_tsuite_init2(ts, &tlog_dummy));
+        sol_try (sol_tsuite_pass(ts, &pass));
+
+                /* check test condition */
         sol_assert (!pass, SOL_ERNO_TEST );
+
+                /* tear down scenario */
+        sol_tsuite_term(ts);
 
 SOL_CATCH:
                 /* throw current exception, if any */
@@ -337,13 +348,17 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &tcase_pass, "Pass"));
         sol_try (sol_tsuite_register(ts, &tcase_fail, "Fail"));
         sol_try (sol_tsuite_exec(ts));
+        sol_try (sol_tsuite_pass(ts, &pass));
 
                 /* check test condition */
-        sol_try (sol_tsuite_pass(ts, &pass));
         sol_assert (1 == pass, SOL_ERNO_TEST);
+
+                /* tear down scenario */
+        sol_tsuite_term(ts);
 
 SOL_CATCH:
                 /* throw current exception, if any */
+        sol_tsuite_term(ts);
         sol_throw();
 }
 
@@ -359,12 +374,12 @@ static sol_erno fail_01(void)
         auto int fail;
 
 SOL_TRY:
-                /* sol_tsuite_fail() should fail with SOL_ERNO_PTR */
+                /* set up test scenario */
         sol_try (sol_tsuite_init2(&ts, tlog_dummy));
         sol_try (sol_tsuite_fail(0, &fail));
 
 SOL_CATCH:
-                /* check test condition described by FAIL_01 */
+                /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
@@ -378,15 +393,15 @@ static sol_erno fail_02(void)
 {
         #define FAIL_02 "sol_tsuite_fail() throws SOL_ERNO_PTR when passed" \
                         " a null pointer for @fail"
-        auto sol_tsuite ts;
+        auto sol_tsuite __ts, *ts = &__ts;
 
 SOL_TRY:
-                /* sol_tsuite_fail() should fail with SOL_ERNO_PTR */
-        sol_try (sol_tsuite_init2(&ts, tlog_dummy));
-        sol_try (sol_tsuite_fail(&ts, 0));
+                /* set up test scenario */
+        sol_try (sol_tsuite_init2(ts, tlog_dummy));
+        sol_try (sol_tsuite_fail(ts, 0));
 
 SOL_CATCH:
-                /* check test condition described by FAIL_02 */
+                /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
@@ -401,17 +416,23 @@ static sol_erno fail_03(void)
         #define FAIL_03 "sol_tsuite_fail() reports 0 for the number of failed" \
                         " test cases if @tsuite has been initialised by"       \
                         " sol_tsuite_init()"
-        auto sol_tsuite ts;
+        auto sol_tsuite __ts, *ts = &__ts;
         auto int fail;
 
 SOL_TRY:
-                /* check test condition described by PASS_03 */
-        sol_try (sol_tsuite_init(&ts));
-        sol_try (sol_tsuite_pass(&ts, &fail));
+                /* set up test scenario */
+        sol_try (sol_tsuite_init(ts));
+        sol_try (sol_tsuite_fail(ts, &fail));
+
+                /* check test condition */
         sol_assert (!fail, SOL_ERNO_TEST);
+
+                /* tear down scenario */
+        sol_tsuite_term(ts);
 
 SOL_CATCH:
                 /* throw current exception, if any */
+        sol_tsuite_term(ts);
         sol_throw();
 }
 
@@ -424,19 +445,58 @@ static sol_erno fail_04(void)
         #define FAIL_04 "sol_tsuite_fail() reports 0 for the number of failed" \
                         " test cases if @tsuite has been initialised by"       \
                         " sol_tsuite_init2()"
-        auto sol_tsuite ts;
+        auto sol_tsuite __ts, *ts = &__ts;
         auto int fail;
 
 SOL_TRY:
-                /* check test condition described by FAIL_04 */
-        sol_try (sol_tsuite_init2(&ts, &tlog_dummy));
-        sol_try (sol_tsuite_fail(&ts, &fail));
+                /* set up test scenario */
+        sol_try (sol_tsuite_init2(ts, &tlog_dummy));
+        sol_try (sol_tsuite_fail(ts, &fail));
+
+                /* check test condition */
         sol_assert (!fail, SOL_ERNO_TEST);
+
+                /* tear down scenario */
+        sol_tsuite_term(ts);
 
 SOL_CATCH:
                 /* throw current exception, if any */
+        sol_tsuite_term(ts);
         sol_throw();
 }
+
+
+/*
+ *      fail_05() - sol_tsuite_fail() unit test #5
+ */
+static sol_erno fail_05(void)
+{
+        #define FAIL_05 "sol_tsuite_fail() reports the correct number of" \
+                        " failed test cases"
+        auto sol_tsuite __ts, *ts = &__ts;
+        auto int fail;
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_tsuite_init2(ts, &tlog_dummy));
+        sol_try (sol_tsuite_register(ts, &tcase_pass, "Pass"));
+        sol_try (sol_tsuite_register(ts, &tcase_fail, "Fail"));
+        sol_try (sol_tsuite_exec(ts));
+        sol_try (sol_tsuite_fail(ts, &fail));
+
+                /* check test condition */
+        sol_assert (1 == fail, SOL_ERNO_TEST);
+
+                /* tear down scenario */
+        sol_tsuite_term(ts);
+
+SOL_CATCH:
+                /* throw current exception, if any */
+        sol_tsuite_term(ts);
+        sol_throw();
+}
+
+
 
 
 /*
@@ -450,12 +510,12 @@ static sol_erno total_01(void)
         auto int total;
 
 SOL_TRY:
-                /* sol_tsuite_total() should fail with SOL_ERNO_PTR */
+                /* set up test scenario */
         sol_try (sol_tsuite_init2(&ts, tlog_dummy));
         sol_try (sol_tsuite_total(0, &total));
 
 SOL_CATCH:
-                /* check test condition described by TOTAL_01 */
+                /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
@@ -472,12 +532,12 @@ static sol_erno total_02(void)
         auto sol_tsuite ts;
 
 SOL_TRY:
-                /* sol_tsuite_fail() should fail with SOL_ERNO_PTR */
+                /* set up test scenario */
         sol_try (sol_tsuite_init2(&ts, tlog_dummy));
         sol_try (sol_tsuite_total(&ts, 0));
 
 SOL_CATCH:
-                /* check test condition described by TOTAL_02 */
+                /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
@@ -494,12 +554,12 @@ static sol_erno exec_01(void)
         auto sol_tsuite ts;
 
 SOL_TRY:
-                /* sol_tsuite_exec() should fail with SOL_ERNO_PTR */
+                /* set up test scenario */
         sol_try (sol_tsuite_init2(&ts, tlog_dummy));
         sol_try (sol_tsuite_exec(0));
 
 SOL_CATCH:
-                /* check test condition described by EXEC_01 */
+                /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
@@ -513,23 +573,25 @@ static sol_erno exec_02(void)
 {
         #define EXEC_02 "sol_tsuite_exec() calls the test logging callback" \
                         " if @tsuite has been initialised by sol_tsuite_init2()"
-        auto sol_tsuite ts;
+        auto sol_tsuite __ts, *ts = &__ts;
 
 SOL_TRY:
-                /* initialise test suite */
-        sol_try (sol_tsuite_init2(&ts, tlog_dummy));
-        sol_try (sol_tsuite_register(&ts, tcase_pass, "TCASE_PASS"));
-
-                /* sol_tsuite_exec() should call tlog_dummy */
+                /* set up test scenario */
         tlog_called = 0;
-        sol_try (sol_tsuite_exec(&ts));
+        sol_try (sol_tsuite_init2(ts, tlog_dummy));
+        sol_try (sol_tsuite_register(ts, tcase_pass, "TCASE_PASS"));
+        sol_try (sol_tsuite_exec(ts));
+
+                /* check test condition */
         sol_assert (1 == tlog_called, SOL_ERNO_TEST);
 
+                /* tear down scenario */
+        sol_tsuite_term(ts);
+
 SOL_CATCH:
-                /* check test condition described by EXEC_02 */
-        return SOL_ERNO_PTR == sol_erno_now()
-               ? SOL_ERNO_NULL
-               : SOL_ERNO_TEST;
+                /* throw current exception, if any */
+        sol_tsuite_term(ts);
+        sol_throw();
 }
 
 
@@ -567,6 +629,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, fail_02, FAIL_02));
         sol_try (sol_tsuite_register(ts, fail_03, FAIL_03));
         sol_try (sol_tsuite_register(ts, fail_04, FAIL_04));
+        sol_try (sol_tsuite_register(ts, fail_05, FAIL_05));
         sol_try (sol_tsuite_register(ts, total_01, TOTAL_01));
         sol_try (sol_tsuite_register(ts, total_02, TOTAL_02));
         sol_try (sol_tsuite_register(ts, exec_01, EXEC_01));
