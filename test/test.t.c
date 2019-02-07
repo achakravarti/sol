@@ -70,13 +70,26 @@ SOL_CATCH:
 }
 
 
+static sol_erno tcase_fail(void)
+{
+SOL_TRY:
+                /* this is guaranteed to fail */
+        sol_assert (0, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* control will always reach here */
+        tcase_called = 1;
+        sol_throw();
+}
+
+
 /*
  *      init_01() - sol_tsuite_init() unit test #1
  */
 static sol_erno init_01(void)
 {
-        #define INIT_01 "sol_tsuite_init() should throw SOL_ERNO_PTR when" \
-                        " passed a null pointer for @tsuite"
+        #define INIT_01 "sol_tsuite_init() throws SOL_ERNO_PTR when passed" \
+                        " a null pointer for @tsuite"
 SOL_TRY:
                 /* sol_tsuite_init() should fail with SOL_ERNO_PTR */
         sol_try (sol_tsuite_init(0));
@@ -94,8 +107,8 @@ SOL_CATCH:
  */
 static sol_erno init2_01(void)
 {
-        #define INIT2_01 "sol_tsuite_init2() should throw SOL_ERNO_PTR when" \
-                         " passed a null pointer for @tsuite"
+        #define INIT2_01 "sol_tsuite_init2() throws SOL_ERNO_PTR when passed" \
+                         " a null pointer for @tsuite"
 SOL_TRY:
                 /* sol_tsuite_init2() should fail with SOL_ERNO_PTR */
         sol_try (sol_tsuite_init2(0, tlog_dummy));
@@ -113,8 +126,8 @@ SOL_CATCH:
  */
 static sol_erno init2_02(void)
 {
-        #define INIT2_02 "sol_tsuite_init2() should throw SOL_ERNO_PTR when" \
-                         " passed a null pointer for @tlog"
+        #define INIT2_02 "sol_tsuite_init2() throws SOL_ERNO_PTR when passed" \
+                         " a null pointer for @tlog"
         auto sol_tsuite ts;
 
 SOL_TRY:
@@ -134,8 +147,8 @@ SOL_CATCH:
  */
 static sol_erno register_01(void)
 {
-        #define REGISTER_01 "sol_tsuite_register() should throw SOL_ERNO_PTR" \
-                            " when passed a null pointer for @tsuite"
+        #define REGISTER_01 "sol_tsuite_register() throws SOL_ERNO_PTR when" \
+                            " passed a null pointer for @tsuite"
         auto sol_tsuite ts;
 
 SOL_TRY:
@@ -156,8 +169,8 @@ SOL_CATCH:
  */
 static sol_erno register_02(void)
 {
-        #define REGISTER_02 "sol_tsuite_register() should throw SOL_ERNO_PTR" \
-                            " when passed a null pointer for @tcase"
+        #define REGISTER_02 "sol_tsuite_register() throws SOL_ERNO_PTR when" \
+                            " passed a null pointer for @tcase"
         auto sol_tsuite ts;
 
 SOL_TRY:
@@ -178,8 +191,8 @@ SOL_CATCH:
  */
 static sol_erno register_03(void)
 {
-        #define REGISTER_03 "sol_tsuite_register() should throw SOL_ERNO_PTR" \
-                            " when passed a null pointer for @desc"
+        #define REGISTER_03 "sol_tsuite_register() throws SOL_ERNO_PTR when" \
+                            " passed a null pointer for @desc"
         auto sol_tsuite ts;
 
 SOL_TRY:
@@ -200,8 +213,8 @@ SOL_CATCH:
  */
 static sol_erno register_04(void)
 {
-        #define REGISTER_04 "sol_tsuite_register() should throw SOL_ERNO_STR" \
-                            " when passed an empty string for @desc"
+        #define REGISTER_04 "sol_tsuite_register() throws SOL_ERNO_STR when" \
+                            " passed an empty string for @desc"
         auto sol_tsuite ts;
 
 SOL_TRY:
@@ -222,8 +235,8 @@ SOL_CATCH:
  */
 static sol_erno pass_01(void)
 {
-        #define PASS_01 "sol_tsuite_pass() should throw SOL_ERNO_PTR when" \
-                        " passed a null pointer for @tsuite"
+        #define PASS_01 "sol_tsuite_pass() throws SOL_ERNO_PTR when passed" \
+                        " a null pointer for @tsuite"
         auto sol_tsuite ts;
         auto int pass;
 
@@ -245,8 +258,8 @@ SOL_CATCH:
  */
 static sol_erno pass_02(void)
 {
-        #define PASS_02 "sol_tsuite_pass() should throw SOL_ERNO_PTR when" \
-                        " passed a null pointer for @pass"
+        #define PASS_02 "sol_tsuite_pass() throws SOL_ERNO_PTR when passed " \
+                        " a null pointer for @pass"
         auto sol_tsuite ts;
 
 SOL_TRY:
@@ -267,9 +280,9 @@ SOL_CATCH:
  */
 static sol_erno pass_03(void)
 {
-        #define PASS_03 "sol_tsuite_pass() should set an initial value of 0" \
-                        " for the total number of passed test cases when"    \
-                        " initialised through sol_tsuite_init()"
+        #define PASS_03 "sol_tsuite_pass() reports 0 for the number of passed" \
+                        " test cases if @tsuite has been initialised by"       \
+                        " sol_tsuite_init()"
         auto sol_tsuite ts;
         auto int pass;
 
@@ -290,9 +303,9 @@ SOL_CATCH:
  */
 static sol_erno pass_04(void)
 {
-        #define PASS_04 "sol_tsuite_pass() should set an initial value of 0" \
-                        " for the total number of passed test cases when"    \
-                        " initialised through sol_tsuite_init2()"
+        #define PASS_04 "sol_tsuite_pass() reports 0 for the number of passed" \
+                        " test cases if @tsuite has been initialised by"       \
+                        " sol_tsuite_init2()"
         auto sol_tsuite ts;
         auto int pass;
 
@@ -309,12 +322,39 @@ SOL_CATCH:
 
 
 /*
+ *      pass_05() - sol_tsuite_pass() unit test #5
+ */
+static sol_erno pass_05(void)
+{
+        #define PASS_05 "sol_tsuite_pass() reports the correct number of" \
+                        " passed test cases"
+        auto sol_tsuite __ts, *ts = &__ts;
+        auto int pass;
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_tsuite_init2(ts, &tlog_dummy));
+        sol_try (sol_tsuite_register(ts, &tcase_pass, "Pass"));
+        sol_try (sol_tsuite_register(ts, &tcase_fail, "Fail"));
+        sol_try (sol_tsuite_exec(ts));
+
+                /* check test condition */
+        sol_try (sol_tsuite_pass(ts, &pass));
+        sol_assert (1 == pass, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* throw current exception, if any */
+        sol_throw();
+}
+
+
+/*
  *      fail_01() - sol_tsuite_fail() unit test #1
  */
 static sol_erno fail_01(void)
 {
-        #define FAIL_01 "sol_tsuite_fail() should throw SOL_ERNO_PTR when" \
-                        " passed a null pointer for @tsuite"
+        #define FAIL_01 "sol_tsuite_fail() throws SOL_ERNO_PTR when passed" \
+                        " a null pointer for @tsuite"
         auto sol_tsuite ts;
         auto int fail;
 
@@ -336,8 +376,8 @@ SOL_CATCH:
  */
 static sol_erno fail_02(void)
 {
-        #define FAIL_02 "sol_tsuite_fail() should throw SOL_ERNO_PTR when" \
-                        " passed a null pointer for @fail"
+        #define FAIL_02 "sol_tsuite_fail() throws SOL_ERNO_PTR when passed" \
+                        " a null pointer for @fail"
         auto sol_tsuite ts;
 
 SOL_TRY:
@@ -358,9 +398,9 @@ SOL_CATCH:
  */
 static sol_erno fail_03(void)
 {
-        #define FAIL_03 "sol_tsuite_fail() should set an initial value of 0" \
-                        " for the total number of failed test cases when"    \
-                        " initialised through sol_tsuite_init()"
+        #define FAIL_03 "sol_tsuite_fail() reports 0 for the number of failed" \
+                        " test cases if @tsuite has been initialised by"       \
+                        " sol_tsuite_init()"
         auto sol_tsuite ts;
         auto int fail;
 
@@ -381,9 +421,9 @@ SOL_CATCH:
  */
 static sol_erno fail_04(void)
 {
-        #define FAIL_04 "sol_tsuite_fail() should set an initial value of 0" \
-                        " for the total number of failed test cases when"    \
-                        " initialised through sol_tsuite_init2()"
+        #define FAIL_04 "sol_tsuite_fail() reports 0 for the number of failed" \
+                        " test cases if @tsuite has been initialised by"       \
+                        " sol_tsuite_init2()"
         auto sol_tsuite ts;
         auto int fail;
 
@@ -404,8 +444,8 @@ SOL_CATCH:
  */
 static sol_erno total_01(void)
 {
-        #define TOTAL_01 "sol_tsuite_total() should throw SOL_ERNO_PTR when" \
-                         " passed a null pointer for @tsuite"
+        #define TOTAL_01 "sol_tsuite_total() throws SOL_ERNO_PTR when passed" \
+                         " a null pointer for @tsuite"
         auto sol_tsuite ts;
         auto int total;
 
@@ -427,8 +467,8 @@ SOL_CATCH:
  */
 static sol_erno total_02(void)
 {
-        #define TOTAL_02 "sol_tsuite_total() should throw SOL_ERNO_PTR when" \
-                         " passed a null pointer for @total"
+        #define TOTAL_02 "sol_tsuite_total() throws SOL_ERNO_PTR when passed" \
+                         " a null pointer for @total"
         auto sol_tsuite ts;
 
 SOL_TRY:
@@ -449,8 +489,8 @@ SOL_CATCH:
  */
 static sol_erno exec_01(void)
 {
-        #define EXEC_01 "sol_tsuite_exec() should throw SOL_ERNO_PTR when" \
-                        " passed a null pointer for @tsuite"
+        #define EXEC_01 "sol_tsuite_exec() throws SOL_ERNO_PTR when passed" \
+                        " a null pointer for @tsuite"
         auto sol_tsuite ts;
 
 SOL_TRY:
@@ -471,9 +511,8 @@ SOL_CATCH:
  */
 static sol_erno exec_02(void)
 {
-        #define EXEC_02 "sol_tsuite_exec() should call the test logging" \
-                        " callback if @tsuite has been initialised with" \
-                        " sol_tsuite_init2()"
+        #define EXEC_02 "sol_tsuite_exec() calls the test logging callback" \
+                        " if @tsuite has been initialised by sol_tsuite_init2()"
         auto sol_tsuite ts;
 
 SOL_TRY:
@@ -523,6 +562,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, pass_02, PASS_02));
         sol_try (sol_tsuite_register(ts, pass_03, PASS_03));
         sol_try (sol_tsuite_register(ts, pass_04, PASS_04));
+        sol_try (sol_tsuite_register(ts, pass_05, PASS_05));
         sol_try (sol_tsuite_register(ts, fail_01, FAIL_01));
         sol_try (sol_tsuite_register(ts, fail_02, FAIL_02));
         sol_try (sol_tsuite_register(ts, fail_03, FAIL_03));
