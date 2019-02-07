@@ -322,12 +322,11 @@ SOL_TRY:
 
                 /* check test condition */
         sol_assert (!pass, SOL_ERNO_TEST );
-
-                /* tear down scenario */
         sol_tsuite_term(ts);
 
 SOL_CATCH:
                 /* throw current exception, if any */
+        sol_tsuite_term(ts);
         sol_throw();
 }
 
@@ -455,8 +454,6 @@ SOL_TRY:
 
                 /* check test condition */
         sol_assert (!fail, SOL_ERNO_TEST);
-
-                /* tear down scenario */
         sol_tsuite_term(ts);
 
 SOL_CATCH:
@@ -573,6 +570,31 @@ SOL_CATCH:
 }
 
 
+/*
+ *      total_04() - sol_tsuite_total() unit test #4
+ */
+static sol_erno total_04(void)
+{
+        #define TOTAL_04 "sol_tsuite_pass() reports 0 for the number of"     \
+                         " total test cases if @tsuite has been initialised" \
+                         " by sol_tsuite_init2()"
+        auto sol_tsuite __ts, *ts = &__ts;
+        auto int total;
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_tsuite_init2(ts, &tlog_dummy));
+        sol_try (sol_tsuite_total(ts, &total));
+
+                /* check test condition */
+        sol_assert (!total, SOL_ERNO_TEST);
+        sol_tsuite_term(ts);
+
+SOL_CATCH:
+                /* throw current exception, if any */
+        sol_tsuite_term(ts);
+        sol_throw();
+}
 
 
 /*
@@ -664,6 +686,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, total_01, TOTAL_01));
         sol_try (sol_tsuite_register(ts, total_02, TOTAL_02));
         sol_try (sol_tsuite_register(ts, total_03, TOTAL_03));
+        sol_try (sol_tsuite_register(ts, total_04, TOTAL_04));
         sol_try (sol_tsuite_register(ts, exec_01, EXEC_01));
         sol_try (sol_tsuite_register(ts, exec_02, EXEC_02));
 
