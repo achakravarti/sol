@@ -260,8 +260,6 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &mock_pass, desc));
         while (ts->desc[0][len++]); /* NOLINT */
 
-
-
                 /* check test condition; len is off by 1 */
         sol_assert (len - 1 <= SOL_TCASE_MAXDESCLEN, SOL_ERNO_TEST);
         sol_tsuite_term(ts);
