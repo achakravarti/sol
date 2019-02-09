@@ -130,8 +130,8 @@ sol_tsuite_register(sol_tsuite       *tsuite,
                     char       const *desc
                    )
 {
+        register int len;
         register char *itr;
-        auto     int  len;
 
 SOL_TRY:
                 /* check preconditions */
@@ -145,13 +145,14 @@ SOL_TRY:
         tsuite->tcase [tsuite->total] = tcase;
 
                 /* add @desc to the first free slot in the test description
-                 * array using the strncpy() algorithm; its index will be the
-                 * same as that of the test case */
+                 * array using the strncpy() algorithm, accounting for the
+                 * terminating null character; the slot index will be the same
+                 * as that of the test case */
         itr = tsuite->desc [tsuite -> total];
-        len = SOL_TCASE_MAXDESCLEN;
-        while (len-- && (*itr++ = *desc++)) {
-                ;
-        }
+        len = SOL_TCASE_MAXDESCLEN - 1;
+        while (len-- && (*itr++ = *desc++)); /* NOLINT */
+        *itr = '\0';
+
 
                 /* update total number of registered test cases */
         tsuite->total++;

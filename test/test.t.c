@@ -25,44 +25,48 @@
 
 
 #include "./suite.h"
+#include <stdio.h>
 
 
 /*
- *      tlog_called - flag to indicate whether tlog_dummy has been called
+ *      flag_log - flag to indicate whether mock_log has been called
  */
-static int tlog_called = 0;
+static int flag_log = 0;
 
 
 /*
- *      tcase_called - flag to indicate whether tcase_dummy has been called
+ *      flag_tcase - flag to indicate whether tcase_dummy has been called
  */
-static int tcase_called = 0;
+static int flag_tcase = 0;
 
 
 /*
- *      tlog_dummy() - dummy test suite logging callback
+ *      mock_log() - mocks test suite logging callback
  *        - desc: test case description
  *        - erno: test case error code
  */
-static void tlog_dummy(const char *desc,
-                       const sol_erno erno)
+static void mock_log(const char *desc,
+                     const sol_erno erno)
 {
-                /* set tlog_called flag true if this callback has been called
+                /* set flag_log flag true if this callback has been called
                  * with the required params; @erno can't be 9999 as no error
                  * code has been defined by the exception handling module as
                  * such. */
         if (desc && *desc && erno != 9999) {
-                tlog_called = 1;
+                flag_log = 1;
         }
 }
 
 
-static sol_erno tcase_pass(void)
+/*
+ *      mock_pass() - mocks a passing test case
+ */
+static sol_erno mock_pass(void)
 {
 SOL_TRY:
                 /* this is guaranteed to pass */
         sol_assert (1, SOL_ERNO_TEST);
-        tcase_called = 1;
+        flag_tcase = 1;
 
 SOL_CATCH:
                 /* control will never reach here */
@@ -70,7 +74,10 @@ SOL_CATCH:
 }
 
 
-static sol_erno tcase_fail(void)
+/*
+ *      mock_fail() - mocks a failing test case
+ */
+static sol_erno mock_fail(void)
 {
 SOL_TRY:
                 /* this is guaranteed to fail */
@@ -78,7 +85,7 @@ SOL_TRY:
 
 SOL_CATCH:
                 /* control will always reach here */
-        tcase_called = 1;
+        flag_tcase = 1;
         sol_throw();
 }
 
@@ -111,7 +118,7 @@ static sol_erno init2_01(void)
                          " a null pointer for @tsuite"
 SOL_TRY:
                 /* set up test scenario */
-        sol_try (sol_tsuite_init2(0, tlog_dummy));
+        sol_try (sol_tsuite_init2(0, mock_log));
 
 SOL_CATCH:
                 /* check test condition */
@@ -153,7 +160,7 @@ static sol_erno register_01(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        sol_try (sol_tsuite_init2(&ts, tlog_dummy));
+        sol_try (sol_tsuite_init2(&ts, mock_log));
         sol_try (sol_tsuite_register(0, init_01, "Dummy"));
 
 SOL_CATCH:
@@ -175,7 +182,7 @@ static sol_erno register_02(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        sol_try (sol_tsuite_init2(&ts, tlog_dummy));
+        sol_try (sol_tsuite_init2(&ts, mock_log));
         sol_try (sol_tsuite_register(&ts, 0, "Dummy"));
 
 SOL_CATCH:
@@ -197,8 +204,8 @@ static sol_erno register_03(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        sol_try (sol_tsuite_init2(&ts, tlog_dummy));
-        sol_try (sol_tsuite_register(&ts, register_01, 0));
+        sol_try (sol_tsuite_init2(&ts, mock_log));
+        sol_try (sol_tsuite_register(&ts, &mock_pass, 0));
 
 SOL_CATCH:
                 /* check test condition */
@@ -219,14 +226,50 @@ static sol_erno register_04(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        sol_try (sol_tsuite_init2(&ts, tlog_dummy));
-        sol_try (sol_tsuite_register(&ts, register_01, ""));
+        sol_try (sol_tsuite_init2(&ts, mock_log));
+        sol_try (sol_tsuite_register(&ts, &mock_pass, ""));
 
 SOL_CATCH:
                 /* check test condition */
         return SOL_ERNO_STR == sol_erno_now()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
+}
+
+
+/*
+ *      register_05() - sol_tsuite_register() unit test #5
+ */
+static sol_erno register_05(void)
+{
+        #define REGISTER_05 "sol_tsuite_register() truncates @desc down to" \
+                            "SOL_TCASE_MAXDESCLEN if required"
+        const char *desc = "This is a very long string that should be truncated"
+                           " down to a maximum length defined by the symbolic"
+                           " constant SOL_TCASE_MAXDESCLEN. This symbolic"
+                           " constant is defined in the sol/inc/test.h header"
+                           " file. This description in itself is greater than"
+                           " the length limited by the SOL_TCASE_MAXDESCLEN"
+                           " symbolic constant";
+        register size_t len = 0;
+        auto sol_tsuite __ts, *ts = &__ts;
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_tsuite_init2(ts, mock_log));
+        sol_try (sol_tsuite_register(ts, &mock_pass, desc));
+        while (ts->desc[0][len++]); /* NOLINT */
+
+
+
+                /* check test condition; len is off by 1 */
+        sol_assert (len - 1 <= SOL_TCASE_MAXDESCLEN, SOL_ERNO_TEST);
+        sol_tsuite_term(ts);
+
+SOL_CATCH:
+                /* throw exception, if any */
+        sol_tsuite_term(ts);
+        sol_throw();
 }
 
 
@@ -242,7 +285,7 @@ static sol_erno pass_01(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        sol_try (sol_tsuite_init2(&ts, tlog_dummy));
+        sol_try (sol_tsuite_init2(&ts, mock_log));
         sol_try (sol_tsuite_pass(0, &pass));
 
 SOL_CATCH:
@@ -264,7 +307,7 @@ static sol_erno pass_02(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        sol_try (sol_tsuite_init2(&ts, tlog_dummy));
+        sol_try (sol_tsuite_init2(&ts, mock_log));
         sol_try (sol_tsuite_pass(&ts, 0));
 
 SOL_CATCH:
@@ -317,7 +360,7 @@ static sol_erno pass_04(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        sol_try (sol_tsuite_init2(ts, &tlog_dummy));
+        sol_try (sol_tsuite_init2(ts, &mock_log));
         sol_try (sol_tsuite_pass(ts, &pass));
 
                 /* check test condition */
@@ -343,9 +386,9 @@ static sol_erno pass_05(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        sol_try (sol_tsuite_init2(ts, &tlog_dummy));
-        sol_try (sol_tsuite_register(ts, &tcase_pass, "Pass"));
-        sol_try (sol_tsuite_register(ts, &tcase_fail, "Fail"));
+        sol_try (sol_tsuite_init2(ts, &mock_log));
+        sol_try (sol_tsuite_register(ts, &mock_pass, "Pass"));
+        sol_try (sol_tsuite_register(ts, &mock_fail, "Fail"));
         sol_try (sol_tsuite_exec(ts));
         sol_try (sol_tsuite_pass(ts, &pass));
 
@@ -372,7 +415,7 @@ static sol_erno fail_01(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        sol_try (sol_tsuite_init2(&ts, tlog_dummy));
+        sol_try (sol_tsuite_init2(&ts, mock_log));
         sol_try (sol_tsuite_fail(0, &fail));
 
 SOL_CATCH:
@@ -394,7 +437,7 @@ static sol_erno fail_02(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        sol_try (sol_tsuite_init2(ts, tlog_dummy));
+        sol_try (sol_tsuite_init2(ts, mock_log));
         sol_try (sol_tsuite_fail(ts, 0));
 
 SOL_CATCH:
@@ -447,7 +490,7 @@ static sol_erno fail_04(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        sol_try (sol_tsuite_init2(ts, &tlog_dummy));
+        sol_try (sol_tsuite_init2(ts, &mock_log));
         sol_try (sol_tsuite_fail(ts, &fail));
 
                 /* check test condition */
@@ -473,9 +516,9 @@ static sol_erno fail_05(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        sol_try (sol_tsuite_init2(ts, &tlog_dummy));
-        sol_try (sol_tsuite_register(ts, &tcase_pass, "Pass"));
-        sol_try (sol_tsuite_register(ts, &tcase_fail, "Fail"));
+        sol_try (sol_tsuite_init2(ts, &mock_log));
+        sol_try (sol_tsuite_register(ts, &mock_pass, "Pass"));
+        sol_try (sol_tsuite_register(ts, &mock_fail, "Fail"));
         sol_try (sol_tsuite_exec(ts));
         sol_try (sol_tsuite_fail(ts, &fail));
 
@@ -506,7 +549,7 @@ static sol_erno total_01(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        sol_try (sol_tsuite_init2(&ts, tlog_dummy));
+        sol_try (sol_tsuite_init2(&ts, mock_log));
         sol_try (sol_tsuite_total(0, &total));
 
 SOL_CATCH:
@@ -530,7 +573,7 @@ static sol_erno total_02(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        sol_try (sol_tsuite_init2(&ts, tlog_dummy));
+        sol_try (sol_tsuite_init2(&ts, mock_log));
         sol_try (sol_tsuite_total(&ts, 0));
 
 SOL_CATCH:
@@ -581,7 +624,7 @@ static sol_erno total_04(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        sol_try (sol_tsuite_init2(ts, &tlog_dummy));
+        sol_try (sol_tsuite_init2(ts, &mock_log));
         sol_try (sol_tsuite_total(ts, &total));
 
                 /* check test condition */
@@ -607,9 +650,9 @@ static sol_erno total_05(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        sol_try (sol_tsuite_init2(ts, &tlog_dummy));
-        sol_try (sol_tsuite_register(ts, &tcase_pass, "Pass"));
-        sol_try (sol_tsuite_register(ts, &tcase_fail, "Fail"));
+        sol_try (sol_tsuite_init2(ts, &mock_log));
+        sol_try (sol_tsuite_register(ts, &mock_pass, "Pass"));
+        sol_try (sol_tsuite_register(ts, &mock_fail, "Fail"));
         sol_try (sol_tsuite_exec(ts));
         sol_try (sol_tsuite_pass(ts, &total));
 
@@ -635,7 +678,7 @@ static sol_erno exec_01(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        sol_try (sol_tsuite_init2(&ts, tlog_dummy));
+        sol_try (sol_tsuite_init2(&ts, mock_log));
         sol_try (sol_tsuite_exec(0));
 
 SOL_CATCH:
@@ -657,13 +700,13 @@ static sol_erno exec_02(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        tlog_called = 0;
-        sol_try (sol_tsuite_init2(ts, tlog_dummy));
-        sol_try (sol_tsuite_register(ts, tcase_pass, "TCASE_PASS"));
+        flag_log = 0;
+        sol_try (sol_tsuite_init2(ts, mock_log));
+        sol_try (sol_tsuite_register(ts, mock_pass, "MOCK_PASS"));
         sol_try (sol_tsuite_exec(ts));
 
                 /* check test condition */
-        sol_assert (1 == tlog_called, SOL_ERNO_TEST);
+        sol_assert (1 == flag_log, SOL_ERNO_TEST);
 
                 /* tear down scenario */
         sol_tsuite_term(ts);
@@ -698,6 +741,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, register_02, REGISTER_02));
         sol_try (sol_tsuite_register(ts, register_03, REGISTER_03));
         sol_try (sol_tsuite_register(ts, register_04, REGISTER_04));
+        sol_try (sol_tsuite_register(ts, register_05, REGISTER_05));
         sol_try (sol_tsuite_register(ts, pass_01, PASS_01));
         sol_try (sol_tsuite_register(ts, pass_02, PASS_02));
         sol_try (sol_tsuite_register(ts, pass_03, PASS_03));
