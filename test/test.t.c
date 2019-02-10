@@ -25,7 +25,6 @@
 
 
 #include "./suite.h"
-#include <stdio.h>
 
 
 /*
