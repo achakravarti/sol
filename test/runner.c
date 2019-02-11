@@ -302,21 +302,22 @@ suite_exec(void)
 /*
  *      main() - main entry point of test runner
  */
-int main(int argc, char **argv)
+int main(int argc,
+         char **argv)
 {
                 /* initialise */
-        log_init   (argc, argv);
-        stat_init  ();
-        suite_init ();
+        log_init(argc, argv);
+        stat_init();
+        suite_init();
 
                 /* execute */
-        suite_exec ();
-        stat_sum   ();
-        log_sigma  ();
+        suite_exec();
+        stat_sum();
+        log_sigma();
 
                 /* terminate */
-        log_term ();
-        return 0;
+        log_term();
+        return stat_sigma.fail;
 }
 
 
