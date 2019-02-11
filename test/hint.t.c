@@ -29,6 +29,55 @@
 
 
 /*
+ *      gcc_off() - toggles GCC compiler identification off
+ */
+static void gcc_off(void)
+{
+        #if (defined __GNUC__)
+                #define __sol_test_hint_gcc __GNUC__
+                #undef __GNUC__
+        #endif
+}
+
+
+/*
+ *      clang_off() - toggles CLang compiler identification off
+ */
+static void clang_off(void)
+{
+        #if (defined __clang__)
+                #define __sol_test_hint_clang __clang__
+                #undef __clang__
+        #endif
+}
+
+
+/*
+ *      gcc_on() - toggles GCC compiler identification on
+ */
+static void gcc_on(void)
+{
+        #if (defined __sol_test_hint_gcc)
+                #define __GNUC__ __sol_test_hint_gcc
+                #undef __sol_test_hint_gcc
+        #endif
+}
+
+
+/*
+ *      clang_on() - toggles CLang compiler identification on
+ *
+ */
+static void clang_on(void)
+{
+        #if (defined __sol_test_hint_clang)
+                #define __clang__ __sol_test_hint_clang
+                #undef __sol_test_hint_clang
+        #endif
+}
+
+
+/*
  *      likely_01() - sol_likely() unit test #1
  */
 #if (defined __GNUC__ || defined __clang__)
@@ -60,7 +109,7 @@ static sol_erno likely_02(void)
 
 SOL_TRY:
                 /* check test condition */
-        sol_assert (sol_likely (!0), SOL_ERNO_TEST);
+        sol_assert (!sol_likely (0), SOL_ERNO_TEST);
 
 SOL_CATCH:
         sol_throw();
@@ -78,9 +127,19 @@ static sol_erno likely_03(void)
                           " compatible compiler"
 
 SOL_TRY:
-        sol_assert (0, SOL_ERNO_TEST);
+                /* set up test scenario */
+        gcc_off();
+        clang_off();
+
+                /* check test condition */
+        sol_assert (sol_likely (1), SOL_ERNO_TEST);
+        gcc_on();
+        clang_on();
 
 SOL_CATCH:
+                /* throw current exception, if any */
+        gcc_on();
+        clang_on();
         sol_throw();
 }
 
@@ -92,12 +151,22 @@ static sol_erno likely_04(void)
 {
         #define LIKELY_04 "A predicate evaluates correctly to False with a" \
                           " likely branch prediction hint on a non GCC-"    \
-                          " compatible compiler"
+                          "compatible compiler"
 
 SOL_TRY:
-        sol_assert (0, SOL_ERNO_TEST);
+                /* set up test scenario */
+        gcc_off();
+        clang_off();
+
+                /* check test condition */
+        sol_assert (!sol_likely (0), SOL_ERNO_TEST);
+        gcc_on();
+        clang_on();
 
 SOL_CATCH:
+                /* throw current exception, if any */
+        gcc_on();
+        clang_on();
         sol_throw();
 }
 
@@ -110,7 +179,7 @@ static sol_erno unlikely_01(void)
 {
         #define UNLIKELY_01 "A predicate evaluates correctly to True with an" \
                             " unlikely branch prediction hint on a GCC-"      \
-                            " compatible compiler"
+                            "compatible compiler"
 
 SOL_TRY:
                 /* check test condition */
@@ -130,11 +199,11 @@ static sol_erno unlikely_02(void)
 {
         #define UNLIKELY_02 "A predicate evaluates correctly to False with an" \
                             " unlikely branch prediction hint on a GCC-"       \
-                            " compatible compiler"
+                            "compatible compiler"
 
 SOL_TRY:
                 /* check test condition */
-        sol_assert (sol_unlikely (!0), SOL_ERNO_TEST);
+        sol_assert (!sol_unlikely (0), SOL_ERNO_TEST);
 
 SOL_CATCH:
         sol_throw();
@@ -149,12 +218,22 @@ static sol_erno unlikely_03(void)
 {
         #define UNLIKELY_03 "A predicate evaluates correctly to True with an" \
                             " unlikely branch prediction hint on a non GCC-"  \
-                            " compatible compiler"
+                            "compatible compiler"
 
 SOL_TRY:
-        sol_assert (0, SOL_ERNO_TEST);
+                /* set up test scenario */
+        gcc_off();
+        clang_off();
+
+                /* check test condition */
+        sol_assert (sol_unlikely (1), SOL_ERNO_TEST);
+        gcc_on();
+        clang_on();
 
 SOL_CATCH:
+                /* throw current exception, if any */
+        gcc_on();
+        clang_on();
         sol_throw();
 }
 
@@ -166,12 +245,22 @@ static sol_erno unlikely_04(void)
 {
         #define UNLIKELY_04 "A predicate evaluates correctly to False with an" \
                             " unlikely branch prediction hint on a non GCC-"   \
-                            " compatible compiler"
+                            "compatible compiler"
 
 SOL_TRY:
-        sol_assert (0, SOL_ERNO_TEST);
+                /* set up test scenario */
+        gcc_off();
+        clang_off();
+
+                /* check test condition */
+        sol_assert (!sol_unlikely (0), SOL_ERNO_TEST);
+        gcc_on();
+        clang_on();
 
 SOL_CATCH:
+                /* throw current exception, if any */
+        gcc_on();
+        clang_on();
         sol_throw();
 }
 
@@ -182,7 +271,7 @@ SOL_CATCH:
 static sol_erno hot_01(void)
 {
         #define HOT_01 "A function marked hot executes successfully on a GCC-" \
-                       " compatible compiler"
+                       "compatible compiler"
 
 SOL_TRY:
         sol_assert (0, SOL_ERNO_TEST);
@@ -254,15 +343,9 @@ SOL_TRY:
                 /* check preconditions */
         sol_assert (log && pass && fail && total, SOL_ERNO_PTR);
 
-                /* register GCC-compatible specific test cases */
-        #if (defined __GNUC__ || defined __clang__)
-                sol_try (sol_tsuite_register(ts, &likely_01, LIKELY_01));
-                sol_try (sol_tsuite_register(ts, &likely_02, LIKELY_02));
-                sol_try (sol_tsuite_register(ts, &unlikely_02, UNLIKELY_02));
-                sol_try (sol_tsuite_register(ts, &unlikely_03, UNLIKELY_03));
-        #endif
 
                 /* register non GCC-compatible specific test cases */
+        sol_try (sol_tsuite_init2(ts, log));
         sol_try (sol_tsuite_register(ts, &likely_03, LIKELY_03));
         sol_try (sol_tsuite_register(ts, &likely_04, LIKELY_04));
         sol_try (sol_tsuite_register(ts, &unlikely_01, UNLIKELY_01));
@@ -271,6 +354,14 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &hot_02, HOT_02));
         sol_try (sol_tsuite_register(ts, &cold_01, COLD_01));
         sol_try (sol_tsuite_register(ts, &cold_02, COLD_02));
+
+                /* register GCC-compatible specific test cases */
+        #if (defined __GNUC__ || defined __clang__)
+                sol_try (sol_tsuite_register(ts, &likely_01, LIKELY_01));
+                sol_try (sol_tsuite_register(ts, &likely_02, LIKELY_02));
+                sol_try (sol_tsuite_register(ts, &unlikely_02, UNLIKELY_02));
+                sol_try (sol_tsuite_register(ts, &unlikely_03, UNLIKELY_03));
+        #endif
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
