@@ -43,14 +43,10 @@ typedef sol_erno        /* error code                */
        );
 
 
-
-
 /*
  *      SUITE_COUNT - count of test suites
  */
-#define SUITE_COUNT 2
-
-
+#define SUITE_COUNT 3
 
 
 /*
@@ -59,11 +55,17 @@ typedef sol_erno        /* error code                */
 #define SUITE_ERROR 0
 
 
-
 /*
  *      SUITE_TEST - index of unit testing module test suite
  */
 #define SUITE_TEST 1
+
+
+/*
+ *      SUITE_HINT - index of the compiler hints module test suite
+ */
+#define SUITE_HINT 2
+
 
 
 
@@ -252,9 +254,9 @@ stat_sum(void)
 
                 /* sum test suite statistics */
         for (i = 0; i < SUITE_COUNT; i++) {
-                stat_sigma.pass  += stat_suite.pass  [i];
-                stat_sigma.fail  += stat_suite.fail  [i];
-                stat_sigma.total += stat_suite.total [i];
+                stat_sigma.pass += stat_suite.pass[i];
+                stat_sigma.fail += stat_suite.fail[i];
+                stat_sigma.total += stat_suite.total[i];
         }
 }
 
@@ -270,6 +272,7 @@ suite_init(void)
                 /* register test suites */
         suite_hnd [SUITE_ERROR] = __sol_tsuite_error;
         suite_hnd [SUITE_TEST]  = __sol_tsuite_test;
+        suite_hnd [SUITE_HINT]  = __sol_tsuite_hint;
 }
 
 
