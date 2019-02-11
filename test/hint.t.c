@@ -31,6 +31,7 @@
 /*
  *      likely_01() - sol_likely() unit test #1
  */
+#if (defined __GNUC__ || defined __clang__)
 static sol_erno likely_01(void)
 {
         #define LIKELY_01 "A predicate evaluates correctly to True with a"     \
@@ -43,11 +44,13 @@ SOL_TRY:
 SOL_CATCH:
         sol_throw();
 }
+#endif /* (defined __GNUC__ || defined __clang__) */
 
 
 /*
  *      likely_02() - sol_likely() unit test #2
  */
+#if (defined __GNUC__ || defined __clang__)
 static sol_erno likely_02(void)
 {
         #define LIKELY_02 "A predicate evaluates correctly to False with a"    \
@@ -60,6 +63,7 @@ SOL_TRY:
 SOL_CATCH:
         sol_throw();
 }
+#endif /* (defined __GNUC__ || defined __clang__) */
 
 
 /*
@@ -99,6 +103,7 @@ SOL_CATCH:
 /*
  *      unlikely_01() - sol_unlikely() unit test #1
  */
+#if (defined __GNUC__ || defined __clang__)
 static sol_erno unlikely_01(void)
 {
         #define UNLIKELY_01 "A predicate evaluates correctly to True with an" \
@@ -111,11 +116,13 @@ SOL_TRY:
 SOL_CATCH:
         sol_throw();
 }
+#endif /* (defined __GNUC__ || defined __clang__) */
 
 
 /*
  *      unlikely_02() - sol_unlikely() unit test #2
  */
+#if (defined __GNUC__ || defined __clang__)
 static sol_erno unlikely_02(void)
 {
         #define UNLIKELY_02 "A predicate evaluates correctly to False with an" \
@@ -128,6 +135,7 @@ SOL_TRY:
 SOL_CATCH:
         sol_throw();
 }
+#endif /* (defined __GNUC__ || defined __clang__) */
 
 
 /*
@@ -242,14 +250,18 @@ SOL_TRY:
                 /* check preconditions */
         sol_assert (log && pass && fail && total, SOL_ERNO_PTR);
 
-                /* register test cases */
-        sol_try (sol_tsuite_register(ts, &likely_01, LIKELY_01));
-        sol_try (sol_tsuite_register(ts, &likely_02, LIKELY_02));
+                /* register GCC-compatible specific test cases */
+        #if (defined __GNUC__ || defined __clang__)
+                sol_try (sol_tsuite_register(ts, &likely_01, LIKELY_01));
+                sol_try (sol_tsuite_register(ts, &likely_02, LIKELY_02));
+                sol_try (sol_tsuite_register(ts, &unlikely_02, UNLIKELY_02));
+                sol_try (sol_tsuite_register(ts, &unlikely_03, UNLIKELY_03));
+        #endif
+
+                /* register non GCC-compatible specific test cases */
         sol_try (sol_tsuite_register(ts, &likely_03, LIKELY_03));
         sol_try (sol_tsuite_register(ts, &likely_04, LIKELY_04));
         sol_try (sol_tsuite_register(ts, &unlikely_01, UNLIKELY_01));
-        sol_try (sol_tsuite_register(ts, &unlikely_02, UNLIKELY_02));
-        sol_try (sol_tsuite_register(ts, &unlikely_03, UNLIKELY_03));
         sol_try (sol_tsuite_register(ts, &unlikely_04, UNLIKELY_04));
         sol_try (sol_tsuite_register(ts, &hot_01, HOT_01));
         sol_try (sol_tsuite_register(ts, &hot_02, HOT_02));
