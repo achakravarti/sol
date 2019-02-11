@@ -77,7 +77,19 @@ static void clang_on(void)
 }
 
 
+/*
+ *      mock_hot() - simulates hot function
+ */
 static sol_hot int mock_hot(void)
+{
+        return 1;
+}
+
+
+/*
+ *      mock_cold() - simulates cold function
+ */
+static sol_cold int mock_cold(void)
 {
         return 1;
 }
@@ -324,9 +336,11 @@ static sol_erno cold_01(void)
                         " GCC-compatible compiler"
 
 SOL_TRY:
-        sol_assert (0, SOL_ERNO_TEST);
+                /* check test condition */
+        sol_assert (mock_cold(), SOL_ERNO_TEST);
 
 SOL_CATCH:
+                /* throw current exception, if any */
         sol_throw();
 }
 
@@ -340,9 +354,19 @@ static sol_erno cold_02(void)
                         " non GCC-compatible compiler"
 
 SOL_TRY:
-        sol_assert (0, SOL_ERNO_TEST);
+                /* set up test scenario */
+        gcc_off();
+        clang_off();
+
+                /* check test condition */
+        sol_assert (mock_cold(), SOL_ERNO_TEST);
+        gcc_on();
+        clang_on();
 
 SOL_CATCH:
+                /* throw current exception, if any */
+        gcc_on();
+        clang_on();
         sol_throw();
 }
 
