@@ -77,6 +77,12 @@ static void clang_on(void)
 }
 
 
+static sol_hot int mock_hot(void)
+{
+        return 1;
+}
+
+
 /*
  *      likely_01() - sol_likely() unit test #1
  */
@@ -274,9 +280,11 @@ static sol_erno hot_01(void)
                        "compatible compiler"
 
 SOL_TRY:
-        sol_assert (0, SOL_ERNO_TEST);
+                /* check test condition */
+        sol_assert (mock_hot(), SOL_ERNO_TEST);
 
 SOL_CATCH:
+                /* throw current exception, if any */
         sol_throw();
 }
 
@@ -290,9 +298,19 @@ static sol_erno hot_02(void)
                        " GCC-compatible compiler"
 
 SOL_TRY:
-        sol_assert (0, SOL_ERNO_TEST);
+                /* set up test scenario */
+        gcc_off();
+        clang_off();
+
+                /* check test condition */
+        sol_assert (mock_hot(), SOL_ERNO_TEST);
+        gcc_on();
+        clang_on();
 
 SOL_CATCH:
+                /* throw current exception, if any */
+        gcc_on();
+        clang_on();
         sol_throw();
 }
 
