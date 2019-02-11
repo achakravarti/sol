@@ -39,7 +39,8 @@ static sol_erno likely_01(void)
                           " compiler"
 
 SOL_TRY:
-        sol_assert (0, SOL_ERNO_TEST);
+                /* check test condition */
+        sol_assert (sol_likely (1), SOL_ERNO_TEST);
 
 SOL_CATCH:
         sol_throw();
@@ -58,7 +59,8 @@ static sol_erno likely_02(void)
                           " compiler"
 
 SOL_TRY:
-        sol_assert (0, SOL_ERNO_TEST);
+                /* check test condition */
+        sol_assert (sol_likely (!0), SOL_ERNO_TEST);
 
 SOL_CATCH:
         sol_throw();
@@ -111,7 +113,8 @@ static sol_erno unlikely_01(void)
                             " compatible compiler"
 
 SOL_TRY:
-        sol_assert (0, SOL_ERNO_TEST);
+                /* check test condition */
+        sol_assert (sol_unlikely (1), SOL_ERNO_TEST);
 
 SOL_CATCH:
         sol_throw();
@@ -130,7 +133,8 @@ static sol_erno unlikely_02(void)
                             " compatible compiler"
 
 SOL_TRY:
-        sol_assert (0, SOL_ERNO_TEST);
+                /* check test condition */
+        sol_assert (sol_unlikely (!0), SOL_ERNO_TEST);
 
 SOL_CATCH:
         sol_throw();
