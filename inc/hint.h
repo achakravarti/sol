@@ -28,6 +28,15 @@
 #define __SOL_COMPILER_HINTS_MODULE
 
 
+/*
+ *      sol_hot - hot code hint
+ *
+ *      The sol_hot symbolic constant provides a compiler hint that the code of
+ *      the function it is associated with is frequently called. Using this hint
+ *      helps to provide compile-time optimisations to the associated code. This
+ *      hint is available on GCC-compatible compilation environments, and
+ *      degrades gracefully to a safe no-op on other environments.
+ */
 #if (defined __GNUC__) || (defined __clang__)
 #       define sol_hot __attribute__((hot))
 #else
@@ -35,6 +44,15 @@
 #endif
 
 
+/*
+ *      sol_cold - cold code hint
+ *
+ *      The sol_cold symbolic constant provides a compiler hint that the code of
+ *      the function it is associated with is rarely called. Using this hint
+ *      helps to provide compile-time optimisations to the associated code. This
+ *      hint is available on GCC-compatible compilation environments, and
+ *      degrades gracefully to a safe no-op on other environments.
+ */
 #if (defined __GNUC__) || (defined __clang__)
 #       define sol_cold __attribute__((cold))
 #else
@@ -42,6 +60,23 @@
 #endif
 
 
+/*
+ *      sol_likely() - hint that predicate is likely to be true
+ *        - p: predicate to evaluate
+ *
+ *      The sol_likely() macro provides a branch prediction hint to the
+ *      compiler, indicating that a predicate @p is likely to be true. This
+ *      macro is modelled after the likely() macro in the Linux kernel, and
+ *      relies on a GCC-specific extension. However, this macro degrades
+ *      gracefully to a safe no-op on non-GCC compatible compilation platforms.
+ *
+ *      @p is expected to be an integral predicate expression that evaluates to
+ *      a Boolean value.
+ *
+ *      Return:
+ *        - 0 if @p evaluates to false
+ *        - 1 if @p evaluates to true
+ */
 #if (defined __GNUC__) || (defined __clang__)
 #       define sol_likely(p) (__builtin_expect(!!(p), 1))
 #else
@@ -49,6 +84,23 @@
 #endif
 
 
+/*
+ *      sol_unlikely() - hint that predicate is unlikely to be true
+ *        - p: predicate to evaluate
+ *
+ *      The sol_unlikely() macro provides a branch prediction hint to the
+ *      compiler, indicating that a predicate @p is unlikely to be true. This
+ *      macro is modelled after the unlikely() macro in the Linux kernel, and
+ *      relies on a GCC-specific extension. However, this macro degrades
+ *      gracefully to a safe no-op on non-GCC compatible compilation platforms.
+ *
+ *      @p is expected to be an integral predicate expression that evaluates to
+ *      a Boolean value.
+ *
+ *      Return:
+ *        - 0 if @p evaluates to false
+ *        - 1 if @p evaluates to true
+ */
 #if (defined __GNUC__) || (defined __clang__)
 #       define sol_unlikely(p) (__builtin_expect(!!(p), 0))
 #else
