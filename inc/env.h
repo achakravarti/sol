@@ -51,6 +51,21 @@ typedef enum __SOL_ENV_CSTD {
 
 
 
+typedef enum __SOL_ENV_HOST {
+        SOL_ENV_HOST_ANDROID,
+        SOL_ENV_HOST_LINUX,
+        SOL_ENV_HOST_CYGWIN,
+        SOL_ENV_HOST_BSD,
+        SOL_ENV_HOST_HPUX,
+        SOL_ENV_HOST_AIX,
+        SOL_ENV_HOST_IOS,
+        SOL_ENV_HOST_OSX,
+        SOL_ENV_HOST_SOLARIS
+} SOL_ENV_HOST;
+
+
+
+
 #endif /* __SOL_ENVIRONMENT_MODULE */
 
 
