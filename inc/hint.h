@@ -24,8 +24,12 @@
  ******************************************************************************/
 
 
+
+
 #if !defined __SOL_COMPILER_HINTS_MODULE
 #define __SOL_COMPILER_HINTS_MODULE
+
+
 
 
 /*
@@ -44,6 +48,8 @@
 #endif
 
 
+
+
 /*
  *      sol_cold - cold code hint
  *
@@ -58,6 +64,8 @@
 #else
 #       define sol_cold
 #endif
+
+
 
 
 /*
@@ -84,6 +92,8 @@
 #endif
 
 
+
+
 /*
  *      sol_unlikely() - hint that predicate is unlikely to be true
  *        - p: predicate to evaluate
@@ -108,7 +118,31 @@
 #endif
 
 
+
+
+/*
+ *      sol_likely - hint that function should be inlined
+ *
+ *      The sol_inline symbolic constant provides a mechanism to portably hint
+ *      to the compiler that a given function should be considered for inlining.
+ *      This symbol expands to the inline keyword when C99 and above is used,
+ *      and gracefully degrades on earlier versions.
+ *
+ *      If inlining is essential in C89/C90, then the only way out is to declare
+ *      the inline code as a macro, optionally wrapped in a do-while(0) loop.
+ */
+#if (__STDC_VERSION__ >= 199901L)
+#       define sol_inline inline
+#else
+#       define sol_inline
+#endif
+
+
+
+
 #endif /* !defined __SOL_COMPILER_HINTS_MODULE */
+
+
 
 
 /******************************************************************************
