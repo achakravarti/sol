@@ -66,6 +66,18 @@ typedef enum __SOL_ENV_HOST {
 
 
 
+typedef enum __SOL_ENV_ARCH {
+        SOL_ENV_ARCH_I386,
+        SOL_ENV_ARCH_I486,
+        SOL_ENV_ARCH_I586,
+        SOL_ENV_ARCH_I686,
+        SOL_ENV_ARCH_AMD64,
+        SOL_ENV_ARCH_IA64
+} SOL_ENV_ARCH;
+
+
+
+
 #endif /* __SOL_ENVIRONMENT_MODULE */
 
 
