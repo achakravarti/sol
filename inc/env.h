@@ -53,6 +53,7 @@ typedef enum __SOL_ENV_CSTD {
 
 
 typedef enum __SOL_ENV_HOST {
+        SOL_ENV_HOST_UNKNOWN,
         SOL_ENV_HOST_ANDROID,
         SOL_ENV_HOST_LINUX,
         SOL_ENV_HOST_CYGWIN,
@@ -85,6 +86,37 @@ typedef enum __SOL_ENV_ARCH {
 #       define sol_env_compiler() SOL_ENV_COMPILER_CLANG
 #else
 #       define sol_env_compiler() SOL_ENV_COMPILER_UNKNOWN
+#endif
+
+
+
+
+#if (defined __CYGWIN__)
+#       define sol_env_host() SOL_ENV_HOST_CYGWIN
+#elif (defined __ANDROID__)
+#       define sol_env_host() SOL_ENV_HOST_ANDROID
+#elif (defined __linux__)
+#       define sol_env_host() SOL_ENV_HOST_LINUX
+#elif (defined __hpux)
+#       define sol_env_host() SOL_ENV_HOST_HPUX
+#elif (defined _AIX)
+#       define sol_env_host() SOL_ENV_HOST_AIX
+#elif (defined __sun && defined __SVR4)
+#       define sol_env_host() SOL_ENV_HOST_SOLARIS
+#elif (defined __unix__)
+#       include <sys/param.h>
+#       if (defined BSD)
+#               define sol_env_host() SOL_ENV_HOST_BSD
+#       endif
+#elif (defined __APPLE__ && defined __MACH__)
+#       include <TargetConditionals.h>
+#       if (1 == TARGET_IPHONE_SIMULATOR || 1 == TARGET_OS_IPHONE)
+#               define sol_env_host() SOL_ENV_HOST_IOS
+#       elif (1 == TARGET_OS_MAC)
+#               define sol_env_host() SOL_ENV_HOST_OSX
+#       endif
+#else
+#       define sol_env_host() SOL_ENV_HOST_UNKNOWN
 #endif
 
 
