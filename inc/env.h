@@ -42,6 +42,7 @@ typedef enum __SOL_ENV_COMPILER {
 
 
 typedef enum __SOL_ENV_CSTD {
+        SOL_ENV_CSTD_UNKNOWN,
         SOL_ENV_CSTD_C89,
         SOL_ENV_CSTD_C90,
         SOL_ENV_CSTD_C94,
