@@ -91,6 +91,29 @@ typedef enum __SOL_ENV_ARCH {
 
 
 
+#if (defined __STDC__)
+#       if (defined __STDC_VERSION__)
+#               if (__STDC_VERSION__ >= 201710L)
+#                       define sol_env_cstd() SOL_ENV_CSTD_C18
+#               elif (__STDC_VERSION__ >= 201112L)
+#                       define sol_env_cstd() SOL_ENV_CSTD_C11
+#               elif (__STDC_VERSION__ >= 199901L)
+#                       define sol_env_cstd() SOL_ENV_CSTD_C99
+#               elif (__STDC_VERSION__ >= 199409L)
+#                       define sol_env_cstd() SOL_ENV_CSTD_C94
+#               else
+#                       define sol_env_cstd() SOL_ENV_CSTD_C90
+#               endif
+#       else
+#               define sol_env_cstd() SOL_ENV_CSTD_C89
+#       endif
+#else
+#       define sol_env_cstd() SOL_ENV_CSTD_UNKNOWN
+#endif
+
+
+
+
 #if (defined __CYGWIN__)
 #       define sol_env_host() SOL_ENV_HOST_CYGWIN
 #elif (defined __ANDROID__)
