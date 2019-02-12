@@ -159,6 +159,15 @@ typedef enum __SOL_ENV_ARCH {
 
 
 
+#if (SOL_ENV_ARCH_X86 == sol_env_arch())
+#       define sol_env_wordsz() 32
+#elif (SOL_ENV_ARCH_AMD64 == sol_env_arch())
+#       define sol_env_wordsz() 64
+#elif (SOL_ENV_ARCH_IA64 == sol_env_arch())
+#       define sol_env_wordsz() 64
+#else
+#       error "sol_env_wordsz() error: unknown compiler!"
+#endif
 
 
 
