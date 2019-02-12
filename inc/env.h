@@ -69,10 +69,8 @@ typedef enum __SOL_ENV_HOST {
 
 
 typedef enum __SOL_ENV_ARCH {
-        SOL_ENV_ARCH_I386,
-        SOL_ENV_ARCH_I486,
-        SOL_ENV_ARCH_I586,
-        SOL_ENV_ARCH_I686,
+        SOL_ENV_ARCH_UNKNOWN,
+        SOL_ENV_ARCH_X86,
         SOL_ENV_ARCH_AMD64,
         SOL_ENV_ARCH_IA64
 } SOL_ENV_ARCH;
@@ -141,6 +139,25 @@ typedef enum __SOL_ENV_ARCH {
 #else
 #       define sol_env_host() SOL_ENV_HOST_UNKNOWN
 #endif
+
+
+
+
+#if (defined __amd64__ || defined __amd64                          \
+     || defined __x86_64__  || defined __x86_64)
+#       define sol_env_arch() SOL_ENV_ARCH_AMD64
+#elif (defined __ia64__ || defined __IA64__ || defined _IA64)
+#       define sol_env_arch() SOL_ENV_ARCH_IA64
+#elif (defined i386 || defined __i386 || defined __i386__          \
+       || defined __i486__ || defined __i586__ || defined __i686__)
+#       define sol_env_arch() SOL_ENV_ARCH_X86
+#else
+#       define sol_env_arch() SOL_ENV_ARCH_UNKNOWN
+#endif
+
+
+
+
 
 
 
