@@ -131,10 +131,27 @@
  *      If inlining is essential in C89/C90, then the only way out is to declare
  *      the inline code as a macro, optionally wrapped in a do-while(0) loop.
  */
-#if (__STDC_VERSION__ >= 199901L)
+#if (defined __STDC_VERSION__ && __STDC_VERSION__ >= 199901L)
 #       define sol_inline inline
 #else
 #       define sol_inline
+#endif
+
+
+
+
+/*
+ *      sol_restrict - hint that a pointer is restricted
+ *
+ *      The sol_restrict symbolic constant provides a mechanism to portably hint
+ *      to the compiler that a given pointer should be considered as restricted.
+ *      This symbol expands to the restrict keyword when C99 and above is used,
+ *      and gracefully degrades on earlier versions.
+ */
+#if (defined __STDC_VERSION__ && __STDC_VERSION__ >= 199901L)
+#       define sol_restrict restrict
+#else
+#       define sol_restrict
 #endif
 
 

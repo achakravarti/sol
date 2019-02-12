@@ -90,7 +90,7 @@ static void clang_on(void)
 
 
 /*
- *      mock_hot() - simulates hot function
+ *      mock_hot() - mocks definition of hot function
  */
 static sol_hot int mock_hot(void)
 {
@@ -101,7 +101,7 @@ static sol_hot int mock_hot(void)
 
 
 /*
- *      mock_cold() - simulates cold function
+ *      mock_cold() - mocks definition of cold function
  */
 static sol_cold int mock_cold(void)
 {
@@ -112,11 +112,23 @@ static sol_cold int mock_cold(void)
 
 
 /*
- *      mock_inline() - simulates inline function
+ *      mock_inline() - mocks definition of inline function
  */
 static sol_inline int mock_inline(void)
 {
         return 1;
+}
+
+
+
+
+/*
+ *      mock_restrict() - mocks use of restrict pointer
+ */
+static int mock_restrict(int *sol_restrict ptr)
+{
+        *ptr = 1;
+        return *ptr;
 }
 
 
@@ -471,6 +483,26 @@ SOL_CATCH:
 
 
 /*
+ *      restrict_01() - sol_restrict unit test #1
+ */
+static sol_erno restrict_01(void)
+{
+        #define RESTRICT_01 "A pointer marked restricted behaves as expected"
+        auto int tmp = 0;
+
+SOL_TRY:
+                /* check test condition */
+        sol_assert (mock_restrict(&tmp), SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* throw current exception, if any */
+        sol_throw();
+}
+
+
+
+
+/*
  *      __sol_hint_test() - declared in sol/test/suite.h
  */
 extern sol_erno __sol_tsuite_hint(sol_tlog *log,
@@ -497,6 +529,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &cold_02, COLD_02));
         sol_try (sol_tsuite_register(ts, &inline_01, INLINE_01));
         sol_try (sol_tsuite_register(ts, &inline_02, INLINE_02));
+                sol_try (sol_tsuite_register(ts, &restrict_01, RESTRICT_01));
 
                 /* register GCC-compatible specific test cases */
         #if (defined __GNUC__ || defined __clang__)
