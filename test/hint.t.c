@@ -24,8 +24,12 @@
  ******************************************************************************/
 
 
+
+
 #include "./suite.h"
 #include "../inc/hint.h"
+
+
 
 
 /*
@@ -40,6 +44,8 @@ static void gcc_off(void)
 }
 
 
+
+
 /*
  *      clang_off() - toggles CLang compiler identification off
  */
@@ -52,16 +58,20 @@ static void clang_off(void)
 }
 
 
+
+
 /*
  *      gcc_on() - toggles GCC compiler identification on
  */
 static void gcc_on(void)
 {
         #if (defined __sol_test_hint_gcc)
-                #define __GNUC__ __sol_test_hint_gcc
-                #undef __sol_test_hint_gcc
+        #       define __GNUC__ __sol_test_hint_gcc
+        #       undef __sol_test_hint_gcc
         #endif
 }
+
+
 
 
 /*
@@ -71,10 +81,12 @@ static void gcc_on(void)
 static void clang_on(void)
 {
         #if (defined __sol_test_hint_clang)
-                #define __clang__ __sol_test_hint_clang
-                #undef __sol_test_hint_clang
+        #       define __clang__ __sol_test_hint_clang
+        #       undef __sol_test_hint_clang
         #endif
 }
+
+
 
 
 /*
@@ -86,6 +98,8 @@ static sol_hot int mock_hot(void)
 }
 
 
+
+
 /*
  *      mock_cold() - simulates cold function
  */
@@ -93,6 +107,19 @@ static sol_cold int mock_cold(void)
 {
         return 1;
 }
+
+
+
+
+/*
+ *      mock_inline() - simulates inline function
+ */
+static sol_inline int mock_inline(void)
+{
+        return 1;
+}
+
+
 
 
 /*
@@ -115,6 +142,8 @@ SOL_CATCH:
 #endif /* (defined __GNUC__ || defined __clang__) */
 
 
+
+
 /*
  *      likely_02() - sol_likely() unit test #2
  */
@@ -133,6 +162,8 @@ SOL_CATCH:
         sol_throw();
 }
 #endif /* (defined __GNUC__ || defined __clang__) */
+
+
 
 
 /*
@@ -162,6 +193,8 @@ SOL_CATCH:
 }
 
 
+
+
 /*
  *      likely_04() - sol_likely() unit test #4
  */
@@ -189,6 +222,8 @@ SOL_CATCH:
 }
 
 
+
+
 /*
  *      unlikely_01() - sol_unlikely() unit test #1
  */
@@ -209,6 +244,8 @@ SOL_CATCH:
 #endif /* (defined __GNUC__ || defined __clang__) */
 
 
+
+
 /*
  *      unlikely_02() - sol_unlikely() unit test #2
  */
@@ -227,6 +264,8 @@ SOL_CATCH:
         sol_throw();
 }
 #endif /* (defined __GNUC__ || defined __clang__) */
+
+
 
 
 /*
@@ -256,6 +295,8 @@ SOL_CATCH:
 }
 
 
+
+
 /*
  *      unlikely_04() - sol_unlikely() unit test #4
  */
@@ -283,6 +324,8 @@ SOL_CATCH:
 }
 
 
+
+
 /*
  *      hot_01() - sol_hot unit test #1
  */
@@ -299,6 +342,8 @@ SOL_CATCH:
                 /* throw current exception, if any */
         sol_throw();
 }
+
+
 
 
 /*
@@ -327,6 +372,8 @@ SOL_CATCH:
 }
 
 
+
+
 /*
  *      cold_01() - sol_cold unit test #1
  */
@@ -343,6 +390,8 @@ SOL_CATCH:
                 /* throw current exception, if any */
         sol_throw();
 }
+
+
 
 
 /*
@@ -371,6 +420,56 @@ SOL_CATCH:
 }
 
 
+
+
+/*
+ *      inline_01() - sol_inline unit test #1
+ */
+static sol_erno inline_01(void)
+{
+        #define INLINE_01 "A function marked inline executes successfully on" \
+                          " a GCC-compatible compiler"
+
+SOL_TRY:
+                /* check test condition */
+        sol_assert (mock_inline(), SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* throw current exception, if any */
+        sol_throw();
+}
+
+
+
+
+/*
+ *      inline_02() - sol_inline unit test #2
+ */
+static sol_erno inline_02(void)
+{
+        #define INLINE_02 "A function marked inline executes successfully on" \
+                          " a non GCC-compatible compiler"
+
+SOL_TRY:
+                /* set up test scenario */
+        gcc_off();
+        clang_off();
+
+                /* check test condition */
+        sol_assert (mock_inline(), SOL_ERNO_TEST);
+        gcc_on();
+        clang_on();
+
+SOL_CATCH:
+                /* throw current exception, if any */
+        gcc_on();
+        clang_on();
+        sol_throw();
+}
+
+
+
+
 /*
  *      __sol_hint_test() - declared in sol/test/suite.h
  */
@@ -396,6 +495,8 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &hot_02, HOT_02));
         sol_try (sol_tsuite_register(ts, &cold_01, COLD_01));
         sol_try (sol_tsuite_register(ts, &cold_02, COLD_02));
+        sol_try (sol_tsuite_register(ts, &inline_01, INLINE_01));
+        sol_try (sol_tsuite_register(ts, &inline_02, INLINE_02));
 
                 /* register GCC-compatible specific test cases */
         #if (defined __GNUC__ || defined __clang__)
@@ -419,6 +520,8 @@ SOL_CATCH:
         sol_tsuite_term(ts);
         sol_throw();
 }
+
+
 
 
 /******************************************************************************
