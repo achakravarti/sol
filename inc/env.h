@@ -33,6 +33,7 @@
 
 
 typedef enum __SOL_ENV_COMPILER {
+        SOL_ENV_COMPILER_UNKNOWN,
         SOL_ENV_COMPILER_GNUC,
         SOL_ENV_COMPILER_CLANG
 } SOL_ENV_COMPILER;
@@ -74,6 +75,17 @@ typedef enum __SOL_ENV_ARCH {
         SOL_ENV_ARCH_AMD64,
         SOL_ENV_ARCH_IA64
 } SOL_ENV_ARCH;
+
+
+
+
+#if (defined __GNUC__)
+#       define sol_env_compiler() SOL_ENV_COMPILER_GNUC
+#elif (defined __clang__)
+#       define sol_env_compiler() SOL_ENV_COMPILER_CLANG
+#else
+#       define sol_env_compiler() SOL_ENV_COMPILER_UNKNOWN
+#endif
 
 
 
