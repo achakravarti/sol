@@ -27,14 +27,10 @@
 
 
 #if !defined __SOL_LIBRARY_TEST_SUITES
-#define      __SOL_LIBRARY_TEST_SUITES
-
-
+#define __SOL_LIBRARY_TEST_SUITES
 
 
 #include "../inc/test.h"
-
-
 
 
 /*
@@ -48,8 +44,6 @@ __sol_tsuite_error(sol_tlog *log,
                   );
 
 
-
-
 /*
  *      __sol_tsuite_test() - test suite for unit testing module
  */
@@ -61,6 +55,13 @@ __sol_tsuite_test(sol_tlog *log,
                  );
 
 
+/*
+ *      __sol_tsuite_hint() - test suite for compiler hints module
+ */
+extern sol_erno __sol_tsuite_hint(sol_tlog *log,
+                                  int *pass,
+                                  int *fail,
+                                  int *total);
 
 
 #endif /* !defined __SOL_LIBRARY_TEST_SUITES */

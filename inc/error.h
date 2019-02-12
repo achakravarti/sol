@@ -33,6 +33,7 @@
 
 
 
+#include "./hint.h"
 #include <stddef.h>
 
 
@@ -216,12 +217,14 @@ typedef size_t sol_erno;
  *      predicate @p, is true before any further processing takes place. This
  *      macro can only be called within a SOL_TRY block. If the assertion fails,
  *      then a sol_erno error code @e is thrown and control jumps to the
- *      adjacent SOL_CATCH block. This macro should **never** be called within a
- *      SOL_CATCH block as it may potentially lead to an infinite loop.
+ *      adjacent SOL_CATCH block.
+ *
+ *      This macro should **never** be called within a SOL_CATCH block as it may
+ *      potentially lead to an infinite loop.
  */
 #define /* void */ sol_assert(p, /* sol_erno */ e) \
         do {                                       \
-                if (!(p)) {                        \
+                if (sol_unlikely (!(p))) {         \
                         __sol_erno = (e);          \
                         goto __SOL_CATCH;          \
                 }                                  \
@@ -239,14 +242,16 @@ typedef size_t sol_erno;
  *      deemed to have run successfully if it has not thrown any exception as
  *      flagged by the returned error code. This macro can only be called within
  *      a SOL_TRY block. If the validation fails, then control will jump to the
- *      adjacent SOL_CATCH block. As with the sol_assert() macro, this macro
- *      should **never** be called within a SOL_CATCH block as it may
- *      potentially lead to an infinite loop.
+ *      adjacent SOL_CATCH block.
+ *
+ *      As with the sol_assert() macro, this macro should **never** be called
+ *      within a SOL_CATCH block as it may potentially lead to an infinite loop.
  */
-#define /* void */ sol_try(p)             \
-        do {                              \
-                if ((__sol_erno = (p)))   \
-                        goto __SOL_CATCH; \
+#define /* void */ sol_try(p)                            \
+        do {                                             \
+                if (sol_unlikely ((__sol_erno = (p)))) { \
+                        goto __SOL_CATCH;                \
+                }                                        \
         } while (0)
 
 
