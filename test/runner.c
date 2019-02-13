@@ -34,38 +34,39 @@
 
 /*
  *      suite - function pointer to test suites
+ *        - log  : logging callback
+ *        - pass : passed test cases
+ *        - fail : failed test cases
+ *        - total: total test cases executed
+ *
+ *      Return:
+ *        - SOL_ERNO_NULL if no error occurs
+ *        - SOL_ERNO_TEST if a test case fails
+ *        - SOL_ERNO_PTR if an invalid pointer has been referenced
  */
-typedef sol_erno        /* error code                */
-(suite)(sol_tlog *log,  /* logging callback          */
-        int      *pass, /* passed test cases         */
-        int      *fail, /* failed test cases         */
-        int      *total /* total test cases executed */
-       );
+typedef sol_erno (suite)(sol_tlog *log,
+                         int *pass,
+                         int *fail,
+                         int *total);
+
+
 
 
 /*
- *      SUITE_COUNT - count of test suites
+ *      SUITE - enumerates test suite indices
+ *        - SUITE_ERROR: exception handling module test suite index
+ *        - SUITE_TEST : unit test module test suite index
+ *        - SUITE_HINT : compiler hints module test suite
+ *        - SUITE_ENV  : environment module test suite
+ *        - SUITE_COUNT: count of test suites
  */
-#define SUITE_COUNT 3
-
-
-/*
- *      SUITE_ERROR - index of exception handling module test suite
- */
-#define SUITE_ERROR 0
-
-
-/*
- *      SUITE_TEST - index of unit testing module test suite
- */
-#define SUITE_TEST 1
-
-
-/*
- *      SUITE_HINT - index of the compiler hints module test suite
- */
-#define SUITE_HINT 2
-
+typedef enum {
+        SUITE_ERROR,
+        SUITE_TEST,
+        SUITE_HINT,
+        SUITE_ENV,
+        SUITE_COUNT
+} SUITE;
 
 
 
@@ -105,18 +106,21 @@ typedef sol_erno        /* error code                */
 /*
  *      suite_hnd - test suite handles
  */
-static suite *suite_hnd [SUITE_COUNT];
+static suite *suite_hnd[SUITE_COUNT];
 
 
 
 
 /*
- *      stat__suite - test case statistics for each test suite
+ *      stat_suite - test case statistics for each test suite
+ *        - pass : passed test cases per suite
+ *        - fail : failed test cases per suite
+ *        - total: total test cases per suite
  */
 static struct {
-        int pass   [SUITE_COUNT]; /* passed test cases per suite */
-        int fail   [SUITE_COUNT]; /* failed test cases per suite */
-        int total  [SUITE_COUNT]; /* total test cases per suite  */
+        int pass[SUITE_COUNT];
+        int fail[SUITE_COUNT];
+        int total[SUITE_COUNT];
 } stat_suite;
 
 
@@ -124,11 +128,14 @@ static struct {
 
 /*
  *      stat_sigma - summation statistics for all test suites
+ *        - pass : sigma of passed test cases
+ *        - fail : sigma of failed test cases
+ *        - total: sigma of total test cases
  */
 static struct {
-        int pass;  /* sigma of passed test cases */
-        int fail;  /* sigma of failed test cases */
-        int total; /* sigma of total test cases  */
+        int pass;
+        int fail;
+        int total;
 } stat_sigma;
 
 
@@ -145,7 +152,7 @@ static FILE *log_hnd;
 /*
  *      log_init() - initialise test log file
  */
-static inline void
+static sol_inline void
 log_init(int  argc,  /* count of command line arguments */
          char **argv /* command line arguments          */
          )
@@ -162,7 +169,7 @@ log_init(int  argc,  /* count of command line arguments */
 /*
  *      log_term() - terminate test log file
  */
-static inline void
+static sol_inline void
 log_term(void)
 {
                 /* release log file if it's open */
@@ -177,7 +184,7 @@ log_term(void)
 /*
  *      log_tcase() - callback to log test case result
  */
-static inline void
+static sol_inline void
 log_tcase(char     const *desc, /* test case description            */
           sol_erno const erno   /* error code returned by test case */
          )
@@ -270,9 +277,10 @@ static void
 suite_init(void)
 {
                 /* register test suites */
-        suite_hnd [SUITE_ERROR] = __sol_tsuite_error;
-        suite_hnd [SUITE_TEST]  = __sol_tsuite_test;
-        suite_hnd [SUITE_HINT]  = __sol_tsuite_hint;
+        suite_hnd[SUITE_ERROR] = __sol_tsuite_error;
+        suite_hnd[SUITE_TEST] = __sol_tsuite_test;
+        suite_hnd[SUITE_HINT] = __sol_tsuite_hint;
+        suite_hnd[SUITE_ENV] = __sol_tests_env;
 }
 
 
