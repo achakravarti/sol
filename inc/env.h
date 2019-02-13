@@ -42,12 +42,13 @@ typedef enum __SOL_ENV_COMPILER {
 
 
 typedef enum __SOL_ENV_CSTD {
-        SOL_ENV_CSTD_UNKNOWN,
-        SOL_ENV_CSTD_C89,
-        SOL_ENV_CSTD_C90,
-        SOL_ENV_CSTD_C94,
-        SOL_ENV_CSTD_C11,
-        SOL_ENV_CSTD_C18
+        SOL_ENV_STDC_UNKNOWN,
+        SOL_ENV_STDC_C89,
+        SOL_ENV_STDC_C90,
+        SOL_ENV_STDC_C94,
+        SOL_ENV_STDC_C99,
+        SOL_ENV_STDC_C11,
+        SOL_ENV_STDC_C18
 } SOL_ENV_CSTD;
 
 
@@ -93,21 +94,21 @@ typedef enum __SOL_ENV_ARCH {
 #if (defined __STDC__)
 #       if (defined __STDC_VERSION__)
 #               if (__STDC_VERSION__ >= 201710L)
-#                       define sol_env_cstd() SOL_ENV_CSTD_C18
+#                       define sol_env_stdc() SOL_ENV_STDC_C18
 #               elif (__STDC_VERSION__ >= 201112L)
-#                       define sol_env_cstd() SOL_ENV_CSTD_C11
+#                       define sol_env_stdc() SOL_ENV_STDC_C11
 #               elif (__STDC_VERSION__ >= 199901L)
-#                       define sol_env_cstd() SOL_ENV_CSTD_C99
+#                       define sol_env_stdc() SOL_ENV_STDC_C99
 #               elif (__STDC_VERSION__ >= 199409L)
-#                       define sol_env_cstd() SOL_ENV_CSTD_C94
+#                       define sol_env_stdc() SOL_ENV_STDC_C94
 #               else
-#                       define sol_env_cstd() SOL_ENV_CSTD_C90
+#                       define sol_env_stdc() SOL_ENV_STDC_C90
 #               endif
 #       else
-#               define sol_env_cstd() SOL_ENV_CSTD_C89
+#               define sol_env_stdc() SOL_ENV_STDC_C89
 #       endif
 #else
-#       define sol_env_cstd() SOL_ENV_CSTD_UNKNOWN
+#       define sol_env_stdc() SOL_ENV_STDC_UNKNOWN
 #endif
 
 
