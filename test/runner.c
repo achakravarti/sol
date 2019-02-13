@@ -34,54 +34,39 @@
 
 /*
  *      suite - function pointer to test suites
+ *        - log  : logging callback
+ *        - pass : passed test cases
+ *        - fail : failed test cases
+ *        - total: total test cases executed
+ *
+ *      Return:
+ *        - SOL_ERNO_NULL if no error occurs
+ *        - SOL_ERNO_TEST if a test case fails
+ *        - SOL_ERNO_PTR if an invalid pointer has been referenced
  */
-typedef sol_erno        /* error code                */
-(suite)(sol_tlog *log,  /* logging callback          */
-        int      *pass, /* passed test cases         */
-        int      *fail, /* failed test cases         */
-        int      *total /* total test cases executed */
-       );
+typedef sol_erno (suite)(sol_tlog *log,
+                         int *pass,
+                         int *fail,
+                         int *total);
 
 
 
 
 /*
- *      SUITE_COUNT - count of test suites
+ *      SUITE - enumerates test suite indices
+ *        - SUITE_ERROR: exception handling module test suite index
+ *        - SUITE_TEST : unit test module test suite index
+ *        - SUITE_HINT : compiler hints module test suite
+ *        - SUITE_ENV  : environment module test suite
+ *        - SUITE_COUNT: count of test suites
  */
-#define SUITE_COUNT 4
-
-
-
-
-/*
- *      SUITE_ERROR - index of exception handling module test suite
- */
-#define SUITE_ERROR 0
-
-
-
-
-/*
- *      SUITE_TEST - index of unit testing module test suite
- */
-#define SUITE_TEST 1
-
-
-
-
-/*
- *      SUITE_HINT - index of the compiler hints module test suite
- */
-#define SUITE_HINT 2
-
-
-
-
-/*
- *      SUITE_ENV - index of the environment module test suite
- */
-#define SUITE_ENV 3
-
+typedef enum {
+        SUITE_ERROR,
+        SUITE_TEST,
+        SUITE_HINT,
+        SUITE_ENV,
+        SUITE_COUNT
+} SUITE;
 
 
 
@@ -127,12 +112,15 @@ static suite *suite_hnd[SUITE_COUNT];
 
 
 /*
- *      stat__suite - test case statistics for each test suite
+ *      stat_suite - test case statistics for each test suite
+ *        - pass : passed test cases per suite
+ *        - fail : failed test cases per suite
+ *        - total: total test cases per suite
  */
 static struct {
-        int pass[SUITE_COUNT];  /* passed test cases per suite */
-        int fail[SUITE_COUNT];  /* failed test cases per suite */
-        int total[SUITE_COUNT]; /* total test cases per suite  */
+        int pass[SUITE_COUNT];
+        int fail[SUITE_COUNT];
+        int total[SUITE_COUNT];
 } stat_suite;
 
 
@@ -140,11 +128,14 @@ static struct {
 
 /*
  *      stat_sigma - summation statistics for all test suites
+ *        - pass : sigma of passed test cases
+ *        - fail : sigma of failed test cases
+ *        - total: sigma of total test cases
  */
 static struct {
-        int pass;  /* sigma of passed test cases */
-        int fail;  /* sigma of failed test cases */
-        int total; /* sigma of total test cases  */
+        int pass;
+        int fail;
+        int total;
 } stat_sigma;
 
 
