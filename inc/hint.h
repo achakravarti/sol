@@ -32,6 +32,11 @@
 
 
 
+#include "./env.h"
+
+
+
+
 /*
  *      sol_hot - hot code hint
  *
@@ -41,7 +46,7 @@
  *      hint is available on GCC-compatible compilation environments, and
  *      degrades gracefully to a safe no-op on other environments.
  */
-#if (defined __GNUC__) || (defined __clang__)
+#if (SOL_ENV_CC_GNUC == sol_env_cc() || SOL_ENV_CC_CLANG == sol_env_cc())
 #       define sol_hot __attribute__((hot))
 #else
 #       define sol_hot
@@ -59,7 +64,7 @@
  *      hint is available on GCC-compatible compilation environments, and
  *      degrades gracefully to a safe no-op on other environments.
  */
-#if (defined __GNUC__) || (defined __clang__)
+#if (SOL_ENV_CC_GNUC == sol_env_cc() || SOL_ENV_CC_CLANG == sol_env_cc())
 #       define sol_cold __attribute__((cold))
 #else
 #       define sol_cold
@@ -85,7 +90,7 @@
  *        - 0 if @p evaluates to false
  *        - 1 if @p evaluates to true
  */
-#if (defined __GNUC__) || (defined __clang__)
+#if (SOL_ENV_CC_GNUC == sol_env_cc() || SOL_ENV_CC_CLANG == sol_env_cc())
 #       define sol_likely(p) (__builtin_expect(!!(p), 1))
 #else
 #       define sol_likely(p) (p)
@@ -111,7 +116,7 @@
  *        - 0 if @p evaluates to false
  *        - 1 if @p evaluates to true
  */
-#if (defined __GNUC__) || (defined __clang__)
+#if (SOL_ENV_CC_GNUC == sol_env_cc() || SOL_ENV_CC_CLANG == sol_env_cc())
 #       define sol_unlikely(p) (__builtin_expect(!!(p), 0))
 #else
 #       define sol_unlikely(p) (p)
@@ -128,10 +133,11 @@
  *      This symbol expands to the inline keyword when C99 and above is used,
  *      and gracefully degrades on earlier versions.
  *
- *      If inlining is essential in C89/C90, then the only way out is to declare
- *      the inline code as a macro, optionally wrapped in a do-while(0) loop.
+ *      If inlining is essential in dialects predating C99, then the only way
+ *      out is to declare the inline code as a macro, optionally wrapped in a
+ *      do-while(0) loop.
  */
-#if (defined __STDC_VERSION__ && __STDC_VERSION__ >= 199901L)
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
 #       define sol_inline inline
 #else
 #       define sol_inline
@@ -148,7 +154,7 @@
  *      This symbol expands to the restrict keyword when C99 and above is used,
  *      and gracefully degrades on earlier versions.
  */
-#if (defined __STDC_VERSION__ && __STDC_VERSION__ >= 199901L)
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
 #       define sol_restrict restrict
 #else
 #       define sol_restrict
