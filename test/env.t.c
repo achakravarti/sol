@@ -33,17 +33,16 @@
 
 
 /*
- *      compiler_01() - sol_env_compiler() unit test #1
+ *      cc_01() - sol_env_cc() unit test #1
  */
-static sol_erno compiler_01(void)
+static sol_erno cc_01(void)
 {
-        #define COMPILER_01 "sol_env_compiler() is able to determine the" \
-                            " compiler being used for compilation"
+        #define CC_01 "sol_env_cc() is able to determine the C compiler being" \
+                      " used for compilation"
 
 SOL_TRY:
                 /* check test condition */
-        sol_assert (sol_env_compiler() != SOL_ENV_COMPILER_UNKNOWN,
-                    SOL_ERNO_TEST);
+        sol_assert (sol_env_cc() >= 0, SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* throw current exception, if any */
@@ -63,7 +62,7 @@ static sol_erno stdc_01(void)
 
 SOL_TRY:
                 /* check test condition */
-        sol_assert (sol_env_stdc() != SOL_ENV_STDC_UNKNOWN, SOL_ERNO_TEST);
+        sol_assert (sol_env_stdc() >= 0, SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* throw current exception, if any */
@@ -83,7 +82,7 @@ static sol_erno host_01(void)
 
 SOL_TRY:
                 /* check test condition */
-        sol_assert (sol_env_host() != SOL_ENV_HOST_UNKNOWN, SOL_ERNO_TEST);
+        sol_assert (sol_env_host() >= 0, SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* throw current exception, if any */
@@ -103,7 +102,7 @@ static sol_erno arch_01(void)
 
 SOL_TRY:
                 /* check test condition */
-        sol_assert (sol_env_arch() != SOL_ENV_ARCH_UNKNOWN, SOL_ERNO_TEST);
+        sol_assert (sol_env_arch() >= 0, SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* throw current exception, if any */
@@ -152,7 +151,7 @@ SOL_TRY:
         sol_try (sol_tsuite_init2(ts, log));
 
                 /* register test cases */
-        sol_try (sol_tsuite_register(ts, &compiler_01, COMPILER_01));
+        sol_try (sol_tsuite_register(ts, &cc_01, CC_01));
         sol_try (sol_tsuite_register(ts, &stdc_01, STDC_01));
         sol_try (sol_tsuite_register(ts, &host_01, HOST_01));
         sol_try (sol_tsuite_register(ts, &arch_01, ARCH_01));

@@ -33,32 +33,28 @@
 
 
 /*
- *      SOL_ENV_COMPILER - enumerates compilers
- *        - SOL_ENV_COMPILER_UNKNOWN: Unsupported compiler
- *        - SOL_ENV_COMPILER_GNUC   : GNU C or GNU C compatible compiler
- *        - SOL_ENV_COMPILER_CLANG  : CLang front-end of LLVM compiler
+ *      SOL_ENV_CC - enumerates supported C compilers
+ *        - SOL_ENV_CC_GNUC : GNU C or GNU C compatible compiler
+ *        - SOL_ENV_CC_CLANG: CLang front-end of LLVM compiler
  */
-typedef enum __SOL_ENV_COMPILER {
-        SOL_ENV_COMPILER_UNKNOWN,
-        SOL_ENV_COMPILER_GNUC,
-        SOL_ENV_COMPILER_CLANG
-} SOL_ENV_COMPILER;
+typedef enum __SOL_ENV_CC {
+        SOL_ENV_CC_GNUC,
+        SOL_ENV_CC_CLANG
+} SOL_ENV_CC;
 
 
 
 
 /*
- *      SOL_ENV_STDC - enumerates C language standards
- *        - SOL_ENV_STDC_UNKNOWN: Unsupported C standard
- *        - SOL_ENV_STDC_C89    : C89 standard
- *        - SOL_ENV_STDC_C90    : C90 standard
- *        - SOL_ENV_STDC_C94    : C94 standard
- *        - SOL_ENV_STDC_C99    : C99 standard
- *        - SOL_ENV_STDC_C11    : C11 standard
- *        - SOL_ENV_STDC_C18    : C18 standard
+ *      SOL_ENV_STDC - enumerates supported C language standards
+ *        - SOL_ENV_STDC_C89: C89 standard
+ *        - SOL_ENV_STDC_C90: C90 standard
+ *        - SOL_ENV_STDC_C94: C94 standard
+ *        - SOL_ENV_STDC_C99: C99 standard
+ *        - SOL_ENV_STDC_C11: C11 standard
+ *        - SOL_ENV_STDC_C18: C18 standard
  */
 typedef enum __SOL_ENV_STDC {
-        SOL_ENV_STDC_UNKNOWN,
         SOL_ENV_STDC_C89,
         SOL_ENV_STDC_C90,
         SOL_ENV_STDC_C94,
@@ -71,8 +67,7 @@ typedef enum __SOL_ENV_STDC {
 
 
 /*
- *      SOL_ENV_HOST - enumerates host platforms
- *        - SOL_ENV_HOST_UNKNOWN: Unsupported platform
+ *      SOL_ENV_HOST - enumerates supported host platforms
  *        - SOL_ENV_HOST_ANDROID: Android
  *        - SOL_ENV_HOST_LINUX  : All other flavours of Linux
  *        - SOL_ENV_HOST_CYGWIN : Cygwin on Microsoft Windows
@@ -84,7 +79,6 @@ typedef enum __SOL_ENV_STDC {
  *        - SOL_ENV_HOST_SOLARIS: Oracle Solaris, Open Indiana
  */
 typedef enum __SOL_ENV_HOST {
-        SOL_ENV_HOST_UNKNOWN,
         SOL_ENV_HOST_ANDROID,
         SOL_ENV_HOST_LINUX,
         SOL_ENV_HOST_CYGWIN,
@@ -100,14 +94,12 @@ typedef enum __SOL_ENV_HOST {
 
 
 /*
- *      SOL_ENV_ARCH - enumerates CPU architectures
- *        - SOL_ENV_ARCH_UNKNOWN: Unsupported CPU architecture
- *        - SOL_ENV_ARCH_X68    : 32-bit x86 processor
- *        - SOL_ENV_ARCH_AMD64  : 64-bit x86_64 processor
- *        - SOL_ENV_ARCH_IA64   : 64-bit Itanium processor
+ *      SOL_ENV_ARCH - enumerates supported CPU architectures
+ *        - SOL_ENV_ARCH_X68  : 32-bit x86 processor
+ *        - SOL_ENV_ARCH_AMD64: 64-bit x86_64 processor
+ *        - SOL_ENV_ARCH_IA64 : 64-bit Itanium processor
  */
 typedef enum __SOL_ENV_ARCH {
-        SOL_ENV_ARCH_UNKNOWN,
         SOL_ENV_ARCH_X86,
         SOL_ENV_ARCH_AMD64,
         SOL_ENV_ARCH_IA64
@@ -117,14 +109,14 @@ typedef enum __SOL_ENV_ARCH {
 
 
 /*
- *      sol_env_compiler() - determines compile-time compiler
+ *      sol_env_cc() - determines C compiler at compile-time
  */
 #if (defined __GNUC__)
-#       define sol_env_compiler() SOL_ENV_COMPILER_GNUC
+#       define sol_env_cc() SOL_ENV_CC_GNUC
 #elif (defined __clang__)
-#       define sol_env_compiler() SOL_ENV_COMPILER_CLANG
+#       define sol_env_cc() SOL_ENV_CC_CLANG
 #else
-#       define sol_env_compiler() SOL_ENV_COMPILER_UNKNOWN
+#       error "[!] sol_env_cc() error: unsupported C compiler"
 #endif
 
 
@@ -150,7 +142,7 @@ typedef enum __SOL_ENV_ARCH {
 #               define sol_env_stdc() SOL_ENV_STDC_C89
 #       endif
 #else
-#       define sol_env_stdc() SOL_ENV_STDC_UNKNOWN
+#       error "[!] sol_env_stdc() error: unsupported C language standard"
 #endif
 
 
@@ -184,7 +176,7 @@ typedef enum __SOL_ENV_ARCH {
 #               define sol_env_host() SOL_ENV_HOST_OSX
 #       endif
 #else
-#       define sol_env_host() SOL_ENV_HOST_UNKNOWN
+#       error "[!] sol_env_host() error: unsupported host platform"
 #endif
 
 
@@ -202,7 +194,7 @@ typedef enum __SOL_ENV_ARCH {
        || defined __i486__ || defined __i586__ || defined __i686__)
 #       define sol_env_arch() SOL_ENV_ARCH_X86
 #else
-#       define sol_env_arch() SOL_ENV_ARCH_UNKNOWN
+#       error "[!] sol_env_arch() error: unsupported architecture"
 #endif
 
 
@@ -218,7 +210,7 @@ typedef enum __SOL_ENV_ARCH {
 #elif (SOL_ENV_ARCH_IA64 == sol_env_arch())
 #       define sol_env_wordsz() 64
 #else
-#       error "sol_env_wordsz() error: unknown compiler!"
+#       error "[!] sol_env_wordsz() error: unsupported architecture"
 #endif
 
 
