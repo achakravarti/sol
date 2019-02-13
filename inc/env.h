@@ -26,12 +26,18 @@
 
 
 
-#if !defined __SOL_ENVIRONMENT_MODULE
+#if (!defined __SOL_ENVIRONMENT_MODULE)
 #define __SOL_ENVIRONMENT_MODULE
 
 
 
 
+/*
+ *      SOL_ENV_COMPILER - enumerates compilers
+ *        - SOL_ENV_COMPILER_UNKNOWN: Unsupported compiler
+ *        - SOL_ENV_COMPILER_GNUC   : GNU C or GNU C compatible compiler
+ *        - SOL_ENV_COMPILER_CLANG  : CLang front-end of LLVM compiler
+ */
 typedef enum __SOL_ENV_COMPILER {
         SOL_ENV_COMPILER_UNKNOWN,
         SOL_ENV_COMPILER_GNUC,
@@ -41,6 +47,16 @@ typedef enum __SOL_ENV_COMPILER {
 
 
 
+/*
+ *      SOL_ENV_STDC - enumerates C language standards
+ *        - SOL_ENV_STDC_UNKNOWN: Unsupported C standard
+ *        - SOL_ENV_STDC_C89    : C89 standard
+ *        - SOL_ENV_STDC_C90    : C90 standard
+ *        - SOL_ENV_STDC_C94    : C94 standard
+ *        - SOL_ENV_STDC_C99    : C99 standard
+ *        - SOL_ENV_STDC_C11    : C11 standard
+ *        - SOL_ENV_STDC_C18    : C18 standard
+ */
 typedef enum __SOL_ENV_STDC {
         SOL_ENV_STDC_UNKNOWN,
         SOL_ENV_STDC_C89,
@@ -54,6 +70,19 @@ typedef enum __SOL_ENV_STDC {
 
 
 
+/*
+ *      SOL_ENV_HOST - enumerates host platforms
+ *        - SOL_ENV_HOST_UNKNOWN: Unsupported platform
+ *        - SOL_ENV_HOST_ANDROID: Android
+ *        - SOL_ENV_HOST_LINUX  : All other flavours of Linux
+ *        - SOL_ENV_HOST_CYGWIN : Cygwin on Microsoft Windows
+ *        - SOL_ENV_HOST_BSD    : All BSD variants
+ *        - SOL_ENV_HOST_HPUX   : HP-UX
+ *        - SOL_ENV_HOST_AIX    : IBM AIX
+ *        - SOL_ENV_HOST_IOS    : Apple iOS
+ *        - SOL_ENV_HOST_OSX    : Apple OSX
+ *        - SOL_ENV_HOST_SOLARIS: Oracle Solaris, Open Indiana
+ */
 typedef enum __SOL_ENV_HOST {
         SOL_ENV_HOST_UNKNOWN,
         SOL_ENV_HOST_ANDROID,
@@ -70,6 +99,13 @@ typedef enum __SOL_ENV_HOST {
 
 
 
+/*
+ *      SOL_ENV_ARCH - enumerates CPU architectures
+ *        - SOL_ENV_ARCH_UNKNOWN: Unsupported CPU architecture
+ *        - SOL_ENV_ARCH_X68    : 32-bit x86 processor
+ *        - SOL_ENV_ARCH_AMD64  : 64-bit x86_64 processor
+ *        - SOL_ENV_ARCH_IA64   : 64-bit Itanium processor
+ */
 typedef enum __SOL_ENV_ARCH {
         SOL_ENV_ARCH_UNKNOWN,
         SOL_ENV_ARCH_X86,
@@ -80,6 +116,9 @@ typedef enum __SOL_ENV_ARCH {
 
 
 
+/*
+ *      sol_env_compiler() - determines compile-time compiler
+ */
 #if (defined __GNUC__)
 #       define sol_env_compiler() SOL_ENV_COMPILER_GNUC
 #elif (defined __clang__)
@@ -91,6 +130,9 @@ typedef enum __SOL_ENV_ARCH {
 
 
 
+/*
+ *      sol_env_stdc() - determines compile-time C language standard
+ */
 #if (defined __STDC__)
 #       if (defined __STDC_VERSION__)
 #               if (__STDC_VERSION__ >= 201710L)
@@ -114,6 +156,9 @@ typedef enum __SOL_ENV_ARCH {
 
 
 
+/*
+ *      sol_env_host() - determines compile-time host platform
+ */
 #if (defined __CYGWIN__)
 #       define sol_env_host() SOL_ENV_HOST_CYGWIN
 #elif (defined __ANDROID__)
@@ -145,6 +190,9 @@ typedef enum __SOL_ENV_ARCH {
 
 
 
+/*
+ *      sol_env_arch() - determines compile-time CPU architecture
+ */
 #if (defined __amd64__ || defined __amd64                          \
      || defined __x86_64__  || defined __x86_64)
 #       define sol_env_arch() SOL_ENV_ARCH_AMD64
@@ -160,6 +208,9 @@ typedef enum __SOL_ENV_ARCH {
 
 
 
+/*
+ *      sol_env_wordsz() - determines compile-time native word size
+ */
 #if (SOL_ENV_ARCH_X86 == sol_env_arch())
 #       define sol_env_wordsz() 32
 #elif (SOL_ENV_ARCH_AMD64 == sol_env_arch())
@@ -173,7 +224,7 @@ typedef enum __SOL_ENV_ARCH {
 
 
 
-#endif /* __SOL_ENVIRONMENT_MODULE */
+#endif /* (!defined __SOL_ENVIRONMENT_MODULE) */
 
 
 
