@@ -260,6 +260,10 @@ typedef enum __SOL_ENV_ARCH {
 #       elif (1 == TARGET_OS_MAC)
 #               define sol_env_host() SOL_ENV_HOST_OSX
 #       endif
+#elif (defined __STDC_HOSTED__)
+#       if (0 == __STDC_HOSTED__)
+#               define sol_env_host() SOL_ENV_HOST_NONE
+#       endif
 #else
 #       error "[!] sol_env_host() error: unsupported host platform"
 #endif
