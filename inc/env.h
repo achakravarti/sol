@@ -91,6 +91,7 @@ typedef enum __SOL_ENV_STDC {
 
 /*
  *      SOL_ENV_HOST - enumerates supported host platforms
+ *        - SOL_ENV_HOST_NONE   : Freestanding environment
  *        - SOL_ENV_HOST_ANDROID: Android
  *        - SOL_ENV_HOST_LINUX  : All other flavours of Linux
  *        - SOL_ENV_HOST_CYGWIN : Cygwin on Microsoft Windows
@@ -112,6 +113,7 @@ typedef enum __SOL_ENV_STDC {
  *      tests.
  */
 typedef enum __SOL_ENV_HOST {
+        SOL_ENV_HOST_NONE,
         SOL_ENV_HOST_ANDROID,
         SOL_ENV_HOST_LINUX,
         SOL_ENV_HOST_CYGWIN,
@@ -223,6 +225,7 @@ typedef enum __SOL_ENV_ARCH {
  *      in case an unsupported host is detected.
  *
  *      Return:
+ *        - SOL_ENV_HOST_NONE if freestanding environment detected
  *        - SOL_ENV_HOST_ANDROID if Android detected
  *        - SOL_ENV_HOST_LINUX if other Linux flavour detected
  *        - SOL_ENV_HOST_CYGWIN if Cygwin on Microsoft Windows detected
