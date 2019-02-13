@@ -36,23 +36,19 @@
 /*
  *      __sol_tsuite_error() - test suite for exception handling module
  */
-extern sol_erno
-__sol_tsuite_error(sol_tlog *log,
-                   int      *pass,
-                   int      *fail,
-                   int      *total
-                  );
+extern sol_erno __sol_tsuite_error(sol_tlog *log,
+                                   int *pass,
+                                   int *fail,
+                                   int *total);
 
 
 /*
  *      __sol_tsuite_test() - test suite for unit testing module
  */
-extern sol_erno
-__sol_tsuite_test(sol_tlog *log,
-                  int      *pass,
-                  int      *fail,
-                  int      *total
-                 );
+extern sol_erno __sol_tsuite_test(sol_tlog *log,
+                                  int *pass,
+                                  int *fail,
+                                  int *total);
 
 
 /*
@@ -62,6 +58,19 @@ extern sol_erno __sol_tsuite_hint(sol_tlog *log,
                                   int *pass,
                                   int *fail,
                                   int *total);
+
+
+
+
+/*
+ *      __sol_tests_env() - test suite for environment module
+ */
+extern sol_erno __sol_tests_env(sol_tlog *log,
+                                int *pass,
+                                int *fail,
+                                int *total);
+
+
 
 
 #endif /* !defined __SOL_LIBRARY_TEST_SUITES */

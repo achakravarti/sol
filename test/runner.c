@@ -43,10 +43,14 @@ typedef sol_erno        /* error code                */
        );
 
 
+
+
 /*
  *      SUITE_COUNT - count of test suites
  */
-#define SUITE_COUNT 3
+#define SUITE_COUNT 4
+
+
 
 
 /*
@@ -55,16 +59,28 @@ typedef sol_erno        /* error code                */
 #define SUITE_ERROR 0
 
 
+
+
 /*
  *      SUITE_TEST - index of unit testing module test suite
  */
 #define SUITE_TEST 1
 
 
+
+
 /*
  *      SUITE_HINT - index of the compiler hints module test suite
  */
 #define SUITE_HINT 2
+
+
+
+
+/*
+ *      SUITE_ENV - index of the environment module test suite
+ */
+#define SUITE_ENV 3
 
 
 
@@ -105,7 +121,7 @@ typedef sol_erno        /* error code                */
 /*
  *      suite_hnd - test suite handles
  */
-static suite *suite_hnd [SUITE_COUNT];
+static suite *suite_hnd[SUITE_COUNT];
 
 
 
@@ -114,9 +130,9 @@ static suite *suite_hnd [SUITE_COUNT];
  *      stat__suite - test case statistics for each test suite
  */
 static struct {
-        int pass   [SUITE_COUNT]; /* passed test cases per suite */
-        int fail   [SUITE_COUNT]; /* failed test cases per suite */
-        int total  [SUITE_COUNT]; /* total test cases per suite  */
+        int pass[SUITE_COUNT];  /* passed test cases per suite */
+        int fail[SUITE_COUNT];  /* failed test cases per suite */
+        int total[SUITE_COUNT]; /* total test cases per suite  */
 } stat_suite;
 
 
@@ -145,7 +161,7 @@ static FILE *log_hnd;
 /*
  *      log_init() - initialise test log file
  */
-static inline void
+static sol_inline void
 log_init(int  argc,  /* count of command line arguments */
          char **argv /* command line arguments          */
          )
@@ -162,7 +178,7 @@ log_init(int  argc,  /* count of command line arguments */
 /*
  *      log_term() - terminate test log file
  */
-static inline void
+static sol_inline void
 log_term(void)
 {
                 /* release log file if it's open */
@@ -177,7 +193,7 @@ log_term(void)
 /*
  *      log_tcase() - callback to log test case result
  */
-static inline void
+static sol_inline void
 log_tcase(char     const *desc, /* test case description            */
           sol_erno const erno   /* error code returned by test case */
          )
@@ -270,9 +286,10 @@ static void
 suite_init(void)
 {
                 /* register test suites */
-        suite_hnd [SUITE_ERROR] = __sol_tsuite_error;
-        suite_hnd [SUITE_TEST]  = __sol_tsuite_test;
-        suite_hnd [SUITE_HINT]  = __sol_tsuite_hint;
+        suite_hnd[SUITE_ERROR] = __sol_tsuite_error;
+        suite_hnd[SUITE_TEST] = __sol_tsuite_test;
+        suite_hnd[SUITE_HINT] = __sol_tsuite_hint;
+        suite_hnd[SUITE_ENV] = __sol_tests_env;
 }
 
 
