@@ -73,6 +73,17 @@ extern sol_erno __sol_tests_env(sol_tlog *log,
 
 
 
+/*
+ *      __sol_tests_ptr() - test suite for the pointer module
+ */
+extern sol_erno __sol_tests_ptr(sol_tlog *log,
+                                int *pass,
+                                int *fail,
+                                int *total);
+
+
+
+
 #endif /* !defined __SOL_LIBRARY_TEST_SUITES */
 
 
