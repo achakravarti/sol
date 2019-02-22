@@ -32,6 +32,28 @@
 
 
 
+typedef void sol_ptr;
+
+
+
+
+extern sol_erno sol_ptr_new(sol_ptr **ptr,
+                            const sol_size sz);
+
+
+
+extern sol_erno sol_ptr_copy(sol_ptr **ptr,
+                             const sol_ptr *src,
+                             const sol_size sz);
+
+
+
+
+extern void sol_ptr_free(sol_ptr **ptr);
+
+
+
+
 #endif /* (!defined __SOL_POINTER_MODULE) */
 
 
