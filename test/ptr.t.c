@@ -103,6 +103,30 @@ SOL_CATCH:
 
 
 /*
+ *      copy_01() - sol_ptr_copy() unit test #1
+ */
+static sol_erno copy_01(void)
+{
+        #define COPY_01 "sol_ptr_copy() throws SOL_ERNO_PTR when passed a " \
+                       " null pointer for @ptr"
+        auto int *src = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_assert (!sol_ptr_new((sol_ptr*)&src, sizeof (int)), SOL_ERNO_TEST);
+        sol_try (sol_ptr_copy(SOL_PTR_NULL, src, sizeof (int)));
+
+SOL_CATCH:
+                /* check test condition */
+        return SOL_ERNO_PTR == sol_erno_now()
+               ? SOL_ERNO_NULL
+               : SOL_ERNO_TEST;
+}
+
+
+
+
+/*
  *      __sol_tests_ptr() - declared in sol/test/suite.h
  */
 extern sol_erno __sol_tests_ptr(sol_tlog *log,
@@ -123,6 +147,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &new_01, NEW_01));
         sol_try (sol_tsuite_register(ts, &new_02, NEW_02));
         sol_try (sol_tsuite_register(ts, &new_03, NEW_03));
+        sol_try (sol_tsuite_register(ts, &copy_01, COPY_01));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
