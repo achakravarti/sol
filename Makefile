@@ -27,6 +27,8 @@
 
 # 	Set directory paths
 DIR_BLD  = bld
+DIR_BIN  = $(DIR_BLD)/bin
+DIR_COV  = $(DIR_BLD)/cov
 DIR_SRC  = src
 DIR_TEST = test
 
@@ -53,11 +55,11 @@ OPT_COV = -o $(DIR_BLD)
 
 
 # 	Set command inputs
-INP_SO  = $(DIR_BLD)/test.o
-INP_LD  = $(DIR_TEST)/runner.c $(DIR_TEST)/error.t.c $(DIR_TEST)/test.t.c \
-	  $(DIR_TEST)/hint.t.c $(DIR_TEST)/env.t.c
-INP_COV = $(DIR_BLD)/test.gcda $(DIR_BLD)/runner.gcda $(DIR_BLD)/error.t.gcda \
-	  $(DIR_BLD)/test.t.gcda $(DIR_BLD)/hint.t.gcda $(DIR_BLD)/env.t.gcda
+INP_SO  = $(DIR_BLD)/test.o $(DIR_BLD)/ptr.o
+INP_LD  = $(DIR_TEST)/runner.c $(DIR_TEST)/ts-error.c $(DIR_TEST)/ts-test.c \
+	  $(DIR_TEST)/ts-hint.c $(DIR_TEST)/ts-env.c $(DIR_TEST)/ts-ptr.c   \
+	  $(DIR_TEST)/ts-ptr2.c
+INP_COV = $(DIR_BLD)/test.gcda $(DIR_BLD)/ptr.gcda
 INP_RUN = $(DIR_BLD)/test.log
 
 
@@ -104,7 +106,10 @@ integration: $(OUT_LD)
 	$(CMD_RUN) $(INP_RUN)
 	mv $(DEP_COV) $(DIR_BLD)
 	$(CMD_COV) $(OPT_COV) $(INP_COV)
-	mv $(OUT_COV) $(DIR_BLD)
+	mkdir -p $(DIR_BIN)
+	mkdir -p $(DIR_COV)
+	mv $(OUT_LD) $(OUT_SO) $(DIR_BLD)/*.o $(DIR_BIN)
+	mv $(OUT_COV) $(DIR_BLD)/*.gcno $(DIR_BLD)/*.gcda $(DIR_COV)
 
 
 

@@ -1,7 +1,7 @@
 /******************************************************************************
  *                           SOL LIBRARY v1.0.0+41
  *
- * File: sol/test/env.t.c
+ * File: sol/test/ts-env.c
  *
  * Description:
  *      This file is part of the internal quality checking of the Sol Library.

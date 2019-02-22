@@ -119,7 +119,15 @@ typedef size_t sol_erno;
  *      test is checking has not been fulfilled. This error code is reserved by
  *      the Sol Library, and should **not** be redefined by client code.
  */
-#define SOL_ERNO_TEST ( (sol_erno)0x4 )
+#define SOL_ERNO_TEST ((sol_erno)0x4)
+
+
+
+
+/*
+ *      SOL_ERNO_HEAP - heap memory failure
+ */
+#define SOL_ERNO_HEAP ((sol_erno)0x5)
 
 
 
