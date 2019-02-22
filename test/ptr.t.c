@@ -80,6 +80,29 @@ SOL_CATCH:
 
 
 /*
+ *      new_03() - sol_ptr_new() unit test #3
+ */
+static sol_erno new_03(void)
+{
+        #define NEW_03 "sol_ptr_new() throws SOL_ERNO_RANGE when passed 0" \
+                       " for @sz"
+        auto sol_ptr *ptr = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_ptr_new(&ptr, 0));
+
+SOL_CATCH:
+                /* check test condition */
+        return SOL_ERNO_RANGE == sol_erno_now()
+               ? SOL_ERNO_NULL
+               : SOL_ERNO_TEST;
+}
+
+
+
+
+/*
  *      __sol_tests_ptr() - declared in sol/test/suite.h
  */
 extern sol_erno __sol_tests_ptr(sol_tlog *log,
@@ -99,6 +122,7 @@ SOL_TRY:
                 /* register test cases */
         sol_try (sol_tsuite_register(ts, &new_01, NEW_01));
         sol_try (sol_tsuite_register(ts, &new_02, NEW_02));
+        sol_try (sol_tsuite_register(ts, &new_03, NEW_03));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
