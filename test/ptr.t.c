@@ -34,12 +34,34 @@
 
 
 /*
+ *      new_01() - sol_ptr_new() unit test #1
+ */
+static sol_erno new_01(void)
+{
+        #define NEW_01 "sol_ptr_new() throws SOL_ERNO_PTR when passed a null" \
+                       " pointer for @ptr"
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_ptr_new(SOL_PTR_NULL, sizeof (int)));
+
+SOL_CATCH:
+                /* check test condition */
+        return SOL_ERNO_PTR == sol_erno_now()
+               ? SOL_ERNO_NULL
+               : SOL_ERNO_TEST;
+}
+
+
+
+
+/*
  *      __sol_tests_ptr() - declared in sol/test/suite.h
  */
-extern sol_erno __sol_tests_(sol_tlog *log,
-                             int *pass,
-                             int *fail,
-                             int *total)
+extern sol_erno __sol_tests_ptr(sol_tlog *log,
+                                int *pass,
+                                int *fail,
+                                int *total)
 {
         auto sol_tsuite __ts, *ts = &__ts;
 
@@ -51,6 +73,7 @@ SOL_TRY:
         sol_try (sol_tsuite_init2(ts, log));
 
                 /* register test cases */
+        sol_try (sol_tsuite_register(ts, &new_01, NEW_01));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
