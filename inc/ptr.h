@@ -43,6 +43,11 @@ typedef void sol_ptr;
 
 
 
+#define SOL_PTR_NULL ((sol_ptr*)0)
+
+
+
+
 extern sol_erno sol_ptr_new(sol_ptr **ptr,
                             const size_t sz); /* NOLINT */
 

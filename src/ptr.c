@@ -69,6 +69,17 @@ SOL_CATCH:
 
 
 
+extern void sol_heap_free(sol_ptr **ptr)
+{
+        if (sol_likely (ptr && *ptr)) {
+                free(*ptr);
+                *ptr = SOL_PTR_NULL;
+        }
+}
+
+
+
+
 /******************************************************************************
  *                                    EOF
  *          Built on hyperion [Tue Jan 29 02:37:24 UTC 2019]
