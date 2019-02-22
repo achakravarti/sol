@@ -56,6 +56,30 @@ SOL_CATCH:
 
 
 /*
+ *      new_02() - sol_ptr_new() unit test #2
+ */
+static sol_erno new_02(void)
+{
+        #define NEW_02 "sol_ptr_new() throws SOL_ERNO_PTR when passed a"   \
+                       " pointer for @ptr that has already been allocated"
+        auto sol_ptr *ptr = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_assert (SOL_ERNO_NULL == sol_ptr_new(&ptr, sizeof (int)), SOL_ERNO_TEST);
+        sol_try (sol_ptr_new(&ptr, sizeof (int)));
+
+SOL_CATCH:
+                /* check test condition */
+        return SOL_ERNO_PTR == sol_erno_now()
+               ? SOL_ERNO_NULL
+               : SOL_ERNO_TEST;
+}
+
+
+
+
+/*
  *      __sol_tests_ptr() - declared in sol/test/suite.h
  */
 extern sol_erno __sol_tests_ptr(sol_tlog *log,
@@ -74,6 +98,7 @@ SOL_TRY:
 
                 /* register test cases */
         sol_try (sol_tsuite_register(ts, &new_01, NEW_01));
+        sol_try (sol_tsuite_register(ts, &new_02, NEW_02));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
