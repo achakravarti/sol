@@ -32,19 +32,25 @@
 
 
 
+#include "./error.h"
+#include <stddef.h>
+
+
+
+
 typedef void sol_ptr;
 
 
 
 
 extern sol_erno sol_ptr_new(sol_ptr **ptr,
-                            const sol_size sz);
+                            const size_t sz); /* NOLINT */
 
 
 
 extern sol_erno sol_ptr_copy(sol_ptr **ptr,
                              const sol_ptr *src,
-                             const sol_size sz);
+                             const size_t sz);   /* NOLINT */
 
 
 
