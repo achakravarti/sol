@@ -26,9 +26,9 @@
 
 
 
-#include "../inc/ptr.h"
 #include "../inc/env.h"
-#if (SOL_ENV_HOST_NONE != sol_env_host())
+#include "../inc/ptr.h"
+#if (sol_env_host() != SOL_ENV_HOST_NONE)
 #       include <stdlib.h>
 #endif
 
@@ -39,28 +39,17 @@ extern sol_erno sol_ptr_new(sol_ptr **ptr,
                             const size_t sz)
 {
 SOL_TRY:
-        sol_assert (ptr && !*ptr, SOL_ERNO_PTR);
-        sol_assert (sz, SOL_ERNO_SZ);
+        #if (SOL_ENV_HOST_NONE == sol_env_host())
+        #       error "[!] sol_ptr_new() error: malloc() not available"
+        #endif
 
-        sol_assert ((*ptr = malloc(sz)), SOL_ERNO_HEAP);
+        sol_assert (ptr && !*ptr, SOL_ERNO_NULL);
+        sol_assert (sz, SOL_ERNO_NULL);
+
+        sol_assert ((*ptr = malloc(sz)), SOL_ERNO_NULL);
 
 SOL_CATCH:
         sol_throw();
-}
-
-
-
-extern sol_erno sol_ptr_copy(sol_ptr **ptr,
-                             const sol_ptr *src,
-                             const size_t sz)
-{
-}
-
-
-
-
-extern void sol_ptr_free(sol_ptr **ptr)
-{
 }
 
 
