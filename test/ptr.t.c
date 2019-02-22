@@ -66,7 +66,7 @@ static sol_erno new_02(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        sol_assert (SOL_ERNO_NULL == sol_ptr_new(&ptr, sizeof (int)), SOL_ERNO_TEST);
+        sol_assert (!sol_ptr_new(&ptr, sizeof (int)), SOL_ERNO_TEST);
         sol_try (sol_ptr_new(&ptr, sizeof (int)));
 
 SOL_CATCH:
@@ -114,7 +114,33 @@ static sol_erno copy_01(void)
 SOL_TRY:
                 /* set up test scenario */
         sol_assert (!sol_ptr_new((sol_ptr*)&src, sizeof (int)), SOL_ERNO_TEST);
-        sol_try (sol_ptr_copy(SOL_PTR_NULL, src, sizeof (int)));
+        sol_try (sol_ptr_copy(SOL_PTR_NULL, (sol_ptr*)src, sizeof (int)));
+
+SOL_CATCH:
+                /* check test condition */
+        return SOL_ERNO_PTR == sol_erno_now()
+               ? SOL_ERNO_NULL
+               : SOL_ERNO_TEST;
+}
+
+
+
+
+/*
+ *      copy_02() - sol_ptr_copy() unit test #2
+ */
+static sol_erno copy_02(void)
+{
+        #define COPY_02 "sol_ptr_copy() throws SOL_ERNO_PTR when passed a"   \
+                       " pointer for @ptr that has already been allocated"
+        auto sol_ptr *ptr = SOL_PTR_NULL;
+        auto int *src = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_assert (!sol_ptr_new((sol_ptr*)&src, sizeof (int)), SOL_ERNO_TEST);
+        sol_assert (!sol_ptr_new(&ptr, sizeof (int)), SOL_ERNO_TEST);
+        sol_try (sol_ptr_copy(ptr, (sol_ptr*)src, sizeof (int)));
 
 SOL_CATCH:
                 /* check test condition */
@@ -148,6 +174,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &new_02, NEW_02));
         sol_try (sol_tsuite_register(ts, &new_03, NEW_03));
         sol_try (sol_tsuite_register(ts, &copy_01, COPY_01));
+        sol_try (sol_tsuite_register(ts, &copy_02, COPY_02));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
