@@ -319,6 +319,32 @@ static sol_erno free_01(void)
 
 
 /*
+ *      free_02() - sol_ptr_free() unit test #2
+ */
+static sol_erno free_02(void)
+{
+        #define FREE_02 "sol_ptr_free() releases the heap memory allocated to" \
+                        " @ptr"
+        auto int *ptr;
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_ptr_new((sol_ptr**) &ptr, sizeof (*ptr)));
+        *ptr = 5;
+        sol_ptr_free((sol_ptr**) &ptr);
+
+                /* check test condition */
+        sol_assert (!ptr, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* throw current exception, if any */
+        sol_throw();
+}
+
+
+
+
+/*
  *      __sol_tests_ptr() - declared in sol/test/suite.h
  */
 extern sol_erno __sol_tests_ptr(sol_tlog *log,
@@ -346,6 +372,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &copy_04, COPY_04));
         sol_try (sol_tsuite_register(ts, &copy_05, COPY_05));
         sol_try (sol_tsuite_register(ts, &free_01, FREE_01));
+        sol_try (sol_tsuite_register(ts, &free_02, FREE_02));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
