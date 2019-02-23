@@ -303,6 +303,22 @@ SOL_CATCH:
 
 
 /*
+ *      free_01() - sol_ptr_free() unit test #1
+ */
+static sol_erno free_01(void)
+{
+        #define FREE_01 "sol_ptr_free() executes even if passed an invalid" \
+                        " pointer for @ptr"
+
+                /* set up test scenario */
+        sol_ptr_free(SOL_PTR_NULL);
+        return SOL_ERNO_NULL;
+}
+
+
+
+
+/*
  *      __sol_tests_ptr() - declared in sol/test/suite.h
  */
 extern sol_erno __sol_tests_ptr(sol_tlog *log,
@@ -329,6 +345,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &copy_03, COPY_03));
         sol_try (sol_tsuite_register(ts, &copy_04, COPY_04));
         sol_try (sol_tsuite_register(ts, &copy_05, COPY_05));
+        sol_try (sol_tsuite_register(ts, &free_01, FREE_01));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
