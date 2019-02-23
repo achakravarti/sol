@@ -69,7 +69,13 @@ SOL_TRY:
         sol_assert (!sol_ptr_new(&ptr, sizeof (int)), SOL_ERNO_TEST);
         sol_try (sol_ptr_new(&ptr, sizeof (int)));
 
+                /* wind up */
+        sol_ptr_free(&ptr);
+
 SOL_CATCH:
+                /* wind up */
+        sol_ptr_free(&ptr);
+
                 /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
@@ -92,11 +98,47 @@ SOL_TRY:
                 /* set up test scenario */
         sol_try (sol_ptr_new(&ptr, 0));
 
+                /* wind up */
+        sol_ptr_free(&ptr);
+
 SOL_CATCH:
+                /* wind up */
+        sol_ptr_free(&ptr);
+
                 /* check test condition */
         return SOL_ERNO_RANGE == sol_erno_now()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
+}
+
+
+
+
+/*
+ *      new_04() - sol_ptr_new() unit test #4
+ */
+static sol_erno new_04(void)
+{
+        #define NEW_04 "sol_ptr_new() successfully allocates heap memory"
+        auto int *ptr = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_ptr_new((sol_ptr**)&ptr, sizeof (*ptr)));
+        *ptr = -612;
+
+                /* check test condition */
+        sol_assert (*ptr == -612, SOL_ERNO_TEST);
+
+                /* wind up */
+        sol_ptr_free((sol_ptr**)&ptr);
+
+SOL_CATCH:
+                /* wind up */
+        sol_ptr_free((sol_ptr**)&ptr);
+
+                /* throw current exception, if any */
+        sol_throw();
 }
 
 
@@ -116,7 +158,13 @@ SOL_TRY:
         sol_assert (!sol_ptr_new((sol_ptr*)&src, sizeof (int)), SOL_ERNO_TEST);
         sol_try (sol_ptr_copy(SOL_PTR_NULL, (sol_ptr*)src, sizeof (int)));
 
+                /* wind up */
+        sol_ptr_free((sol_ptr**)&src);
+
 SOL_CATCH:
+                /* wind up */
+        sol_ptr_free((sol_ptr**)&src);
+
                 /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
@@ -142,7 +190,15 @@ SOL_TRY:
         sol_assert (!sol_ptr_new(&ptr, sizeof (int)), SOL_ERNO_TEST);
         sol_try (sol_ptr_copy(ptr, (sol_ptr*)src, sizeof (int)));
 
+                /* wind up */
+        sol_ptr_free(&ptr);
+        sol_ptr_free((sol_ptr**)&src);
+
 SOL_CATCH:
+                /* wind up */
+        sol_ptr_free(&ptr);
+        sol_ptr_free((sol_ptr**)&src);
+
                 /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
@@ -164,10 +220,18 @@ static sol_erno copy_03(void)
 
 SOL_TRY:
                 /* set up test scenario */
-        sol_assert (!sol_ptr_new((sol_ptr*)&src, sizeof (int)), SOL_ERNO_TEST);
-        sol_try (sol_ptr_copy(ptr, (sol_ptr*)src, 0));
+        sol_assert (!sol_ptr_new((sol_ptr**)&src, sizeof (int)), SOL_ERNO_TEST);
+        sol_try (sol_ptr_copy(&ptr, (sol_ptr*)src, 0));
+
+                /* wind up */
+        sol_ptr_free(&ptr);
+        sol_ptr_free((sol_ptr**)&src);
 
 SOL_CATCH:
+                /* wind up */
+        sol_ptr_free(&ptr);
+        sol_ptr_free((sol_ptr**)&src);
+
                 /* check test condition */
         return SOL_ERNO_RANGE == sol_erno_now()
                ? SOL_ERNO_NULL
@@ -182,7 +246,7 @@ SOL_CATCH:
  */
 static sol_erno copy_04(void)
 {
-        #define COPY_04 "sol_ptr_copy() throws SOL_ERNO_PTR when passed a " \
+        #define COPY_04 "sol_ptr_copy() throws SOL_ERNO_PTR when passed a" \
                         " null pointer for @src"
         auto sol_ptr *ptr = SOL_PTR_NULL;
 
@@ -190,11 +254,49 @@ SOL_TRY:
                 /* set up test scenario */
         sol_try (sol_ptr_copy(&ptr, SOL_PTR_NULL, sizeof (int)));
 
+                /* wind up */
+        sol_ptr_free(&ptr);
+
 SOL_CATCH:
+                /* wind up */
+        sol_ptr_free(&ptr);
+
                 /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
+}
+
+
+
+
+static sol_erno copy_05(void)
+{
+        #define COPY_05 "sol_ptr_copy() correctly copies the contents of @src" \
+                        " on to @ptr"
+        auto int *ptr = SOL_PTR_NULL;
+        auto int *src = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_ptr_new((sol_ptr**)&src, sizeof (*src)));
+        *src = -555;
+        sol_try (sol_ptr_copy((sol_ptr**)&ptr, src, sizeof (*ptr)));
+
+                /* check test condition */
+        sol_assert (*ptr == -555, SOL_ERNO_TEST);
+
+                /* wind up */
+        sol_ptr_free((sol_ptr**)&ptr);
+        sol_ptr_free((sol_ptr**)&src);
+
+SOL_CATCH:
+                /* wind up */
+        sol_ptr_free((sol_ptr**)&ptr);
+        sol_ptr_free((sol_ptr**)&src);
+
+                /* throw current exception, if any */
+        sol_throw();
 }
 
 
@@ -221,10 +323,12 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &new_01, NEW_01));
         sol_try (sol_tsuite_register(ts, &new_02, NEW_02));
         sol_try (sol_tsuite_register(ts, &new_03, NEW_03));
+        sol_try (sol_tsuite_register(ts, &new_04, NEW_04));
         sol_try (sol_tsuite_register(ts, &copy_01, COPY_01));
         sol_try (sol_tsuite_register(ts, &copy_02, COPY_02));
         sol_try (sol_tsuite_register(ts, &copy_03, COPY_03));
         sol_try (sol_tsuite_register(ts, &copy_04, COPY_04));
+        sol_try (sol_tsuite_register(ts, &copy_05, COPY_05));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));

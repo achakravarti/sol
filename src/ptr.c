@@ -87,7 +87,7 @@ SOL_CATCH:
 /*
  *      sol_ptr_free() - declared in sol/inc/ptr.h
  */
-extern void sol_heap_free(sol_ptr **ptr)
+extern void sol_ptr_free(sol_ptr **ptr)
 {
                 /* free heap memory allocated to @ptr if it's valid */
         if (sol_likely (ptr && *ptr)) {
