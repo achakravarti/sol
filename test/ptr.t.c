@@ -334,7 +334,7 @@ SOL_TRY:
         sol_ptr_free((sol_ptr**) &ptr);
 
                 /* check test condition */
-        sol_assert (!ptr, SOL_ERNO_TEST);
+        sol_assert (!*ptr, SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* throw current exception, if any */
