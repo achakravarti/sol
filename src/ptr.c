@@ -58,10 +58,6 @@ static sol_inline void copy_byte(sol_ptr **ptr,
 
 
 
-
-
-
-
 /*
  *      sol_ptr_new() - declared in sol/inc/ptr.h
  */
