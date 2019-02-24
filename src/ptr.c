@@ -32,8 +32,32 @@
 #include "../inc/ptr.h"
 #if (sol_env_host() != SOL_ENV_HOST_NONE)
 #       include <stdlib.h>
-#       include <string.h>
 #endif
+
+
+
+
+/*
+ *      copy_byte() - copies a buffer on to another byte-wise
+ *        - ptr: destination buffer
+ *        - src: source buffer
+ *        - len: length in bytes to copy
+ */
+static sol_inline void copy_byte(sol_ptr **ptr,
+                                 const sol_ptr *src,
+                                 const size_t len)
+{
+        register char *bdst = (char*) *ptr;
+        register char *bsrc = (char*) src;
+        register size_t itr = len;
+
+                /* copy @src to @ptr byte-by-byte for @len bytes */
+        for (; itr; itr--, *bdst++ = *bsrc++); /* NOLINT */
+}
+
+
+
+
 
 
 
@@ -74,7 +98,7 @@ SOL_TRY:
 
                 /* copy contents of @src to @ptr after allocating it */
         sol_assert ((*ptr = malloc(sz)), SOL_ERNO_HEAP);
-        sol_assert ((*ptr = memmove(*ptr, src, sz)), SOL_ERNO_HEAP);
+        copy_byte(ptr, src, sz);
 
 SOL_CATCH:
                 /* throw current exception, if any */
