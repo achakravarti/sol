@@ -47,6 +47,8 @@ static sol_inline void copy_byte(sol_ptr **ptr,
                                  const sol_ptr *src,
                                  const size_t len)
 {
+                /* @ptr, @src and @len are valid, as they have already been
+                 * checked by the calling function sol_ptr_copy() */
         register char *bdst = (char*) *ptr;
         register char *bsrc = (char*) src;
         register size_t itr = len;
