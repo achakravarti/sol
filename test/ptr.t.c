@@ -325,7 +325,7 @@ static sol_erno free_02(void)
 {
         #define FREE_02 "sol_ptr_free() releases the heap memory allocated to" \
                         " @ptr"
-        auto int *ptr;
+        auto int *ptr = SOL_PTR_NULL;
 
 SOL_TRY:
                 /* set up test scenario */
@@ -334,7 +334,7 @@ SOL_TRY:
         sol_ptr_free((sol_ptr**) &ptr);
 
                 /* check test condition */
-        sol_assert (!*ptr, SOL_ERNO_TEST);
+        sol_assert (!ptr, SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* throw current exception, if any */
