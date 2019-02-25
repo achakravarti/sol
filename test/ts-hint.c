@@ -149,6 +149,8 @@ SOL_TRY:
         sol_assert (sol_likely (1), SOL_ERNO_TEST);
 
 SOL_CATCH:
+SOL_FINALLY:
+                /* wind up */
         sol_throw();
 }
 #endif /* (defined __GNUC__ || defined __clang__) */
@@ -171,6 +173,8 @@ SOL_TRY:
         sol_assert (!sol_likely (0), SOL_ERNO_TEST);
 
 SOL_CATCH:
+SOL_FINALLY:
+                /* wind up */
         sol_throw();
 }
 #endif /* (defined __GNUC__ || defined __clang__) */
@@ -194,11 +198,10 @@ SOL_TRY:
 
                 /* check test condition */
         sol_assert (sol_likely (1), SOL_ERNO_TEST);
-        gcc_on();
-        clang_on();
 
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         gcc_on();
         clang_on();
         sol_throw();
@@ -223,11 +226,10 @@ SOL_TRY:
 
                 /* check test condition */
         sol_assert (!sol_likely (0), SOL_ERNO_TEST);
-        gcc_on();
-        clang_on();
 
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         gcc_on();
         clang_on();
         sol_throw();
@@ -251,6 +253,8 @@ SOL_TRY:
         sol_assert (sol_unlikely (1), SOL_ERNO_TEST);
 
 SOL_CATCH:
+SOL_FINALLY:
+                /* wind up */
         sol_throw();
 }
 #endif /* (defined __GNUC__ || defined __clang__) */
@@ -273,6 +277,8 @@ SOL_TRY:
         sol_assert (!sol_unlikely (0), SOL_ERNO_TEST);
 
 SOL_CATCH:
+SOL_FINALLY:
+                /* wind up */
         sol_throw();
 }
 #endif /* (defined __GNUC__ || defined __clang__) */
@@ -296,11 +302,10 @@ SOL_TRY:
 
                 /* check test condition */
         sol_assert (sol_unlikely (1), SOL_ERNO_TEST);
-        gcc_on();
-        clang_on();
 
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         gcc_on();
         clang_on();
         sol_throw();
@@ -325,11 +330,10 @@ SOL_TRY:
 
                 /* check test condition */
         sol_assert (!sol_unlikely (0), SOL_ERNO_TEST);
-        gcc_on();
-        clang_on();
 
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         gcc_on();
         clang_on();
         sol_throw();
@@ -351,6 +355,7 @@ SOL_TRY:
         sol_assert (mock_hot(), SOL_ERNO_TEST);
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* throw current exception, if any */
         sol_throw();
 }
@@ -373,11 +378,10 @@ SOL_TRY:
 
                 /* check test condition */
         sol_assert (mock_hot(), SOL_ERNO_TEST);
-        gcc_on();
-        clang_on();
 
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         gcc_on();
         clang_on();
         sol_throw();
@@ -399,6 +403,7 @@ SOL_TRY:
         sol_assert (mock_cold(), SOL_ERNO_TEST);
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* throw current exception, if any */
         sol_throw();
 }
@@ -421,11 +426,10 @@ SOL_TRY:
 
                 /* check test condition */
         sol_assert (mock_cold(), SOL_ERNO_TEST);
-        gcc_on();
-        clang_on();
 
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         gcc_on();
         clang_on();
         sol_throw();
@@ -447,7 +451,8 @@ SOL_TRY:
         sol_assert (mock_inline(), SOL_ERNO_TEST);
 
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         sol_throw();
 }
 
@@ -469,11 +474,10 @@ SOL_TRY:
 
                 /* check test condition */
         sol_assert (mock_inline(), SOL_ERNO_TEST);
-        gcc_on();
-        clang_on();
 
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         gcc_on();
         clang_on();
         sol_throw();
@@ -495,7 +499,8 @@ SOL_TRY:
         sol_assert (mock_restrict(&tmp), SOL_ERNO_TEST);
 
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         sol_throw();
 }
 
@@ -546,10 +551,10 @@ SOL_TRY:
         sol_try (sol_tsuite_pass(ts, pass));
         sol_try (sol_tsuite_fail(ts, fail));
         sol_try (sol_tsuite_total(ts, total));
-        sol_tsuite_term(ts);
 
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         sol_tsuite_term(ts);
         sol_throw();
 }
