@@ -73,7 +73,8 @@ SOL_TRY:
                  * null as we don't require it */
         tsuite_init (tsuite, 0);
 
-SOL_CATCH:
+SOL_CATCH2:
+SOL_FINALLY:
                 /* throw exceptions */
         sol_throw ();
 }
