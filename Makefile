@@ -27,6 +27,8 @@
 
 # 	Set directory paths
 DIR_BLD  = bld
+DIR_BIN  = $(DIR_BLD)/bin
+DIR_COV  = $(DIR_BLD)/cov
 DIR_SRC  = src
 DIR_TEST = test
 
@@ -104,7 +106,10 @@ integration: $(OUT_LD)
 	$(CMD_RUN) $(INP_RUN)
 	mv $(DEP_COV) $(DIR_BLD)
 	$(CMD_COV) $(OPT_COV) $(INP_COV)
-	mv $(OUT_COV) $(DIR_BLD)
+	mkdir -p $(DIR_BIN)
+	mkdir -p $(DIR_COV)
+	mv $(OUT_LD) $(OUT_SO) $(DIR_BLD)/*.o $(DIR_BIN)
+	mv $(OUT_COV) $(DIR_BLD)/*.gcno $(DIR_BLD)/*.gcda $(DIR_COV)
 
 
 
