@@ -84,6 +84,21 @@ extern sol_erno __sol_tests_ptr(sol_tlog *log,
 
 
 
+/*
+ *      __sol_tests_ptr2() - mock freestanding tests for the pointer module
+ */
+#if (SOL_ENV_HOSTED_NONE != sol_env_host())
+        extern sol_erno __sol_tests_ptr2(sol_tlog *log,
+                                         int      *pass,
+                                         int      *fail,
+                                         int      *total);
+#else
+#       define __sol_tests_ptr2()
+#endif
+
+
+
+
 #endif /* !defined __SOL_LIBRARY_TEST_SUITES */
 
 
