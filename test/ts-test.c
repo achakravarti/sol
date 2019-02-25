@@ -68,7 +68,8 @@ SOL_TRY:
         flag_tcase = 1;
 
 SOL_CATCH:
-                /* control will never reach here */
+SOL_FINALLY:
+                /* wind up */
         sol_throw();
 }
 
@@ -83,7 +84,8 @@ SOL_TRY:
         sol_assert (0, SOL_ERNO_TEST);
 
 SOL_CATCH:
-                /* control will always reach here */
+SOL_FINALLY:
+                /* wind up */
         flag_tcase = 1;
         sol_throw();
 }
@@ -101,6 +103,7 @@ SOL_TRY:
         sol_try (sol_tsuite_init(0));
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
@@ -120,6 +123,7 @@ SOL_TRY:
         sol_try (sol_tsuite_init2(0, mock_log));
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
@@ -141,6 +145,7 @@ SOL_TRY:
         sol_try (sol_tsuite_init2(&ts, 0));
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
@@ -163,6 +168,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(0, init_01, "Dummy"));
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
@@ -185,6 +191,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(&ts, 0, "Dummy"));
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
@@ -207,6 +214,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(&ts, &mock_pass, 0));
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
@@ -229,6 +237,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(&ts, &mock_pass, ""));
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* check test condition */
         return SOL_ERNO_STR == sol_erno_now()
                ? SOL_ERNO_NULL
@@ -261,10 +270,10 @@ SOL_TRY:
 
                 /* check test condition; len is off by 1 */
         sol_assert (len - 1 <= SOL_TCASE_MAXDESCLEN, SOL_ERNO_TEST);
-        sol_tsuite_term(ts);
 
 SOL_CATCH:
-                /* throw exception, if any */
+SOL_FINALLY:
+                /* wind up */
         sol_tsuite_term(ts);
         sol_throw();
 }
@@ -286,6 +295,7 @@ SOL_TRY:
         sol_try (sol_tsuite_pass(0, &pass));
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
@@ -308,6 +318,7 @@ SOL_TRY:
         sol_try (sol_tsuite_pass(&ts, 0));
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
@@ -334,11 +345,9 @@ SOL_TRY:
                 /* check test condition */
         sol_assert (!pass, SOL_ERNO_TEST);
 
-                /* tear down scenario */
-        sol_tsuite_term(ts);
-
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         sol_tsuite_term(ts);
         sol_throw();
 }
@@ -362,10 +371,10 @@ SOL_TRY:
 
                 /* check test condition */
         sol_assert (!pass, SOL_ERNO_TEST );
-        sol_tsuite_term(ts);
 
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         sol_tsuite_term(ts);
         sol_throw();
 }
@@ -391,10 +400,10 @@ SOL_TRY:
 
                 /* check test condition */
         sol_assert (1 == pass, SOL_ERNO_TEST);
-        sol_tsuite_term(ts);
 
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         sol_tsuite_term(ts);
         sol_throw();
 }
@@ -416,6 +425,7 @@ SOL_TRY:
         sol_try (sol_tsuite_fail(0, &fail));
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
@@ -438,6 +448,7 @@ SOL_TRY:
         sol_try (sol_tsuite_fail(ts, 0));
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
@@ -464,11 +475,9 @@ SOL_TRY:
                 /* check test condition */
         sol_assert (!fail, SOL_ERNO_TEST);
 
-                /* tear down scenario */
-        sol_tsuite_term(ts);
-
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         sol_tsuite_term(ts);
         sol_throw();
 }
@@ -492,10 +501,10 @@ SOL_TRY:
 
                 /* check test condition */
         sol_assert (!fail, SOL_ERNO_TEST);
-        sol_tsuite_term(ts);
 
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         sol_tsuite_term(ts);
         sol_throw();
 }
@@ -522,11 +531,9 @@ SOL_TRY:
                 /* check test condition */
         sol_assert (1 == fail, SOL_ERNO_TEST);
 
-                /* tear down scenario */
-        sol_tsuite_term(ts);
-
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         sol_tsuite_term(ts);
         sol_throw();
 }
@@ -550,6 +557,7 @@ SOL_TRY:
         sol_try (sol_tsuite_total(0, &total));
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
@@ -574,6 +582,7 @@ SOL_TRY:
         sol_try (sol_tsuite_total(&ts, 0));
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
@@ -599,10 +608,10 @@ SOL_TRY:
 
                 /* check test condition */
         sol_assert (!total, SOL_ERNO_TEST);
-        sol_tsuite_term(ts);
 
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         sol_tsuite_term(ts);
         sol_throw();
 }
@@ -626,10 +635,10 @@ SOL_TRY:
 
                 /* check test condition */
         sol_assert (!total, SOL_ERNO_TEST);
-        sol_tsuite_term(ts);
 
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         sol_tsuite_term(ts);
         sol_throw();
 }
@@ -655,10 +664,10 @@ SOL_TRY:
 
                 /* check test condition */
         sol_assert (1 == total, SOL_ERNO_TEST);
-        sol_tsuite_term(ts);
 
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         sol_tsuite_term(ts);
         sol_throw();
 }
@@ -679,6 +688,7 @@ SOL_TRY:
         sol_try (sol_tsuite_exec(0));
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
@@ -705,11 +715,9 @@ SOL_TRY:
                 /* check test condition */
         sol_assert (1 == flag_log, SOL_ERNO_TEST);
 
-                /* tear down scenario */
-        sol_tsuite_term(ts);
-
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         sol_tsuite_term(ts);
         sol_throw();
 }
@@ -764,10 +772,10 @@ SOL_TRY:
         sol_try (sol_tsuite_pass(ts, pass));
         sol_try (sol_tsuite_fail(ts, fail));
         sol_try (sol_tsuite_total(ts, total));
-        sol_tsuite_term(ts);
 
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         sol_tsuite_term(ts);
         sol_throw();
 }
