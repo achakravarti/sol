@@ -179,6 +179,11 @@ typedef size_t sol_erno;
 
 
 
+#define SOL_CATCH2 goto __SOL_FINALLY; __SOL_CATCH
+
+
+
+
 /*
  *      sol_throw() - throws current error code
  *
