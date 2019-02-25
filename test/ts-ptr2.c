@@ -54,14 +54,13 @@
  *      __sol_tests_ptr2() - declared in sol/test/suite.h
  */
 extern sol_erno __sol_tests_ptr2(sol_tlog *log,
-                                 int *pass,
-                                 int *fail,
-                                 int *total)
+                                 int      *pass,
+                                 int      *fail,
+                                 int      *total)
 {
 SOL_TRY:
-                /* rerun pointer module test cases, at this point the pointer
-                 * module is guaranteed to detect a freestanding environment,
-                 * whether for real or simulated */
+                /* run pointer module test cases in the simulated freestanding
+                 * environment */
         sol_try (__sol_tests_ptr(log, pass, fail, total));
 
 SOL_CATCH:
