@@ -172,14 +172,13 @@ typedef size_t sol_erno;
  *      macros be used in the SOL_CATCH block, as this would potentially lead to
  *      an infinite loop.
  */
-#define SOL_CATCH             \
-        return SOL_ERNO_NULL; \
+#define SOL_CATCH           \
+        goto __SOL_FINALLY; \
         __SOL_CATCH
 
 
 
 
-#define SOL_CATCH2 goto __SOL_FINALLY; __SOL_CATCH
 #define SOL_FINALLY goto __SOL_FINALLY; __SOL_FINALLY
 
 
