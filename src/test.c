@@ -99,6 +99,7 @@ SOL_TRY:
         tsuite_init (tsuite, tlog);
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* throw exceptions */
         sol_throw ();
 }
@@ -159,6 +160,7 @@ SOL_TRY:
         tsuite->total++;
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* throw exceptions */
         sol_throw ();
 }
@@ -182,6 +184,7 @@ SOL_TRY:
         *pass = tsuite->total - tsuite->fail;
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* throw exceptions */
         sol_throw ();
 }
@@ -205,6 +208,7 @@ SOL_TRY:
         *fail = tsuite->fail;
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* throw exceptions */
         sol_throw ();
 }
@@ -228,6 +232,7 @@ SOL_TRY:
         *total = tsuite->total;
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* throw exceptions */
         sol_throw ();
 }
@@ -265,6 +270,7 @@ SOL_TRY:
         }
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* throw exceptions */
         sol_throw ();
 }
