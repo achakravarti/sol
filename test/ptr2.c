@@ -6,7 +6,7 @@
  * Description:
  *      This file is part of the internal quality checking of the Sol Library.
  *      It implements the test suite for the pointer module while mocking a
- *      freestanding environment.
+ *      freestanding environment on a hosted environment.
  *
  * Authors:
  *      Abhishek Chakravarti <abhishek@taranjali.org>
@@ -39,7 +39,7 @@
 
 
 
-        /* mock a freestanding environment on the currenthosted environment;
+        /* mock a freestanding environment on the current hosted environment;
          * include the stdlib.h header file to mock the malloc() and free()
          * functions for the mocked freestanding environment */
 #define __SOL_ENV_HOST_BKP sol_env_host()

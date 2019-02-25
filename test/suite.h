@@ -26,11 +26,17 @@
 
 
 
+        /* add header guard */
 #if !defined __SOL_LIBRARY_TEST_SUITES
 #define __SOL_LIBRARY_TEST_SUITES
 
 
+
+
+        /* include required header files */
 #include "../inc/test.h"
+
+
 
 
 /*
@@ -42,6 +48,8 @@ extern sol_erno __sol_tsuite_error(sol_tlog *log,
                                    int *total);
 
 
+
+
 /*
  *      __sol_tsuite_test() - test suite for unit testing module
  */
@@ -49,6 +57,8 @@ extern sol_erno __sol_tsuite_test(sol_tlog *log,
                                   int *pass,
                                   int *fail,
                                   int *total);
+
+
 
 
 /*
