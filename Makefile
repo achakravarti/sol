@@ -55,7 +55,7 @@ OPT_COV = -o $(DIR_BLD)
 # 	Set command inputs
 INP_SO  = $(DIR_BLD)/test.o $(DIR_BLD)/ptr.o
 INP_LD  = $(DIR_TEST)/runner.c $(DIR_TEST)/error.t.c $(DIR_TEST)/test.t.c     \
-	  $(DIR_TEST)/hint.t.c $(DIR_TEST)/env.t.c $(DIR_TEST)/ptr.c          \
+	  $(DIR_TEST)/hint.t.c $(DIR_TEST)/env.c $(DIR_TEST)/ptr.c            \
 	  $(DIR_TEST)/ptr2.c
 INP_COV = $(DIR_BLD)/test.gcda $(DIR_BLD)/runner.gcda $(DIR_BLD)/error.t.gcda \
 	  $(DIR_BLD)/test.t.gcda $(DIR_BLD)/hint.t.gcda $(DIR_BLD)/env.t.gcda \
