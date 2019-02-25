@@ -88,7 +88,8 @@ SOL_TRY:
         sol_assert (1 == 1, SOL_ERNO_TEST);
 
 SOL_CATCH:
-                /* control will never reach here */
+SOL_FINALLY:
+                /* wind up */
         sol_throw ();
 }
 
@@ -106,7 +107,8 @@ SOL_TRY:
         sol_assert (1 != 1, SOL_ERNO_TEST);
 
 SOL_CATCH:
-                /* control will always reach here */
+SOL_FINALLY:
+                /* wind up */
         sol_throw ();
 }
 
@@ -124,7 +126,8 @@ SOL_TRY:
         sol_try (assert_pass ());
 
 SOL_CATCH:
-                /* control will never reach here */
+SOL_FINALLY:
+                /* wind up */
         sol_throw ();
 }
 
@@ -142,7 +145,8 @@ SOL_TRY:
         sol_try (assert_fail ());
 
 SOL_CATCH:
-                /* control will always reach here */
+SOL_FINALLY:
+                /* wind up */
         sol_throw ();
 }
 
@@ -160,7 +164,8 @@ SOL_TRY:
         sol_assert (!assert_pass (), SOL_ERNO_TEST);
 
 SOL_CATCH:
-                /* catch exceptions */
+SOL_FINALLY:
+                /* wind up */
         sol_throw ();
 }
 
@@ -178,7 +183,8 @@ SOL_TRY:
         sol_assert (assert_fail (), SOL_ERNO_TEST);
 
 SOL_CATCH:
-                /* catch exceptions */
+SOL_FINALLY:
+                /* wind up */
         sol_throw ();
 }
 
@@ -196,7 +202,8 @@ SOL_TRY:
         sol_assert (!try_pass (), SOL_ERNO_TEST);
 
 SOL_CATCH:
-                /* catch exceptions */
+SOL_FINALLY:
+                /* wind up */
         sol_throw ();
 }
 
@@ -214,7 +221,8 @@ SOL_TRY:
         sol_assert (try_fail (), SOL_ERNO_TEST);
 
 SOL_CATCH:
-                /* catch exceptions */
+SOL_FINALLY:
+                /* wind up */
         sol_throw ();
 }
 
@@ -232,6 +240,7 @@ SOL_TRY:
         sol_try (assert_fail ());
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* check test condition described by DESC_NOW_01 */
         return SOL_ERNO_TEST == sol_erno_now ()
                ? SOL_ERNO_NULL
@@ -275,13 +284,11 @@ SOL_TRY:
         sol_try (sol_tsuite_fail  (ts, fail));
         sol_try (sol_tsuite_total (ts, total));
 
-                /* wind up */
-        sol_tsuite_term (ts);
-
 SOL_CATCH:
-                /* wind up and throw current exception */
-        sol_tsuite_term (ts);
-        sol_throw       ();
+SOL_FINALLY:
+                /* wind up */
+        sol_tsuite_term(ts);
+        sol_throw();
 }
 
 
