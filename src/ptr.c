@@ -85,8 +85,9 @@ SOL_TRY:
         sol_assert ((*ptr = malloc(sz)), SOL_ERNO_HEAP);
 
 SOL_CATCH:
-                /* throw current exception, if any */
-        sol_throw();
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
 }
 
 
@@ -109,8 +110,9 @@ SOL_TRY:
         copy_byte(ptr, src, len);
 
 SOL_CATCH:
-                /* throw current exception, if any */
-        sol_throw();
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
 }
 
 

@@ -26,13 +26,14 @@
 
 
 
-
+        /* define header guard */
 #if !defined __SOL_EXCEPTION_HANDLING_MODULE
 #define __SOL_EXCEPTION_HANDLING_MODULE
 
 
 
 
+        /* include required header files */
 #include "./hint.h"
 #include <stddef.h>
 
@@ -146,9 +147,9 @@ typedef size_t sol_erno;
  *      exception occurs, then control is passed to the adjacent SOL_CATCH
  *      block without executing the remaining code in the try block.
  *
- *      If no error occurs, then control automatically returns to the calling
- *      function with a SOL_ERNO_NULL error code; there is no need for client
- *      code to place an explicit return statement.
+ *      If no error occurs, then control automatically moves to the SOL_FINALLY
+ *      block placed after the SOL_CATCH block; this allows for the necessary
+ *      cleanup code to be performed.
  */
 #define SOL_TRY                                       \
         register sol_erno __sol_erno = SOL_ERNO_NULL; \
@@ -166,52 +167,67 @@ typedef size_t sol_erno;
  *      contains the error handling code, and must be placed immediately at the
  *      end of a SOL_TRY block.
  *
- *      The SOL_CATCH block must be terminated by a call to the sol_throw()
- *      macro defined below in order to throw the current error code back to the
- *      calling function. At no point should the sol_assert() and sol_try()
- *      macros be used in the SOL_CATCH block, as this would potentially lead to
- *      an infinite loop.
+ *      The SOL_CATCH block must be terminated by an adjacent SOL_FINALLY block.
+ *      This allows all necessary cleanup code to be performed after the
+ *      exception handling code has been executed. At no point should the
+ *      sol_assert() and sol_try() macros be used in the SOL_CATCH block, as
+ *      this would potentially lead to an infinite loop.
  */
-#define SOL_CATCH             \
-        return SOL_ERNO_NULL; \
+#define SOL_CATCH           \
+        goto __SOL_FINALLY; \
         __SOL_CATCH
 
 
 
 
 /*
- *      sol_throw() - throws current error code
+ *      SOL_FINALLY - start of finally block
  *
- *      The sol_throw() macro throws the current error code back to the calling
- *      function. This macro should only be invoked at the end of a SOL_CATCH
- *      block after all error handling code has been excecuted. Terminating
- *      catch blocks with this macro helps to unwind exceptions up the call
- *      stack.
+ *      The SOL_FINALLY label identifies the starting point of a finally block
+ *      within a function that returns a sol_erno value. The finally block
+ *      contains the cleanup code that is common to both the try and catch
+ *      blocks, and must be placed immediately at the end of a SOL_TRY block.
  *
- *      Return:
- *        - SOL_ERNO_NULL if no error has occured
- *        - The current error code if an error has occured
+ *      The SOL_FINALLY block must be terminated by returning the current error
+ *      code provided by the sol_erno_get() macro defined below. At no point
+ *      should the sol_assert() and sol_try() macros be used in the SOL_FINALLY
+ *      block as this could potentially lead to an infinite loop.
  */
-#define /* sol_erno */ sol_throw(/* void */) \
-        return __sol_erno
+#define SOL_FINALLY __SOL_FINALLY
 
 
 
 
 /*
- *      sol_erno_now() - gets current error code
+ *      sol_erno_get() - gets current error code
  *
- *      The sol_erno_now() macro returns the current sol_erno error code within
- *      the context of the thread in which it is called. This macro is designed
+ *      The sol_erno_get() macro returns the current sol_erno error code within
+ *      the context of the function in which it is called. This macro is meant
  *      to be used primarily within SOL_CATCH blocks, but if required, may also
- *      be used within SOL_TRY blocks.
+ *      be used within SOL_TRY and SOL_FINALLY blocks.
  *
  *      Return:
  *        - SOL_ERNO if no error has occured
  *        - The current error code if an error has occured
  */
-#define /* const sol_erno */ sol_erno_now(/* void */) \
+#define /* const sol_erno */ sol_erno_get(/* void */) \
         ((const sol_erno) __sol_erno)
+
+
+
+
+/*
+ *      sol_erno_set() - sets current error code
+ *        - erno: error code
+ *
+ *      The sol_erno_set() macro sets the current sol_erno error code @erno
+ *      within the context of the function in which it is called. Like its
+ *      sister macro sol_erno_get(), this macro is meant to be used within
+ *      SOL_CATCH blocks, but may also be used within SOL_TRY and SOL_FINALLY
+ *      blocks as required.
+ */
+#define /* void */ sol_erno_set(/* const sol_erno */ erno) \
+        (__sol_erno = (erno))
 
 
 
