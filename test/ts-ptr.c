@@ -34,12 +34,12 @@
 
 
 /*
- *      new_01() - sol_ptr_new() unit test #1
+ *      test_new1() - sol_ptr_new() unit test #1
  */
-static sol_erno new_01(void)
+static sol_erno test_new1(void)
 {
-        #define NEW_01 "sol_ptr_new() throws SOL_ERNO_PTR when passed a null" \
-                       " pointer for @ptr"
+        #define DESC_NEW1 "sol_ptr_new() throws SOL_ERNO_PTR when passed a" \
+                          " null pointer for @ptr"
 
 SOL_TRY:
                 /* set up test scenario */
@@ -60,12 +60,12 @@ SOL_FINALLY:
 
 
 /*
- *      new_02() - sol_ptr_new() unit test #2
+ *      test_new2() - sol_ptr_new() unit test #2
  */
-static sol_erno new_02(void)
+static sol_erno test_new2(void)
 {
-        #define NEW_02 "sol_ptr_new() throws SOL_ERNO_PTR when passed a"   \
-                       " pointer for @ptr that has already been allocated"
+        #define DESC_NEW2 "sol_ptr_new() throws SOL_ERNO_PTR when passed a" \
+                          " pointer for @ptr that has already been allocated"
         auto sol_ptr *ptr = SOL_PTR_NULL;
 
 SOL_TRY:
@@ -89,12 +89,12 @@ SOL_FINALLY:
 
 
 /*
- *      new_03() - sol_ptr_new() unit test #3
+ *      test_new3() - sol_ptr_new() unit test #3
  */
-static sol_erno new_03(void)
+static sol_erno test_new3(void)
 {
-        #define NEW_03 "sol_ptr_new() throws SOL_ERNO_RANGE when passed 0" \
-                       " for @sz"
+        #define DESC_NEW3 "sol_ptr_new() throws SOL_ERNO_RANGE when passed 0" \
+                          " for @sz"
         auto sol_ptr *ptr = SOL_PTR_NULL;
 
 SOL_TRY:
@@ -117,11 +117,11 @@ SOL_FINALLY:
 
 
 /*
- *      new_04() - sol_ptr_new() unit test #4
+ *      test_new4() - sol_ptr_new() unit test #4
  */
-static sol_erno new_04(void)
+static sol_erno test_new4(void)
 {
-        #define NEW_04 "sol_ptr_new() successfully allocates heap memory"
+        #define DESC_NEW4 "sol_ptr_new() successfully allocates heap memory"
         auto int *ptr = SOL_PTR_NULL;
 
 SOL_TRY:
@@ -143,12 +143,12 @@ SOL_FINALLY:
 
 
 /*
- *      copy_01() - sol_ptr_copy() unit test #1
+ *      test_copy1() - sol_ptr_copy() unit test #1
  */
-static sol_erno copy_01(void)
+static sol_erno test_copy1(void)
 {
-        #define COPY_01 "sol_ptr_copy() throws SOL_ERNO_PTR when passed a " \
-                        " null pointer for @ptr"
+        #define DESC_COPY1 "sol_ptr_copy() throws SOL_ERNO_PTR when passed a " \
+                           " null pointer for @ptr"
         auto int *src = SOL_PTR_NULL;
 
 SOL_TRY:
@@ -172,12 +172,12 @@ SOL_FINALLY:
 
 
 /*
- *      copy_02() - sol_ptr_copy() unit test #2
+ *      test_copy2() - sol_ptr_copy() unit test #2
  */
-static sol_erno copy_02(void)
+static sol_erno test_copy2(void)
 {
-        #define COPY_02 "sol_ptr_copy() throws SOL_ERNO_PTR when passed a"   \
-                        " pointer for @ptr that has already been allocated"
+        #define DESC_COPY2 "sol_ptr_copy() throws SOL_ERNO_PTR when passed a" \
+                           " pointer for @ptr that has already been allocated"
         auto sol_ptr *ptr = SOL_PTR_NULL;
         auto int *src = SOL_PTR_NULL;
 
@@ -204,12 +204,12 @@ SOL_FINALLY:
 
 
 /*
- *      copy_03() - sol_ptr_copy() unit test #3
+ *      test_copy3() - sol_ptr_copy() unit test #3
  */
-static sol_erno copy_03(void)
+static sol_erno test_copy3(void)
 {
-        #define COPY_03 "sol_ptr_copy() throws SOL_ERNO_RANGE when passed 0" \
-                        " for @sz"
+        #define DESC_COPY3 "sol_ptr_copy() throws SOL_ERNO_RANGE when passed" \
+                           " 0 for @sz"
         auto sol_ptr *ptr = SOL_PTR_NULL;
         auto int *src = SOL_PTR_NULL;
 
@@ -235,12 +235,12 @@ SOL_FINALLY:
 
 
 /*
- *      copy_04() - sol_ptr_copy() unit test #4
+ *      test_copy4() - sol_ptr_copy() unit test #4
  */
-static sol_erno copy_04(void)
+static sol_erno test_copy4(void)
 {
-        #define COPY_04 "sol_ptr_copy() throws SOL_ERNO_PTR when passed a" \
-                        " null pointer for @src"
+        #define DESC_COPY4 "sol_ptr_copy() throws SOL_ERNO_PTR when passed a" \
+                           " null pointer for @src"
         auto sol_ptr *ptr = SOL_PTR_NULL;
 
 SOL_TRY:
@@ -262,10 +262,10 @@ SOL_FINALLY:
 
 
 
-static sol_erno copy_05(void)
+static sol_erno test_copy5(void)
 {
-        #define COPY_05 "sol_ptr_copy() correctly copies the contents of @src" \
-                        " on to @ptr"
+        #define DESC_COPY5 "sol_ptr_copy() correctly copies the contents of" \
+                           " @src on to @ptr"
         auto int *ptr = SOL_PTR_NULL;
         auto int *src = SOL_PTR_NULL;
 
@@ -290,12 +290,12 @@ SOL_FINALLY:
 
 
 /*
- *      free_01() - sol_ptr_free() unit test #1
+ *      test_free1() - sol_ptr_free() unit test #1
  */
-static sol_erno free_01(void)
+static sol_erno test_free1(void)
 {
-        #define FREE_01 "sol_ptr_free() executes even if passed an invalid" \
-                        " pointer for @ptr"
+        #define DESC_FREE1 "sol_ptr_free() executes even if passed an invalid" \
+                           " pointer for @ptr"
 
                 /* set up test scenario */
         sol_ptr_free(SOL_PTR_NULL);
@@ -306,12 +306,12 @@ static sol_erno free_01(void)
 
 
 /*
- *      free_02() - sol_ptr_free() unit test #2
+ *      test_free2() - sol_ptr_free() unit test #2
  */
-static sol_erno free_02(void)
+static sol_erno test_free2(void)
 {
-        #define FREE_02 "sol_ptr_free() releases the heap memory allocated to" \
-                        " @ptr"
+        #define DESC_FREE2 "sol_ptr_free() releases the heap memory allocated" \
+                           " to @ptr"
         auto int *ptr = SOL_PTR_NULL;
 
 SOL_TRY:
@@ -350,17 +350,17 @@ SOL_TRY:
         sol_try (sol_tsuite_init2(ts, log));
 
                 /* register test cases */
-        sol_try (sol_tsuite_register(ts, &new_01, NEW_01));
-        sol_try (sol_tsuite_register(ts, &new_02, NEW_02));
-        sol_try (sol_tsuite_register(ts, &new_03, NEW_03));
-        sol_try (sol_tsuite_register(ts, &new_04, NEW_04));
-        sol_try (sol_tsuite_register(ts, &copy_01, COPY_01));
-        sol_try (sol_tsuite_register(ts, &copy_02, COPY_02));
-        sol_try (sol_tsuite_register(ts, &copy_03, COPY_03));
-        sol_try (sol_tsuite_register(ts, &copy_04, COPY_04));
-        sol_try (sol_tsuite_register(ts, &copy_05, COPY_05));
-        sol_try (sol_tsuite_register(ts, &free_01, FREE_01));
-        sol_try (sol_tsuite_register(ts, &free_02, FREE_02));
+        sol_try (sol_tsuite_register(ts, &test_new1, DESC_NEW1));
+        sol_try (sol_tsuite_register(ts, &test_new2, DESC_NEW2));
+        sol_try (sol_tsuite_register(ts, &test_new3, DESC_NEW3));
+        sol_try (sol_tsuite_register(ts, &test_new4, DESC_NEW4));
+        sol_try (sol_tsuite_register(ts, &test_copy1, DESC_COPY1));
+        sol_try (sol_tsuite_register(ts, &test_copy2, DESC_COPY2));
+        sol_try (sol_tsuite_register(ts, &test_copy3, DESC_COPY3));
+        sol_try (sol_tsuite_register(ts, &test_copy4, DESC_COPY4));
+        sol_try (sol_tsuite_register(ts, &test_copy5, DESC_COPY5));
+        sol_try (sol_tsuite_register(ts, &test_free1, DESC_FREE1));
+        sol_try (sol_tsuite_register(ts, &test_free2, DESC_FREE2));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
