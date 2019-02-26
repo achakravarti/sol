@@ -46,7 +46,7 @@ SOL_TRY:
 
 SOL_CATCH:
 SOL_FINALLY:
-                /* throw current exception, if any */
+                /* wind up */
         sol_throw();
 }
 
@@ -67,7 +67,7 @@ SOL_TRY:
 
 SOL_CATCH:
 SOL_FINALLY:
-                /* throw current exception, if any */
+                /* wind up */
         sol_throw();
 }
 
@@ -88,7 +88,7 @@ SOL_TRY:
 
 SOL_CATCH:
 SOL_FINALLY:
-                /* throw current exception, if any */
+                /* wind up */
         sol_throw();
 }
 
@@ -109,7 +109,7 @@ SOL_TRY:
 
 SOL_CATCH:
 SOL_FINALLY:
-                /* throw current exception, if any */
+                /* wind up */
         sol_throw();
 }
 
@@ -131,7 +131,7 @@ SOL_TRY:
 
 SOL_CATCH:
 SOL_FINALLY:
-                /* throw current exception, if any */
+                /* wind up */
         sol_throw();
 }
 
