@@ -26,11 +26,17 @@
 
 
 
+        /* add header guard */
 #if !defined __SOL_LIBRARY_TEST_SUITES
 #define __SOL_LIBRARY_TEST_SUITES
 
 
+
+
+        /* include required header files */
 #include "../inc/test.h"
+
+
 
 
 /*
@@ -42,6 +48,8 @@ extern sol_erno __sol_tsuite_error(sol_tlog *log,
                                    int *total);
 
 
+
+
 /*
  *      __sol_tsuite_test() - test suite for unit testing module
  */
@@ -49,6 +57,8 @@ extern sol_erno __sol_tsuite_test(sol_tlog *log,
                                   int *pass,
                                   int *fail,
                                   int *total);
+
+
 
 
 /*
@@ -69,6 +79,32 @@ extern sol_erno __sol_tests_env(sol_tlog *log,
                                 int *pass,
                                 int *fail,
                                 int *total);
+
+
+
+
+/*
+ *      __sol_tests_ptr() - test suite for the pointer module
+ */
+extern sol_erno __sol_tests_ptr(sol_tlog *log,
+                                int *pass,
+                                int *fail,
+                                int *total);
+
+
+
+
+/*
+ *      __sol_tests_ptr2() - mock freestanding tests for the pointer module
+ */
+#if (SOL_ENV_HOSTED_NONE != sol_env_host())
+        extern sol_erno __sol_tests_ptr2(sol_tlog *log,
+                                         int      *pass,
+                                         int      *fail,
+                                         int      *total);
+#else
+#       define __sol_tests_ptr2()
+#endif
 
 
 

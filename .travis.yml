@@ -58,6 +58,7 @@ before_install:
 #       Build target
 script:
         - make integration
+        - cat bld/test.log
 
 
 

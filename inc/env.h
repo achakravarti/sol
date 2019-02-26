@@ -112,18 +112,17 @@ typedef enum __SOL_ENV_STDC {
  *      has been tested, and support for the others being assumed based on these
  *      tests.
  */
-typedef enum __SOL_ENV_HOST {
-        SOL_ENV_HOST_NONE,
-        SOL_ENV_HOST_ANDROID,
-        SOL_ENV_HOST_LINUX,
-        SOL_ENV_HOST_CYGWIN,
-        SOL_ENV_HOST_BSD,
-        SOL_ENV_HOST_HPUX,
-        SOL_ENV_HOST_AIX,
-        SOL_ENV_HOST_IOS,
-        SOL_ENV_HOST_OSX,
-        SOL_ENV_HOST_SOLARIS
-} SOL_ENV_HOST;
+#define SOL_ENV_HOST int
+#define SOL_ENV_HOST_NONE    (0)
+#define SOL_ENV_HOST_ANDROID (1)
+#define SOL_ENV_HOST_LINUX   (2)
+#define SOL_ENV_HOST_CYGWIN  (3)
+#define SOL_ENV_HOST_BSD     (4)
+#define SOL_ENV_HOST_HPUX    (5)
+#define SOL_ENV_HOST_AIX     (6)
+#define SOL_ENV_HOST_IOS     (7)
+#define SOL_ENV_HOST_OSX     (8)
+#define SOL_ENV_HOST_SOLARIS (9)
 
 
 
@@ -136,7 +135,7 @@ typedef enum __SOL_ENV_HOST {
  *
  *      The SOL_ENV_ARCH type enumerates the CPU architectures supported by the
  *      Sol Library. The constants enumerated by this type are returned by the
- *      sol_env_host() macro (defined below) in order to indicate the processor
+ *      sol_env_arch() macro (defined below) in order to indicate the processor
  *      architecture at compile-time.
  *
  *      The Sol Library currently supports the 32-bit x86 family of processors,
@@ -237,32 +236,32 @@ typedef enum __SOL_ENV_ARCH {
  *        - SOL_ENV_HOST_SOLARIS if Oracle Solaris / Open Indiana detected
  */
 #if (defined __CYGWIN__)
-#       define sol_env_host() SOL_ENV_HOST_CYGWIN
+#       define sol_env_host() (SOL_ENV_HOST_CYGWIN)
 #elif (defined __ANDROID__)
-#       define sol_env_host() SOL_ENV_HOST_ANDROID
+#       define sol_env_host() (SOL_ENV_HOST_ANDROID)
 #elif (defined __linux__)
-#       define sol_env_host() SOL_ENV_HOST_LINUX
+#       define sol_env_host() (SOL_ENV_HOST_LINUX)
 #elif (defined __hpux)
-#       define sol_env_host() SOL_ENV_HOST_HPUX
+#       define sol_env_host() (SOL_ENV_HOST_HPUX)
 #elif (defined _AIX)
-#       define sol_env_host() SOL_ENV_HOST_AIX
+#       define sol_env_host() (SOL_ENV_HOST_AIX)
 #elif (defined __sun && defined __SVR4)
-#       define sol_env_host() SOL_ENV_HOST_SOLARIS
+#       define sol_env_host() (SOL_ENV_HOST_SOLARIS)
 #elif (defined __unix__)
 #       include <sys/param.h>
 #       if (defined BSD)
-#               define sol_env_host() SOL_ENV_HOST_BSD
+#               define sol_env_host() (SOL_ENV_HOST_BSD)
 #       endif
 #elif (defined __APPLE__ && defined __MACH__)
 #       include <TargetConditionals.h>
 #       if (1 == TARGET_IPHONE_SIMULATOR || 1 == TARGET_OS_IPHONE)
-#               define sol_env_host() SOL_ENV_HOST_IOS
+#               define sol_env_host() (SOL_ENV_HOST_IOS)
 #       elif (1 == TARGET_OS_MAC)
-#               define sol_env_host() SOL_ENV_HOST_OSX
+#               define sol_env_host() (SOL_ENV_HOST_OSX)
 #       endif
 #elif (defined __STDC_HOSTED__)
 #       if (0 == __STDC_HOSTED__)
-#               define sol_env_host() SOL_ENV_HOST_NONE
+#               define sol_env_host() (SOL_ENV_HOST_NONE)
 #       endif
 #else
 #       error "[!] sol_env_host() error: unsupported host platform"
