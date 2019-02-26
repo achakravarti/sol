@@ -110,7 +110,7 @@ SOL_FINALLY:
 static sol_erno test_assert1(void)
 {
         #define DESC_ASSERT1 "sol_assert() must not throw an error for a" \
-                          " predicate that evaluates to true"
+                             " predicate that evaluates to true"
 SOL_TRY:
                 /* check test condition */
         sol_assert (!mock_assertpass(), SOL_ERNO_TEST);
@@ -130,7 +130,7 @@ SOL_FINALLY:
 static sol_erno test_assert2(void)
 {
         #define DESC_ASSERT2 "sol_assert() must throw an error for a" \
-                          " predicate that evaluates to false"
+                             " predicate that evaluates to false"
 SOL_TRY:
                 /* check test condition */
         sol_assert (mock_assertfail(), SOL_ERNO_TEST);
@@ -149,8 +149,8 @@ SOL_FINALLY:
  */
 static sol_erno test_try1(void)
 {
-        #define DESC_TRY1 "sol_try() must not throw an error for a function that" \
-                       " returns a SOL_ERNO_NULL error code"
+        #define DESC_TRY1 "sol_try() must not throw an error for a function" \
+                          " that returns a SOL_ERNO_NULL error code"
 SOL_TRY:
                 /* check test condition */
         sol_assert (!mock_trypass(), SOL_ERNO_TEST);
@@ -170,7 +170,7 @@ SOL_FINALLY:
 static sol_erno test_try2(void)
 {
         #define DESC_TRY2 "sol_try() must throw an error for a function that" \
-                       " returns an error code other than SOL_ERNO_NULL"
+                          " returns an error code other than SOL_ERNO_NULL"
 SOL_TRY:
                 /* check test condition */
         sol_assert (mock_tryfail(), SOL_ERNO_TEST);
