@@ -221,6 +221,12 @@ typedef size_t sol_erno;
 
 
 
+#define /* void */ sol_erno_set(/* const sol_erno */ erno) \
+        (__sol_erno = (erno))
+
+
+
+
 /*
  *      sol_assert() - verifies precondition
  *        - p: precondition predicate being asserted
