@@ -46,11 +46,14 @@ SOL_TRY:
         sol_try (sol_ptr_new(SOL_PTR_NULL, sizeof (int)));
 
 SOL_CATCH:
-SOL_FINALLY:
                 /* check test condition */
-        return SOL_ERNO_PTR == sol_erno_get()
-               ? SOL_ERNO_NULL
-               : SOL_ERNO_TEST;
+        sol_erno_set(SOL_ERNO_PTR == sol_erno_get()
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* wind up */
+        sol_throw();
 }
 
 
@@ -71,14 +74,15 @@ SOL_TRY:
         sol_try (sol_ptr_new(&ptr, sizeof (int)));
 
 SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(SOL_ERNO_PTR == sol_erno_get()
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
 SOL_FINALLY:
                 /* wind up */
         sol_ptr_free(&ptr);
-
-                /* check test condition */
-        return SOL_ERNO_PTR == sol_erno_get()
-               ? SOL_ERNO_NULL
-               : SOL_ERNO_TEST;
+        sol_throw();
 }
 
 
@@ -98,14 +102,15 @@ SOL_TRY:
         sol_try (sol_ptr_new(&ptr, 0));
 
 SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(SOL_ERNO_RANGE == sol_erno_get()
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
 SOL_FINALLY:
                 /* wind up */
         sol_ptr_free(&ptr);
-
-                /* check test condition */
-        return SOL_ERNO_RANGE == sol_erno_get()
-               ? SOL_ERNO_NULL
-               : SOL_ERNO_TEST;
+        sol_throw();
 }
 
 
@@ -131,8 +136,6 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_ptr_free((sol_ptr**)&ptr);
-
-                /* throw current exception, if any */
         sol_throw();
 }
 
@@ -154,14 +157,15 @@ SOL_TRY:
         sol_try (sol_ptr_copy(SOL_PTR_NULL, (sol_ptr*)src, sizeof (int)));
 
 SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(SOL_ERNO_PTR == sol_erno_get()
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
 SOL_FINALLY:
                 /* wind up */
         sol_ptr_free((sol_ptr**)&src);
-
-                /* check test condition */
-        return SOL_ERNO_PTR == sol_erno_get()
-               ? SOL_ERNO_NULL
-               : SOL_ERNO_TEST;
+        sol_throw();
 }
 
 
@@ -184,15 +188,16 @@ SOL_TRY:
         sol_try (sol_ptr_copy(ptr, (sol_ptr*)src, sizeof (int)));
 
 SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(SOL_ERNO_PTR == sol_erno_get()
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
 SOL_FINALLY:
                 /* wind up */
         sol_ptr_free(&ptr);
         sol_ptr_free((sol_ptr**)&src);
-
-                /* check test condition */
-        return SOL_ERNO_PTR == sol_erno_get()
-               ? SOL_ERNO_NULL
-               : SOL_ERNO_TEST;
+        sol_throw();
 }
 
 
@@ -214,15 +219,16 @@ SOL_TRY:
         sol_try (sol_ptr_copy(&ptr, (sol_ptr*)src, 0));
 
 SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(SOL_ERNO_RANGE == sol_erno_get()
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
 SOL_FINALLY:
                 /* wind up */
         sol_ptr_free(&ptr);
         sol_ptr_free((sol_ptr**)&src);
-
-                /* check test condition */
-        return SOL_ERNO_RANGE == sol_erno_get()
-               ? SOL_ERNO_NULL
-               : SOL_ERNO_TEST;
+        sol_throw();
 }
 
 
@@ -242,14 +248,15 @@ SOL_TRY:
         sol_try (sol_ptr_copy(&ptr, SOL_PTR_NULL, sizeof (int)));
 
 SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(SOL_ERNO_PTR == sol_erno_get()
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
 SOL_FINALLY:
                 /* wind up */
         sol_ptr_free(&ptr);
-
-                /* check test condition */
-        return SOL_ERNO_PTR == sol_erno_get()
-               ? SOL_ERNO_NULL
-               : SOL_ERNO_TEST;
+        sol_throw();
 }
 
 
@@ -276,8 +283,6 @@ SOL_FINALLY:
                 /* wind up */
         sol_ptr_free((sol_ptr**)&ptr);
         sol_ptr_free((sol_ptr**)&src);
-
-                /* throw current exception, if any */
         sol_throw();
 }
 
