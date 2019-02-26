@@ -198,7 +198,7 @@ typedef size_t sol_erno;
  *        - The current error code if an error has occured
  */
 #define /* sol_erno */ sol_throw(/* void */) \
-        return __sol_erno
+        return sol_erno_get()
 
 
 
