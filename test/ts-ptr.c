@@ -46,6 +46,7 @@ SOL_TRY:
         sol_try (sol_ptr_new(SOL_PTR_NULL, sizeof (int)));
 
 SOL_CATCH:
+SOL_FINALLY:
                 /* check test condition */
         return SOL_ERNO_PTR == sol_erno_now()
                ? SOL_ERNO_NULL
@@ -69,10 +70,8 @@ SOL_TRY:
         sol_assert (!sol_ptr_new(&ptr, sizeof (int)), SOL_ERNO_TEST);
         sol_try (sol_ptr_new(&ptr, sizeof (int)));
 
-                /* wind up */
-        sol_ptr_free(&ptr);
-
 SOL_CATCH:
+SOL_FINALLY:
                 /* wind up */
         sol_ptr_free(&ptr);
 
@@ -98,10 +97,8 @@ SOL_TRY:
                 /* set up test scenario */
         sol_try (sol_ptr_new(&ptr, 0));
 
-                /* wind up */
-        sol_ptr_free(&ptr);
-
 SOL_CATCH:
+SOL_FINALLY:
                 /* wind up */
         sol_ptr_free(&ptr);
 
@@ -130,10 +127,8 @@ SOL_TRY:
                 /* check test condition */
         sol_assert (*ptr == -612, SOL_ERNO_TEST);
 
-                /* wind up */
-        sol_ptr_free((sol_ptr**)&ptr);
-
 SOL_CATCH:
+SOL_FINALLY:
                 /* wind up */
         sol_ptr_free((sol_ptr**)&ptr);
 
@@ -158,10 +153,8 @@ SOL_TRY:
         sol_assert (!sol_ptr_new((sol_ptr*)&src, sizeof (int)), SOL_ERNO_TEST);
         sol_try (sol_ptr_copy(SOL_PTR_NULL, (sol_ptr*)src, sizeof (int)));
 
-                /* wind up */
-        sol_ptr_free((sol_ptr**)&src);
-
 SOL_CATCH:
+SOL_FINALLY:
                 /* wind up */
         sol_ptr_free((sol_ptr**)&src);
 
@@ -190,11 +183,8 @@ SOL_TRY:
         sol_assert (!sol_ptr_new(&ptr, sizeof (int)), SOL_ERNO_TEST);
         sol_try (sol_ptr_copy(ptr, (sol_ptr*)src, sizeof (int)));
 
-                /* wind up */
-        sol_ptr_free(&ptr);
-        sol_ptr_free((sol_ptr**)&src);
-
 SOL_CATCH:
+SOL_FINALLY:
                 /* wind up */
         sol_ptr_free(&ptr);
         sol_ptr_free((sol_ptr**)&src);
@@ -223,11 +213,8 @@ SOL_TRY:
         sol_assert (!sol_ptr_new((sol_ptr**)&src, sizeof (int)), SOL_ERNO_TEST);
         sol_try (sol_ptr_copy(&ptr, (sol_ptr*)src, 0));
 
-                /* wind up */
-        sol_ptr_free(&ptr);
-        sol_ptr_free((sol_ptr**)&src);
-
 SOL_CATCH:
+SOL_FINALLY:
                 /* wind up */
         sol_ptr_free(&ptr);
         sol_ptr_free((sol_ptr**)&src);
@@ -254,10 +241,8 @@ SOL_TRY:
                 /* set up test scenario */
         sol_try (sol_ptr_copy(&ptr, SOL_PTR_NULL, sizeof (int)));
 
-                /* wind up */
-        sol_ptr_free(&ptr);
-
 SOL_CATCH:
+SOL_FINALLY:
                 /* wind up */
         sol_ptr_free(&ptr);
 
@@ -286,11 +271,8 @@ SOL_TRY:
                 /* check test condition */
         sol_assert (*ptr == -555, SOL_ERNO_TEST);
 
-                /* wind up */
-        sol_ptr_free((sol_ptr**)&ptr);
-        sol_ptr_free((sol_ptr**)&src);
-
 SOL_CATCH:
+SOL_FINALLY:
                 /* wind up */
         sol_ptr_free((sol_ptr**)&ptr);
         sol_ptr_free((sol_ptr**)&src);
@@ -337,7 +319,8 @@ SOL_TRY:
         sol_assert (!ptr, SOL_ERNO_TEST);
 
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         sol_throw();
 }
 
@@ -382,10 +365,8 @@ SOL_TRY:
         sol_try (sol_tsuite_fail(ts, fail));
         sol_try (sol_tsuite_total(ts, total));
 
-                /* wind up */
-        sol_tsuite_term(ts);
-
 SOL_CATCH:
+SOL_FINALLY:
                 /* throw current exception, if any */
         sol_tsuite_term(ts);
         sol_throw();

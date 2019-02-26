@@ -64,7 +64,8 @@ SOL_TRY:
         sol_try (__sol_tests_ptr(log, pass, fail, total));
 
 SOL_CATCH:
-                /* throw current exception, if any */
+SOL_FINALLY:
+                /* wind up */
         sol_throw();
 }
 
