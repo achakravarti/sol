@@ -69,9 +69,9 @@
 
 
 /*
- *      DESC_NOW_01 - description for sol_erno_now() unit test #1
+ *      DESC_NOW_01 - description for sol_erno_get() unit test #1
  */
-#define DESC_NOW_01 "sol_erno_now() must return the current error code that" \
+#define DESC_NOW_01 "sol_erno_get() must return the current error code that" \
                     " was thrown by the last calling function"
 
 
@@ -230,7 +230,7 @@ SOL_FINALLY:
 
 
 /*
- *      test_now_01() - sol_erno_now() unit test #1
+ *      test_now_01() - sol_erno_get() unit test #1
  */
 static sol_erno
 test_now_01(void)
@@ -242,7 +242,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* check test condition described by DESC_NOW_01 */
-        return SOL_ERNO_TEST == sol_erno_now ()
+        return SOL_ERNO_TEST == sol_erno_get ()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
 }

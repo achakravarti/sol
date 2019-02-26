@@ -48,7 +48,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* check test condition */
-        return SOL_ERNO_PTR == sol_erno_now()
+        return SOL_ERNO_PTR == sol_erno_get()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
 }
@@ -76,7 +76,7 @@ SOL_FINALLY:
         sol_ptr_free(&ptr);
 
                 /* check test condition */
-        return SOL_ERNO_PTR == sol_erno_now()
+        return SOL_ERNO_PTR == sol_erno_get()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
 }
@@ -103,7 +103,7 @@ SOL_FINALLY:
         sol_ptr_free(&ptr);
 
                 /* check test condition */
-        return SOL_ERNO_RANGE == sol_erno_now()
+        return SOL_ERNO_RANGE == sol_erno_get()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
 }
@@ -159,7 +159,7 @@ SOL_FINALLY:
         sol_ptr_free((sol_ptr**)&src);
 
                 /* check test condition */
-        return SOL_ERNO_PTR == sol_erno_now()
+        return SOL_ERNO_PTR == sol_erno_get()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
 }
@@ -190,7 +190,7 @@ SOL_FINALLY:
         sol_ptr_free((sol_ptr**)&src);
 
                 /* check test condition */
-        return SOL_ERNO_PTR == sol_erno_now()
+        return SOL_ERNO_PTR == sol_erno_get()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
 }
@@ -220,7 +220,7 @@ SOL_FINALLY:
         sol_ptr_free((sol_ptr**)&src);
 
                 /* check test condition */
-        return SOL_ERNO_RANGE == sol_erno_now()
+        return SOL_ERNO_RANGE == sol_erno_get()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
 }
@@ -247,7 +247,7 @@ SOL_FINALLY:
         sol_ptr_free(&ptr);
 
                 /* check test condition */
-        return SOL_ERNO_PTR == sol_erno_now()
+        return SOL_ERNO_PTR == sol_erno_get()
                ? SOL_ERNO_NULL
                : SOL_ERNO_TEST;
 }

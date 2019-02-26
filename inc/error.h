@@ -204,9 +204,9 @@ typedef size_t sol_erno;
 
 
 /*
- *      sol_erno_now() - gets current error code
+ *      sol_erno_get() - gets current error code
  *
- *      The sol_erno_now() macro returns the current sol_erno error code within
+ *      The sol_erno_get() macro returns the current sol_erno error code within
  *      the context of the thread in which it is called. This macro is designed
  *      to be used primarily within SOL_CATCH blocks, but if required, may also
  *      be used within SOL_TRY blocks.
@@ -215,7 +215,7 @@ typedef size_t sol_erno;
  *        - SOL_ERNO if no error has occured
  *        - The current error code if an error has occured
  */
-#define /* const sol_erno */ sol_erno_now(/* void */) \
+#define /* const sol_erno */ sol_erno_get(/* void */) \
         ((const sol_erno) __sol_erno)
 
 
