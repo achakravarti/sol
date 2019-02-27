@@ -191,7 +191,7 @@ typedef size_t sol_erno;
  *      The SOL_FINALLY block must be terminated by returning the current error
  *      code provided by the sol_erno_get() macro defined below. At no point
  *      should the sol_assert() and sol_try() macros be used in the SOL_FINALLY
- *      block as this could potentially lead to an infinit loop.
+ *      block as this could potentially lead to an infinite loop.
  */
 #define SOL_FINALLY __SOL_FINALLY
 
