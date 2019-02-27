@@ -87,7 +87,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -112,7 +112,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 
 

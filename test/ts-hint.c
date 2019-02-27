@@ -26,6 +26,7 @@
 
 
 
+        /* include required header files */
 #include "./suite.h"
 #include "../inc/hint.h"
 
@@ -151,7 +152,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 #endif /* (defined __GNUC__ || defined __clang__) */
 
@@ -175,7 +176,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 #endif /* (defined __GNUC__ || defined __clang__) */
 
@@ -204,7 +205,7 @@ SOL_FINALLY:
                 /* wind up */
         gcc_on();
         clang_on();
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -232,7 +233,7 @@ SOL_FINALLY:
                 /* wind up */
         gcc_on();
         clang_on();
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -255,7 +256,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 #endif /* (defined __GNUC__ || defined __clang__) */
 
@@ -279,7 +280,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 #endif /* (defined __GNUC__ || defined __clang__) */
 
@@ -308,7 +309,7 @@ SOL_FINALLY:
                 /* wind up */
         gcc_on();
         clang_on();
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -336,7 +337,7 @@ SOL_FINALLY:
                 /* wind up */
         gcc_on();
         clang_on();
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -357,7 +358,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* throw current exception, if any */
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -384,7 +385,7 @@ SOL_FINALLY:
                 /* wind up */
         gcc_on();
         clang_on();
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -404,8 +405,8 @@ SOL_TRY:
 
 SOL_CATCH:
 SOL_FINALLY:
-                /* throw current exception, if any */
-        sol_throw();
+                /* wind up */
+        return sol_erno_get();
 }
 
 
@@ -432,7 +433,7 @@ SOL_FINALLY:
                 /* wind up */
         gcc_on();
         clang_on();
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -453,7 +454,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -480,7 +481,7 @@ SOL_FINALLY:
                 /* wind up */
         gcc_on();
         clang_on();
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -501,7 +502,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -556,7 +557,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_tsuite_term(ts);
-        sol_throw();
+        return sol_erno_get();
 }
 
 

@@ -53,7 +53,7 @@ SOL_CATCH:
 
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -82,7 +82,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_ptr_free(&ptr);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -110,7 +110,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_ptr_free(&ptr);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -136,7 +136,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_ptr_free((sol_ptr**)&ptr);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -165,7 +165,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_ptr_free((sol_ptr**)&src);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -197,7 +197,7 @@ SOL_FINALLY:
                 /* wind up */
         sol_ptr_free(&ptr);
         sol_ptr_free((sol_ptr**)&src);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -228,7 +228,7 @@ SOL_FINALLY:
                 /* wind up */
         sol_ptr_free(&ptr);
         sol_ptr_free((sol_ptr**)&src);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -256,7 +256,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_ptr_free(&ptr);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -283,7 +283,7 @@ SOL_FINALLY:
                 /* wind up */
         sol_ptr_free((sol_ptr**)&ptr);
         sol_ptr_free((sol_ptr**)&src);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -326,7 +326,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -372,9 +372,9 @@ SOL_TRY:
 
 SOL_CATCH:
 SOL_FINALLY:
-                /* throw current exception, if any */
+                /* wind up */
         sol_tsuite_term(ts);
-        sol_throw();
+        return sol_erno_get();
 }
 
 

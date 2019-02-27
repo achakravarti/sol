@@ -75,8 +75,8 @@ SOL_TRY:
 
 SOL_CATCH:
 SOL_FINALLY:
-                /* throw exceptions */
-        sol_throw ();
+                /* wind up */
+        return sol_erno_get();
 }
 
 
@@ -100,8 +100,8 @@ SOL_TRY:
 
 SOL_CATCH:
 SOL_FINALLY:
-                /* throw exceptions */
-        sol_throw ();
+                /* wind up */
+        return sol_erno_get();
 }
 
 
@@ -161,8 +161,8 @@ SOL_TRY:
 
 SOL_CATCH:
 SOL_FINALLY:
-                /* throw exceptions */
-        sol_throw ();
+                /* wind up */
+        return sol_erno_get();
 }
 
 
@@ -185,8 +185,8 @@ SOL_TRY:
 
 SOL_CATCH:
 SOL_FINALLY:
-                /* throw exceptions */
-        sol_throw ();
+                /* wind up */
+        return sol_erno_get();
 }
 
 
@@ -209,8 +209,8 @@ SOL_TRY:
 
 SOL_CATCH:
 SOL_FINALLY:
-                /* throw exceptions */
-        sol_throw ();
+                /* wind up */
+        return sol_erno_get();
 }
 
 
@@ -233,8 +233,8 @@ SOL_TRY:
 
 SOL_CATCH:
 SOL_FINALLY:
-                /* throw exceptions */
-        sol_throw ();
+                /* wind up */
+        return sol_erno_get();
 }
 
 
@@ -271,8 +271,8 @@ SOL_TRY:
 
 SOL_CATCH:
 SOL_FINALLY:
-                /* throw exceptions */
-        sol_throw ();
+                /* wind up */
+        return sol_erno_get();
 }
 
 

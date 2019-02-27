@@ -193,32 +193,8 @@ typedef size_t sol_erno;
  *      should the sol_assert() and sol_try() macros be used in the SOL_FINALLY
  *      block as this could potentially lead to an infinit loop.
  */
-#define SOL_FINALLY goto __SOL_FINALLY; __SOL_FINALLY
-
-
-
-
-/*
- *      sol_throw() - throws current error code
- *
- *      The sol_throw() macro throws the current error code back to the calling
- *      function, thereby breaking control out of the current try-catch-finally
- *      flow. This macro is essentially a convenience wrapper around a return
- *      statement invoking the sol_erno_get() macro. Using this macro instead of
- *      the expanded form saves out on a few keystrokes, and (hopefully!) makes
- *      the context clearer.
- *
- *      The sol_throw() macro may be invoked at any time in order to break out
- *      of the try-catch-finally flow in a function. A SOL_FINALLY block must be
- *      terminated by a call to sol_throw() so that control can return to the
- *      calling function.
- *
- *      Return:
- *        - SOL_ERNO_NULL if no error has occured
- *        - The current error code if an error has occured
- */
-#define /* sol_erno */ sol_throw(/* void */) \
-        return sol_erno_get()
+#define SOL_FINALLY goto __SOL_FINALLY; \
+        __SOL_FINALLY
 
 
 

@@ -26,6 +26,7 @@
 
 
 
+        /* include required header files */
 #include "../inc/test.h"
 #include "./suite.h"
 
@@ -44,7 +45,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -62,7 +63,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -80,7 +81,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -98,7 +99,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -118,7 +119,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -138,7 +139,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -158,7 +159,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -178,7 +179,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -201,7 +202,7 @@ SOL_CATCH:
                      : SOL_ERNO_TEST);
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -210,11 +211,10 @@ SOL_FINALLY:
 /*
  *      __sol_tsuite_error() - declared in sol/test/suite.h
  */
-extern sol_erno
-__sol_tsuite_error(sol_tlog *log,
-                   int *pass,
-                   int *fail,
-                   int *total)
+extern sol_erno __sol_tsuite_error(sol_tlog *log,
+                                   int *pass,
+                                   int *fail,
+                                   int *total)
 {
         auto sol_tsuite __ts, *ts = &__ts;
 
@@ -244,7 +244,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_tsuite_term(ts);
-        sol_throw();
+        return sol_erno_get();
 }
 
 

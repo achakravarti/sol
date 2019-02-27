@@ -70,7 +70,7 @@ SOL_TRY:
 SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -87,7 +87,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         flag_tcase = 1;
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -275,7 +275,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_tsuite_term(ts);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -349,7 +349,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_tsuite_term(ts);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -376,7 +376,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_tsuite_term(ts);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -405,7 +405,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_tsuite_term(ts);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -479,7 +479,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_tsuite_term(ts);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -506,7 +506,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_tsuite_term(ts);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -535,7 +535,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_tsuite_term(ts);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -613,7 +613,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_tsuite_term(ts);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -640,7 +640,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_tsuite_term(ts);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -669,7 +669,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_tsuite_term(ts);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -719,7 +719,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_tsuite_term(ts);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
@@ -777,7 +777,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_tsuite_term(ts);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
