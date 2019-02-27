@@ -193,8 +193,7 @@ typedef size_t sol_erno;
  *      should the sol_assert() and sol_try() macros be used in the SOL_FINALLY
  *      block as this could potentially lead to an infinit loop.
  */
-#define SOL_FINALLY goto __SOL_FINALLY; \
-        __SOL_FINALLY
+#define SOL_FINALLY __SOL_FINALLY
 
 
 
