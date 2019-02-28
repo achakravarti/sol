@@ -26,6 +26,7 @@
 
 
 
+        /* define header guard */
 #if (!defined __SOL_ENVIRONMENT_MODULE)
 #define __SOL_ENVIRONMENT_MODULE
 
@@ -48,10 +49,9 @@
  *      compiler. However, in future, support for other compilers, including
  *      MSVC, *may* be introduced if there is adequate reason to do so.
  */
-typedef enum __SOL_ENV_CC {
-        SOL_ENV_CC_GNUC,
-        SOL_ENV_CC_CLANG
-} SOL_ENV_CC;
+#define SOL_ENV_CC int
+#define SOL_ENV_CC_GNUC  (0)
+#define SOL_ENV_CC_CLANG (1)
 
 
 
