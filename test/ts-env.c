@@ -26,6 +26,7 @@
 
 
 
+        /* include required header files */
 #include "../inc/env.h"
 #include "./suite.h"
 
@@ -33,16 +34,21 @@
 
 
 /*
- *      cc_01() - sol_env_cc() unit test #1
+ *      test_cc1() - sol_env_cc() unit test #1
  */
-static sol_erno cc_01(void)
+static sol_erno test_cc1(void)
 {
-        #define CC_01 "sol_env_cc() is able to determine the C compiler being" \
-                      " used for compilation"
+        #define DESC_CC1 "sol_env_cc() determines the C compiler being used" \
+                         " for compilation"
+        auto SOL_ENV_CC cc;
 
 SOL_TRY:
+                /* set up test scenario */
+        cc = sol_env_cc();
+
                 /* check test condition */
-        sol_assert (sol_env_cc() >= 0, SOL_ERNO_TEST);
+        sol_assert (SOL_ENV_CC_GNUC == cc || SOL_ENV_CC_CLANG == cc,
+                    SOL_ERNO_TEST);
 
 SOL_CATCH:
 SOL_FINALLY:
@@ -54,16 +60,23 @@ SOL_FINALLY:
 
 
 /*
- *      stdc_01() - sol_env_stdc() unit test #1
+ *      test_stdc1() - sol_env_stdc() unit test #1
  */
-static sol_erno stdc_01(void)
+static sol_erno test_stdc1(void)
 {
-        #define STDC_01 "sol_env_stdc() is able to determine the standard" \
-                        " C version being used for compilation"
+        #define DESC_STDC1 "sol_env_stdc() determines the standard C version" \
+                           " being used for compilation"
+        auto SOL_ENV_STDC stdc;
 
 SOL_TRY:
+                /* set up test scenario */
+        stdc = sol_env_stdc();
+
                 /* check test condition */
-        sol_assert (sol_env_stdc() >= 0, SOL_ERNO_TEST);
+        sol_assert (SOL_ENV_STDC_C89 == stdc || SOL_ENV_STDC_C90 == stdc
+                    || SOL_ENV_STDC_C94 == stdc || SOL_ENV_STDC_C99 == stdc
+                    || SOL_ENV_STDC_C11 == stdc || SOL_ENV_STDC_C18 == stdc,
+                    SOL_ERNO_TEST);
 
 SOL_CATCH:
 SOL_FINALLY:
@@ -75,16 +88,25 @@ SOL_FINALLY:
 
 
 /*
- *      host_01() - sol_env_host() unit test #1
+ *      test_host1() - sol_env_host() unit test #1
  */
-static sol_erno host_01(void)
+static sol_erno test_host1(void)
 {
-        #define HOST_01 "sol_env_host() is able to determine the host" \
-                        " environment being used for compilation"
+        #define DESC_HOST1 "sol_env_host() determines the host environment" \
+                           " being used for compilation"
+        auto SOL_ENV_HOST host;
 
 SOL_TRY:
+                /* set up test scenario */
+        host = sol_env_host();
+
                 /* check test condition */
-        sol_assert (sol_env_host() >= 0, SOL_ERNO_TEST);
+        sol_assert (SOL_ENV_HOST_NONE == host || SOL_ENV_HOST_ANDROID == host
+                    || SOL_ENV_HOST_LINUX == host || SOL_ENV_HOST_CYGWIN == host
+                    || SOL_ENV_HOST_BSD == host || SOL_ENV_HOST_HPUX == host
+                    || SOL_ENV_HOST_AIX == host || SOL_ENV_HOST_IOS == host
+                    || SOL_ENV_HOST_OSX == host || SOL_ENV_HOST_SOLARIS == host,
+                    SOL_ERNO_TEST);
 
 SOL_CATCH:
 SOL_FINALLY:
@@ -96,16 +118,23 @@ SOL_FINALLY:
 
 
 /*
- *      arch_01() - sol_env_arch() unit test #1
+ *      test_arch1() - sol_env_arch() unit test #1
  */
-static sol_erno arch_01(void)
+static sol_erno test_arch1(void)
 {
-        #define ARCH_01 "sol_env_arch() is able to determine the CPU" \
-                        " architecture being used for compilation"
+        #define DESC_ARCH1 "sol_env_arch() determines the CPU architecture" \
+                           " being used for compilation"
+        auto SOL_ENV_ARCH arch;
 
 SOL_TRY:
+                /* set up test scenario */
+        arch = sol_env_arch();
+
                 /* check test condition */
-        sol_assert (sol_env_arch() >= 0, SOL_ERNO_TEST);
+        sol_assert (SOL_ENV_ARCH_X86 == arch || SOL_ENV_ARCH_AMD64 == arch
+                    || SOL_ENV_ARCH_IA64 == arch || SOL_ENV_ARCH_ARM == arch
+                    || SOL_ENV_ARCH_ARM64 == arch,
+                    SOL_ERNO_TEST);
 
 SOL_CATCH:
 SOL_FINALLY:
@@ -117,12 +146,12 @@ SOL_FINALLY:
 
 
 /*
- *      wordsz_01() - sol_env_wordsz() unit test #1
+ *      test_wordsz1() - sol_env_wordsz() unit test #1
  */
-static sol_erno wordsz_01(void)
+static sol_erno test_wordsz1(void)
 {
-        #define WORDSZ_01 "sol_env_arch() is able to determine the native"   \
-                          " word size of the CPU being used for compilation"
+        #define DESC_WORDSZ1 "sol_env_arch() determines the native word size" \
+                             " of the CPU being used for compilation"
 
 SOL_TRY:
                 /* check test condition */
@@ -156,11 +185,11 @@ SOL_TRY:
         sol_try (sol_tsuite_init2(ts, log));
 
                 /* register test cases */
-        sol_try (sol_tsuite_register(ts, &cc_01, CC_01));
-        sol_try (sol_tsuite_register(ts, &stdc_01, STDC_01));
-        sol_try (sol_tsuite_register(ts, &host_01, HOST_01));
-        sol_try (sol_tsuite_register(ts, &arch_01, ARCH_01));
-        sol_try (sol_tsuite_register(ts, &wordsz_01, WORDSZ_01));
+        sol_try (sol_tsuite_register(ts, &test_cc1, DESC_CC1));
+        sol_try (sol_tsuite_register(ts, &test_stdc1, DESC_STDC1));
+        sol_try (sol_tsuite_register(ts, &test_host1, DESC_HOST1));
+        sol_try (sol_tsuite_register(ts, &test_arch1, DESC_ARCH1));
+        sol_try (sol_tsuite_register(ts, &test_wordsz1, DESC_WORDSZ1));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
