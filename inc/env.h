@@ -26,6 +26,7 @@
 
 
 
+        /* define header guard */
 #if (!defined __SOL_ENVIRONMENT_MODULE)
 #define __SOL_ENVIRONMENT_MODULE
 
@@ -48,10 +49,9 @@
  *      compiler. However, in future, support for other compilers, including
  *      MSVC, *may* be introduced if there is adequate reason to do so.
  */
-typedef enum __SOL_ENV_CC {
-        SOL_ENV_CC_GNUC,
-        SOL_ENV_CC_CLANG
-} SOL_ENV_CC;
+#define SOL_ENV_CC       int
+#define SOL_ENV_CC_GNUC  (0)
+#define SOL_ENV_CC_CLANG (1)
 
 
 
@@ -77,14 +77,13 @@ typedef enum __SOL_ENV_CC {
  *      considered, as they are fairly archaic and limited only to deprecated
  *      compilers.
  */
-typedef enum __SOL_ENV_STDC {
-        SOL_ENV_STDC_C89,
-        SOL_ENV_STDC_C90,
-        SOL_ENV_STDC_C94,
-        SOL_ENV_STDC_C99,
-        SOL_ENV_STDC_C11,
-        SOL_ENV_STDC_C18
-} SOL_ENV_STDC;
+#define SOL_ENV_STDC     int
+#define SOL_ENV_STDC_C89 (0)
+#define SOL_ENV_STDC_C90 (1)
+#define SOL_ENV_STDC_C94 (2)
+#define SOL_ENV_STDC_C99 (3)
+#define SOL_ENV_STDC_C11 (4)
+#define SOL_ENV_STDC_C18 (5)
 
 
 
@@ -112,7 +111,7 @@ typedef enum __SOL_ENV_STDC {
  *      has been tested, and support for the others being assumed based on these
  *      tests.
  */
-#define SOL_ENV_HOST int
+#define SOL_ENV_HOST         int
 #define SOL_ENV_HOST_NONE    (0)
 #define SOL_ENV_HOST_ANDROID (1)
 #define SOL_ENV_HOST_LINUX   (2)
@@ -132,22 +131,25 @@ typedef enum __SOL_ENV_STDC {
  *        - SOL_ENV_ARCH_X68  : 32-bit x86 processor
  *        - SOL_ENV_ARCH_AMD64: 64-bit x86_64 processor
  *        - SOL_ENV_ARCH_IA64 : 64-bit Itanium processor
+ *        - SOL_ENV_ARCH_ARM  : 32-bit ARM processor
+ *        - SOL_ENV_ARCH_ARM64: 64-bit ARM64 processor
  *
  *      The SOL_ENV_ARCH type enumerates the CPU architectures supported by the
  *      Sol Library. The constants enumerated by this type are returned by the
  *      sol_env_arch() macro (defined below) in order to indicate the processor
  *      architecture at compile-time.
  *
- *      The Sol Library currently supports the 32-bit x86 family of processors,
- *      and the 64-bit x86_64 and Itanium family of processors. The Sol Library
- *      has been tested on the x86_64 architecture, and support for the others
- *      is assumed based on these tests.
+ *      The Sol Library currently supports the 32-bit ARM and x86 processor
+ *      families, and the 64-bit ARM64, x86_64 and Itanium family of processors.
+ *      The Sol Library has been tested on the x86_64 architecture, and support
+ *      for the others is assumed based on these tests.
  */
-typedef enum __SOL_ENV_ARCH {
-        SOL_ENV_ARCH_X86,
-        SOL_ENV_ARCH_AMD64,
-        SOL_ENV_ARCH_IA64
-} SOL_ENV_ARCH;
+#define SOL_ENV_ARCH       int
+#define SOL_ENV_ARCH_X86   (0)
+#define SOL_ENV_ARCH_AMD64 (1)
+#define SOL_ENV_ARCH_IA64  (2)
+#define SOL_ENV_ARCH_ARM   (3)
+#define SOL_ENV_ARCH_ARM64 (4)
 
 
 
@@ -282,6 +284,8 @@ typedef enum __SOL_ENV_ARCH {
  *        - SOL_ENV_ARCH_X68 if 32-bit x86 processor detected
  *        - SOL_ENV_ARCH_AMD64 if 64-bit x86_64 processor detected
  *        - SOL_ENV_ARCH_IA64 if 64-bit Itanium processor detected
+ *        - SOL_ENV_ARCH_ARM if 32-bit ARM processor detected
+ *        - SOL_ENV_ARCH_ARM64 if 64-bit ARM64 processor detected
  */
 #if (defined __amd64__ || defined __amd64                          \
      || defined __x86_64__  || defined __x86_64)
@@ -291,6 +295,10 @@ typedef enum __SOL_ENV_ARCH {
 #elif (defined i386 || defined __i386 || defined __i386__          \
        || defined __i486__ || defined __i586__ || defined __i686__)
 #       define sol_env_arch() SOL_ENV_ARCH_X86
+#elif (defined __arm__ || defined __thumb__)
+#       define sol_env_arch() SOL_ENV_ARCH_ARM
+#elif (defined __aarch64__)
+#       define sol_env_arch() SOL_ENV_ARCH_ARM64
 #else
 #       error "[!] sol_env_arch() error: unsupported architecture"
 #endif
@@ -312,9 +320,13 @@ typedef enum __SOL_ENV_ARCH {
  */
 #if (SOL_ENV_ARCH_X86 == sol_env_arch())
 #       define sol_env_wordsz() 32
+#elif (SOL_ENV_ARCH_ARM == sol_env_arch())
+#       define sol_env_wordsz() 32
 #elif (SOL_ENV_ARCH_AMD64 == sol_env_arch())
 #       define sol_env_wordsz() 64
 #elif (SOL_ENV_ARCH_IA64 == sol_env_arch())
+#       define sol_env_wordsz() 64
+#elif (SOL_ENV_ARCH_ARM64 == sol_env_arch())
 #       define sol_env_wordsz() 64
 #else
 #       error "[!] sol_env_wordsz() error: unsupported architecture"
