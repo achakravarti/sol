@@ -54,9 +54,9 @@
  *      __sol_tests_ptr2() - declared in sol/test/suite.h
  */
 extern sol_erno __sol_tests_ptr2(sol_tlog *log,
-                                 int      *pass,
-                                 int      *fail,
-                                 int      *total)
+                                 int *pass,
+                                 int *fail,
+                                 int *total)
 {
 SOL_TRY:
                 /* run pointer module test cases in the simulated freestanding
@@ -64,8 +64,9 @@ SOL_TRY:
         sol_try (__sol_tests_ptr(log, pass, fail, total));
 
 SOL_CATCH:
-                /* throw current exception, if any */
-        sol_throw();
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
 }
 
 

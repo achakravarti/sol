@@ -45,8 +45,9 @@ SOL_TRY:
         sol_assert (sol_env_cc() >= 0, SOL_ERNO_TEST);
 
 SOL_CATCH:
-                /* throw current exception, if any */
-        sol_throw();
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
 }
 
 
@@ -65,8 +66,9 @@ SOL_TRY:
         sol_assert (sol_env_stdc() >= 0, SOL_ERNO_TEST);
 
 SOL_CATCH:
-                /* throw current exception, if any */
-        sol_throw();
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
 }
 
 
@@ -85,8 +87,9 @@ SOL_TRY:
         sol_assert (sol_env_host() >= 0, SOL_ERNO_TEST);
 
 SOL_CATCH:
-                /* throw current exception, if any */
-        sol_throw();
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
 }
 
 
@@ -105,8 +108,9 @@ SOL_TRY:
         sol_assert (sol_env_arch() >= 0, SOL_ERNO_TEST);
 
 SOL_CATCH:
-                /* throw current exception, if any */
-        sol_throw();
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
 }
 
 
@@ -126,8 +130,9 @@ SOL_TRY:
                     SOL_ERNO_TEST);
 
 SOL_CATCH:
-                /* throw current exception, if any */
-        sol_throw();
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
 }
 
 
@@ -165,13 +170,11 @@ SOL_TRY:
         sol_try (sol_tsuite_fail(ts, fail));
         sol_try (sol_tsuite_total(ts, total));
 
+SOL_CATCH:
+SOL_FINALLY:
                 /* wind up */
         sol_tsuite_term(ts);
-
-SOL_CATCH:
-                /* throw current exception, if any */
-        sol_tsuite_term(ts);
-        sol_throw();
+        return sol_erno_get();
 }
 
 
