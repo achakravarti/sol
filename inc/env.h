@@ -49,7 +49,7 @@
  *      compiler. However, in future, support for other compilers, including
  *      MSVC, *may* be introduced if there is adequate reason to do so.
  */
-#define SOL_ENV_CC int
+#define SOL_ENV_CC       int
 #define SOL_ENV_CC_GNUC  (0)
 #define SOL_ENV_CC_CLANG (1)
 
@@ -77,14 +77,13 @@
  *      considered, as they are fairly archaic and limited only to deprecated
  *      compilers.
  */
-typedef enum __SOL_ENV_STDC {
-        SOL_ENV_STDC_C89,
-        SOL_ENV_STDC_C90,
-        SOL_ENV_STDC_C94,
-        SOL_ENV_STDC_C99,
-        SOL_ENV_STDC_C11,
-        SOL_ENV_STDC_C18
-} SOL_ENV_STDC;
+#define SOL_ENV_STDC     int
+#define SOL_ENV_STDC_C89 (0)
+#define SOL_ENV_STDC_C90 (1)
+#define SOL_ENV_STDC_C94 (2)
+#define SOL_ENV_STDC_C99 (3)
+#define SOL_ENV_STDC_C11 (4)
+#define SOL_ENV_STDC_C18 (5)
 
 
 
@@ -112,7 +111,7 @@ typedef enum __SOL_ENV_STDC {
  *      has been tested, and support for the others being assumed based on these
  *      tests.
  */
-#define SOL_ENV_HOST int
+#define SOL_ENV_HOST         int
 #define SOL_ENV_HOST_NONE    (0)
 #define SOL_ENV_HOST_ANDROID (1)
 #define SOL_ENV_HOST_LINUX   (2)
