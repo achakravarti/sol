@@ -142,11 +142,10 @@
  *      has been tested on the x86_64 architecture, and support for the others
  *      is assumed based on these tests.
  */
-typedef enum __SOL_ENV_ARCH {
-        SOL_ENV_ARCH_X86,
-        SOL_ENV_ARCH_AMD64,
-        SOL_ENV_ARCH_IA64
-} SOL_ENV_ARCH;
+#define SOL_ENV_ARCH       int
+#define SOL_ENV_ARCH_X86   (0)
+#define SOL_ENV_ARCH_AMD64 (1)
+#define SOL_ENV_ARCH_IA64  (2)
 
 
 
