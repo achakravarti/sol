@@ -26,13 +26,21 @@
 
 
 
+        /* define header guard */
 #if !defined __SOL_COMPILER_HINTS_MODULE
 #define __SOL_COMPILER_HINTS_MODULE
 
 
 
 
+        /* include required header files; threads.h was defined by C11, but in
+         * practice compilers were slow to implement it; threads.h is guaranteed
+         * to be available on conforming compilers only if __STDC_NO_THREADS__
+         * is undefined in C11 and above dialects */
 #include "./env.h"
+#if (sol_env_stdc() >= SOL_ENV_STDC_C11 && !defined __STDC_NO_THREADS__)
+#       include <threads.h>
+#endif
 
 
 
@@ -44,12 +52,14 @@
  *      the function it is associated with is frequently called. Using this hint
  *      helps to provide compile-time optimisations to the associated code. This
  *      hint is available on GCC-compatible compilation environments, and
- *      degrades gracefully to a safe no-op on other environments.
+ *      degrades gracefully to a safe no-op on other environments, but with an
+ *      appropriate warning.
  */
 #if (SOL_ENV_CC_GNUC == sol_env_cc() || SOL_ENV_CC_CLANG == sol_env_cc())
 #       define sol_hot __attribute__((hot))
 #else
 #       define sol_hot
+#       warning "sol_hot has no effect"
 #endif
 
 
@@ -62,12 +72,14 @@
  *      the function it is associated with is rarely called. Using this hint
  *      helps to provide compile-time optimisations to the associated code. This
  *      hint is available on GCC-compatible compilation environments, and
- *      degrades gracefully to a safe no-op on other environments.
+ *      degrades gracefully to a safe no-op on other environments, but with an
+ *      appropriate warning.
  */
 #if (SOL_ENV_CC_GNUC == sol_env_cc() || SOL_ENV_CC_CLANG == sol_env_cc())
 #       define sol_cold __attribute__((cold))
 #else
 #       define sol_cold
+#       warning "sol_cold has no effect"
 #endif
 
 
@@ -81,7 +93,8 @@
  *      compiler, indicating that a predicate @p is likely to be true. This
  *      macro is modelled after the likely() macro in the Linux kernel, and
  *      relies on a GCC-specific extension. However, this macro degrades
- *      gracefully to a safe no-op on non-GCC compatible compilation platforms.
+ *      gracefully to a safe no-op on non-GCC compatible compilation platforms,
+ *      but with an appropriate warning.
  *
  *      @p is expected to be an integral predicate expression that evaluates to
  *      a Boolean value.
@@ -94,6 +107,7 @@
 #       define sol_likely(p) (__builtin_expect(!!(p), 1))
 #else
 #       define sol_likely(p) (p)
+#       warning "sol_likely() has no effect"
 #endif
 
 
@@ -107,7 +121,8 @@
  *      compiler, indicating that a predicate @p is unlikely to be true. This
  *      macro is modelled after the unlikely() macro in the Linux kernel, and
  *      relies on a GCC-specific extension. However, this macro degrades
- *      gracefully to a safe no-op on non-GCC compatible compilation platforms.
+ *      gracefully to a safe no-op on non-GCC compatible compilation platforms,
+ *      but with an appropriate warning.
  *
  *      @p is expected to be an integral predicate expression that evaluates to
  *      a Boolean value.
@@ -120,27 +135,35 @@
 #       define sol_unlikely(p) (__builtin_expect(!!(p), 0))
 #else
 #       define sol_unlikely(p) (p)
+#       warning "sol_unlikely() has no effect"
 #endif
 
 
 
 
 /*
- *      sol_likely - hint that function should be inlined
+ *      sol_inline - hint that function should be inlined
  *
  *      The sol_inline symbolic constant provides a mechanism to portably hint
  *      to the compiler that a given function should be considered for inlining.
- *      This symbol expands to the inline keyword when C99 and above is used,
- *      and gracefully degrades on earlier versions.
+ *      This symbol is supported if either (or both) of the following conditions
+ *      are met:
+ *        * C99 or above is used as the dialect
+ *        * GCC or Clang is used as the compiler
+ *      In all other cases, this symbol degrades gracefully, albeit with an
+ *      appropriate compiler warning.
  *
- *      If inlining is essential in dialects predating C99, then the only way
- *      out is to declare the inline code as a macro, optionally wrapped in a
- *      do-while(0) loop.
+ *      Since sol_inline only provides a hint to the compiler which it is free
+ *      to ignore, if inlining is essential, then the only way out is to declare
+ *      the inline code as a macro, optionally wrapped in a do-while(0) loop.
  */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
 #       define sol_inline inline
+#elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
+#       define sol_inline __inline__
 #else
 #       define sol_inline
+#       warning "sol_inline has no effect"
 #endif
 
 
@@ -151,13 +174,35 @@
  *
  *      The sol_restrict symbolic constant provides a mechanism to portably hint
  *      to the compiler that a given pointer should be considered as restricted.
- *      This symbol expands to the restrict keyword when C99 and above is used,
- *      and gracefully degrades on earlier versions.
+ *      This symbol is supported if either (or both) of the following conditions
+ *      are met:
+ *        * C99 or above is used as the dialect
+ *        * GCC or Clang is used as the compiler
+ *      In all other cases, this symbol degrades gracefully, albeit with an
+ *      appropriate compiler warning.
  */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
 #       define sol_restrict restrict
+#elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
+#       define sol_restrict __restrict__
 #else
 #       define sol_restrict
+#       warning "sol_restrict has no effect"
+#endif
+
+
+
+
+/*
+ *      sol_tls - thread local storage specifier
+ */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C11)
+#       define sol_tls thread_local
+#elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
+#       define sol_tls __thread
+#else
+#       define sol_tls
+#       warning "sol_tls has no effect"
 #endif
 
 
