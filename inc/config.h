@@ -33,6 +33,12 @@
 
 
 
+        /* include required header files */
+#include "./env.h"
+
+
+
+
 /*
  *      SOL_CONFIG_ERRORLOG - path to error log file
  */
@@ -53,6 +59,19 @@
  *      SOL_CONFIG_DEBUGLOG - path to debug log file
  */
 #define SOL_CONFIG_DEBUGLOG "bld/debug.log"
+
+
+
+
+/*
+ *      sol_config_file - file structure
+ */
+#if (SOL_ENV_HOST_NONE == sol_env_host())
+        typedef struct sol_config_file sol_config_file;
+#else
+#       include <stdio.h>
+        typedef FILE sol_config_file;
+#endif
 
 
 
