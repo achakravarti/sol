@@ -76,6 +76,18 @@
 
 
 
+
+#if (SOL_ENV_HOST_NONE == sol_env_host())
+        extern sol_config_file *sol_config_fopen(const char *path,
+                                                 const char *flags);
+#else
+#       include <stdio.h>
+#       define sol_config_fopen fopen
+#endif
+
+
+
+
 #endif /* !defined __SOL_CONFIGURATION_IDENTIFIERS */
 
 

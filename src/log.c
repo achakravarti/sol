@@ -1,11 +1,11 @@
 /******************************************************************************
- *                           SOL LIBRARY v0.1.0+41
+ *                           SOL LIBRARY v1.0.0+41
  *
- * File: sol/inc/log.h
+ * File: sol/src/log.c
  *
  * Description:
- *      This file is part of the API of the Sol Library. It declares the
- *      interface of the logging module.
+ *      This file is part of the internal implementation of the Sol Library.
+ *      It implements the logging module.
  *
  * Authors:
  *      Abhishek Chakravarti <abhishek@taranjali.org>
@@ -26,25 +26,32 @@
 
 
 
-        /* create header guard */
-#if (!defined __SOL_LOGGING_MODULE)
-#define __SOL_LOGGING_MODULE
-
-
-
-
         /* include required header files */
-#include "./error.h"
+#include "../inc/config.h"
+#include "../inc/log.h"
+#include "../inc/ptr.h"
 
 
 
 
-extern sol_erno sol_log_open(const char *path);
+static sol_config_file *log_hnd = SOL_PTR_NULL;
 
 
 
 
-#endif /* !defined __SOL_LOGGING_MODULE */
+extern sol_erno sol_log_open(const char *path)
+{
+SOL_TRY:
+        sol_assert (!log_hnd, SOL_ERNO_PTR);
+        sol_assert (path && *path, SOL_ERNO_STR);
+
+        log_hnd = sol_config_fopen(path, "w"); /* NOLINT */
+        sol_assert (log_hnd, SOL_ERNO_FILE);
+
+SOL_CATCH:
+SOL_FINALLY:
+        return sol_erno_get();
+}
 
 
 

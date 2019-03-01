@@ -134,6 +134,14 @@ typedef size_t sol_erno;
 
 
 /*
+ *      SOL_ERNO_FILE - file error
+ */
+#define SOL_ERNO_FILE ((sol_erno)0x6)
+
+
+
+
+/*
  *      SOL_TRY - start of try block
  *
  *      The SOL_TRY label identifies the starting point of the try block within
