@@ -39,6 +39,11 @@ static sol_config_file *log_hnd = SOL_PTR_NULL;
 
 
 
+static sol_log_pipe *log_pipe = SOL_PTR_NULL;
+
+
+
+
 extern sol_erno sol_log_open(const char *path)
 {
 SOL_TRY:
@@ -80,6 +85,25 @@ extern void sol_log_close(void)
                 (void) sol_config_fclose(log_hnd);
                 log_hnd = SOL_PTR_NULL;
         }
+}
+
+
+
+extern sol_erno sol_log_open3(const char *path,
+                              const int flush,
+                              sol_log_pipe *pipe)
+{
+SOL_TRY:
+        sol_assert (!log_hnd && pipe, SOL_ERNO_PTR);
+        sol_assert (path && *path, SOL_ERNO_STR);
+
+        log_hnd = sol_config_fopen(path, flush ? "w" : "a+");
+        sol_assert (log_hnd, SOL_ERNO_FILE);
+        log_pipe = pipe;
+
+SOL_CATCH:
+SOL_FINALLY:
+        return sol_erno_get();
 }
 
 

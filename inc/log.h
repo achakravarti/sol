@@ -39,13 +39,37 @@
 
 
 
+typedef enum __SOL_LOG_MSGTYPE {
+        SOL_LOG_MSGTYPE_TRACE,
+        SOL_LOG_MSGTYPE_DEBUG,
+        SOL_LOG_MSGTYPE_ERROR
+} SOL_LOG_MSGTYPE;
+
+
+
+
+typedef void (sol_log_pipe)(const SOL_LOG_MSGTYPE type,
+                            const char *tmst,
+                            const char *func,
+                            const char *msg);
+
+
+
+
 extern sol_erno sol_log_open(const char *path);
 
 
 
 
 extern sol_erno sol_log_open2(const char *path,
-                              const int flush);
+                              const int flush); /* NOLINT */
+
+
+
+
+extern sol_erno sol_log_open3(const char *path,
+                              const int flush, /* NOLINT */
+                              sol_log_pipe *pipe);
 
 
 
