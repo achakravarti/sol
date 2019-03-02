@@ -34,6 +34,7 @@
 
 
         /* include required header files */
+#include "./env.h"
 #include "./error.h"
 
 
@@ -48,33 +49,87 @@ typedef enum __SOL_LOG_MSGTYPE {
 
 
 
-typedef void (sol_log_pipe)(const SOL_LOG_MSGTYPE type,
-                            const char *tmst,
-                            const char *func,
-                            const char *msg);
-
-
-
-
 extern sol_erno sol_log_open(const char *path);
 
 
 
 
 extern sol_erno sol_log_open2(const char *path,
-                              const int flush); /* NOLINT */
-
-
-
-
-extern sol_erno sol_log_open3(const char *path,
-                              const int flush, /* NOLINT */
-                              sol_log_pipe *pipe);
+                              int flush);
 
 
 
 
 extern void sol_log_close(void);
+
+
+
+
+extern void sol_log_write(SOL_LOG_MSGTYPE type,
+                          const char *func,
+                          const char *file,
+                          const char *line,
+                          const char *msg);
+
+
+
+
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#       define /* void */ sol_log_trace(/* const char* */ msg)              \
+                sol_log_write(SOL_LOG_MSGTYPE_TRACE,                        \
+                              __func__, __FILE__, __LINE__,                 \
+                              (msg))
+#elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
+#       define /* void */ sol_log_trace(/* const char* */ msg)              \
+                sol_log_write(SOL_LOG_MSGTYPE_TRACE,                        \
+                              __FUNCTION__, __FILE__, __LINE__,             \
+                              (msg))
+#else
+#       define /* void */ sol_log_trace(/* const char* */ msg)              \
+                sol_log_write(SOL_LOG_MSGTYPE_TRACE,                        \
+                              "", __FILE__, __LINE__,                       \
+                              (msg)
+#endif
+
+
+
+
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#       define /* void */ sol_log_debug(/* const char* */ msg)              \
+                sol_log_write(SOL_LOG_MSGTYPE_DEBUG,                        \
+                              __func__, __FILE__, __LINE__,                 \
+                              (msg))
+#elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
+#       define /* void */ sol_log_debug(/* const char* */ msg)              \
+                sol_log_write(SOL_LOG_MSGTYPE_DEBUG,                        \
+                              __FUNCTION__, __FILE__, __LINE__,             \
+                              (msg))
+#else
+#       define /* void */ sol_log_debug(/* const char* */ msg)              \
+                sol_log_write(SOL_LOG_MSGTYPE_DEBUG,                        \
+                              "", __FILE__, __LINE__,                       \
+                              (msg)
+#endif
+
+
+
+
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#       define /* void */ sol_log_error(/* const char* */ msg)              \
+                sol_log_write(SOL_LOG_MSGTYPE_ERROR,                        \
+                              __func__, __FILE__, __LINE__,                 \
+                              (msg))
+#elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
+#       define /* void */ sol_log_error(/* const char* */ msg)              \
+                sol_log_write(SOL_LOG_MSGTYPE_ERROR,                        \
+                              __FUNCTION__, __FILE__, __LINE__,             \
+                              (msg))
+#else
+#       define /* void */ sol_log_error(/* const char* */ msg)              \
+                sol_log_write(SOL_LOG_MSGTYPE_ERROR,                        \
+                              "", __FILE__, __LINE__,                       \
+                              (msg)
+#endif
 
 
 
