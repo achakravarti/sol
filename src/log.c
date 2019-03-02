@@ -56,6 +56,17 @@ SOL_FINALLY:
 
 
 
+extern void sol_log_close(void)
+{
+        if (log_hnd) {
+                (void) sol_config_fclose(log_hnd);
+                log_hnd = SOL_PTR_NULL;
+        }
+}
+
+
+
+
 /******************************************************************************
  *                                    EOF
  *          Built on hyperion [Tue Jan 29 02:37:24 UTC 2019]

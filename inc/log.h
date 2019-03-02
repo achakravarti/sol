@@ -44,6 +44,11 @@ extern sol_erno sol_log_open(const char *path);
 
 
 
+extern void sol_log_close(void);
+
+
+
+
 #endif /* !defined __SOL_LOGGING_MODULE */
 
 

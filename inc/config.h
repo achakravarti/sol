@@ -78,11 +78,21 @@
 
 
 #if (SOL_ENV_HOST_NONE == sol_env_host())
-        extern sol_config_file *sol_config_fopen(const char *path,
-                                                 const char *flags);
+        extern sol_config_file *sol_config_fopen(const char *filename,
+                                                 const char *mode);
 #else
 #       include <stdio.h>
 #       define sol_config_fopen fopen
+#endif
+
+
+
+
+#if (SOL_ENV_HOST_NONE == sol_env_host())
+        extern int *sol_config_fclose(sol_config_file *stream);
+#else
+#       include <stdio.h>
+#       define sol_config_fclose fclose
 #endif
 
 
