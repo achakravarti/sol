@@ -56,6 +56,24 @@ SOL_FINALLY:
 
 
 
+extern sol_erno sol_log_open2(const char *path,
+                              const int flush)
+{
+SOL_TRY:
+        sol_assert (!log_hnd, SOL_ERNO_PTR);
+        sol_assert (path && *path, SOL_ERNO_STR);
+
+        log_hnd = sol_config_fopen(path, flush ? "w" : "a+");
+        sol_assert (log_hnd, SOL_ERNO_FILE);
+
+SOL_CATCH:
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
 extern void sol_log_close(void)
 {
         if (log_hnd) {

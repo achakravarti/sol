@@ -44,6 +44,12 @@ extern sol_erno sol_log_open(const char *path);
 
 
 
+extern sol_erno sol_log_open2(const char *path,
+                              const int flush);
+
+
+
+
 extern void sol_log_close(void);
 
 
