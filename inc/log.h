@@ -40,15 +40,6 @@
 
 
 
-typedef enum __SOL_LOG_MSGTYPE {
-        SOL_LOG_MSGTYPE_TRACE,
-        SOL_LOG_MSGTYPE_DEBUG,
-        SOL_LOG_MSGTYPE_ERROR
-} SOL_LOG_MSGTYPE;
-
-
-
-
 extern sol_erno sol_log_open(const char *path);
 
 
@@ -65,30 +56,15 @@ extern void sol_log_close(void);
 
 
 
-extern void sol_log_write(SOL_LOG_MSGTYPE type,
-                          const char *func,
-                          const char *file,
-                          const char *line,
-                          const char *msg);
-
-
-
-
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
 #       define /* void */ sol_log_trace(/* const char* */ msg)              \
-                sol_log_write(SOL_LOG_MSGTYPE_TRACE,                        \
-                              __func__, __FILE__, __LINE__,                 \
-                              (msg))
+                sol_log_write("T", __func__, __FILE__, __LINE__, (msg))
 #elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
 #       define /* void */ sol_log_trace(/* const char* */ msg)              \
-                sol_log_write(SOL_LOG_MSGTYPE_TRACE,                        \
-                              __FUNCTION__, __FILE__, __LINE__,             \
-                              (msg))
+                sol_log_write("T", __FUNCTION__, __FILE__, __LINE__, (msg))
 #else
 #       define /* void */ sol_log_trace(/* const char* */ msg)              \
-                sol_log_write(SOL_LOG_MSGTYPE_TRACE,                        \
-                              "", __FILE__, __LINE__,                       \
-                              (msg)
+                sol_log_write("T", "", __FILE__, __LINE__, (msg))
 #endif
 
 
@@ -96,19 +72,13 @@ extern void sol_log_write(SOL_LOG_MSGTYPE type,
 
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
 #       define /* void */ sol_log_debug(/* const char* */ msg)              \
-                sol_log_write(SOL_LOG_MSGTYPE_DEBUG,                        \
-                              __func__, __FILE__, __LINE__,                 \
-                              (msg))
+                sol_log_write("D", __func__, __FILE__, __LINE__, (msg))
 #elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
 #       define /* void */ sol_log_debug(/* const char* */ msg)              \
-                sol_log_write(SOL_LOG_MSGTYPE_DEBUG,                        \
-                              __FUNCTION__, __FILE__, __LINE__,             \
-                              (msg))
+                sol_log_write("D", __FUNCTION__, __FILE__, __LINE__, (msg))
 #else
 #       define /* void */ sol_log_debug(/* const char* */ msg)              \
-                sol_log_write(SOL_LOG_MSGTYPE_DEBUG,                        \
-                              "", __FILE__, __LINE__,                       \
-                              (msg)
+                sol_log_write("D", "", __FILE__, __LINE__, (msg))
 #endif
 
 
@@ -116,20 +86,23 @@ extern void sol_log_write(SOL_LOG_MSGTYPE type,
 
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
 #       define /* void */ sol_log_error(/* const char* */ msg)              \
-                sol_log_write(SOL_LOG_MSGTYPE_ERROR,                        \
-                              __func__, __FILE__, __LINE__,                 \
-                              (msg))
+                sol_log_write("E", __func__, __FILE__, __LINE__, (msg))
 #elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
 #       define /* void */ sol_log_error(/* const char* */ msg)              \
-                sol_log_write(SOL_LOG_MSGTYPE_ERROR,                        \
-                              __FUNCTION__, __FILE__, __LINE__,             \
-                              (msg))
+                sol_log_write("E", __FUNCTION__, __FILE__, __LINE__, (msg))
 #else
 #       define /* void */ sol_log_error(/* const char* */ msg)              \
-                sol_log_write(SOL_LOG_MSGTYPE_ERROR,                        \
-                              "", __FILE__, __LINE__,                       \
-                              (msg)
+                sol_log_write("E", "", __FILE__, __LINE__, (msg))
 #endif
+
+
+
+
+extern void __sol_log_write(const char *type,
+                            const char *func,
+                            const char *file,
+                            const char *line,
+                            const char *msg);
 
 
 

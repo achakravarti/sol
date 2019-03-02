@@ -27,14 +27,31 @@
 
 
         /* include required header files */
+#include "../inc/hint.h"
 #include "../inc/log.h"
 #include "../inc/ptr.h"
-#include <stdio.h>
+#if (sol_env_host() != SOL_ENV_HOST_NONE)
+#       include <stdio.h>
+#       include <string.h>
+#       include <time.h>
+#endif
+
+
+#if (sol_env_host() == SOL_ENV_HOST_NONE)
+typedef struct FILE FILE;
+extern FILE *fopen(const char*, const char*);
+extern int fclose(FILE*);
+#endif
 
 
 
 
 static  FILE *log_hnd = SOL_PTR_NULL;
+
+
+
+
+#define LEN_TMST 20
 
 
 
@@ -80,6 +97,32 @@ extern void sol_log_close(void)
                 (void) fclose(log_hnd);
                 log_hnd = SOL_PTR_NULL;
         }
+}
+
+
+
+
+extern void __sol_log_write(const char *type,
+                            const char *func,
+                            const char *file,
+                            const char *line,
+                            const char *msg)
+{
+        const char *NOFUNC = "[%s] [%s] [%s:%s] %s\n";
+        const char *FUNC = "[%s] [%s] [%s():%s:%s] %s\n";
+        const char *TMST = "%d %b %T %Z";
+        const int LEN = 20;
+        auto char bfr[LEN];
+        auto time_t raw;
+        auto struct tm *local;
+
+        (void) time(&raw);
+        local = localtime(&raw);
+        (void) strftime(bfr, LEN, TMST, local);
+
+        sol_likely (*func)
+        ? (void) fprintf(log_hnd, FUNC, type, bfr, func, file, line, msg)
+        : (void) fprintf(log_hnd, NOFUNC, type, bfr, file, line, msg);
 }
 
 
