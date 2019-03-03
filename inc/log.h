@@ -57,42 +57,56 @@ extern void sol_log_close(void);
 
 
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
-#       define /* void */ sol_log_trace(/* const char* */ msg)              \
-                sol_log_write("T", __func__, __FILE__, __LINE__, (msg))
+#       define /* void */ sol_log_trace(/* const char* */ msg) \
+                __sol_log_write("T", __func__, __FILE__, __LINE__, (msg))
 #elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
-#       define /* void */ sol_log_trace(/* const char* */ msg)              \
-                sol_log_write("T", __FUNCTION__, __FILE__, __LINE__, (msg))
+#       define /* void */ sol_log_trace(/* const char* */ msg) \
+                __sol_log_write("T", __FUNCTION__, __FILE__, __LINE__, (msg))
 #else
-#       define /* void */ sol_log_trace(/* const char* */ msg)              \
-                sol_log_write("T", "", __FILE__, __LINE__, (msg))
+#       define /* void */ sol_log_trace(/* const char* */ msg) \
+                __sol_log_write("T", "", __FILE__, __LINE__, (msg))
 #endif
 
 
 
 
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
-#       define /* void */ sol_log_debug(/* const char* */ msg)              \
-                sol_log_write("D", __func__, __FILE__, __LINE__, (msg))
+#       define /* void */ sol_log_debug(/* const char* */ msg) \
+                __sol_log_write("D", __func__, __FILE__, __LINE__, (msg))
 #elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
-#       define /* void */ sol_log_debug(/* const char* */ msg)              \
-                sol_log_write("D", __FUNCTION__, __FILE__, __LINE__, (msg))
+#       define /* void */ sol_log_debug(/* const char* */ msg) \
+                __sol_log_write("D", __FUNCTION__, __FILE__, __LINE__, (msg))
 #else
-#       define /* void */ sol_log_debug(/* const char* */ msg)              \
-                sol_log_write("D", "", __FILE__, __LINE__, (msg))
+#       define /* void */ sol_log_debug(/* const char* */ msg) \
+                __sol_log_write("D", "", __FILE__, __LINE__, (msg))
 #endif
 
 
 
 
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
-#       define /* void */ sol_log_error(/* const char* */ msg)              \
-                sol_log_write("E", __func__, __FILE__, __LINE__, (msg))
+#       define /* void */ sol_log_error(/* const char* */ msg) \
+                __sol_log_write("E", __func__, __FILE__, __LINE__, (msg))
 #elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
-#       define /* void */ sol_log_error(/* const char* */ msg)              \
-                sol_log_write("E", __FUNCTION__, __FILE__, __LINE__, (msg))
+#       define /* void */ sol_log_error(/* const char* */ msg) \
+                __sol_log_write("E", __FUNCTION__, __FILE__, __LINE__, (msg))
 #else
-#       define /* void */ sol_log_error(/* const char* */ msg)              \
-                sol_log_write("E", "", __FILE__, __LINE__, (msg))
+#       define /* void */ sol_log_error(/* const char* */ msg) \
+                __sol_log_write("E", "", __FILE__, __LINE__, (msg))
+#endif
+
+
+
+
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#       define /* void */ sol_log_erno(/* sol_erno */ erno) \
+                __sol_log_erno((erno), __func__, __FILE__, __LINE__)
+#elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
+#       define /* void */ sol_log_erno(/* sol_erno */ erno) \
+                __sol_log_erno((erno), __FUNCTION__, __FILE__, __LINE__)
+#else
+#       define /* void */ sol_log_erno(/* sol_erno */ erno) \
+                __sol_log_erno((erno), "", __FILE__, __LINE__)
 #endif
 
 
@@ -103,6 +117,14 @@ extern void __sol_log_write(const char *type,
                             const char *file,
                             const char *line,
                             const char *msg);
+
+
+
+
+extern void __sol_log_erno(sol_erno erno,
+                           const char *func,
+                           const char *file,
+                           const char *line);
 
 
 
