@@ -28,67 +28,9 @@
 
         /* include required header files */
 #include "../inc/hint.h"
+#include "../inc/libc.h"
 #include "../inc/log.h"
 #include "../inc/ptr.h"
-#if (sol_env_host() != SOL_ENV_HOST_NONE)
-#       include <stdio.h>
-#       include <string.h>
-#       include <time.h>
-#endif
-
-
-
-
-        /* ensure required libc types are available */
-#if (sol_env_host() == SOL_ENV_HOST_NONE)
-#       if (!defined SOL_LIBC_FILE_DEFINED)
-#               error "[!] Sol libc error: FILE not defined"
-#       endif
-#       if (!defined SOL_LIBC_TIME_T_DEFINED)
-#               error "[!] Sol libc error: time_t not defined"
-#       endif
-#else
-#       define SOL_LIBC_FILE_DEFINED
-#       define SOL_LIBC_TIME_T_DEFINED
-#endif
-
-
-
-
-        /* ensure required libc functions are available */
-#if (sol_env_host() == SOL_ENV_HOST_NONE)
-#       if (defined SOL_LIBC_FOPEN_DEFINED)
-                extern FILE *fopen(const char*, const char*);
-#       else
-#               error "[!] Sol libc error: fopen() not defined"
-#       endif
-#       if (defined SOL_LIBC_FCLOSE_DEFINED)
-                extern int fclose(FILE*);
-#       else
-#               error "[!] Sol libc error: fclose() not defined"
-#       endif
-#       if (defined SOL_LIBC_FPRINTF_DEFINED)
-                extern int fprintf(FILE*, const char*, ...);
-#       else
-#               error "[!] Sol libc error: fprintf() not defined"
-#       endif
-#       if (defined SOL_LIBC_TIME_DEFINED)
-                extern time_t time(time_t*);
-#       else
-#               error "[!] Sol libc error: time() not defined"
-#       endif
-#       if (defined SOL_LIBC_CTIME_DEFINED)
-                extern char *ctime(const time_t*);
-#       else
-#               error "[!] Sol libc error: ctime() not defined"
-#       endif
-#else
-#       define SOL_LIBC_FOPEN_DEFINED
-#       define SOL_LIBC_FCLOSE_DEFINED
-#       define SOL_LIBC_FPRINTF_DEFINED
-#       define SOL_LIBC_TIME_DEFINED
-#       define SOL_LIBC_CTIME_DEFINED
-#endif
 
 
 
