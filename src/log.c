@@ -135,6 +135,7 @@ extern void __sol_log_error(const char *func,
                             const char *line,
                             const char *msg)
 {
+        __sol_log_write("E", func, file, line, msg);
 }
 
 
