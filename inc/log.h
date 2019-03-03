@@ -56,30 +56,14 @@ extern void sol_log_close(void);
 
 
 
-#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
-#       define /* void */ sol_log_trace(/* const char* */ msg) \
-                __sol_log_write("T", __func__, __FILE__, __LINE__, (msg))
-#elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
-#       define /* void */ sol_log_trace(/* const char* */ msg) \
-                __sol_log_write("T", __FUNCTION__, __FILE__, __LINE__, (msg))
-#else
-#       define /* void */ sol_log_trace(/* const char* */ msg) \
-                __sol_log_write("T", "", __FILE__, __LINE__, (msg))
-#endif
+#define /* void */ sol_log_trace(/* const char* */ msg) \
+        __sol_log_trace(sol_env_func(), sol_env_file(), sol_env_line(), (msg))
 
 
 
 
-#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
-#       define /* void */ sol_log_debug(/* const char* */ msg) \
-                __sol_log_write("D", __func__, __FILE__, __LINE__, (msg))
-#elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
-#       define /* void */ sol_log_debug(/* const char* */ msg) \
-                __sol_log_write("D", __FUNCTION__, __FILE__, __LINE__, (msg))
-#else
-#       define /* void */ sol_log_debug(/* const char* */ msg) \
-                __sol_log_write("D", "", __FILE__, __LINE__, (msg))
-#endif
+#define /* void */ sol_log_debug(/* const char* */ msg) \
+        __sol_log_debug(sol_env_func(), sol_env_file(), sol_env_line(), (msg))
 
 
 
@@ -92,6 +76,22 @@ extern void sol_log_close(void);
 
 #define /* void */ sol_log_erno(/* sol_erno */ erno) \
         __sol_log_erno((erno), sol_env_func(), sol_env_file(), sol_env_line())
+
+
+
+
+extern void __sol_log_trace(const char *func,
+                            const char *file,
+                            const char *line,
+                            const char *msg);
+
+
+
+
+extern void __sol_log_debug(const char *func,
+                            const char *file,
+                            const char *line,
+                            const char *msg);
 
 
 
