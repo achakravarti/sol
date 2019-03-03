@@ -84,16 +84,8 @@ extern void sol_log_close(void);
 
 
 
-#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
-#       define /* void */ sol_log_error(/* const char* */ msg) \
-                __sol_log_write("E", __func__, __FILE__, __LINE__, (msg))
-#elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
-#       define /* void */ sol_log_error(/* const char* */ msg) \
-                __sol_log_write("E", __FUNCTION__, __FILE__, __LINE__, (msg))
-#else
-#       define /* void */ sol_log_error(/* const char* */ msg) \
-                __sol_log_write("E", "", __FILE__, __LINE__, (msg))
-#endif
+#define /* void */ sol_log_error(/* const char* */ msg) \
+        __sol_log_error(sol_env_func(), sol_env_file(), sol_env_line(), (msg))
 
 
 
@@ -103,8 +95,9 @@ extern void sol_log_close(void);
 
 
 
-extern void __sol_log_write(const char *type,
-                            const char *func,
+
+
+extern void __sol_log_error(const char *func,
                             const char *file,
                             const char *line,
                             const char *msg);
