@@ -335,6 +335,36 @@
 
 
 
+/*
+ *      sol_env_file() - introspects current file name
+ */
+#define sol_env_file() __FILE__
+
+
+
+
+/*
+ *      sol_env_func() - introspects current function name
+ */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#       define sol_env_func() __func__
+#elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
+#       define sol_env_func() __FUNCTION__
+#else
+#       define sol_env_func() ""
+#endif
+
+
+
+
+/*
+ *      sol_env_line() - introspects current line number
+ */
+#define sol_env_line() __LINE__
+
+
+
+
 #endif /* (!defined __SOL_ENVIRONMENT_MODULE) */
 
 
