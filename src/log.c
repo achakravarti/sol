@@ -37,21 +37,63 @@
 #endif
 
 
+
+
+        /* ensure required libc types are available */
 #if (sol_env_host() == SOL_ENV_HOST_NONE)
-typedef struct FILE FILE;
-extern FILE *fopen(const char*, const char*);
-extern int fclose(FILE*);
+#       if (!defined SOL_LIBC_FILE_DEFINED)
+#               error "[!] Sol libc error: FILE not defined"
+#       endif
+#       if (!defined SOL_LIBC_TIME_T_DEFINED)
+#               error "[!] Sol libc error: time_t not defined"
+#       endif
+#else
+#       define SOL_LIBC_FILE_DEFINED
+#       define SOL_LIBC_TIME_T_DEFINED
+#endif
+
+
+
+
+        /* ensure required libc functions are available */
+#if (sol_env_host() == SOL_ENV_HOST_NONE)
+#       if (defined SOL_LIBC_FOPEN_DEFINED)
+                extern FILE *fopen(const char*, const char*);
+#       else
+#               error "[!] Sol libc error: fopen() not defined"
+#       endif
+#       if (defined SOL_LIBC_FCLOSE_DEFINED)
+                extern int fclose(FILE*);
+#       else
+#               error "[!] Sol libc error: fclose() not defined"
+#       endif
+#       if (defined SOL_LIBC_FPRINTF_DEFINED)
+                extern int fprintf(FILE*, const char*, ...);
+#       else
+#               error "[!] Sol libc error: fprintf() not defined"
+#       endif
+#       if (defined SOL_LIBC_TIME_DEFINED)
+                extern time_t time(time_t*);
+#       else
+#               error "[!] Sol libc error: time() not defined"
+#       endif
+#       if (defined SOL_LIBC_CTIME_DEFINED)
+                extern char *ctime(const time_t*);
+#       else
+#               error "[!] Sol libc error: ctime() not defined"
+#       endif
+#else
+#       define SOL_LIBC_FOPEN_DEFINED
+#       define SOL_LIBC_FCLOSE_DEFINED
+#       define SOL_LIBC_FPRINTF_DEFINED
+#       define SOL_LIBC_TIME_DEFINED
+#       define SOL_LIBC_CTIME_DEFINED
 #endif
 
 
 
 
 static  FILE *log_hnd = SOL_PTR_NULL;
-
-
-
-
-#define LEN_TMST 20
 
 
 
@@ -110,19 +152,15 @@ extern void __sol_log_write(const char *type,
 {
         const char *NOFUNC = "[%s] [%s] [%s:%s] %s\n";
         const char *FUNC = "[%s] [%s] [%s():%s:%s] %s\n";
-        const char *TMST = "%d %b %T %Z";
-        const int LEN = 20;
-        auto char bfr[LEN];
         auto time_t raw;
-        auto struct tm *local;
+        auto char *loctm;
 
         (void) time(&raw);
-        local = localtime(&raw);
-        (void) strftime(bfr, LEN, TMST, local);
+        loctm = ctime(&raw);
 
         sol_likely (*func)
-        ? (void) fprintf(log_hnd, FUNC, type, bfr, func, file, line, msg)
-        : (void) fprintf(log_hnd, NOFUNC, type, bfr, file, line, msg);
+        ? (void) fprintf(log_hnd, FUNC, type, loctm, func, file, line, msg)
+        : (void) fprintf(log_hnd, NOFUNC, type, loctm, file, line, msg);
 }
 
 
