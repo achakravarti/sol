@@ -98,17 +98,8 @@ extern void sol_log_close(void);
 
 
 
-#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
-#       define /* void */ sol_log_erno(/* sol_erno */ erno) \
-                __sol_log_erno((erno), __func__, __FILE__, __LINE__)
-#elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
-#       define /* void */ sol_log_erno(/* sol_erno */ erno) \
-                __sol_log_erno((erno), __FUNCTION__, __FILE__, __LINE__)
-#else
-#       define /* void */ sol_log_erno(/* sol_erno */ erno) \
-                __sol_log_erno((erno), "", __FILE__, __LINE__)
-#endif
-
+#define /* void */ sol_log_erno(/* sol_erno */ erno) \
+        __sol_log_erno((erno), sol_env_func(), sol_env_file(), sol_env_line())
 
 
 
