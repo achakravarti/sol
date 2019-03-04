@@ -351,7 +351,8 @@
 #elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
 #       define sol_env_func() __FUNCTION__
 #else
-#       define sol_env_func() ""
+#       define sol_env_func() "<unknown>"
+#       warning "sol_env_func() warning: unable to determine function name"
 #endif
 
 
