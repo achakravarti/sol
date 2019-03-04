@@ -28,22 +28,9 @@
 
         /* include required header files */
 #include "../inc/env.h"
+#include "../inc/libc.h"
 #include "../inc/log.h"
 #include "../inc/ptr.h"
-
-
-
-
-        /* the implementation of the pointer module uses the standard malloc()
-         * and free() functions; in hosted environments, these are provided by
-         * the standard stdlib.h header file, and in freestanding environments
-         * by the client code (until an allocator is implemented in future) */
-#if (SOL_ENV_HOST_NONE == sol_env_host())
-        extern void *malloc(size_t);
-        extern void free(void*);
-#else
-#       include <stdlib.h>
-#endif
 
 
 

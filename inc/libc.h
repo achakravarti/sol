@@ -37,7 +37,7 @@
 #include "./env.h"
 #if (sol_env_host() != SOL_ENV_HOST_NONE)
 #       include <stdio.h>
-#       include <string.h>
+#       include <stdlib.h>
 #       include <time.h>
 #endif
 
@@ -112,6 +112,38 @@
                 extern int fprintf(FILE*, const char*, ...);
 #       else
 #               error "[!] Sol libc error: fprintf() not defined"
+#       endif
+#else
+#       define SOL_LIBC_FPRINTF_DEFINED
+#endif
+
+
+
+
+/*
+ *      SOL_LIBC_MALLOC_DEFINED - stdlib.h malloc() defined
+ */
+#if (sol_env_host() == SOL_ENV_HOST_NONE)
+#       if (defined SOL_LIBC_MALLOC_DEFINED)
+                extern void *malloc(size_t);
+#       else
+#               error "[!] Sol libc error: malloc() not defined"
+#       endif
+#else
+#       define SOL_LIBC_FPRINTF_DEFINED
+#endif
+
+
+
+
+/*
+ *      SOL_LIBC_FREE_DEFINED - stdlib.h free() defined
+ */
+#if (sol_env_host() == SOL_ENV_HOST_NONE)
+#       if (defined SOL_LIBC_MALLOC_DEFINED)
+                extern void free(void*);
+#       else
+#               error "[!] Sol libc error: free() not defined"
 #       endif
 #else
 #       define SOL_LIBC_FPRINTF_DEFINED
