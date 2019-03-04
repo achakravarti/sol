@@ -30,6 +30,7 @@
  *      Include required header files.
  */
 #include "../inc/test.h"
+#include "../inc/log.h"
 
 
 
@@ -74,6 +75,9 @@ SOL_TRY:
         tsuite_init (tsuite, 0);
 
 SOL_CATCH:
+                /* log current error code */
+        sol_log_erno(sol_erno_get());
+
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
@@ -99,6 +103,9 @@ SOL_TRY:
         tsuite_init (tsuite, tlog);
 
 SOL_CATCH:
+                /* log current error code */
+        sol_log_erno(sol_erno_get());
+
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
@@ -160,6 +167,9 @@ SOL_TRY:
         tsuite->total++;
 
 SOL_CATCH:
+                /* log current error code */
+        sol_log_erno(sol_erno_get());
+
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
@@ -184,6 +194,9 @@ SOL_TRY:
         *pass = tsuite->total - tsuite->fail;
 
 SOL_CATCH:
+                /* log current error code */
+        sol_log_erno(sol_erno_get());
+
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
@@ -208,6 +221,9 @@ SOL_TRY:
         *fail = tsuite->fail;
 
 SOL_CATCH:
+                /* log current error code */
+        sol_log_erno(sol_erno_get());
+
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
@@ -232,6 +248,9 @@ SOL_TRY:
         *total = tsuite->total;
 
 SOL_CATCH:
+                /* log current error code */
+        sol_log_erno(sol_erno_get());
+
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
@@ -270,6 +289,9 @@ SOL_TRY:
         }
 
 SOL_CATCH:
+                /* log current error code */
+        sol_log_erno(sol_erno_get());
+
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
