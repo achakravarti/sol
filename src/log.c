@@ -92,17 +92,14 @@ extern void __sol_log_write(const char *type,
                             const char *line,
                             const char *msg)
 {
-        const char *NOFUNC = "[%s] [%s] [%s:%s] %s\n";
-        const char *FUNC = "[%s] [%s] [%s():%s:%s] %s\n";
+        const char *FMT = "[%s] [%s] [%s():%s:%s] %s\n";
         auto time_t raw;
-        auto char *loctm;
+        auto char *ctm;
 
         (void) time(&raw);
-        loctm = ctime(&raw);
+        ctm = ctime(&raw);
 
-        sol_likely (*func)
-        ? (void) fprintf(log_hnd, FUNC, type, loctm, func, file, line, msg)
-        : (void) fprintf(log_hnd, NOFUNC, type, loctm, file, line, msg);
+        (void) fprintf(log_hnd, FMT, type, ctm, func, file, line, msg);
 }
 
 
