@@ -40,28 +40,6 @@ static  FILE *log_hnd = SOL_PTR_NULL;
 
 
 
-static void __sol_log_write(const char *type,
-                            const char *func,
-                            const char *file,
-                            const char *line,
-                            const char *msg)
-{
-        const char *NOFUNC = "[%s] [%s] [%s:%s] %s\n";
-        const char *FUNC = "[%s] [%s] [%s():%s:%s] %s\n";
-        auto time_t raw;
-        auto char *loctm;
-
-        (void) time(&raw);
-        loctm = ctime(&raw);
-
-        sol_likely (*func)
-        ? (void) fprintf(log_hnd, FUNC, type, loctm, func, file, line, msg)
-        : (void) fprintf(log_hnd, NOFUNC, type, loctm, file, line, msg);
-}
-
-
-
-
 extern sol_erno sol_log_open(const char *path)
 {
 SOL_TRY:
@@ -108,44 +86,23 @@ extern void sol_log_close(void)
 
 
 
-extern void __sol_log_trace(const char *func,
+extern void __sol_log_write(const char *type,
+                            const char *func,
                             const char *file,
                             const char *line,
                             const char *msg)
 {
-        __sol_log_write("T", func, file, line, msg);
-}
+        const char *NOFUNC = "[%s] [%s] [%s:%s] %s\n";
+        const char *FUNC = "[%s] [%s] [%s():%s:%s] %s\n";
+        auto time_t raw;
+        auto char *loctm;
 
+        (void) time(&raw);
+        loctm = ctime(&raw);
 
-
-
-extern void __sol_log_debug(const char *func,
-                            const char *file,
-                            const char *line,
-                            const char *msg)
-{
-        __sol_log_write("D", func, file, line, msg);
-}
-
-
-
-
-extern void __sol_log_error(const char *func,
-                            const char *file,
-                            const char *line,
-                            const char *msg)
-{
-        __sol_log_write("E", func, file, line, msg);
-}
-
-
-
-
-extern void __sol_log_erno(sol_erno erno,
-                           const char *func,
-                           const char *file,
-                           const char *line)
-{
+        sol_likely (*func)
+        ? (void) fprintf(log_hnd, FUNC, type, loctm, func, file, line, msg)
+        : (void) fprintf(log_hnd, NOFUNC, type, loctm, file, line, msg);
 }
 
 

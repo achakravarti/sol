@@ -57,58 +57,50 @@ extern void sol_log_close(void);
 
 
 #define /* void */ sol_log_trace(/* const char* */ msg) \
-        __sol_log_trace(sol_env_func(), sol_env_file(), sol_env_line(), (msg))
+        __sol_log_trace("T",                            \
+                        sol_env_func(),                 \
+                        sol_env_file(),                 \
+                        sol_env_line(),                 \
+                        (msg))
 
 
 
 
 #define /* void */ sol_log_debug(/* const char* */ msg) \
-        __sol_log_debug(sol_env_func(), sol_env_file(), sol_env_line(), (msg))
+        __sol_log_debug("D",                            \
+                        sol_env_func(),                 \
+                        sol_env_file(),                 \
+                        sol_env_line(),                 \
+                        (msg))
 
 
 
 
 #define /* void */ sol_log_error(/* const char* */ msg) \
-        __sol_log_error(sol_env_func(), sol_env_file(), sol_env_line(), (msg))
+        __sol_log_error("E",                            \
+                        sol_env_func(),                 \
+                        sol_env_file(),                 \
+                        sol_env_line(),                 \
+                        (msg))
 
 
 
 
 #define /* void */ sol_log_erno(/* sol_erno */ erno) \
-        __sol_log_erno((erno), sol_env_func(), sol_env_file(), sol_env_line())
+        __sol_log_write("E",                         \
+                        sol_env_func(),              \
+                        sol_env_file(),              \
+                        sol_env_line(),              \
+                        sol_erno_str((erno)))
 
 
 
 
-extern void __sol_log_trace(const char *func,
+extern void __sol_log_write(const char *type,
+                            const char *func,
                             const char *file,
                             const char *line,
                             const char *msg);
-
-
-
-
-extern void __sol_log_debug(const char *func,
-                            const char *file,
-                            const char *line,
-                            const char *msg);
-
-
-
-
-
-extern void __sol_log_error(const char *func,
-                            const char *file,
-                            const char *line,
-                            const char *msg);
-
-
-
-
-extern void __sol_log_erno(sol_erno erno,
-                           const char *func,
-                           const char *file,
-                           const char *line);
 
 
 
