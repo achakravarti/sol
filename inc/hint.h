@@ -26,13 +26,19 @@
 
 
 
+        /* define header guard */
 #if !defined __SOL_COMPILER_HINTS_MODULE
 #define __SOL_COMPILER_HINTS_MODULE
 
 
 
 
+        /* include required header files; threads.h is used only in C11 (and
+         * above) environments for the _Thread_local storage specifier */
 #include "./env.h"
+#if (sol_env_stdc() >= SOL_ENV_STDC_C11)
+#       include <threads.h>
+#endif
 
 
 
@@ -158,6 +164,21 @@
 #       define sol_restrict restrict
 #else
 #       define sol_restrict
+#endif
+
+
+
+
+/*
+ *      sol_tls - thread local storage specifier
+ */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C11)
+#       define sol_tls _Thread_local
+#elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
+#       define sol_tls __thread
+#else
+#       define sol_tls
+#       warning "[!] sol_tls warning: thread local storage unavailable"
 #endif
 
 
