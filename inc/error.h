@@ -218,8 +218,13 @@ typedef size_t sol_erno;
  *        - SOL_ERNO if no error has occured
  *        - The current error code if an error has occured
  */
-#define /* const sol_erno */ sol_erno_get(/* void */) \
+#define /* sol_erno */ sol_erno_get(/* void */) \
         ((const sol_erno) __sol_erno)
+
+
+
+
+extern const char *sol_erno_str(sol_erno erno);
 
 
 
