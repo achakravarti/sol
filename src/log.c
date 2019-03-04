@@ -35,7 +35,7 @@
 
 
 
-static __thread FILE *log_hnd = SOL_PTR_NULL;
+static sol_tls FILE *log_hnd = SOL_PTR_NULL;
 
 
 

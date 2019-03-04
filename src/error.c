@@ -43,7 +43,7 @@
 /*
  *      BFR_HND - handle to string buffer
  */
-static __thread char bfr_hnd[BFR_LEN];
+static sol_tls char bfr_hnd[BFR_LEN];
 
 
 
