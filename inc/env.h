@@ -352,7 +352,7 @@
 #       define sol_env_func() __FUNCTION__
 #else
 #       define sol_env_func() "<unknown>"
-#       warning "sol_env_func() warning: unable to determine function name"
+#       warning "[!] sol_env_func() warning: unable to determine function name"
 #endif
 
 
