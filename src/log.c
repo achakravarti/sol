@@ -89,17 +89,19 @@ extern void sol_log_close(void)
 extern void __sol_log_write(const char *type,
                             const char *func,
                             const char *file,
-                            const char *line,
+                            int line,
                             const char *msg)
 {
-        const char *FMT = "[%s] [%s] [%s():%s:%s] %s\n";
-        auto time_t raw;
+        const char *FMT = "[%s] [%s] [%s():%s:%d] %s\n";
+        auto time_t tm;
         auto char *ctm;
 
-        (void) time(&raw);
-        ctm = ctime(&raw);
+        (void) time(&tm);
+        ctm = ctime(&tm);
 
-        (void) fprintf(log_hnd, FMT, type, ctm, func, file, line, msg);
+        if (log_hnd) {
+                (void) fprintf(log_hnd, FMT, type, ctm, func, file, line, msg);
+        }
 }
 
 

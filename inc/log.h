@@ -57,7 +57,7 @@ extern void sol_log_close(void);
 
 
 #define /* void */ sol_log_trace(/* const char* */ msg) \
-        __sol_log_trace("T",                            \
+        __sol_log_write("T",                            \
                         sol_env_func(),                 \
                         sol_env_file(),                 \
                         sol_env_line(),                 \
@@ -67,7 +67,7 @@ extern void sol_log_close(void);
 
 
 #define /* void */ sol_log_debug(/* const char* */ msg) \
-        __sol_log_debug("D",                            \
+        __sol_log_write("D",                            \
                         sol_env_func(),                 \
                         sol_env_file(),                 \
                         sol_env_line(),                 \
@@ -77,7 +77,7 @@ extern void sol_log_close(void);
 
 
 #define /* void */ sol_log_error(/* const char* */ msg) \
-        __sol_log_error("E",                            \
+        __sol_log_write("E",                            \
                         sol_env_func(),                 \
                         sol_env_file(),                 \
                         sol_env_line(),                 \
@@ -99,7 +99,7 @@ extern void sol_log_close(void);
 extern void __sol_log_write(const char *type,
                             const char *func,
                             const char *file,
-                            const char *line,
+                            int line,
                             const char *msg);
 
 

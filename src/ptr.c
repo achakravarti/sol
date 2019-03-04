@@ -28,6 +28,7 @@
 
         /* include required header files */
 #include "../inc/env.h"
+#include "../inc/log.h"
 #include "../inc/ptr.h"
 
 
@@ -85,6 +86,9 @@ SOL_TRY:
         sol_assert ((*ptr = malloc(sz)), SOL_ERNO_HEAP);
 
 SOL_CATCH:
+                /* log current error */
+        sol_log_erno(sol_erno_get());
+
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
@@ -110,6 +114,9 @@ SOL_TRY:
         copy_byte(ptr, src, len);
 
 SOL_CATCH:
+                /* log current error */
+        sol_log_erno(sol_erno_get());
+
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
