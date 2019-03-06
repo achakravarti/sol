@@ -121,6 +121,22 @@
 
 
 /*
+ *      SOL_LIBC_FGETS_DEFINED - stdio.h fgets() defined
+ */
+#if (sol_env_host() == SOL_ENV_HOST_NONE)
+#       if (defined SOL_LIBC_FGETS_DEFINED)
+                extern char *fgets(char *s, int size, FILE *stream);
+#       else
+#               error "[!] Sol libc error: fgets() not defined"
+#       endif
+#else
+#       define SOL_LIBC_FGETS_DEFINED
+#endif
+
+
+
+
+/*
  *      SOL_LIBC_MALLOC_DEFINED - stdlib.h malloc() defined
  */
 #if (sol_env_host() == SOL_ENV_HOST_NONE)
