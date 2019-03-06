@@ -109,6 +109,17 @@ extern sol_erno __sol_tests_ptr(sol_tlog *log,
 
 
 
+/*
+ *      __sol_tests_log() - test suite for the logging module
+ */
+extern sol_erno __sol_tests_log(sol_tlog *log,
+                                int *pass,
+                                int *fail,
+                                int *total);
+
+
+
+
 #endif /* !defined __SOL_LIBRARY_TEST_SUITES */
 
 
