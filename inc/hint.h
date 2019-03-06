@@ -50,7 +50,8 @@
  *      the function it is associated with is frequently called. Using this hint
  *      helps to provide compile-time optimisations to the associated code. This
  *      hint is available on GCC-compatible compilation environments, and
- *      degrades gracefully to a safe no-op on other environments.
+ *      degrades gracefully to a safe no-op on other environments, but with an
+ *      appropriate warning.
  */
 #if (SOL_ENV_CC_GNUC == sol_env_cc() || SOL_ENV_CC_CLANG == sol_env_cc())
 #       define sol_hot __attribute__((hot))
@@ -69,7 +70,8 @@
  *      the function it is associated with is rarely called. Using this hint
  *      helps to provide compile-time optimisations to the associated code. This
  *      hint is available on GCC-compatible compilation environments, and
- *      degrades gracefully to a safe no-op on other environments.
+ *      degrades gracefully to a safe no-op on other environments, but with an
+ *      appropriate warning.
  */
 #if (SOL_ENV_CC_GNUC == sol_env_cc() || SOL_ENV_CC_CLANG == sol_env_cc())
 #       define sol_cold __attribute__((cold))
@@ -89,7 +91,8 @@
  *      compiler, indicating that a predicate @p is likely to be true. This
  *      macro is modelled after the likely() macro in the Linux kernel, and
  *      relies on a GCC-specific extension. However, this macro degrades
- *      gracefully to a safe no-op on non-GCC compatible compilation platforms.
+ *      gracefully to a safe no-op on non-GCC compatible compilation platforms,
+ *      but with an appropriate warning.
  *
  *      @p is expected to be an integral predicate expression that evaluates to
  *      a Boolean value.
@@ -116,7 +119,8 @@
  *      compiler, indicating that a predicate @p is unlikely to be true. This
  *      macro is modelled after the unlikely() macro in the Linux kernel, and
  *      relies on a GCC-specific extension. However, this macro degrades
- *      gracefully to a safe no-op on non-GCC compatible compilation platforms.
+ *      gracefully to a safe no-op on non-GCC compatible compilation platforms,
+ *      but with an appropriate warning.
  *
  *      @p is expected to be an integral predicate expression that evaluates to
  *      a Boolean value.
@@ -136,12 +140,13 @@
 
 
 /*
- *      sol_likely - hint that function should be inlined
+ *      sol_inline - hint that function should be inlined
  *
  *      The sol_inline symbolic constant provides a mechanism to portably hint
  *      to the compiler that a given function should be considered for inlining.
  *      This symbol expands to the inline keyword when C99 and above is used,
- *      and gracefully degrades on earlier versions.
+ *      and gracefully degrades on earlier versions, but with an appropriate
+ *      warning.
  *
  *      If inlining is essential in dialects predating C99, then the only way
  *      out is to declare the inline code as a macro, optionally wrapped in a
