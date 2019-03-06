@@ -56,6 +56,7 @@
 #       define sol_hot __attribute__((hot))
 #else
 #       define sol_hot
+#       warning "[!] sol_hot warning: hot attribute unavailable"
 #endif
 
 
@@ -74,6 +75,7 @@
 #       define sol_cold __attribute__((cold))
 #else
 #       define sol_cold
+#       warning "[!] sol_cold warning: cold attribute unavailable"
 #endif
 
 
@@ -100,6 +102,7 @@
 #       define sol_likely(p) (__builtin_expect(!!(p), 1))
 #else
 #       define sol_likely(p) (p)
+#       warning "[!] sol_likely warning: branch prediction unavailable"
 #endif
 
 
@@ -126,6 +129,7 @@
 #       define sol_unlikely(p) (__builtin_expect(!!(p), 0))
 #else
 #       define sol_unlikely(p) (p)
+#       warning "[!] sol_unlikely warning: branch prediction unavailable"
 #endif
 
 
@@ -147,6 +151,7 @@
 #       define sol_inline inline
 #else
 #       define sol_inline
+#       warning "[!] sol_inline warning: inlining unavailable"
 #endif
 
 
@@ -164,6 +169,7 @@
 #       define sol_restrict restrict
 #else
 #       define sol_restrict
+#       warning "[!] sol_restrict warning:  restrict optimisation unavailable"
 #endif
 
 
