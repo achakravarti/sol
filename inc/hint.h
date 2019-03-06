@@ -144,16 +144,18 @@
  *
  *      The sol_inline symbolic constant provides a mechanism to portably hint
  *      to the compiler that a given function should be considered for inlining.
- *      This symbol expands to the inline keyword when C99 and above is used,
- *      and gracefully degrades on earlier versions, but with an appropriate
- *      warning.
+ *      This symbol expands to the inline keyword if a GCC-compatible compiler
+ *      is used and/or if at least the C99 standard is used; in other cases, it
+ *      degrades gracefully, but with an appropriate warning.
  *
- *      If inlining is essential in dialects predating C99, then the only way
- *      out is to declare the inline code as a macro, optionally wrapped in a
- *      do-while(0) loop.
+ *      Since sol_inline only provides a hint to the compiler which it is free
+ *      to ignore, if inlining is essential, then the only way out is to declare
+ *      the inline code as a macro, optionally wrapped in a do-while(0) loop.
  */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
 #       define sol_inline inline
+#elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
+#       define sol_inline __inline__
 #else
 #       define sol_inline
 #       warning "sol_inline has no effect"
