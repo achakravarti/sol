@@ -57,7 +57,7 @@
 #       define sol_hot __attribute__((hot))
 #else
 #       define sol_hot
-#       warning "[!] sol_hot warning: hot attribute unavailable"
+#       warning "sol_hot has no effect"
 #endif
 
 
@@ -77,7 +77,7 @@
 #       define sol_cold __attribute__((cold))
 #else
 #       define sol_cold
-#       warning "[!] sol_cold warning: cold attribute unavailable"
+#       warning "sol_cold has no effect"
 #endif
 
 
@@ -105,7 +105,7 @@
 #       define sol_likely(p) (__builtin_expect(!!(p), 1))
 #else
 #       define sol_likely(p) (p)
-#       warning "[!] sol_likely warning: branch prediction unavailable"
+#       warning "sol_likely() has no effect"
 #endif
 
 
@@ -133,7 +133,7 @@
 #       define sol_unlikely(p) (__builtin_expect(!!(p), 0))
 #else
 #       define sol_unlikely(p) (p)
-#       warning "[!] sol_unlikely warning: branch prediction unavailable"
+#       warning "sol_unlikely() has no effect"
 #endif
 
 
@@ -156,7 +156,7 @@
 #       define sol_inline inline
 #else
 #       define sol_inline
-#       warning "[!] sol_inline warning: inlining unavailable"
+#       warning "sol_inline has no effect"
 #endif
 
 
@@ -174,7 +174,7 @@
 #       define sol_restrict restrict
 #else
 #       define sol_restrict
-#       warning "[!] sol_restrict warning:  restrict optimisation unavailable"
+#       warning "sol_restrict has no effect"
 #endif
 
 
@@ -189,7 +189,7 @@
 #       define sol_tls __thread
 #else
 #       define sol_tls
-#       warning "[!] sol_tls warning: thread local storage unavailable"
+#       warning "sol_tls has no effect"
 #endif
 
 
