@@ -34,6 +34,9 @@
 
 
 
+/*
+ *      test_open1() - sol_log_open() unit test #1
+ */
 static sol_erno test_open1(void)
 {
         #define DESC_OPEN1 "sol_log_open() throws SOL_ERNO_STR is @path is" \
@@ -42,6 +45,32 @@ static sol_erno test_open1(void)
 SOL_TRY:
                 /* set up test scenario */
         sol_try (sol_log_open(SOL_PTR_NULL));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_STR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+        sol_log_close();
+        return sol_erno_get();
+}
+
+
+
+
+/*
+ *      test_open2() - sol_log_open() unit test #2
+ */
+static sol_erno test_open2(void)
+{
+        #define DESC_OPEN2 "sol_log_open() throws SOL_ERNO_STR is @path is" \
+                           " a null string"
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_log_open(""));
 
 SOL_CATCH:
                 /* check test condition */
@@ -76,6 +105,7 @@ SOL_TRY:
 
                 /* register test cases */
         sol_try (sol_tsuite_register(ts, &test_open1, DESC_OPEN1));
+        sol_try (sol_tsuite_register(ts, &test_open2, DESC_OPEN2));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
