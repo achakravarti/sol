@@ -55,11 +55,12 @@ typedef sol_erno (suite)(sol_tlog *log,
 /*
  *      SUITE - enumerates test suite indices
  *        - SUITE_ERROR: exception handling module test suite
- *        - SUITE_TEST : unit test module test suite
- *        - SUITE_HINT : compiler hints module test
- *        - SUITE_ENV  : environment module test
- *        - SUITE_PTR  : pointer module test suite
- *        - SUITE_PTR2 : freestanding pointer module test suite
+ *        - SUITE_TEST: unit test module test suite
+ *        - SUITE_HINT: compiler hints module test
+ *        - SUITE_ENV: environment module test
+ *        - SUITE_PTR: pointer module test suite
+ *        - SUITE_PTR2: freestanding pointer module test suite
+ *        - SUITE_LOG: logging module test suite
  *        - SUITE_COUNT: count of test suites
  */
 typedef enum {
@@ -69,6 +70,7 @@ typedef enum {
         SUITE_ENV,
         SUITE_PTR,
         SUITE_PTR2,
+        SUITE_LOG,
         SUITE_COUNT
 } SUITE;
 
@@ -277,8 +279,7 @@ stat_sum(void)
 /*
  *      suite_init() - initialises test suites
  */
-static void
-suite_init(void)
+static void suite_init(void)
 {
                 /* register test suites */
         suite_hnd[SUITE_ERROR] = __sol_tsuite_error;
@@ -287,6 +288,7 @@ suite_init(void)
         suite_hnd[SUITE_ENV] = __sol_tests_env;
         suite_hnd[SUITE_PTR] = __sol_tests_ptr;
         suite_hnd[SUITE_PTR2] = __sol_tests_ptr2;
+        suite_hnd[SUITE_LOG] = __sol_tests_log;
 }
 
 

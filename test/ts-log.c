@@ -28,7 +28,31 @@
 
         /* include required header files */
 #include "../inc/log.h"
+#include "../inc/ptr.h"
 #include "./suite.h"
+
+
+
+
+static sol_erno test_open1(void)
+{
+        #define DESC_OPEN1 "sol_log_open() throws SOL_ERNO_STR is @path is" \
+                           " a null pointer"
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_log_open(SOL_PTR_NULL));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_STR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+        sol_log_close();
+        return sol_erno_get();
+}
 
 
 
@@ -51,10 +75,10 @@ SOL_TRY:
         sol_try (sol_tsuite_init2(ts, log));
 
                 /* register test cases */
-        //sol_try (sol_tsuite_register(ts, &test_new1, DESC_NEW1));
+        sol_try (sol_tsuite_register(ts, &test_open1, DESC_OPEN1));
 
                 /* execute test cases */
-        //sol_try (sol_tsuite_exec(ts));
+        sol_try (sol_tsuite_exec(ts));
 
                 /* report test counts */
         sol_try (sol_tsuite_pass(ts, pass));
