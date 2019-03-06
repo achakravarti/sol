@@ -28,6 +28,7 @@
 
         /* include required header files */
 #include "../inc/log.h"
+#include "../inc/libc.h"
 #include "../inc/ptr.h"
 #include "./suite.h"
 
@@ -87,6 +88,39 @@ SOL_FINALLY:
 
 
 /*
+ *      test_open3() - sol_log_open() unit test #3
+ */
+static sol_erno test_open3(void)
+{
+        #define DESC_OPEN3 "sol_log_open() should create the log file" \
+                           " specified by @path"
+        const char *PATH = "bld/dummy.test.log";
+        auto FILE *tmp = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_log_open(PATH));
+        sol_log_close();
+
+                /* check test condition */
+        tmp = fopen(PATH, "r"); /* NOLINT */
+        sol_assert (tmp, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* nothing to do in case of an exception */
+
+SOL_FINALLY:
+                /* wind up */
+        if (sol_likely (tmp)) {
+                (void) fclose(tmp);
+        }
+        return sol_erno_get();
+}
+
+
+
+
+/*
  *      __sol_tests_log() - declared in sol/test/suite.h
  */
 extern sol_erno __sol_tests_log(sol_tlog *log,
@@ -106,6 +140,7 @@ SOL_TRY:
                 /* register test cases */
         sol_try (sol_tsuite_register(ts, &test_open1, DESC_OPEN1));
         sol_try (sol_tsuite_register(ts, &test_open2, DESC_OPEN2));
+        sol_try (sol_tsuite_register(ts, &test_open3, DESC_OPEN3));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
@@ -121,6 +156,9 @@ SOL_FINALLY:
         sol_tsuite_term(ts);
         return sol_erno_get();
 }
+
+
+
 
 /******************************************************************************
  *                                    EOF
