@@ -126,7 +126,7 @@ extern void __sol_log_write(const char *type,
                             int line,
                             const char *msg)
 {
-        const char *FMT = "[%s] [%s] [%s():%s:%d] %s\n";
+        const char *FMT = "[%s] [%.24s] [%s():%s:%d] %s\n";
         auto time_t tm;
         auto char *ctm;
 

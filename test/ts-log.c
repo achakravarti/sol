@@ -36,6 +36,108 @@
 
 
 /*
+ *      str_find() - searches for a substring
+ *        - what: substring to search
+ *        - where: string to search in
+ *
+ *      Return:
+ *        - 0 if @what is not found in @where
+ *        - 1 if @what is found in where
+ */
+static int str_find(const char *what,
+                    const char *where)
+{
+        const char *i = where;
+        const char *j = what;
+
+                /* ensure @what and @where are not empty */
+        if (!(i && j && *i && *j)) {
+                return 0;
+        }
+
+                /* iterate through each character in @where; when the first
+                 * character of @what is found, check whether @what exists as a
+                 * substring of @where */
+        while (*i) {
+                if (*i == *j) {
+                        while (*j) {
+                                if (*i++ != *j++) {
+                                        return 0;
+                                }
+                        }
+
+                        return 1;
+                }
+
+                i++;
+        }
+
+                /* if we're here, then @what hasn't been found in @where */
+        return 0;
+}
+
+
+
+
+/*
+ *      log_hasstr() - check log entry for string
+ *        - path: path to log file
+ *        - str: string to check
+ *
+ *      Return:
+ *        - 0 if @str is not found
+ *        - 1 if @str is found
+ */
+static int log_hasstr(const char *path,
+                      const char *str)
+{
+        const int LEN = 256;
+        auto FILE *log = SOL_PTR_NULL;
+        auto int rc = 0;
+        auto char bfr[LEN];
+
+                /* open log file at @path and read check whether @str exists as
+                 * a substring in the first line; @path is assumed to be a valid
+                 * string */
+        if ((log = fopen(path, "r"))) { /* NOLINT */
+                rc = fgets(bfr, LEN, log) ? str_find(str, bfr) : 0;
+                fclose(log);
+        }
+
+                /* wind up */
+        return rc;
+}
+
+
+
+
+/*
+ *      log_hasctm() - check log entry for current timestamp
+ *        - path: path to log file
+ *
+ *      Return:
+ *        - 0 if current timestamp not found
+ *        - 1 if current timestamp found
+ */
+static int log_hasctm(const char *path)
+{
+        const int NEWLN = 24;
+        auto time_t tm;
+        auto char *ctm;
+
+                /* get current timestamp and trim away trailing newline */
+        (void) time(&tm);
+        ctm = ctime(&tm);
+        ctm[NEWLN] = '\0';
+
+                /* check if current timestamp is in the log file at @path */
+        return log_hasstr(path, ctm);
+}
+
+
+
+
+/*
  *      test_open1() - sol_log_open() unit test #1
  */
 static sol_erno test_open1(void)
@@ -54,6 +156,7 @@ SOL_CATCH:
                      : SOL_ERNO_TEST);
 
 SOL_FINALLY:
+                /* wind up */
         sol_log_close();
         return sol_erno_get();
 }
@@ -80,6 +183,7 @@ SOL_CATCH:
                      : SOL_ERNO_TEST);
 
 SOL_FINALLY:
+                /* wind up */
         sol_log_close();
         return sol_erno_get();
 }
@@ -95,25 +199,23 @@ static sol_erno test_open3(void)
         #define DESC_OPEN3 "sol_log_open() should create the log file" \
                            " specified by @path"
         const char *PATH = "bld/dummy.test.log";
-        auto FILE *tmp = SOL_PTR_NULL;
 
 SOL_TRY:
                 /* set up test scenario */
         sol_try (sol_log_open(PATH));
+        sol_log_trace("Hello!");
         sol_log_close();
 
                 /* check test condition */
-        tmp = fopen(PATH, "r"); /* NOLINT */
-        sol_assert (tmp, SOL_ERNO_TEST);
+        sol_assert (log_hasctm(PATH), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "[T]"), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "Hello"), SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* nothing to do in case of an exception */
 
 SOL_FINALLY:
                 /* wind up */
-        if (sol_likely (tmp)) {
-                (void) fclose(tmp);
-        }
         return sol_erno_get();
 }
 
