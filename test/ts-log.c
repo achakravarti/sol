@@ -44,44 +44,51 @@
  *        - 0 if @what is not found in @where
  *        - 1 if @what is found in where
  */
-static int str_find(const char *what,
-                    const char *where)
+static const int str_find(const char *needle, const char *haystack)
 {
-        const char *i = where;
-        const char *j = what;
-        register int repeat;
+        const char *nitr = needle;
+        const char *hitr = haystack;
+        const char *hmark;
+        register int found = 0;
 
-                /* ensure @what and @where are not empty */
-        if (!(i && j && *i && *j)) {
+                /* ensure both @needle and @haystack are valid strings */
+        if (!(nitr && hitr && *nitr && *hitr)) {
                 return 0;
         }
 
-                /* iterate through each character in @where until the first
-                 * character of @what is found and check whether @what exists
-                 * as a substring of @where; if not found, repeat process until
-                 * last character of @where */
-        while (*i) {
-                if (*i == *j) {
-                        while (*j) {
-                                repeat = 0;
-                                if (*i++ != *j++) {
-                                        repeat = 1;
-                                        break;
-                                }
-                        }
-
-                        if (repeat) {
-                                continue;
-                        }
-
-                        return 1;
+                /* loop through @haystack until @needle is found within it */
+        while (!found && *hitr) {
+                        /* locate position in @haystack that matches the first
+                         * character of @needle */
+                if (*hitr != *nitr) {
+                        hitr++;
+                        continue;
                 }
 
-                i++;
+                        /* mark current position of @haystack iterator, and
+                         * assume @needle is present in @haystack */
+                hmark = hitr;
+                found = 1;
+
+                        /* iterate through @haystack (from current position) and
+                         * @needle (from beginning) until our assumption that
+                         * @needle is present in @haystack is proven false */
+                while (*hitr && *nitr) {
+                        if (*hitr++ != *nitr++) {
+                                found = 0;
+                                break;
+                        }
+                }
+
+                        /* continue looping after resetting @haystack iterator
+                         * to its last marked position and @needle iterator to
+                         * the beginning of @needle. */
+                hitr = hmark;
+                nitr = needle;
+                hitr++;
         }
 
-                /* if we're here, then @what hasn't been found in @where */
-        return 0;
+        return found;
 }
 
 
