@@ -73,8 +73,8 @@ static const int str_find(const char *needle, const char *haystack)
                         /* iterate through @haystack (from current position) and
                          * @needle (from beginning) until our assumption that
                          * @needle is present in @haystack is proven false */
-                while (*hitr && *nitr) {
-                        if (*hitr++ != *nitr++) {
+                while (*nitr) {
+                        if (!*hitr || (*hitr++ != *nitr++)) {
                                 found = 0;
                                 break;
                         }
@@ -335,6 +335,38 @@ SOL_FINALLY:
 
 
 /*
+ *      erno_test1() - sol_log_erno() unit test #1
+ */
+static sol_erno erno_test1(void)
+{
+        #define ERNO_DESC1 "sol_log_erno() writes a time-stamped error code" \
+                           " message correctly"
+        const char *PATH = "bld/dummy.test.log";
+        const char *MSG = sol_erno_str(SOL_ERNO_STR);
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_log_open(PATH));
+        sol_log_erno(SOL_ERNO_STR);
+        sol_log_close();
+
+                /* check test condition */
+        sol_assert (log_hasctm(PATH), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "[E]"), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, MSG), SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* nothing to do in case of an exception */
+
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
+/*
  *      __sol_tests_log() - declared in sol/test/suite.h
  */
 extern sol_erno __sol_tests_log(sol_tlog *log,
@@ -358,6 +390,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &trace_test1, TRACE_DESC1));
         sol_try (sol_tsuite_register(ts, &debug_test1, DEBUG_DESC1));
         sol_try (sol_tsuite_register(ts, &error_test1, ERROR_DESC1));
+        sol_try (sol_tsuite_register(ts, &erno_test1, ERNO_DESC1));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
