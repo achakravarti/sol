@@ -88,6 +88,7 @@ static const int str_find(const char *needle, const char *haystack)
                 hitr++;
         }
 
+                /* wind up */
         return found;
 }
 
@@ -302,6 +303,38 @@ SOL_FINALLY:
 
 
 /*
+ *      error_test1() - sol_log_error() unit test #1
+ */
+static sol_erno error_test1(void)
+{
+        #define ERROR_DESC1 "sol_log_error() writes a time-stamped error" \
+                            " message correctly"
+        const char *PATH = "bld/dummy.test.log";
+        const char *MSG = "This is a sample error message.";
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_log_open(PATH));
+        sol_log_error(MSG);
+        sol_log_close();
+
+                /* check test condition */
+        sol_assert (log_hasctm(PATH), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "[E]"), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, MSG), SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* nothing to do in case of an exception */
+
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
+/*
  *      __sol_tests_log() - declared in sol/test/suite.h
  */
 extern sol_erno __sol_tests_log(sol_tlog *log,
@@ -324,6 +357,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &open_test3, OPEN_DESC3));
         sol_try (sol_tsuite_register(ts, &trace_test1, TRACE_DESC1));
         sol_try (sol_tsuite_register(ts, &debug_test1, DEBUG_DESC1));
+        sol_try (sol_tsuite_register(ts, &error_test1, ERROR_DESC1));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
