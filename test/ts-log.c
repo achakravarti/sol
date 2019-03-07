@@ -204,8 +204,8 @@ SOL_FINALLY:
  */
 static sol_erno open_test3(void)
 {
-        #define OPEN_DESC3 "sol_log_open() should create the log file" \
-                           " specified by @path"
+        #define OPEN_DESC3 "sol_log_open() creates the log file specified" \
+                           " by @path"
         const char *PATH = "bld/dummy.test.log";
 
 SOL_TRY:
@@ -218,6 +218,38 @@ SOL_TRY:
         sol_assert (log_hasctm(PATH), SOL_ERNO_TEST);
         sol_assert (log_hasstr(PATH, "[T]"), SOL_ERNO_TEST);
         sol_assert (log_hasstr(PATH, "Hello!"), SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* nothing to do in case of an exception */
+
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
+/*
+ *      trace_test1() - sol_log_trace() unit test #1
+ */
+static sol_erno trace_test1(void)
+{
+        #define TRACE_DESC1 "sol_log_trace() writes a time-stamped trace" \
+                            " message correctly"
+        const char *PATH = "bld/dummy.test.log";
+        const char *MSG = "This is a sample trace message.";
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_log_open(PATH));
+        sol_log_trace(MSG);
+        sol_log_close();
+
+                /* check test condition */
+        sol_assert (log_hasctm(PATH), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "[T]"), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, MSG), SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* nothing to do in case of an exception */
@@ -251,6 +283,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &open_test1, OPEN_DESC1));
         sol_try (sol_tsuite_register(ts, &open_test2, OPEN_DESC2));
         sol_try (sol_tsuite_register(ts, &open_test3, OPEN_DESC3));
+        sol_try (sol_tsuite_register(ts, &trace_test1, TRACE_DESC1));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
