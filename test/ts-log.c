@@ -57,7 +57,7 @@ static int str_find(const char *what,
         }
 
                 /* iterate through each character in @where until the first
-                 * character of @what is found and, check whether @what exists
+                 * character of @what is found and check whether @what exists
                  * as a substring of @where; if not found, repeat process until
                  * last character of @where */
         while (*i) {
