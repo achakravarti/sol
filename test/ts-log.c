@@ -49,21 +49,29 @@ static int str_find(const char *what,
 {
         const char *i = where;
         const char *j = what;
+        register int repeat;
 
                 /* ensure @what and @where are not empty */
         if (!(i && j && *i && *j)) {
                 return 0;
         }
 
-                /* iterate through each character in @where; when the first
-                 * character of @what is found, check whether @what exists as a
-                 * substring of @where */
+                /* iterate through each character in @where until the first
+                 * character of @what is found and, check whether @what exists
+                 * as a substring of @where; if not found, repeat process until
+                 * last character of @where */
         while (*i) {
                 if (*i == *j) {
                         while (*j) {
+                                repeat = 0;
                                 if (*i++ != *j++) {
-                                        return 0;
+                                        repeat = 1;
+                                        break;
                                 }
+                        }
+
+                        if (repeat) {
+                                continue;
                         }
 
                         return 1;
@@ -209,7 +217,7 @@ SOL_TRY:
                 /* check test condition */
         sol_assert (log_hasctm(PATH), SOL_ERNO_TEST);
         sol_assert (log_hasstr(PATH, "[T]"), SOL_ERNO_TEST);
-        sol_assert (log_hasstr(PATH, "Hello"), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "Hello!"), SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* nothing to do in case of an exception */
