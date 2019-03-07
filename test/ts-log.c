@@ -138,11 +138,11 @@ static int log_hasctm(const char *path)
 
 
 /*
- *      test_open1() - sol_log_open() unit test #1
+ *      open_test1() - sol_log_open() unit test #1
  */
-static sol_erno test_open1(void)
+static sol_erno open_test1(void)
 {
-        #define DESC_OPEN1 "sol_log_open() throws SOL_ERNO_STR is @path is" \
+        #define OPEN_DESC1 "sol_log_open() throws SOL_ERNO_STR is @path is" \
                            " a null pointer"
 
 SOL_TRY:
@@ -165,11 +165,11 @@ SOL_FINALLY:
 
 
 /*
- *      test_open2() - sol_log_open() unit test #2
+ *      open_test2() - sol_log_open() unit test #2
  */
-static sol_erno test_open2(void)
+static sol_erno open_test2(void)
 {
-        #define DESC_OPEN2 "sol_log_open() throws SOL_ERNO_STR is @path is" \
+        #define OPEN_DESC2 "sol_log_open() throws SOL_ERNO_STR is @path is" \
                            " a null string"
 
 SOL_TRY:
@@ -192,11 +192,11 @@ SOL_FINALLY:
 
 
 /*
- *      test_open3() - sol_log_open() unit test #3
+ *      open_test3() - sol_log_open() unit test #3
  */
-static sol_erno test_open3(void)
+static sol_erno open_test3(void)
 {
-        #define DESC_OPEN3 "sol_log_open() should create the log file" \
+        #define OPEN_DESC3 "sol_log_open() should create the log file" \
                            " specified by @path"
         const char *PATH = "bld/dummy.test.log";
 
@@ -240,9 +240,9 @@ SOL_TRY:
         sol_try (sol_tsuite_init2(ts, log));
 
                 /* register test cases */
-        sol_try (sol_tsuite_register(ts, &test_open1, DESC_OPEN1));
-        sol_try (sol_tsuite_register(ts, &test_open2, DESC_OPEN2));
-        sol_try (sol_tsuite_register(ts, &test_open3, DESC_OPEN3));
+        sol_try (sol_tsuite_register(ts, &open_test1, OPEN_DESC1));
+        sol_try (sol_tsuite_register(ts, &open_test2, OPEN_DESC2));
+        sol_try (sol_tsuite_register(ts, &open_test3, OPEN_DESC3));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
