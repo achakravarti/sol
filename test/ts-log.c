@@ -435,6 +435,32 @@ static sol_erno warn_test2(void)
 
 
 /*
+ *      warn_test3() - sol_log_warn() unit test #3
+ */
+static sol_erno debug_test3(void)
+{
+        #define DEBUG_TEST3 "sol_log_warn() performs a safe no-op if passed" \
+                            " a null pointer for @msg"
+        const char *PATH = "bld/dummy.test.log";
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_log_open(PATH));
+        sol_log_warn(SOL_PTR_NULL);
+        sol_log_close();
+
+SOL_CATCH:
+                /* nothing to do in case of an exception */
+
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
+/*
  *      error_test1() - sol_log_error() unit test #1
  */
 static sol_erno error_test1(void)
@@ -559,6 +585,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &debug_test3, DEBUG_TEST3));
         sol_try (sol_tsuite_register(ts, &warn_test1, WARN_TEST1));
         sol_try (sol_tsuite_register(ts, &warn_test2, WARN_TEST2));
+        sol_try (sol_tsuite_register(ts, &warn_test3, WARN_TEST3));
         sol_try (sol_tsuite_register(ts, &error_test1, ERROR_TEST1));
         sol_try (sol_tsuite_register(ts, &error_test2, ERROR_TEST2));
         sol_try (sol_tsuite_register(ts, &erno_test1, ERNO_TEST1));
