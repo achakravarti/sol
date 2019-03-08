@@ -278,6 +278,7 @@ static sol_erno trace_test2(void)
         #define TRACE_TEST2 "sol_log_trace() performs a safe no-op if called" \
                             " when no log file is open"
 
+                /* set up test scenario */
         sol_log_trace("Dummy");
         return SOL_ERNO_NULL;
 }
@@ -325,6 +326,7 @@ static sol_erno debug_test2(void)
         #define DEBUG_TEST2 "sol_log_debug() performs a safe no-op if called" \
                             " when no log file is open"
 
+                /* set up test scenario */
         sol_log_debug("Dummy");
         return SOL_ERNO_NULL;
 }
@@ -372,6 +374,7 @@ static sol_erno warn_test2(void)
         #define WARN_TEST2 "sol_log_warn() performs a safe no-op if called" \
                            " when no log file is open"
 
+                /* set up test scenario */
         sol_log_warn("Dummy");
         return SOL_ERNO_NULL;
 }
@@ -419,6 +422,7 @@ static sol_erno error_test2(void)
         #define ERROR_TEST2 "sol_log_error() performs a safe no-op if called" \
                             " when no log file is open"
 
+                /* set up test scenario */
         sol_log_error("Dummy");
         return SOL_ERNO_NULL;
 }
@@ -453,6 +457,22 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
+}
+
+
+
+
+/*
+ *      erno_test2() - sol_log_erno() unit test #2
+ */
+static sol_erno erno_test2(void)
+{
+        #define ERNO_TEST2 "sol_log_erno() performs a safe no-op if called" \
+                           " when no log file is open"
+
+                /* set up test scenario */
+        sol_log_erno(SOL_ERNO_STR);
+        return SOL_ERNO_NULL;
 }
 
 
