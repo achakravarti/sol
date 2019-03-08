@@ -270,6 +270,9 @@ SOL_FINALLY:
 
 
 
+/*
+ *      trace_test2() - sol_log_trace() unit test #2
+ */
 static sol_erno trace_test2(void)
 {
         #define TRACE_TEST2 "sol_log_trace() performs a safe no-op if called" \
@@ -310,6 +313,25 @@ SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
 }
+
+
+
+
+/*
+ *      debug_test2() - sol_log_debug() unit test #2
+ */
+static sol_erno debug_test2(void)
+{
+        #define DEBUG_TEST2 "sol_log_debug() performs a safe no-op if called" \
+                            " when no log file is open"
+
+        sol_log_debug("Dummy");
+        return SOL_ERNO_NULL;
+}
+
+
+
+
 
 
 
@@ -434,6 +456,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &trace_test1, TRACE_DESC1));
         sol_try (sol_tsuite_register(ts, &trace_test2, TRACE_TEST2));
         sol_try (sol_tsuite_register(ts, &debug_test1, DEBUG_DESC1));
+        sol_try (sol_tsuite_register(ts, &debug_test2, DEBUG_TEST2));
         sol_try (sol_tsuite_register(ts, &warn_test1, WARN_DESC1));
         sol_try (sol_tsuite_register(ts, &error_test1, ERROR_DESC1));
         sol_try (sol_tsuite_register(ts, &erno_test1, ERNO_DESC1));
