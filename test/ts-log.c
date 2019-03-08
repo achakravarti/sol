@@ -185,7 +185,7 @@ SOL_FINALLY:
  */
 static sol_erno open_test2(void)
 {
-        #define OPEN_TEST2 "sol_log_open() throws SOL_ERNO_STR is @path is" \
+        #define OPEN_TEST2 "sol_log_open() throws SOL_ERNO_STR if @path is" \
                            " a null string"
 
 SOL_TRY:
@@ -249,6 +249,33 @@ static sol_erno open2_test1(void)
 SOL_TRY:
                 /* set up test scenario */
         sol_try (sol_log_open2(SOL_PTR_NULL, 0));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_STR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* wind up */
+        sol_log_close();
+        return sol_erno_get();
+}
+
+
+
+
+/*
+ *      open2_test2() - sol_log_open2() unit test #2
+ */
+static sol_erno open2_test2(void)
+{
+        #define OPEN2_TEST2 "sol_log_open2() throws SOL_ERNO_STR if @path is" \
+                            " a null string"
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_log_open2("", 0));
 
 SOL_CATCH:
                 /* check test condition */
@@ -735,6 +762,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &open_test2, OPEN_TEST2));
         sol_try (sol_tsuite_register(ts, &open_test3, OPEN_TEST3));
         sol_try (sol_tsuite_register(ts, &open2_test1, OPEN2_TEST1));
+        sol_try (sol_tsuite_register(ts, &open2_test2, OPEN2_TEST2));
         sol_try (sol_tsuite_register(ts, &trace_test1, TRACE_TEST1));
         sol_try (sol_tsuite_register(ts, &trace_test2, TRACE_TEST2));
         sol_try (sol_tsuite_register(ts, &trace_test3, TRACE_TEST3));
