@@ -293,17 +293,48 @@ SOL_FINALLY:
 
 
 /*
- *      open2_test3() - sol_log_open() unit test #3
+ *      open2_test3() - sol_log_open2() unit test #3
  */
 static sol_erno open2_test3(void)
 {
         #define OPEN2_TEST3 "sol_log_open2() creates the log file specified" \
-                            " by @path when @flush is 0"
+                            " by @path when @flush is false"
         const char *PATH = "bld/dummy.test.log";
 
 SOL_TRY:
                 /* set up test scenario */
         sol_try (sol_log_open2(PATH, 0));
+        sol_log_trace("Hello!");
+        sol_log_close();
+
+                /* check test condition */
+        sol_assert (log_hasctm(PATH), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "[T]"), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "Hello!"), SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* nothing to do in case of an exception */
+
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
+/*
+ *      open2_test4() - sol_log_open2() unit test #4
+ */
+static sol_erno open2_test4(void)
+{
+        #define OPEN2_TEST4 "sol_log_open2() creates the log file specified" \
+                            " by @path when @flush is true"
+        const char *PATH = "bld/dummy.test.log";
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_log_open2(PATH, 1));
         sol_log_trace("Hello!");
         sol_log_close();
 
@@ -795,6 +826,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &open2_test1, OPEN2_TEST1));
         sol_try (sol_tsuite_register(ts, &open2_test2, OPEN2_TEST2));
         sol_try (sol_tsuite_register(ts, &open2_test3, OPEN2_TEST3));
+        sol_try (sol_tsuite_register(ts, &open2_test4, OPEN2_TEST4));
         sol_try (sol_tsuite_register(ts, &trace_test1, TRACE_TEST1));
         sol_try (sol_tsuite_register(ts, &trace_test2, TRACE_TEST2));
         sol_try (sol_tsuite_register(ts, &trace_test3, TRACE_TEST3));
