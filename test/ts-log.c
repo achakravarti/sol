@@ -370,7 +370,7 @@ SOL_FINALLY:
 static sol_erno warn_test2(void)
 {
         #define WARN_TEST2 "sol_log_warn() performs a safe no-op if called" \
-                            " when no log file is open"
+                           " when no log file is open"
 
         sol_log_warn("Dummy");
         return SOL_ERNO_NULL;
@@ -406,6 +406,21 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
+}
+
+
+
+
+/*
+ *      error_test2() - sol_log_error() unit test #2
+ */
+static sol_erno error_test2(void)
+{
+        #define ERROR_TEST2 "sol_log_error() performs a safe no-op if called" \
+                            " when no log file is open"
+
+        sol_log_error("Dummy");
+        return SOL_ERNO_NULL;
 }
 
 
@@ -471,6 +486,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &warn_test1, WARN_DESC1));
         sol_try (sol_tsuite_register(ts, &warn_test2, WARN_TEST2));
         sol_try (sol_tsuite_register(ts, &error_test1, ERROR_DESC1));
+        sol_try (sol_tsuite_register(ts, &error_test2, ERROR_TEST2));
         sol_try (sol_tsuite_register(ts, &erno_test1, ERNO_DESC1));
 
                 /* execute test cases */
