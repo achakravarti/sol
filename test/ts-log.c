@@ -613,6 +613,32 @@ SOL_FINALLY:
 
 
 /*
+ *      error_test4() - sol_log_error() unit test #4
+ */
+static sol_erno error_test4(void)
+{
+        #define ERROR_TEST4 "sol_log_error() performs a safe no-op if passed" \
+                            " a null string for @msg"
+        const char *PATH = "bld/dummy.test.log";
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_log_open(PATH));
+        sol_log_error("");
+        sol_log_close();
+
+SOL_CATCH:
+                /* nothing to do in case of an exception */
+
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
+/*
  *      erno_test1() - sol_log_erno() unit test #1
  */
 static sol_erno erno_test1(void)
@@ -696,6 +722,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &error_test1, ERROR_TEST1));
         sol_try (sol_tsuite_register(ts, &error_test2, ERROR_TEST2));
         sol_try (sol_tsuite_register(ts, &error_test3, ERROR_TEST3));
+        sol_try (sol_tsuite_register(ts, &error_test4, ERROR_TEST4));
         sol_try (sol_tsuite_register(ts, &erno_test1, ERNO_TEST1));
         sol_try (sol_tsuite_register(ts, &erno_test2, ERNO_TEST2));
 
