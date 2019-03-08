@@ -303,6 +303,38 @@ SOL_FINALLY:
 
 
 /*
+ *      warn_test1() - sol_log_warn() unit test #1
+ */
+static sol_erno warn_test1(void)
+{
+        #define WARN_DESC1 "sol_log_arn() writes a time-stamped warning" \
+                           " message correctly"
+        const char *PATH = "bld/dummy.test.log";
+        const char *MSG = "This is a sample warning message.";
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_log_open(PATH));
+        sol_log_warn(MSG);
+        sol_log_close();
+
+                /* check test condition */
+        sol_assert (log_hasctm(PATH), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "[W]"), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, MSG), SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* nothing to do in case of an exception */
+
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
+/*
  *      error_test1() - sol_log_error() unit test #1
  */
 static sol_erno error_test1(void)
@@ -389,6 +421,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &open_test3, OPEN_DESC3));
         sol_try (sol_tsuite_register(ts, &trace_test1, TRACE_DESC1));
         sol_try (sol_tsuite_register(ts, &debug_test1, DEBUG_DESC1));
+        sol_try (sol_tsuite_register(ts, &warn_test1, WARN_DESC1));
         sol_try (sol_tsuite_register(ts, &error_test1, ERROR_DESC1));
         sol_try (sol_tsuite_register(ts, &erno_test1, ERNO_DESC1));
 

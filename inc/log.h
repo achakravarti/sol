@@ -151,6 +151,25 @@ extern void sol_log_close(void);
 
 
 /*
+ *      sol_log_warn() - logs a warning message
+ *        - msg: message
+ *
+ *      The sol_log_warn() interface macro records a warning message @msg to the
+ *      currently open log file. The current local timestamp and code location
+ *      are automatically prefixed to @msg. It is safe to call this macro even
+ *      if no log file is currently open.
+ */
+#define /* void */ sol_log_warn(/* const char* */ msg) \
+        __sol_log_write("W",                           \
+                        sol_env_func(),                \
+                        sol_env_file(),                \
+                        sol_env_line(),                \
+                        (msg))
+
+
+
+
+/*
  *      sol_log_error() - logs an error message
  *        - msg: message
  *
