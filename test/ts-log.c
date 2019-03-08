@@ -158,7 +158,7 @@ static int log_hasctm(const char *path)
  */
 static sol_erno open_test1(void)
 {
-        #define OPEN_DESC1 "sol_log_open() throws SOL_ERNO_STR is @path is" \
+        #define OPEN_TEST1 "sol_log_open() throws SOL_ERNO_STR is @path is" \
                            " a null pointer"
 
 SOL_TRY:
@@ -185,7 +185,7 @@ SOL_FINALLY:
  */
 static sol_erno open_test2(void)
 {
-        #define OPEN_DESC2 "sol_log_open() throws SOL_ERNO_STR is @path is" \
+        #define OPEN_TEST2 "sol_log_open() throws SOL_ERNO_STR is @path is" \
                            " a null string"
 
 SOL_TRY:
@@ -212,7 +212,7 @@ SOL_FINALLY:
  */
 static sol_erno open_test3(void)
 {
-        #define OPEN_DESC3 "sol_log_open() creates the log file specified" \
+        #define OPEN_TEST3 "sol_log_open() creates the log file specified" \
                            " by @path"
         const char *PATH = "bld/dummy.test.log";
 
@@ -243,7 +243,7 @@ SOL_FINALLY:
  */
 static sol_erno trace_test1(void)
 {
-        #define TRACE_DESC1 "sol_log_trace() writes a time-stamped trace" \
+        #define TRACE_TEST1 "sol_log_trace() writes a time-stamped trace" \
                             " message correctly"
         const char *PATH = "bld/dummy.test.log";
         const char *MSG = "This is a sample trace message.";
@@ -291,7 +291,7 @@ static sol_erno trace_test2(void)
  */
 static sol_erno debug_test1(void)
 {
-        #define DEBUG_DESC1 "sol_log_debug() writes a time-stamped debug" \
+        #define DEBUG_TEST1 "sol_log_debug() writes a time-stamped debug" \
                             " message correctly"
         const char *PATH = "bld/dummy.test.log";
         const char *MSG = "This is a sample debug message.";
@@ -339,7 +339,7 @@ static sol_erno debug_test2(void)
  */
 static sol_erno warn_test1(void)
 {
-        #define WARN_DESC1 "sol_log_arn() writes a time-stamped warning" \
+        #define WARN_TEST1 "sol_log_arn() writes a time-stamped warning" \
                            " message correctly"
         const char *PATH = "bld/dummy.test.log";
         const char *MSG = "This is a sample warning message.";
@@ -387,7 +387,7 @@ static sol_erno warn_test2(void)
  */
 static sol_erno error_test1(void)
 {
-        #define ERROR_DESC1 "sol_log_error() writes a time-stamped error" \
+        #define ERROR_TEST1 "sol_log_error() writes a time-stamped error" \
                             " message correctly"
         const char *PATH = "bld/dummy.test.log";
         const char *MSG = "This is a sample error message.";
@@ -435,7 +435,7 @@ static sol_erno error_test2(void)
  */
 static sol_erno erno_test1(void)
 {
-        #define ERNO_DESC1 "sol_log_erno() writes a time-stamped error code" \
+        #define ERNO_TEST1 "sol_log_erno() writes a time-stamped error code" \
                            " message correctly"
         const char *PATH = "bld/dummy.test.log";
         const char *MSG = sol_erno_str(SOL_ERNO_STR);
@@ -496,18 +496,19 @@ SOL_TRY:
         sol_try (sol_tsuite_init2(ts, log));
 
                 /* register test cases */
-        sol_try (sol_tsuite_register(ts, &open_test1, OPEN_DESC1));
-        sol_try (sol_tsuite_register(ts, &open_test2, OPEN_DESC2));
-        sol_try (sol_tsuite_register(ts, &open_test3, OPEN_DESC3));
-        sol_try (sol_tsuite_register(ts, &trace_test1, TRACE_DESC1));
+        sol_try (sol_tsuite_register(ts, &open_test1, OPEN_TEST1));
+        sol_try (sol_tsuite_register(ts, &open_test2, OPEN_TEST2));
+        sol_try (sol_tsuite_register(ts, &open_test3, OPEN_TEST3));
+        sol_try (sol_tsuite_register(ts, &trace_test1, TRACE_TEST1));
         sol_try (sol_tsuite_register(ts, &trace_test2, TRACE_TEST2));
-        sol_try (sol_tsuite_register(ts, &debug_test1, DEBUG_DESC1));
+        sol_try (sol_tsuite_register(ts, &debug_test1, DEBUG_TEST1));
         sol_try (sol_tsuite_register(ts, &debug_test2, DEBUG_TEST2));
-        sol_try (sol_tsuite_register(ts, &warn_test1, WARN_DESC1));
+        sol_try (sol_tsuite_register(ts, &warn_test1, WARN_TEST1));
         sol_try (sol_tsuite_register(ts, &warn_test2, WARN_TEST2));
-        sol_try (sol_tsuite_register(ts, &error_test1, ERROR_DESC1));
+        sol_try (sol_tsuite_register(ts, &error_test1, ERROR_TEST1));
         sol_try (sol_tsuite_register(ts, &error_test2, ERROR_TEST2));
-        sol_try (sol_tsuite_register(ts, &erno_test1, ERNO_DESC1));
+        sol_try (sol_tsuite_register(ts, &erno_test1, ERNO_TEST1));
+        sol_try (sol_tsuite_register(ts, &erno_test2, ERNO_TEST2));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
