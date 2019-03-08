@@ -117,24 +117,28 @@ static const int str_find(const char *needle, const char *haystack)
  *      log_hasstr() - check log entry for string
  *        - path: path to log file
  *        - str: string to check
+ *        - line: line in which to check
  *
  *      Return:
  *        - 0 if @str is not found
  *        - 1 if @str is found
  */
-static int log_hasstr(const char *path,
-                      const char *str)
+static int log_hasstr(const char *path, const char *str, int line)
 {
         const int LEN = 256;
         auto FILE *log = SOL_PTR_NULL;
         auto int rc = 0;
         auto char bfr[LEN];
+        register int i;
 
-                /* open log file at @path and read check whether @str exists as
-                 * a substring in the first line; @path is assumed to be a valid
+                /* open log file at @path and check whether @str exists as a
+                 * substring in the given @line; @path is assumed to be a valid
                  * string */
         if ((log = fopen(path, "r"))) { /* NOLINT */
-                rc = fgets(bfr, LEN, log) ? str_find(str, bfr) : 0;
+                for (i = 0; i < line; i++) {
+                        rc = fgets(bfr, LEN, log) ? str_find(str, bfr) : 0;
+                }
+
                 fclose(log);
         }
 
@@ -148,12 +152,13 @@ static int log_hasstr(const char *path,
 /*
  *      log_hasctm() - check log entry for current timestamp
  *        - path: path to log file
+ *        - line: line in which to check
  *
  *      Return:
  *        - 0 if current timestamp not found
  *        - 1 if current timestamp found
  */
-static int log_hasctm(const char *path)
+static int log_hasctm(const char *path, int line)
 {
         const int NEWLN = 24;
         auto time_t tm;
@@ -165,7 +170,7 @@ static int log_hasctm(const char *path)
         ctm[NEWLN] = '\0';
 
                 /* check if current timestamp is in the log file at @path */
-        return log_hasstr(path, ctm);
+        return log_hasstr(path, ctm, line);
 }
 
 
@@ -233,6 +238,7 @@ static sol_erno open_test3(void)
         #define OPEN_TEST3 "sol_log_open() creates the log file specified" \
                            " by @path"
         const char *PATH = "bld/dummy.test.log";
+        const int line = 1;
 
 SOL_TRY:
                 /* set up test scenario */
@@ -241,9 +247,9 @@ SOL_TRY:
         sol_log_close();
 
                 /* check test condition */
-        sol_assert (log_hasctm(PATH), SOL_ERNO_TEST);
-        sol_assert (log_hasstr(PATH, "[T]"), SOL_ERNO_TEST);
-        sol_assert (log_hasstr(PATH, "Hello!"), SOL_ERNO_TEST);
+        sol_assert (log_hasctm(PATH, line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "[T]", line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "Hello!", line), SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* nothing to do in case of an exception */
@@ -318,6 +324,7 @@ static sol_erno open2_test3(void)
         #define OPEN2_TEST3 "sol_log_open2() creates the log file specified" \
                             " by @path when @flush is false"
         const char *PATH = "bld/dummy.test.log";
+        const int line = 1;
 
 SOL_TRY:
                 /* set up test scenario */
@@ -326,9 +333,9 @@ SOL_TRY:
         sol_log_close();
 
                 /* check test condition */
-        sol_assert (log_hasctm(PATH), SOL_ERNO_TEST);
-        sol_assert (log_hasstr(PATH, "[T]"), SOL_ERNO_TEST);
-        sol_assert (log_hasstr(PATH, "Hello!"), SOL_ERNO_TEST);
+        sol_assert (log_hasctm(PATH, line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "[T]", line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "Hello!", line), SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* nothing to do in case of an exception */
@@ -349,6 +356,7 @@ static sol_erno open2_test4(void)
         #define OPEN2_TEST4 "sol_log_open2() creates the log file specified" \
                             " by @path when @flush is true"
         const char *PATH = "bld/dummy.test.log";
+        const int line = 1;
 
 SOL_TRY:
                 /* set up test scenario */
@@ -357,9 +365,9 @@ SOL_TRY:
         sol_log_close();
 
                 /* check test condition */
-        sol_assert (log_hasctm(PATH), SOL_ERNO_TEST);
-        sol_assert (log_hasstr(PATH, "[T]"), SOL_ERNO_TEST);
-        sol_assert (log_hasstr(PATH, "Hello!"), SOL_ERNO_TEST);
+        sol_assert (log_hasctm(PATH, line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "[T]", line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "Hello!", line), SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* nothing to do in case of an exception */
@@ -373,29 +381,67 @@ SOL_FINALLY:
 
 
 /*
- *      open2_test5() - sol_log_open2() unit test #4
+ *      open2_test5() - sol_log_open2() unit test #5
  */
 static sol_erno open2_test5(void)
 {
         #define OPEN2_TEST5 "sol_log_open2() overwrites the entries in the" \
                             " log file at @path when @flush is true"
         const char *PATH = "bld/dummy.test.log";
-        register int i;
+        const int line = 1;
+        const int sleep = 10;
 
 SOL_TRY:
                 /* set up test scenario */
         sol_try (sol_log_open2(PATH, 1));
         sol_log_trace("Hello!");
         sol_log_close();
-        mock_sleep(5);
+        mock_sleep(10);
         sol_try (sol_log_open2(PATH, 1));
         sol_log_debug("Goodbye!");
         sol_log_close();
 
                 /* check test condition */
-        sol_assert (log_hasctm(PATH), SOL_ERNO_TEST);
-        sol_assert (log_hasstr(PATH, "[D]"), SOL_ERNO_TEST);
-        sol_assert (log_hasstr(PATH, "Goodbye!"), SOL_ERNO_TEST);
+        sol_assert (log_hasctm(PATH, line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "[D]", line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "Goodbye!", line), SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* nothing to do in case of an exception */
+
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
+/*
+ *      open2_test6() - sol_log_open2() unit test #6
+ */
+static sol_erno open2_test6(void)
+{
+        #define OPEN2_TEST6 "sol_log_open2() preserves the entries in the" \
+                            " log file at @path when @flush is false"
+        const char *PATH = "bld/dummy.test.log";
+        const int line = 2;
+        const int sleep = 10;
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_log_open2(PATH, 1));
+        sol_log_trace("Hello!");
+        sol_log_close();
+        mock_sleep(sleep);
+        sol_try (sol_log_open2(PATH, 0));
+        sol_log_debug("Goodbye!");
+        sol_log_close();
+
+                /* check test condition */
+        sol_assert (log_hasctm(PATH, line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "[D]", line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "Goodbye!", line), SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* nothing to do in case of an exception */
@@ -416,18 +462,19 @@ static sol_erno trace_test1(void)
         #define TRACE_TEST1 "sol_log_trace() writes a time-stamped trace" \
                             " message correctly"
         const char *PATH = "bld/dummy.test.log";
-        const char *MSG = "This is a sample trace message.";
+        const char *msg = "This is a sample trace message.";
+        const int line = 1;
 
 SOL_TRY:
                 /* set up test scenario */
         sol_try (sol_log_open(PATH));
-        sol_log_trace(MSG);
+        sol_log_trace(msg);
         sol_log_close();
 
                 /* check test condition */
-        sol_assert (log_hasctm(PATH), SOL_ERNO_TEST);
-        sol_assert (log_hasstr(PATH, "[T]"), SOL_ERNO_TEST);
-        sol_assert (log_hasstr(PATH, MSG), SOL_ERNO_TEST);
+        sol_assert (log_hasctm(PATH, line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "[T]", line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, msg, line), SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* nothing to do in case of an exception */
@@ -516,18 +563,19 @@ static sol_erno debug_test1(void)
         #define DEBUG_TEST1 "sol_log_debug() writes a time-stamped debug" \
                             " message correctly"
         const char *PATH = "bld/dummy.test.log";
-        const char *MSG = "This is a sample debug message.";
+        const char *msg = "This is a sample debug message.";
+        const int line = 1;
 
 SOL_TRY:
                 /* set up test scenario */
         sol_try (sol_log_open(PATH));
-        sol_log_debug(MSG);
+        sol_log_debug(msg);
         sol_log_close();
 
                 /* check test condition */
-        sol_assert (log_hasctm(PATH), SOL_ERNO_TEST);
-        sol_assert (log_hasstr(PATH, "[D]"), SOL_ERNO_TEST);
-        sol_assert (log_hasstr(PATH, MSG), SOL_ERNO_TEST);
+        sol_assert (log_hasctm(PATH, line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "[D]", line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, msg, line), SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* nothing to do in case of an exception */
@@ -616,18 +664,19 @@ static sol_erno warn_test1(void)
         #define WARN_TEST1 "sol_log_warn() writes a time-stamped warning" \
                            " message correctly"
         const char *PATH = "bld/dummy.test.log";
-        const char *MSG = "This is a sample warning message.";
+        const char *msg = "This is a sample warning message.";
+        const int line = 1;
 
 SOL_TRY:
                 /* set up test scenario */
         sol_try (sol_log_open(PATH));
-        sol_log_warn(MSG);
+        sol_log_warn(msg);
         sol_log_close();
 
                 /* check test condition */
-        sol_assert (log_hasctm(PATH), SOL_ERNO_TEST);
-        sol_assert (log_hasstr(PATH, "[W]"), SOL_ERNO_TEST);
-        sol_assert (log_hasstr(PATH, MSG), SOL_ERNO_TEST);
+        sol_assert (log_hasctm(PATH, line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "[W]", line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, msg, line), SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* nothing to do in case of an exception */
@@ -716,18 +765,19 @@ static sol_erno error_test1(void)
         #define ERROR_TEST1 "sol_log_error() writes a time-stamped error" \
                             " message correctly"
         const char *PATH = "bld/dummy.test.log";
-        const char *MSG = "This is a sample error message.";
+        const char *msg = "This is a sample error message.";
+        const int line = 1;
 
 SOL_TRY:
                 /* set up test scenario */
         sol_try (sol_log_open(PATH));
-        sol_log_error(MSG);
+        sol_log_error(msg);
         sol_log_close();
 
                 /* check test condition */
-        sol_assert (log_hasctm(PATH), SOL_ERNO_TEST);
-        sol_assert (log_hasstr(PATH, "[E]"), SOL_ERNO_TEST);
-        sol_assert (log_hasstr(PATH, MSG), SOL_ERNO_TEST);
+        sol_assert (log_hasctm(PATH, line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "[E]", line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, msg, line), SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* nothing to do in case of an exception */
@@ -816,7 +866,8 @@ static sol_erno erno_test1(void)
         #define ERNO_TEST1 "sol_log_erno() writes a time-stamped error code" \
                            " message correctly"
         const char *PATH = "bld/dummy.test.log";
-        const char *MSG = sol_erno_str(SOL_ERNO_STR);
+        const char *msg = sol_erno_str(SOL_ERNO_STR);
+        const int line = 1;
 
 SOL_TRY:
                 /* set up test scenario */
@@ -825,9 +876,9 @@ SOL_TRY:
         sol_log_close();
 
                 /* check test condition */
-        sol_assert (log_hasctm(PATH), SOL_ERNO_TEST);
-        sol_assert (log_hasstr(PATH, "[E]"), SOL_ERNO_TEST);
-        sol_assert (log_hasstr(PATH, MSG), SOL_ERNO_TEST);
+        sol_assert (log_hasctm(PATH, line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "[E]", line), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, msg, line), SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* nothing to do in case of an exception */
@@ -882,6 +933,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &open2_test3, OPEN2_TEST3));
         sol_try (sol_tsuite_register(ts, &open2_test4, OPEN2_TEST4));
         sol_try (sol_tsuite_register(ts, &open2_test5, OPEN2_TEST5));
+        sol_try (sol_tsuite_register(ts, &open2_test6, OPEN2_TEST6));
         sol_try (sol_tsuite_register(ts, &trace_test1, TRACE_TEST1));
         sol_try (sol_tsuite_register(ts, &trace_test2, TRACE_TEST2));
         sol_try (sol_tsuite_register(ts, &trace_test3, TRACE_TEST3));
