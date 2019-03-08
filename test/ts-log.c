@@ -413,6 +413,32 @@ SOL_FINALLY:
 
 
 /*
+ *      debug_test4() - sol_log_debug() unit test #4
+ */
+static sol_erno debug_test4(void)
+{
+        #define DEBUG_TEST4 "sol_log_debug() performs a safe no-op if passed" \
+                            " a null string for @msg"
+        const char *PATH = "bld/dummy.test.log";
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_log_open(PATH));
+        sol_log_debug("");
+        sol_log_close();
+
+SOL_CATCH:
+                /* nothing to do in case of an exception */
+
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
+/*
  *      warn_test1() - sol_log_warn() unit test #1
  */
 static sol_erno warn_test1(void)
@@ -636,6 +662,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &debug_test1, DEBUG_TEST1));
         sol_try (sol_tsuite_register(ts, &debug_test2, DEBUG_TEST2));
         sol_try (sol_tsuite_register(ts, &debug_test3, DEBUG_TEST3));
+        sol_try (sol_tsuite_register(ts, &debug_test3, DEBUG_TEST4));
         sol_try (sol_tsuite_register(ts, &warn_test1, WARN_TEST1));
         sol_try (sol_tsuite_register(ts, &warn_test2, WARN_TEST2));
         sol_try (sol_tsuite_register(ts, &warn_test3, WARN_TEST3));
