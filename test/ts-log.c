@@ -36,6 +36,24 @@
 
 
 /*
+ *      mock_sleep() - mocks the sleep() function
+ *        - scale: sleep duration scale
+ */
+static void mock_sleep(int scale)
+{
+        const long TICK = 100000000;
+        auto int i;
+        auto int j;
+
+        for (i = 0; i < scale; i++) {
+                for (j = 0; j < TICK; j++); /* NOLINT */
+        }
+}
+
+
+
+
+/*
  *      str_find() - searches for a substring
  *        - what: substring to search
  *        - where: string to search in
@@ -342,6 +360,42 @@ SOL_TRY:
         sol_assert (log_hasctm(PATH), SOL_ERNO_TEST);
         sol_assert (log_hasstr(PATH, "[T]"), SOL_ERNO_TEST);
         sol_assert (log_hasstr(PATH, "Hello!"), SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* nothing to do in case of an exception */
+
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
+/*
+ *      open2_test5() - sol_log_open2() unit test #4
+ */
+static sol_erno open2_test5(void)
+{
+        #define OPEN2_TEST5 "sol_log_open2() overwrites the entries in the" \
+                            " log file at @path when @flush is true"
+        const char *PATH = "bld/dummy.test.log";
+        register int i;
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_log_open2(PATH, 1));
+        sol_log_trace("Hello!");
+        sol_log_close();
+        mock_sleep(5);
+        sol_try (sol_log_open2(PATH, 1));
+        sol_log_debug("Goodbye!");
+        sol_log_close();
+
+                /* check test condition */
+        sol_assert (log_hasctm(PATH), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "[D]"), SOL_ERNO_TEST);
+        sol_assert (log_hasstr(PATH, "Goodbye!"), SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* nothing to do in case of an exception */
@@ -827,6 +881,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &open2_test2, OPEN2_TEST2));
         sol_try (sol_tsuite_register(ts, &open2_test3, OPEN2_TEST3));
         sol_try (sol_tsuite_register(ts, &open2_test4, OPEN2_TEST4));
+        sol_try (sol_tsuite_register(ts, &open2_test5, OPEN2_TEST5));
         sol_try (sol_tsuite_register(ts, &trace_test1, TRACE_TEST1));
         sol_try (sol_tsuite_register(ts, &trace_test2, TRACE_TEST2));
         sol_try (sol_tsuite_register(ts, &trace_test3, TRACE_TEST3));
