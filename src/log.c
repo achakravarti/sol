@@ -134,11 +134,10 @@ extern void __sol_log_write(const char *type,
         (void) time(&tm);
         ctm = ctime(&tm);
 
-                /* write entry to log file if it's open; this check is necessary
-                 * because the wrapper macros sol_log_trace(), sol_log_debug(),
-                 * sol_log_error(), and sol_log_erno() may be called even if the
-                 * log file hasn't been opened */
-        if (log_hnd) {
+                /* write entry to log file if it's open and @msg is valid; the
+                 * former check is necessary because the logging macros may be
+                 * called even if the log file hasn't been opened */
+        if (sol_likely (log_hnd && msg && *msg)) {
                 (void) fprintf(log_hnd, FMT, type, ctm, func, file, line, msg);
         }
 }

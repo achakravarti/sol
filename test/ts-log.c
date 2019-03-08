@@ -287,6 +287,32 @@ static sol_erno trace_test2(void)
 
 
 /*
+ *      trace_test3() - sol_log_trace() unit test #3
+ */
+static sol_erno trace_test3(void)
+{
+        #define TRACE_TEST3 "sol_log_trace() performs a safe no-op if passed" \
+                            " a null pointer for @msg"
+        const char *PATH = "bld/dummy.test.log";
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_log_open(PATH));
+        sol_log_trace(SOL_PTR_NULL);
+        sol_log_close();
+
+SOL_CATCH:
+                /* nothing to do in case of an exception */
+
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
+/*
  *      debug_test1() - sol_log_debug() unit test #1
  */
 static sol_erno debug_test1(void)
@@ -501,6 +527,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &open_test3, OPEN_TEST3));
         sol_try (sol_tsuite_register(ts, &trace_test1, TRACE_TEST1));
         sol_try (sol_tsuite_register(ts, &trace_test2, TRACE_TEST2));
+        sol_try (sol_tsuite_register(ts, &trace_test3, TRACE_TEST3));
         sol_try (sol_tsuite_register(ts, &debug_test1, DEBUG_TEST1));
         sol_try (sol_tsuite_register(ts, &debug_test2, DEBUG_TEST2));
         sol_try (sol_tsuite_register(ts, &warn_test1, WARN_TEST1));
