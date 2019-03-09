@@ -63,22 +63,17 @@ The documentation for the Sol Library is structured as follows:
 
 The Sol Library is designed as a set of modules, with each module responsible
 for providing a specific set of related functionality:
-  1. The **Environment Module** helps identify the compiler and host environment
+  1. The **Environment Module** provides diagnostics related to the compilation
+     environment
   2. The **Compiler Hints Module** provides compiler hints that can potentially
      optimise code
-  3. The **Libc Module** provides a mechanism to portably access libc
-     dependencies on both hosted and freestanding environments
+  3. The **Libc Module** provides portably access to libc dependencies
   4. The **Primitive Data Types Module** defines the primitive data types along
      with their related constants
   5. The **Exception Handling Module** provides a basic structure to handle
      exceptions
   6. The **Unit Testing Module** provides a framework for executing unit tests
   7. The **Logging Module** provides support for runtime logging
-
-This Library does not have any external dependencies that require a hosted
-environment, and so may be used even in freestanding environments. The `stdio.h`
-header file is required for running the unit tests, but is __not__ required by
-the Library otherwise.
 
 Although this Library depends on a few libc functions, most notably malloc() and
 free(), the Libc Module provides the means for freestanding environments to hook
