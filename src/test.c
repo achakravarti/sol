@@ -26,28 +26,27 @@
 
 
 
-/*
- *      Include required header files.
- */
+        /* include required header files */
 #include "../inc/test.h"
+#include "../inc/log.h"
 
 
 
 
 /*
  *      tsuite_init() - initialises test suite member fields
+ *        - tsuite: contextual test suite
+ *        - tlog: logging callback
  */
-static void
-tsuite_init(sol_tsuite *tsuite, /* contextual test suite */
-            sol_tlog   *tlog    /* logging callback      */
-           )
+static void tsuite_init(sol_tsuite *tsuite,
+                        sol_tlog *tlog)
 {
         register int i;
 
                 /* initialise counters and logging callback */
         tsuite->total = 0;
-        tsuite->fail  = 0;
-        tsuite->tlog  = tlog;
+        tsuite->fail = 0;
+        tsuite->tlog = tlog;
 
                 /* initialise test case callback and description arrays */
         for (i = 0; i < SOL_TSUITE_MAXTCASE; i++) {
@@ -62,8 +61,7 @@ tsuite_init(sol_tsuite *tsuite, /* contextual test suite */
 /*
  *      sol_tsuite_init() - declared in sol/inc/test.h
  */
-extern sol_erno
-sol_tsuite_init(sol_tsuite *tsuite)
+extern sol_erno sol_tsuite_init(sol_tsuite *tsuite)
 {
 SOL_TRY:
                 /* check preconditions */
@@ -74,6 +72,9 @@ SOL_TRY:
         tsuite_init (tsuite, 0);
 
 SOL_CATCH:
+                /* log current error code */
+        sol_log_erno(sol_erno_get());
+
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
@@ -85,10 +86,8 @@ SOL_FINALLY:
 /*
  *      sol_tsuite_init2() - declared in sol/inc/test.h
  */
-extern sol_erno
-sol_tsuite_init2(sol_tsuite *tsuite,
-                 sol_tlog   *tlog
-                )
+extern sol_erno sol_tsuite_init2(sol_tsuite *tsuite,
+                                 sol_tlog *tlog)
 {
 SOL_TRY:
                 /* check preconditions */
@@ -99,6 +98,9 @@ SOL_TRY:
         tsuite_init (tsuite, tlog);
 
 SOL_CATCH:
+                /* log current error code */
+        sol_log_erno(sol_erno_get());
+
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
@@ -126,11 +128,9 @@ sol_tsuite_term(sol_tsuite *tsuite)
 /*
  *      sol_tsuite_register() - declared in sol/inc/test.h
  */
-extern sol_erno
-sol_tsuite_register(sol_tsuite       *tsuite,
-                    sol_tcase        *tcase,
-                    char       const *desc
-                   )
+extern sol_erno sol_tsuite_register(sol_tsuite *tsuite,
+                                    sol_tcase *tcase,
+                                    const char *desc)
 {
         register int len;
         register char *itr;
@@ -160,6 +160,9 @@ SOL_TRY:
         tsuite->total++;
 
 SOL_CATCH:
+                /* log current error code */
+        sol_log_erno(sol_erno_get());
+
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
@@ -171,10 +174,8 @@ SOL_FINALLY:
 /*
  *      sol_tsuite_pass() - declared in sol/inc/test.h
  */
-extern sol_erno
-sol_tsuite_pass(sol_tsuite const *tsuite,
-                int              *pass
-               )
+extern sol_erno sol_tsuite_pass(const sol_tsuite *tsuite,
+                                int *pass)
 {
 SOL_TRY:
                 /* check preconditions */
@@ -184,6 +185,9 @@ SOL_TRY:
         *pass = tsuite->total - tsuite->fail;
 
 SOL_CATCH:
+                /* log current error code */
+        sol_log_erno(sol_erno_get());
+
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
@@ -195,10 +199,8 @@ SOL_FINALLY:
 /*
  *      sol_tsuite_fail() - declared in sol/inc/test.h
  */
-extern sol_erno
-sol_tsuite_fail(sol_tsuite const *tsuite,
-                int              *fail
-               )
+extern sol_erno sol_tsuite_fail(const sol_tsuite *tsuite,
+                                int *fail)
 {
 SOL_TRY:
                 /* check preconditions */
@@ -208,6 +210,9 @@ SOL_TRY:
         *fail = tsuite->fail;
 
 SOL_CATCH:
+                /* log current error code */
+        sol_log_erno(sol_erno_get());
+
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
@@ -219,10 +224,8 @@ SOL_FINALLY:
 /*
  *      sol_tsuite_total() - declared in sol/inc/test.h
  */
-extern sol_erno
-sol_tsuite_total(sol_tsuite const *tsuite,
-                 int              *total
-                )
+extern sol_erno sol_tsuite_total(const sol_tsuite *tsuite,
+                                 int *total)
 {
 SOL_TRY:
                 /* check preconditions */
@@ -232,6 +235,9 @@ SOL_TRY:
         *total = tsuite->total;
 
 SOL_CATCH:
+                /* log current error code */
+        sol_log_erno(sol_erno_get());
+
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
@@ -243,8 +249,7 @@ SOL_FINALLY:
 /*
  *      sol_tsuite_exec() - declared in sol/inc/test.h
  */
-extern sol_erno
-sol_tsuite_exec(sol_tsuite *tsuite)
+extern sol_erno sol_tsuite_exec(sol_tsuite *tsuite)
 {
         register int      i;
         auto     sol_erno erno;
@@ -270,6 +275,9 @@ SOL_TRY:
         }
 
 SOL_CATCH:
+                /* log current error code */
+        sol_log_erno(sol_erno_get());
+
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();

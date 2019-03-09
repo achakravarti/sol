@@ -75,8 +75,7 @@
  *        - SOL_ERNO_NULL if the test case passes
  *        - A context-sensitive error code if the test case fails
  */
-typedef sol_erno
-(sol_tcase)(void);
+typedef sol_erno (sol_tcase)(void);
 
 
 
@@ -96,10 +95,8 @@ typedef sol_erno
  *      each test case executed, along with the error code @erno returned by the
  *      test case.
  */
-typedef void
-(sol_tlog)(char     const *desc,
-           sol_erno const erno
-          );
+typedef void (sol_tlog)(const char *desc,
+                        sol_erno erno);
 
 
 
@@ -117,11 +114,11 @@ typedef void
  *      and unsed only through its interface functions declared below.
  */
 typedef struct __sol_tsuite {
-        int       total;
-        int       fail;
-        char      desc   [SOL_TSUITE_MAXTCASE] [SOL_TCASE_MAXDESCLEN];
-        sol_tcase *tcase [SOL_TSUITE_MAXTCASE];
-        sol_tlog  *tlog;
+        int total;
+        int fail;
+        char desc[SOL_TSUITE_MAXTCASE][SOL_TCASE_MAXDESCLEN];
+        sol_tcase *tcase[SOL_TSUITE_MAXTCASE];
+        sol_tlog *tlog;
 } sol_tsuite;
 
 
@@ -146,8 +143,7 @@ typedef struct __sol_tsuite {
  *        - SOL_ERNO_NULL if no error occurs
  *        - SOL_ERNO_PTR if an invalid pointer is passed
  */
-extern sol_erno
-sol_tsuite_init(sol_tsuite *tsuite);
+extern sol_erno sol_tsuite_init(sol_tsuite *tsuite);
 
 
 
@@ -155,7 +151,7 @@ sol_tsuite_init(sol_tsuite *tsuite);
 /*
  *      sol_tsuite_init2() - initialises test suite
  *        - tsuite: contextual test suite
- *        - tlog  : test logging callback
+ *        - tlog: test logging callback
  *
  *     The sol_tsuite_init2() interface function is the overloaded form of the
  *     sol_tsuite_init() function declared above. This function, like its
@@ -172,10 +168,8 @@ sol_tsuite_init(sol_tsuite *tsuite);
  *       - SOL_ERNO_NULL if no error occurs
  *       - SOL_ERNO_PTR if an invalid pointer is passed as an argument
  */
-extern sol_erno
-sol_tsuite_init2(sol_tsuite *tsuite,
-                 sol_tlog   *tlog
-                );
+extern sol_erno sol_tsuite_init2(sol_tsuite *tsuite,
+                                 sol_tlog *tlog);
 
 
 
@@ -190,8 +184,7 @@ sol_tsuite_init2(sol_tsuite *tsuite,
  *      @tsuite to be a valid pointer, a safe no-op occurs if this condition is
  *      not satisfied.
  */
-extern void
-sol_tsuite_term(sol_tsuite *tsuite);
+extern void sol_tsuite_term(sol_tsuite *tsuite);
 
 
 
@@ -199,8 +192,8 @@ sol_tsuite_term(sol_tsuite *tsuite);
 /*
  *      sol_tsuite_register() - registers a test case
  *        - tsuite: contextual test suite
- *        - tcase : test case to register
- *        - desc  : test case description
+ *        - tcase: test case to register
+ *        - desc: test case description
  *
  *     The sol_tsuite_register() interface function registers a test case @tcase
  *     described by @desc with a test suite @tsuite. A test case must first be
@@ -219,11 +212,9 @@ sol_tsuite_term(sol_tsuite *tsuite);
  *       - SOL_ERNO_STR if @desc is a null string
  *       - SOL_ERNO_RANGE if the limit of registered test cases is exceeded
  */
-extern sol_erno
-sol_tsuite_register(sol_tsuite       *tsuite,
-                    sol_tcase        *tcase,
-                    char       const *desc
-                   );
+extern sol_erno sol_tsuite_register(sol_tsuite *tsuite,
+                                    sol_tcase *tcase,
+                                    const char *desc);
 
 
 
@@ -231,7 +222,7 @@ sol_tsuite_register(sol_tsuite       *tsuite,
 /*
  *      sol_tsuite_pass() - count of passed test cases
  *        - tsuite: contextual test suite
- *        - pass  : count of passed test cases
+ *        - pass: count of passed test cases
  *
  *      The sol_tsuite_pass() interface function returns the number of test
  *      cases @pass of a test suite @tsuite that have been successfully run
@@ -244,10 +235,8 @@ sol_tsuite_register(sol_tsuite       *tsuite,
  *        - SOL_ERNO_NULL if no error occurs
  *        - SOL_ERNO_PTR if an invalid pointer is passed as an argument
  */
-extern sol_erno
-sol_tsuite_pass(sol_tsuite const *tsuite,
-                int              *pass
-               );
+extern sol_erno sol_tsuite_pass(const sol_tsuite *tsuite,
+                                int *pass);
 
 
 
@@ -255,7 +244,7 @@ sol_tsuite_pass(sol_tsuite const *tsuite,
 /*
  *      sol_tsuite_fail() - count of failed test cases
  *        - tsuite: contextual test suite
- *        - fail  : count of failed test cases
+ *        - fail: count of failed test cases
  *
  *      The sol_tsuite_fail() interface function returns the number of test
  *      cases @fail of a test suite @tsuite that have failed when executed
@@ -268,10 +257,8 @@ sol_tsuite_pass(sol_tsuite const *tsuite,
  *        - SOL_ERNO_NULL if no error occurs
  *        - SOL_ERNO_PTR if an invalid pointer is passed as an argument
  */
-extern sol_erno
-sol_tsuite_fail(sol_tsuite const *tsuite,
-                int              *fail
-               );
+extern sol_erno sol_tsuite_fail(const sol_tsuite *tsuite,
+                                int *fail);
 
 
 
@@ -279,7 +266,7 @@ sol_tsuite_fail(sol_tsuite const *tsuite,
 /*
  *      sol_tsuite_total() - count of total test cases
  *        - tsuite: contextual test suite
- *        - total : count of total test cases
+ *        - total: count of total test cases
  *
  *      The sol_tsuite_total() interface function returns the total number of
  *      test cases @total registered with a test suite @tsuite.
@@ -291,10 +278,8 @@ sol_tsuite_fail(sol_tsuite const *tsuite,
  *        - SOL_ERNO_NULL if no error occurs
  *        - SOL_ERNO_PTR if an invalid pointer is passed as an argument
  */
-extern sol_erno
-sol_tsuite_total(sol_tsuite const *tsuite,
-                 int              *total
-                );
+extern sol_erno sol_tsuite_total(const sol_tsuite *tsuite,
+                                 int *total);
 
 
 
@@ -316,8 +301,7 @@ sol_tsuite_total(sol_tsuite const *tsuite,
  *        - SOL_ERNO_NULL if no error occurs
  *        - SOL_ERNO_PTR if an invalid argument is passed
  */
-extern sol_erno
-sol_tsuite_exec(sol_tsuite *tsuite);
+extern sol_erno sol_tsuite_exec(sol_tsuite *tsuite);
 
 
 

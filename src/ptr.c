@@ -28,21 +28,9 @@
 
         /* include required header files */
 #include "../inc/env.h"
+#include "../inc/libc.h"
+#include "../inc/log.h"
 #include "../inc/ptr.h"
-
-
-
-
-        /* the implementation of the pointer module uses the standard malloc()
-         * and free() functions; in hosted environments, these are provided by
-         * the standard stdlib.h header file, and in freestanding environments
-         * by the client code (until an allocator is implemented in future) */
-#if (SOL_ENV_HOST_NONE == sol_env_host())
-        extern void *malloc(size_t);
-        extern void free(void*);
-#else
-#       include <stdlib.h>
-#endif
 
 
 
@@ -85,6 +73,9 @@ SOL_TRY:
         sol_assert ((*ptr = malloc(sz)), SOL_ERNO_HEAP);
 
 SOL_CATCH:
+                /* log current error */
+        sol_log_erno(sol_erno_get());
+
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
@@ -110,6 +101,9 @@ SOL_TRY:
         copy_byte(ptr, src, len);
 
 SOL_CATCH:
+                /* log current error */
+        sol_log_erno(sol_erno_get());
+
 SOL_FINALLY:
                 /* wind up */
         return sol_erno_get();
