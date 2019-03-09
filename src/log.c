@@ -50,7 +50,7 @@ extern sol_erno sol_log_open(const char *path)
 {
 SOL_TRY:
                 /* check preconditions */
-        sol_assert (!log_hnd, SOL_ERNO_PTR);
+        sol_assert (!log_hnd, SOL_ERNO_STATE);
         sol_assert (path && *path, SOL_ERNO_STR);
 
                 /* open the log file using the standard fopen() function
@@ -77,7 +77,7 @@ extern sol_erno sol_log_open2(const char *path,
 {
 SOL_TRY:
                 /* check preconditions */
-        sol_assert (!log_hnd, SOL_ERNO_PTR);
+        sol_assert (!log_hnd, SOL_ERNO_STATE);
         sol_assert (path && *path, SOL_ERNO_STR);
 
                 /* open the log file, flushing it if required; we use the

@@ -56,7 +56,7 @@
  *
  *      Return:
  *        - SOL_ERNO_NULL if no error occurs
- *        - SOL_ERNO_PTR if log file is already open
+ *        - SOL_ERNO_STATE if log file is already open
  *        - SOL_ERNO_STR if @path is invalid
  *        - SOL_ERNO_FILE if log file can't be opened
  */
@@ -86,7 +86,7 @@ extern sol_erno sol_log_open(const char *path);
  *
  *      Return:
  *        - SOL_ERNO_NULL if no error occurs
- *        - SOL_ERNO_PTR if log file is already open
+ *        - SOL_ERNO_STATE if log file is already open
  *        - SOL_ERNO_STR if @path is invalid
  *        - SOL_ERNO_FILE if log file can't be opened
  */
