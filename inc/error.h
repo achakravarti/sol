@@ -142,6 +142,14 @@ typedef size_t sol_erno;
 
 
 /*
+ *      SOL_ERNO_STATE - invalid state
+ */
+#define SOL_ERNO_STATE ((sol_erno)0x7)
+
+
+
+
+/*
  *      SOL_TRY - start of try block
  *
  *      The SOL_TRY label identifies the starting point of the try block within
