@@ -35,9 +35,9 @@
 
         /* include required header files; threads.h was defined by C11, but in
          * practice compilers were slow to implement it; threads.h is guaranteed
-         * to be available in compilers supporting C18 */
+         * to be available only if __STDC_NO_THREADS__ is undefined */
 #include "./env.h"
-#if (sol_env_stdc() >= SOL_ENV_STDC_C18)
+#if (sol_env_stdc() >= SOL_ENV_STDC_C11 && !defined __STDC_NO_THREADS__)
 #       include <threads.h>
 #endif
 
@@ -196,7 +196,7 @@
  *      sol_tls - thread local storage specifier
  */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C11)
-#       define sol_tls _Thread_local
+#       define sol_tls thread_local
 #elif (sol_env_cc() == SOL_ENV_CC_GNUC || sol_env_cc() == SOL_ENV_CC_CLANG)
 #       define sol_tls __thread
 #else
