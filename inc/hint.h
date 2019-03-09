@@ -35,7 +35,8 @@
 
         /* include required header files; threads.h was defined by C11, but in
          * practice compilers were slow to implement it; threads.h is guaranteed
-         * to be available only if __STDC_NO_THREADS__ is undefined */
+         * to be available on conforming compilers only if __STDC_NO_THREADS__
+         * is undefined in C11 and above dialects */
 #include "./env.h"
 #if (sol_env_stdc() >= SOL_ENV_STDC_C11 && !defined __STDC_NO_THREADS__)
 #       include <threads.h>
