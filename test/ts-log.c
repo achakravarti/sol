@@ -961,8 +961,6 @@ SOL_TRY:
         sol_try (sol_tsuite_fail(ts, fail));
         sol_try (sol_tsuite_total(ts, total));
 
-        printf("*** %d\n", sol_env_stdc());
-
 SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */

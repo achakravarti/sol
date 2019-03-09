@@ -33,10 +33,11 @@
 
 
 
-        /* include required header files; threads.h is used only in C11 (and
-         * above) environments for the _Thread_local storage specifier */
+        /* include required header files; threads.h was defined by C11, but in
+         * practice compilers were slow to implement it; threads.h is guaranteed
+         * to be available in compilers supporting C18 */
 #include "./env.h"
-#if (sol_env_stdc() >= SOL_ENV_STDC_C11)
+#if (sol_env_stdc() >= SOL_ENV_STDC_C18)
 #       include <threads.h>
 #endif
 
