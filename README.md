@@ -44,7 +44,7 @@ software development that leverages the power of C without sacrificing on
 progressive best practices. The secondary goal of the Library is that it should
 be usable on a freestanding environment; although I don't have any experience in 
 embedded programming, it's nice to envision that this Library is usable in such
-environments. These goals are achieved through **five modules**, which are 
+environments. These goals are achieved through **seven modules**, which are 
 described in the [Features](#features) section of this document.
 
 
@@ -66,21 +66,33 @@ for providing a specific set of related functionality:
   1. The **Environment Module** helps identify the compiler and host environment
   2. The **Compiler Hints Module** provides compiler hints that can potentially
      optimise code
-  3. The **Primitive Data Types Module** defines the primitive data types along
+  3. The **Libc Module** provides a mechanism to portably access libc
+     dependencies on both hosted and freestanding environments
+  4. The **Primitive Data Types Module** defines the primitive data types along
      with their related constants
-  4. The **Exception Handling Module** provides a basic structure to handle
+  5. The **Exception Handling Module** provides a basic structure to handle
      exceptions
-  5. The **Unit Testing Module** provides a framework for executing unit tests
+  6. The **Unit Testing Module** provides a framework for executing unit tests
+  7. The **Logging Module** provides support for runtime logging
 
 This Library does not have any external dependencies that require a hosted
 environment, and so may be used even in freestanding environments. The `stdio.h`
 header file is required for running the unit tests, but is __not__ required by
 the Library otherwise.
 
-Every attempt has been made to make this Library as portable as possible. A
-deliberate choice was taken to use the C99 standard in order to take advantage
-of the new types introduced by it. Until a specific use case arises for the use
-of the C89 standard (or any other), C99 will be considered the default standard.
+Although this Library depends on a few libc functions, most notably malloc() and
+free(), the Libc Module provides the means for freestanding environments to hook
+their own libc implementations to the Sol Library. In future, I hope to be able
+to provide a fallback libc implementation for freestanding environments that do
+not provide their own.
+
+Every attempt has been made to make this Library as portable as possible. The
+Sol Library has been designed to be compatible with the C89 standard, but takes
+advantage of the improved features provided by the newer dialects if supported
+by the compilation environment.
+
+Although this Library takes advantage of the features provided by C99 and newer
+dialects, it will compile fine on the C89
 
 The enhanced features of compiler hints and support for 64-bit integers are
 considered to be optional, and are available only when GCC/Clang or a GCC-
