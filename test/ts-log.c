@@ -425,7 +425,7 @@ SOL_TRY:
         sol_try (sol_log_open2(PATH, 1));
         sol_log_trace("Hello!");
         sol_log_close();
-        mock_sleep(10);
+        mock_sleep(sleep);
         sol_try (sol_log_open2(PATH, 1));
         sol_log_debug("Goodbye!");
         sol_log_close();
@@ -477,6 +477,35 @@ SOL_CATCH:
 
 SOL_FINALLY:
                 /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
+/*
+ *      open2_test7() - sol_log_open2() unit test #7
+ */
+static sol_erno open2_test7(void)
+{
+        #define OPEN2_TEST7 "sol_log_open2() throws SOL_ERNO_STATE if called" \
+                            " when a log file is already open"
+        const char *PATH = "bld/dummy.test.log";
+
+SOL_TRY:
+                /* set up test scenario */
+        sol_try (sol_log_open2(PATH, 1));
+        sol_try (sol_log_open2(PATH, 0));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_STATE
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* wind up */
+        sol_log_close();
         return sol_erno_get();
 }
 
@@ -964,6 +993,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, &open2_test4, OPEN2_TEST4));
         sol_try (sol_tsuite_register(ts, &open2_test5, OPEN2_TEST5));
         sol_try (sol_tsuite_register(ts, &open2_test6, OPEN2_TEST6));
+        sol_try (sol_tsuite_register(ts, &open2_test7, OPEN2_TEST7));
         sol_try (sol_tsuite_register(ts, &trace_test1, TRACE_TEST1));
         sol_try (sol_tsuite_register(ts, &trace_test2, TRACE_TEST2));
         sol_try (sol_tsuite_register(ts, &trace_test3, TRACE_TEST3));
