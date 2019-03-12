@@ -39,6 +39,7 @@
 #       include <stdio.h>
 #       include <stdlib.h>
 #       include <time.h>
+#       include <math.h>
 #endif
 
 
@@ -197,6 +198,19 @@
 #       define SOL_LIBC_CTIME_DEFINED
 #endif
 
+
+
+
+/*
+ *      SOL_LIBC_FABS_DEFINED - math.h fabs() defined
+ */
+#if (sol_env_host() == SOL_ENV_HOST_NONE)
+#       if (!defined SOL_LIBC_FABS_DEFINED)
+#               error "[!] Sol libc error: fabs() not defined"
+#       endif
+#else
+#       define SOL_LIBC_FABS_DEFINED
+#endif
 
 
 

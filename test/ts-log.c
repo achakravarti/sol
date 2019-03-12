@@ -969,9 +969,9 @@ static sol_erno erno_test2(void)
  *      __sol_tests_log() - declared in sol/test/suite.h
  */
 extern sol_erno __sol_tests_log(sol_tlog *log,
-                                int *pass,
-                                int *fail,
-                                int *total)
+                                sol_uint *pass,
+                                sol_uint *fail,
+                                sol_uint *total)
 {
         auto sol_tsuite __ts, *ts = &__ts;
 

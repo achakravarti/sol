@@ -41,7 +41,7 @@
 static void tsuite_init(sol_tsuite *tsuite,
                         sol_tlog *tlog)
 {
-        register int i;
+        register sol_index i;
 
                 /* initialise counters and logging callback */
         tsuite->total = 0;
@@ -50,8 +50,8 @@ static void tsuite_init(sol_tsuite *tsuite,
 
                 /* initialise test case callback and description arrays */
         for (i = 0; i < SOL_TSUITE_MAXTCASE; i++) {
-                *tsuite->desc [i] = '\0';
-                tsuite->tcase [i] = 0;
+                *tsuite->desc[i] = '\0';
+                tsuite->tcase[i] = 0;
         }
 }
 
@@ -95,7 +95,7 @@ SOL_TRY:
 
                 /* initialise member fields, setting the logging callback to
                  * @tlog */
-        tsuite_init (tsuite, tlog);
+        tsuite_init(tsuite, tlog);
 
 SOL_CATCH:
                 /* log current error code */
@@ -132,7 +132,7 @@ extern sol_erno sol_tsuite_register(sol_tsuite *tsuite,
                                     sol_tcase *tcase,
                                     const char *desc)
 {
-        register int len;
+        register sol_index len;
         register char *itr;
 
 SOL_TRY:
@@ -175,7 +175,7 @@ SOL_FINALLY:
  *      sol_tsuite_pass() - declared in sol/inc/test.h
  */
 extern sol_erno sol_tsuite_pass(const sol_tsuite *tsuite,
-                                int *pass)
+                                sol_uint *pass)
 {
 SOL_TRY:
                 /* check preconditions */
@@ -200,7 +200,7 @@ SOL_FINALLY:
  *      sol_tsuite_fail() - declared in sol/inc/test.h
  */
 extern sol_erno sol_tsuite_fail(const sol_tsuite *tsuite,
-                                int *fail)
+                                sol_uint *fail)
 {
 SOL_TRY:
                 /* check preconditions */
@@ -225,7 +225,7 @@ SOL_FINALLY:
  *      sol_tsuite_total() - declared in sol/inc/test.h
  */
 extern sol_erno sol_tsuite_total(const sol_tsuite *tsuite,
-                                 int *total)
+                                 sol_uint *total)
 {
 SOL_TRY:
                 /* check preconditions */
@@ -251,8 +251,8 @@ SOL_FINALLY:
  */
 extern sol_erno sol_tsuite_exec(sol_tsuite *tsuite)
 {
-        register int      i;
-        auto     sol_erno erno;
+        register sol_index i;
+        auto sol_erno erno;
 
 SOL_TRY:
                 /* check preconditions */
