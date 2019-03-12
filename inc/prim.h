@@ -103,17 +103,19 @@
  */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
         typedef uint64_t sol_w64;
+#elif (sol_env_wordsz() == 64)
+        typedef unsigned long sol_w64;
 #else
-#       error "sol_w64: 64-bit types not supported in C89 dialect"
+#       error "sol_w64: 64-bit types not supported in current environment"
 #endif
 
 
 
 
 /*
- *      sol_w64 - native size word
+ *      sol_word - native size word
  */
-#if (sol_env_wordsz() == 64 && sol_env_stdc() >= SOL_ENV_STDC_C99)
+#if (sol_env_wordsz() == 64)
         typedef sol_w64 sol_word;
 #else
         typedef sol_w32 sol_word;
