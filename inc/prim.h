@@ -45,9 +45,9 @@
 
 
 /*
- * SOL_BOOL - a Boolean value
- *   - SOL_BOOL_FALSE: Boolean value 'False'
- *   - SOL_BOOL_TRUE: Boolean value 'True'
+ *      SOL_BOOL - a Boolean value
+ *        - SOL_BOOL_FALSE: Boolean value 'False'
+ *        - SOL_BOOL_TRUE: Boolean value 'True'
  */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
         typedef bool SOL_BOOL;
@@ -57,6 +57,66 @@
         typedef int SOL_BOOL;
 #       define SOL_BOOL_FALSE ((SOL_BOOL) 0)
 #       define SOL_BOOL_TRUE ((SOL_BOOL) 1)
+#endif
+
+
+
+
+/*
+ *      sol_w8 - 8-bit word
+ */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+        typedef uint8_t sol_w8;
+#else
+        typedef unsigned char sol_w8;
+#endif
+
+
+
+
+/*
+ *      sol_w16 - 16-bit word
+ */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+        typedef uint16_t sol_w16;
+#else
+        typedef unsigned short int sol_w16;
+#endif
+
+
+
+
+/*
+ *      sol_w32 - 32-bit word
+ */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+        typedef uint32_t sol_w32;
+#else
+        typedef unsigned int sol_w32;
+#endif
+
+
+
+
+/*
+ *      sol_w64 - 64-bit word
+ */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+        typedef uint64_t sol_w64;
+#else
+#       error "sol_w64: 64-bit types not supported in C89 dialect"
+#endif
+
+
+
+
+/*
+ *      sol_w64 - native size word
+ */
+#if (sol_env_wordsz() == 64 && sol_env_stdc() >= SOL_ENV_STDC_C99)
+        typedef sol_w64 sol_word;
+#else
+        typedef sol_w32 sol_word;
 #endif
 
 
