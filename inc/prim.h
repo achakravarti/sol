@@ -227,7 +227,7 @@
 
 
 /*
- *      sol_int - native size integer
+ *      sol_int - native size signed integer
  */
 #if (sol_env_wordsz() == 64)
 #       if (sol_env_stdc() >= SOL_ENV_STDC_C99)
@@ -240,6 +240,76 @@
                 typedef int_fast32_t sol_int;
 #       else
                 typedef sol_i32 sol_int;
+#       endif
+#endif
+
+
+
+
+/*
+ *      sol_ui8 - 8-bit unsigned integer
+ */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+        typedef uint8_t sol_ui8;
+#else
+        typedef unsigned char sol_ui8;
+#endif
+
+
+
+
+/*
+ *      sol_ui16 - 16-bit signed integer
+ */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+        typedef uint16_t sol_ui16;
+#else
+        typedef unsigned short int sol_ui16;
+#endif
+
+
+
+
+/*
+ *      sol_ui32 - 32-bit unsigned integer
+ */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+        typedef uint32_t sol_ui32;
+#else
+        typedef unsigned int sol_ui32;
+#endif
+
+
+
+
+/*
+ *      sol_ui64 - 64-bit unsigned integer
+ */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+        typedef uint64_t sol_ui64;
+#elif (sol_env_wordsz() == 64)
+        typedef signed long sol_ui64;
+#else
+#       error "sol_ui64: 64-bit types not supported in current environment"
+#endif
+
+
+
+
+/*
+ *      sol_uint - native size unsiged integer
+ */
+#if (sol_env_wordsz() == 64)
+#       if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+                typedef uint_fast64_t sol_uint;
+#       else
+                typedef sol_ui64 sol_uint;
+#       endif
+#else
+#       if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+                typedef uint_fast32_t sol_uint;
+#       else
+                typedef sol_ui32 sol_uint;
 #       endif
 #endif
 
