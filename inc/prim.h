@@ -176,6 +176,76 @@
 
 
 
+/*
+ *      sol_i8 - 8-bit signed integer
+ */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+        typedef int8_t sol_i8;
+#else
+        typedef signed char sol_i8;
+#endif
+
+
+
+
+/*
+ *      sol_i16 - 16-bit signed integer
+ */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+        typedef int16_t sol_i16;
+#else
+        typedef signed short int sol_i16;
+#endif
+
+
+
+
+/*
+ *      sol_i32 - 32-bit signed integer
+ */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+        typedef int32_t sol_i32;
+#else
+        typedef signed int sol_i32;
+#endif
+
+
+
+
+/*
+ *      sol_i64 - 64-bit signed integer
+ */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+        typedef int64_t sol_i64;
+#elif (sol_env_wordsz() == 64)
+        typedef signed long sol_i64;
+#else
+#       error "sol_i64: 64-bit types not supported in current environment"
+#endif
+
+
+
+
+/*
+ *      sol_int - native size integer
+ */
+#if (sol_env_wordsz() == 64)
+#       if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+                typedef int_fast64_t sol_int;
+#       else
+                typedef sol_i64 sol_int;
+#       endif
+#else
+#       if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+                typedef int_fast32_t sol_int;
+#       else
+                typedef sol_i32 sol_int;
+#       endif
+#endif
+
+
+
+
 #endif /* (!defined __SOL_PRIMITIVES_MODULE) */
 
 
