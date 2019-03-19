@@ -169,6 +169,22 @@
 
 
 /*
+ *      sol_size - size value
+ */
+typedef sol_word sol_size;
+
+
+
+
+/*
+ *      sol_index - index value
+ */
+typedef sol_word sol_index;
+
+
+
+
+/*
  *      SOL_WORD_NULL: sol_word null value
  */
 #define SOL_WORD_NULL ((sol_word) 0x0)
