@@ -297,7 +297,7 @@
 
 
 /*
- *      sol_uint - native size unsiged integer
+ *      sol_uint - native size unsigned integer
  */
 #if (sol_env_wordsz() == 64)
 #       if (sol_env_stdc() >= SOL_ENV_STDC_C99)
@@ -311,6 +311,34 @@
 #       else
                 typedef sol_ui32 sol_uint;
 #       endif
+#endif
+
+
+
+
+/*
+ *      sol_f32 - 32-bit floating point number
+ */
+typedef float sol_f32;
+
+
+
+
+/*
+ *      sol_f64 - 64-bit floating point number
+ */
+typedef double sol_f64;
+
+
+
+
+/*
+ *      sol_float - native size floating point number
+ */
+#if (sol_env_wordsz() == 64)
+        typedef double sol_float;
+#else
+        typedef float sol_float;
 #endif
 
 
