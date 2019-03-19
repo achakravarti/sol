@@ -43,13 +43,13 @@
  */
 static sol_inline void copy_byte(sol_ptr **ptr,
                                  const sol_ptr *src,
-                                 const size_t len)
+                                 sol_size len)
 {
                 /* @ptr, @src and @len are valid, as they have already been
                  * checked by the calling function sol_ptr_copy() */
         register char *bdst = (char*) *ptr;
         register char *bsrc = (char*) src;
-        register size_t itr = len;
+        register sol_size itr = len;
 
                 /* copy @src to @ptr byte-by-byte for @len bytes */
         for (; itr; itr--, *bdst++ = *bsrc++); /* NOLINT */
@@ -62,7 +62,7 @@ static sol_inline void copy_byte(sol_ptr **ptr,
  *      sol_ptr_new() - declared in sol/inc/ptr.h
  */
 extern sol_erno sol_ptr_new(sol_ptr **ptr,
-                            const size_t sz)
+                            sol_size sz)
 {
 SOL_TRY:
                 /* check preconditions */
@@ -89,7 +89,7 @@ SOL_FINALLY:
  */
 extern sol_erno sol_ptr_copy(sol_ptr **ptr,
                              const sol_ptr *src,
-                             const size_t len)
+                             sol_size len)
 {
 SOL_TRY:
                 /* check preconditions */

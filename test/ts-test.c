@@ -309,7 +309,7 @@ static sol_erno test_register5(void)
                            " file. This description in itself is greater than"
                            " the length limited by the SOL_TCASE_MAXDESCLEN"
                            " symbolic constant";
-        register size_t len = 0;
+        register sol_size len = 0;
         auto sol_tsuite __ts, *ts = &__ts;
 
 SOL_TRY:

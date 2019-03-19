@@ -34,8 +34,8 @@
 
 
         /* include required header files */
-#include "./hint.h"
-#include <stddef.h>
+#include "hint.h"
+#include "prim.h"
 
 
 
@@ -50,7 +50,7 @@
  *      type can take advantage of the exception handling features provided by
  *      this module.
  */
-typedef size_t sol_erno;
+typedef sol_word sol_erno;
 
 
 
