@@ -46,9 +46,9 @@ CMD_RUN = ./$(OUT_LD)
 
 
 # 	Set command options
-OPT_CC  = -c -fPIC -std=c99 -Wall -g -O0 -coverage
+OPT_CC  = -c -fPIC -std=c99 -Wall -Wextra -g -O0 -coverage
 OPT_SO  = -shared -g -O0 -coverage
-OPT_LD  = -std=c99 -Wall -g -O0 -coverage
+OPT_LD  = -std=c99 -Wall -Wextra -g -O0 -coverage
 OPT_COV = -o $(DIR_BLD)
 
 
