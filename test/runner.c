@@ -26,7 +26,7 @@
 
 
 
-#include "./suite.h"
+#include "suite.h"
 #include <stdio.h>
 
 
@@ -71,6 +71,7 @@ typedef enum {
         SUITE_PTR,
         SUITE_PTR2,
         SUITE_LOG,
+        SUITE_PRIM,
         SUITE_COUNT
 } SUITE;
 
@@ -289,6 +290,7 @@ static void suite_init(void)
         suite_hnd[SUITE_PTR] = __sol_tests_ptr;
         suite_hnd[SUITE_PTR2] = __sol_tests_ptr2;
         suite_hnd[SUITE_LOG] = __sol_tests_log;
+        suite_hnd[SUITE_PRIM] = __sol_tests_prim;
 }
 
 
