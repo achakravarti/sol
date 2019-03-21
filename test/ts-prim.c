@@ -101,6 +101,23 @@ SOL_FINALLY:
 
 
 
+        /* i32_test1() implements the unit test described by I32_TEST1 */
+static sol_erno i32_test1(void)
+{
+        #define I32_TEST1 "size of sol_i32 is at least 32 bits"
+
+SOL_TRY:
+                /* check test condition */
+        sol_assert (sizeof (sol_i32) >= 4, SOL_ERNO_TEST);
+
+SOL_CATCH:
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_prim() was declared in sol/test/suite.h */
 extern sol_erno __sol_tests_prim(sol_tlog *log,
                                  int *pass,
@@ -121,6 +138,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, bool_test2, BOOL_TEST2));
         sol_try (sol_tsuite_register(ts, i8_test1, I8_TEST1));
         sol_try (sol_tsuite_register(ts, i16_test1, I16_TEST1));
+        sol_try (sol_tsuite_register(ts, i32_test1, I32_TEST1));
 
 
                 /* execute test cases */
