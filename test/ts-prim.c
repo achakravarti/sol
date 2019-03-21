@@ -33,7 +33,7 @@
 
 
 
-        /* bool_test1() implements the unit test described BOOL_TEST1 */
+        /* bool_test1() implements the unit test described by BOOL_TEST1 */
 static sol_erno bool_test1(void)
 {
         #define BOOL_TEST1 "SOL_BOOL_TRUE must evaluate to 1"
@@ -41,6 +41,23 @@ static sol_erno bool_test1(void)
 SOL_TRY:
                 /* check test condition */
         sol_assert (SOL_BOOL_TRUE == 1, SOL_ERNO_TEST);
+
+SOL_CATCH:
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
+        /* bool_test2() implements the unit test described by BOOL_TEST2 */
+static sol_erno bool_test2(void)
+{
+        #define BOOL_TEST2 "SOL_BOOL_FALSE must evaluate to 0"
+
+SOL_TRY:
+                /* check test condition */
+        sol_assert (SOL_BOOL_FALSE == 0, SOL_ERNO_TEST);
 
 SOL_CATCH:
 SOL_FINALLY:
@@ -67,6 +84,7 @@ SOL_TRY:
 
                 /* register test cases */
         sol_try (sol_tsuite_register(ts, bool_test1, BOOL_TEST1));
+        sol_try (sol_tsuite_register(ts, bool_test2, BOOL_TEST2));
 
 
                 /* execute test cases */
