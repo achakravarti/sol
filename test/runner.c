@@ -45,9 +45,9 @@
  *        - SOL_ERNO_PTR if an invalid pointer has been referenced
  */
 typedef sol_erno (suite)(sol_tlog *log,
-                         int *pass,
-                         int *fail,
-                         int *total);
+                         sol_uint *pass,
+                         sol_uint *fail,
+                         sol_uint *total);
 
 
 
@@ -89,7 +89,7 @@ typedef enum {
 /*
  *      LOG_SIGMAMSG - log message for sigma test counters
  */
-#define LOG_SIGMAMSG "\n%d test(s) run, %d passed, %d failed\n"
+#define LOG_SIGMAMSG "\n%lu test(s) run, %lu passed, %lu failed\n"
 
 
 
@@ -125,9 +125,9 @@ static suite *suite_hnd[SUITE_COUNT];
  *        - total: total test cases per suite
  */
 static struct {
-        int pass[SUITE_COUNT];
-        int fail[SUITE_COUNT];
-        int total[SUITE_COUNT];
+        sol_uint pass[SUITE_COUNT];
+        sol_uint fail[SUITE_COUNT];
+        sol_uint total[SUITE_COUNT];
 } stat_suite;
 
 
@@ -140,9 +140,9 @@ static struct {
  *        - total: sigma of total test cases
  */
 static struct {
-        int pass;
-        int fail;
-        int total;
+        sol_uint pass;
+        sol_uint fail;
+        sol_uint total;
 } stat_sigma;
 
 
@@ -209,25 +209,22 @@ log_tcase(char     const *desc, /* test case description            */
 /*
  *      log_sigma() - prints and logs sigma statistics
  */
-static void
-log_sigma(void)
+static void log_sigma(void)
 {
 
                 /* print sigma statistics */
-        printf (LOG_SIGMAMSG,
-                stat_sigma.total,
-                stat_sigma.pass,
-                stat_sigma.fail
-               );
+        printf(LOG_SIGMAMSG,
+               stat_sigma.total,
+               stat_sigma.pass,
+               stat_sigma.fail);
 
                 /* log sigma statistics */
         if (log_hnd) {
-                fprintf (log_hnd,
-                         LOG_SIGMAMSG,
-                         stat_sigma.total,
-                         stat_sigma.pass,
-                         stat_sigma.fail
-                        );
+                fprintf(log_hnd,
+                        LOG_SIGMAMSG,
+                        stat_sigma.total,
+                        stat_sigma.pass,
+                        stat_sigma.fail);
         }
 }
 
@@ -237,16 +234,15 @@ log_sigma(void)
 /*
  *      stat_init() - initialise test statistics
  */
-static void
-stat_init(void)
+static void stat_init(void)
 {
-        register int i; /* iterator */
+        register sol_index i; /* iterator */
 
                 /* initialise test suite statistics */
         for (i = 0; i < SUITE_COUNT; i++) {
-                stat_suite.pass  [i] = 0;
-                stat_suite.fail  [i] = 0;
-                stat_suite.total [i] = 0;
+                stat_suite.pass[i] = 0;
+                stat_suite.fail[i] = 0;
+                stat_suite.total[i] = 0;
         }
 
                 /* initialise sigma statistics */
@@ -261,10 +257,9 @@ stat_init(void)
 /*
  *      stat_sum() - calculates sigma statistics
  */
-static void
-stat_sum(void)
+static void stat_sum(void)
 {
-        register int i; /* iterator */
+        register sol_index i; /* iterator */
 
                 /* sum test suite statistics */
         for (i = 0; i < SUITE_COUNT; i++) {
@@ -299,18 +294,16 @@ static void suite_init(void)
 /*
  *      suite_exec() - executes test suites
  */
-static void
-suite_exec(void)
+static void suite_exec(void)
 {
-        register int i; /* iterator */
+        register sol_index i; /* iterator */
 
                 /* execute test suites */
         for (i = 0; i < SUITE_COUNT; i++) {
-                suite_hnd [i] (log_tcase,
-                               stat_suite.pass  + i,
-                               stat_suite.fail  + i,
-                               stat_suite.total + i
-                              );
+                suite_hnd[i](log_tcase,
+                              stat_suite.pass  + i,
+                              stat_suite.fail  + i,
+                              stat_suite.total + i);
         }
 }
 
@@ -320,8 +313,7 @@ suite_exec(void)
 /*
  *      main() - main entry point of test runner
  */
-int main(int argc,
-         char **argv)
+int main(int argc, char **argv)
 {
                 /* initialise */
         log_init(argc, argv);

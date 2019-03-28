@@ -339,7 +339,7 @@ static sol_erno test_pass1(void)
         #define DESC_PASS1 "sol_tsuite_pass() throws SOL_ERNO_PTR when passed" \
                            " a null pointer for @tsuite"
         auto sol_tsuite ts;
-        auto int pass;
+        auto sol_uint pass;
 
 SOL_TRY:
                 /* set up test scenario */
@@ -397,7 +397,7 @@ static sol_erno test_pass3(void)
                            " passed test cases if @tsuite has been "       \
                            " initialised by sol_tsuite_init()"
         auto sol_tsuite __ts, *ts = &__ts;
-        auto int pass;
+        auto sol_uint pass;
 
 SOL_TRY:
                 /* set up test scenario */
@@ -426,7 +426,7 @@ static sol_erno test_pass4(void)
                            " passed test cases if @tsuite has been"        \
                            " initialised by sol_tsuite_init2()"
         auto sol_tsuite __ts, *ts = &__ts;
-        auto int pass;
+        auto sol_uint pass;
 
 SOL_TRY:
                 /* set up test scenario */
@@ -454,7 +454,7 @@ static sol_erno test_pass5(void)
         #define DESC_PASS5 "sol_tsuite_pass() reports the correct number of" \
                            " passed test cases"
         auto sol_tsuite __ts, *ts = &__ts;
-        auto int pass;
+        auto sol_uint pass;
 
 SOL_TRY:
                 /* set up test scenario */
@@ -485,7 +485,7 @@ static sol_erno test_fail1(void)
         #define DESC_FAIL1 "sol_tsuite_fail() throws SOL_ERNO_PTR when passed" \
                            " a null pointer for @tsuite"
         auto sol_tsuite ts;
-        auto int fail;
+        auto sol_uint fail;
 
 SOL_TRY:
                 /* set up test scenario */
@@ -543,7 +543,7 @@ static sol_erno test_fail3(void)
                            " failed test cases if @tsuite has been"        \
                            " initialised by sol_tsuite_init()"
         auto sol_tsuite __ts, *ts = &__ts;
-        auto int fail;
+        auto sol_uint fail;
 
 SOL_TRY:
                 /* set up test scenario */
@@ -572,7 +572,7 @@ static sol_erno test_fail4(void)
                            " failed test cases if @tsuite has been"        \
                            " initialised by sol_tsuite_init2()"
         auto sol_tsuite __ts, *ts = &__ts;
-        auto int fail;
+        auto sol_uint fail;
 
 SOL_TRY:
                 /* set up test scenario */
@@ -600,7 +600,7 @@ static sol_erno test_fail5(void)
         #define DESC_FAIL5 "sol_tsuite_fail() reports the correct number of" \
                            " failed test cases"
         auto sol_tsuite __ts, *ts = &__ts;
-        auto int fail;
+        auto sol_uint fail;
 
 SOL_TRY:
                 /* set up test scenario */
@@ -631,7 +631,7 @@ static sol_erno test_total1(void)
         #define DESC_TOTAL1 "sol_tsuite_total() throws SOL_ERNO_PTR when" \
                             " passed a null pointer for @tsuite"
         auto sol_tsuite ts;
-        auto int total;
+        auto sol_uint total;
 
 SOL_TRY:
                 /* set up test scenario */
@@ -689,7 +689,7 @@ static sol_erno test_total3(void)
                             " total test cases if @tsuite has been"          \
                             " initialised by sol_tsuite_init()"
         auto sol_tsuite __ts, *ts = &__ts;
-        auto int total;
+        auto sol_uint total;
 
 SOL_TRY:
                 /* set up test scenario */
@@ -718,7 +718,7 @@ static sol_erno test_total4(void)
                             " total test cases if @tsuite has been"         \
                             " initialised by sol_tsuite_init2()"
         auto sol_tsuite __ts, *ts = &__ts;
-        auto int total;
+        auto sol_uint total;
 
 SOL_TRY:
                 /* set up test scenario */
@@ -746,7 +746,7 @@ static sol_erno test_total5(void)
         #define DESC_TOTAL5 "sol_tsuite_total() reports the correct number of" \
                             " total test cases"
         auto sol_tsuite __ts, *ts = &__ts;
-        auto int total;
+        auto sol_uint total;
 
 SOL_TRY:
                 /* set up test scenario */
@@ -831,9 +831,9 @@ SOL_FINALLY:
  *      __sol_tsuite_test() - declared in sol/test/suite.h
  */
 extern sol_erno __sol_tsuite_test(sol_tlog *log,
-                                  int *pass,
-                                  int *fail,
-                                  int *total)
+                                  sol_uint *pass,
+                                  sol_uint *fail,
+                                  sol_uint *total)
 {
         auto sol_tsuite __ts, *ts = &__ts;
 
