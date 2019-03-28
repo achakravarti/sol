@@ -39,6 +39,7 @@
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
 #       include <stdbool.h>
 #       include <stdint.h>
+#       include <inttypes.h>
 #endif
 
 
@@ -205,12 +206,37 @@ typedef sol_word sol_index;
 
 
         /*
+         * SOL_I8_FMT - format specifier for sol_i8
+         */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#       define SOL_I8_FMT PRId32
+#else
+#       define SOL_I8_FMT "d"
+#endif
+
+
+
+
+
+        /*
          * sol_i16 - 16-bit signed integer
          */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
         typedef int16_t sol_i16;
 #else
         typedef signed short int sol_i16;
+#endif
+
+
+
+
+        /*
+         * SOL_I16_FMT - format specifier for sol_i16
+         */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#       define SOL_I16_FMT PRId32
+#else
+#       define SOL_I16_FMT "d"
 #endif
 
 
@@ -229,6 +255,18 @@ typedef sol_word sol_index;
 
 
         /*
+         * SOL_I32_FMT - format specifier for sol_i32
+         */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#       define SOL_I32_FMT PRId32
+#else
+#       define SOL_I32_FMT "d"
+#endif
+
+
+
+
+        /*
          * sol_i64 - 64-bit signed integer
          */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
@@ -236,7 +274,21 @@ typedef sol_word sol_index;
 #elif (sol_env_wordsz() == 64)
         typedef signed long sol_i64;
 #else
-#       error "sol_i64: 64-bit types not supported in current environment"
+#       error sol_i64: 64-bit types not supported in current environment
+#endif
+
+
+
+
+        /*
+         * SOL_I64_FMT - format specifier for sol_i64
+         */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#       define SOL_I64_FMT PRId64
+#elif (sol_env_wordsz() == 64)
+#       define SOL_I64_FMT "ld"
+#else
+#       error SOL_I64_FMT: 64-bt types not supported in current environment
 #endif
 
 
@@ -263,12 +315,44 @@ typedef sol_word sol_index;
 
 
         /*
+         * SOL_INT_FMT - format specifier for sol_int
+         */
+#if (sol_env_wordsz() == 64)
+#       if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#               define SOL_INT_FMT PRIdFAST64
+#       else
+#               define SOL_INT_FMT SOL_I64_FMT
+#       endif
+#else
+#       if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#               define SOL_INT_FMT PRIdFAST32
+#       else
+#               define SOL_INT_FMT SOL_I32_FMT
+#       endif
+#endif
+
+
+
+
+        /*
          * sol_u8 - 8-bit unsigned integer
          */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
         typedef uint8_t sol_u8;
 #else
         typedef unsigned char sol_u8;
+#endif
+
+
+
+
+        /*
+         * SOL_U8_FMT - format specifier for sol_u8
+         */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#       define SOL_U8_FMT PRIu32
+#else
+#       define SOL_U8_FMT "u"
 #endif
 
 
@@ -287,12 +371,36 @@ typedef sol_word sol_index;
 
 
         /*
+         * SOL_U16_FMT - format specifier for sol_u16
+         */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#       define SOL_U16_FMT PRIu32
+#else
+#       define SOL_U16_FMT "u"
+#endif
+
+
+
+
+        /*
          * sol_u32 - 32-bit unsigned integer
          */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
         typedef uint32_t sol_u32;
 #else
         typedef unsigned int sol_u32;
+#endif
+
+
+
+
+        /*
+         * SOL_U32_FMT - format specifier for sol_u32
+         */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#       define SOL_U32_FMT PRIu32
+#else
+#       define SOL_U32_FMT "u"
 #endif
 
 
@@ -313,6 +421,20 @@ typedef sol_word sol_index;
 
 
         /*
+         * SOL_U64_FMT - format specifier for sol_u64
+         */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#       define SOL_U64_FMT PRIu64
+#elif (sol_env_wordsz() == 64)
+#       define SOL_U64_FMT "lu"
+#else
+#       error SOL_U64_FMT: 64-bt types not supported in current environment
+#endif
+
+
+
+
+        /*
          * sol_uint - native size unsigned integer
          */
 #if (sol_env_wordsz() == 64)
@@ -326,6 +448,26 @@ typedef sol_word sol_index;
                 typedef uint_fast32_t sol_uint;
 #       else
                 typedef sol_u32 sol_uint;
+#       endif
+#endif
+
+
+
+
+        /*
+         * SOL_UINT_FMT - format specifier for sol_uint
+         */
+#if (sol_env_wordsz() == 64)
+#       if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#               define SOL_UINT_FMT PRIuFAST64
+#       else
+#               define SOL_UINT_FMT SOL_U64_FMT
+#       endif
+#else
+#       if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#               define SOL_UINT_FMT PRIuFAST32
+#       else
+#               define SOL_UINT_FMT SOL_U32_FMT
 #       endif
 #endif
 
