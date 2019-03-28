@@ -27,6 +27,7 @@
 
 
         /* include required header files */
+#include "../inc/prim.h"
 #include "../inc/error.h"
 
 
@@ -35,7 +36,7 @@
 /*
  *      BFR_LEN - length of string buffer
  */
-#define BFR_LEN 19
+#define BFR_LEN (19)
 
 
 
@@ -54,7 +55,7 @@ static sol_tls char bfr_hnd[BFR_LEN];
 extern const char *sol_erno_str(sol_erno erno)
 {
         const int RADIX = 16;
-        register int i = 0;
+        register sol_index i = 0;
 
                 /* prefix with '0x' to indicate hex code */
         bfr_hnd[i] = '0';
