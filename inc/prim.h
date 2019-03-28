@@ -287,12 +287,12 @@ typedef sol_word sol_index;
 
 
 /*
- *      sol_ui32 - 32-bit unsigned integer
+ *      sol_u32 - 32-bit unsigned integer
  */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
-        typedef uint32_t sol_ui32;
+        typedef uint32_t sol_u32;
 #else
-        typedef unsigned int sol_ui32;
+        typedef unsigned int sol_u32;
 #endif
 
 
