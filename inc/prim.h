@@ -299,14 +299,14 @@ typedef sol_word sol_index;
 
 
 /*
- *      sol_ui64 - 64-bit unsigned integer
+ *      sol_u64 - 64-bit unsigned integer
  */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
-        typedef uint64_t sol_ui64;
+        typedef uint64_t sol_u64;
 #elif (sol_env_wordsz() == 64)
-        typedef signed long sol_ui64;
+        typedef signed long sol_u64;
 #else
-#       error "sol_ui64: 64-bit types not supported in current environment"
+#       error sol_u64: 64-bit types not supported in current environment
 #endif
 
 
