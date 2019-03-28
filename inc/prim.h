@@ -263,12 +263,12 @@ typedef sol_word sol_index;
 
 
 /*
- *      sol_ui8 - 8-bit unsigned integer
+ *      sol_u8 - 8-bit unsigned integer
  */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
-        typedef uint8_t sol_ui8;
+        typedef uint8_t sol_u8;
 #else
-        typedef unsigned char sol_ui8;
+        typedef unsigned char sol_u8;
 #endif
 
 
