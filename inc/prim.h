@@ -319,13 +319,13 @@ typedef sol_word sol_index;
 #       if (sol_env_stdc() >= SOL_ENV_STDC_C99)
                 typedef uint_fast64_t sol_uint;
 #       else
-                typedef sol_ui64 sol_uint;
+                typedef sol_u64 sol_uint;
 #       endif
 #else
 #       if (sol_env_stdc() >= SOL_ENV_STDC_C99)
                 typedef uint_fast32_t sol_uint;
 #       else
-                typedef sol_ui32 sol_uint;
+                typedef sol_u32 sol_uint;
 #       endif
 #endif
 
