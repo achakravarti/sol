@@ -227,6 +227,46 @@ SOL_FINALLY:
 
 
 
+        /* f32_test1() implements the unit test described by F32_TEST1 */
+static sol_erno f32_test1(void)
+{
+        #define F32_TEST1 "size of sol_f32 is at least 32 bits"
+
+SOL_TRY:
+                /* check test condition */
+        sol_assert (sizeof (sol_f32) >= 4, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* nothing to do in case of an exception */
+
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
+        /* f64_test1() implements the unit test described by F64_TEST1 */
+static sol_erno f64_test1(void)
+{
+        #define F64_TEST1 "size of sol_f64 is at least 64 bits"
+
+SOL_TRY:
+                /* check test condition */
+        sol_assert (sizeof (sol_f64) >= 8, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* nothing to do in case of an exception */
+
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_prim() was declared in sol/test/suite.h */
 extern sol_erno __sol_tests_prim(sol_tlog *log,
                                  int *pass,
@@ -253,7 +293,8 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, u16_test1, U16_TEST1));
         sol_try (sol_tsuite_register(ts, u32_test1, U32_TEST1));
         sol_try (sol_tsuite_register(ts, u64_test1, U64_TEST1));
-
+        sol_try (sol_tsuite_register(ts, f32_test1, F32_TEST1));
+        sol_try (sol_tsuite_register(ts, f64_test1, F64_TEST1));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
