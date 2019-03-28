@@ -135,6 +135,74 @@ SOL_FINALLY:
 
 
 
+        /* u8_test1() implements the unit test described by U8_TEST1 */
+static sol_erno u8_test1(void)
+{
+        #define U8_TEST1 "size of sol_u8 is at least 8 bits"
+
+SOL_TRY:
+                /* check test condition */
+        sol_assert (sizeof (sol_u8) >= 1, SOL_ERNO_TEST);
+
+SOL_CATCH:
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
+        /* u16_test1() implements the unit test described by U16_TEST1 */
+static sol_erno u16_test1(void)
+{
+        #define U16_TEST1 "size of sol_u16 is at least 16 bits"
+
+SOL_TRY:
+                /* check test condition */
+        sol_assert (sizeof (sol_u16) >= 2, SOL_ERNO_TEST);
+
+SOL_CATCH:
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
+        /* u32_test1() implements the unit test described by U32_TEST1 */
+static sol_erno u32_test1(void)
+{
+        #define U32_TEST1 "size of sol_u32 is at least 32 bits"
+
+SOL_TRY:
+                /* check test condition */
+        sol_assert (sizeof (sol_i32) >= 4, SOL_ERNO_TEST);
+
+SOL_CATCH:
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
+        /* u64_test1() implements the unit test described by U64_TEST1 */
+static sol_erno u64_test1(void)
+{
+        #define U64_TEST1 "size of sol_u64 is at least 64 bits"
+
+SOL_TRY:
+                /* check test condition */
+        sol_assert (sizeof (sol_u64) >= 8, SOL_ERNO_TEST);
+
+SOL_CATCH:
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_prim() was declared in sol/test/suite.h */
 extern sol_erno __sol_tests_prim(sol_tlog *log,
                                  int *pass,
@@ -157,6 +225,10 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, i16_test1, I16_TEST1));
         sol_try (sol_tsuite_register(ts, i32_test1, I32_TEST1));
         sol_try (sol_tsuite_register(ts, i64_test1, I64_TEST1));
+        sol_try (sol_tsuite_register(ts, u8_test1, U8_TEST1));
+        sol_try (sol_tsuite_register(ts, u16_test1, U16_TEST1));
+        sol_try (sol_tsuite_register(ts, u32_test1, U32_TEST1));
+        sol_try (sol_tsuite_register(ts, u64_test1, U64_TEST1));
 
 
                 /* execute test cases */
