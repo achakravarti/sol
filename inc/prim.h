@@ -44,11 +44,11 @@
 
 
 
-/*
- *      SOL_BOOL - a Boolean value
- *        - SOL_BOOL_FALSE: Boolean value 'False'
- *        - SOL_BOOL_TRUE: Boolean value 'True'
- */
+        /*
+         * SOL_BOOL - a Boolean value
+         *   - SOL_BOOL_FALSE: Boolean value 'False'
+         *   - SOL_BOOL_TRUE: Boolean value 'True'
+         */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
         typedef bool SOL_BOOL;
 #       define SOL_BOOL_FALSE (false)
@@ -62,9 +62,9 @@
 
 
 
-/*
- *      sol_w8 - 8-bit word
- */
+        /*
+         * sol_w8 - 8-bit word
+         */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
         typedef uint8_t sol_w8;
 #else
@@ -74,17 +74,17 @@
 
 
 
-/*
- *      SOL_W8_NULL: sol_w8 null value
- */
+        /*
+         * SOL_W8_NULL: sol_w8 null value
+         */
 #define SOL_W8_NULL ((sol_w8) 0x0)
 
 
 
 
-/*
- *      sol_w16 - 16-bit word
- */
+        /*
+         * sol_w16 - 16-bit word
+         */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
         typedef uint16_t sol_w16;
 #else
@@ -94,17 +94,17 @@
 
 
 
-/*
- *      SOL_W16_NULL: sol_w16 null value
- */
+        /*
+         * SOL_W16_NULL: sol_w16 null value
+         */
 #define SOL_W16_NULL ((sol_w16) 0x0)
 
 
 
 
-/*
- *      sol_w32 - 32-bit word
- */
+        /*
+         * sol_w32 - 32-bit word
+         */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
         typedef uint32_t sol_w32;
 #else
@@ -114,17 +114,17 @@
 
 
 
-/*
- *      SOL_W32_NULL: sol_w32 null value
- */
+        /*
+         * SOL_W32_NULL: sol_w32 null value
+         */
 #define SOL_W32_NULL ((sol_w32) 0x0)
 
 
 
 
-/*
- *      sol_w64 - 64-bit word
- */
+        /*
+         * sol_w64 - 64-bit word
+         */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
         typedef uint64_t sol_w64;
 #elif (sol_env_wordsz() == 64)
@@ -136,9 +136,9 @@
 
 
 
-/*
- *      SOL_W64_NULL: sol_w64 null value
- */
+        /*
+         * SOL_W64_NULL: sol_w64 null value
+         */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99 || sol_env_wordsz() == 64)
 #       define SOL_W64_NULL ((sol_w64) 0x0)
 #else
@@ -148,9 +148,9 @@
 
 
 
-/*
- *      sol_word - native size word
- */
+        /*
+         * sol_word - native size word
+         */
 #if (sol_env_wordsz() == 64)
 #       if (sol_env_stdc() >= SOL_ENV_STDC_C99)
                 typedef uint_fast64_t sol_word;
@@ -168,33 +168,33 @@
 
 
 
-/*
- *      sol_size - size value
- */
+        /*
+         * sol_size - size value
+         */
 typedef sol_word sol_size;
 
 
 
 
-/*
- *      sol_index - index value
- */
+        /*
+         * sol_index - index value
+         */
 typedef sol_word sol_index;
 
 
 
 
-/*
- *      SOL_WORD_NULL: sol_word null value
- */
+        /*
+         * SOL_WORD_NULL: sol_word null value
+         */
 #define SOL_WORD_NULL ((sol_word) 0x0)
 
 
 
 
-/*
- *      sol_i8 - 8-bit signed integer
- */
+        /*
+         * sol_i8 - 8-bit signed integer
+         */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
         typedef int8_t sol_i8;
 #else
@@ -204,9 +204,9 @@ typedef sol_word sol_index;
 
 
 
-/*
- *      sol_i16 - 16-bit signed integer
- */
+        /*
+         * sol_i16 - 16-bit signed integer
+         */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
         typedef int16_t sol_i16;
 #else
@@ -216,9 +216,9 @@ typedef sol_word sol_index;
 
 
 
-/*
- *      sol_i32 - 32-bit signed integer
- */
+        /*
+         * sol_i32 - 32-bit signed integer
+         */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
         typedef int32_t sol_i32;
 #else
@@ -228,9 +228,9 @@ typedef sol_word sol_index;
 
 
 
-/*
- *      sol_i64 - 64-bit signed integer
- */
+        /*
+         * sol_i64 - 64-bit signed integer
+         */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
         typedef int64_t sol_i64;
 #elif (sol_env_wordsz() == 64)
@@ -242,9 +242,9 @@ typedef sol_word sol_index;
 
 
 
-/*
- *      sol_int - native size signed integer
- */
+        /*
+         * sol_int - native size signed integer
+         */
 #if (sol_env_wordsz() == 64)
 #       if (sol_env_stdc() >= SOL_ENV_STDC_C99)
                 typedef int_fast64_t sol_int;
@@ -262,9 +262,9 @@ typedef sol_word sol_index;
 
 
 
-/*
- *      sol_u8 - 8-bit unsigned integer
- */
+        /*
+         * sol_u8 - 8-bit unsigned integer
+         */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
         typedef uint8_t sol_u8;
 #else
@@ -274,9 +274,9 @@ typedef sol_word sol_index;
 
 
 
-/*
- *      sol_u16 - 16-bit signed integer
- */
+        /*
+         * sol_u16 - 16-bit signed integer
+         */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
         typedef uint16_t sol_u16;
 #else
@@ -286,9 +286,9 @@ typedef sol_word sol_index;
 
 
 
-/*
- *      sol_u32 - 32-bit unsigned integer
- */
+        /*
+         * sol_u32 - 32-bit unsigned integer
+         */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
         typedef uint32_t sol_u32;
 #else
@@ -298,9 +298,9 @@ typedef sol_word sol_index;
 
 
 
-/*
- *      sol_u64 - 64-bit unsigned integer
- */
+        /*
+         * sol_u64 - 64-bit unsigned integer
+         */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
         typedef uint64_t sol_u64;
 #elif (sol_env_wordsz() == 64)
@@ -312,9 +312,9 @@ typedef sol_word sol_index;
 
 
 
-/*
- *      sol_uint - native size unsigned integer
- */
+        /*
+         * sol_uint - native size unsigned integer
+         */
 #if (sol_env_wordsz() == 64)
 #       if (sol_env_stdc() >= SOL_ENV_STDC_C99)
                 typedef uint_fast64_t sol_uint;
@@ -332,25 +332,25 @@ typedef sol_word sol_index;
 
 
 
-/*
- *      sol_f32 - 32-bit floating point number
- */
+        /*
+         * sol_f32 - 32-bit floating point number
+         */
 typedef float sol_f32;
 
 
 
 
-/*
- *      sol_f64 - 64-bit floating point number
- */
+        /*
+         * sol_f64 - 64-bit floating point number
+         */
 typedef double sol_f64;
 
 
 
 
-/*
- *      sol_float - native size floating point number
- */
+        /*
+         * sol_float - native size floating point number
+         */
 #if (sol_env_wordsz() == 64)
         typedef double sol_float;
 #else
