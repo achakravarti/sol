@@ -43,7 +43,10 @@ SOL_TRY:
         sol_assert (SOL_BOOL_TRUE == 1, SOL_ERNO_TEST);
 
 SOL_CATCH:
+                /* nothing to do in case of an exception */
+
 SOL_FINALLY:
+                /* wind up */
         return sol_erno_get();
 }
 
@@ -60,7 +63,10 @@ SOL_TRY:
         sol_assert (SOL_BOOL_FALSE == 0, SOL_ERNO_TEST);
 
 SOL_CATCH:
+                /* nothing to do in case of an exception */
+
 SOL_FINALLY:
+                /* wind up */
         return sol_erno_get();
 }
 
@@ -111,7 +117,10 @@ SOL_TRY:
         sol_assert (sizeof (sol_i32) >= 4, SOL_ERNO_TEST);
 
 SOL_CATCH:
+                /* nothing to do in case of an exception */
+
 SOL_FINALLY:
+                /* wind up */
         return sol_erno_get();
 }
 
@@ -128,7 +137,10 @@ SOL_TRY:
         sol_assert (sizeof (sol_i64) >= 8, SOL_ERNO_TEST);
 
 SOL_CATCH:
+                /* nothing to do in case of an exception */
+
 SOL_FINALLY:
+                /* wind up */
         return sol_erno_get();
 }
 
@@ -145,7 +157,10 @@ SOL_TRY:
         sol_assert (sizeof (sol_u8) >= 1, SOL_ERNO_TEST);
 
 SOL_CATCH:
+                /* nothing to do in case of an exception */
+
 SOL_FINALLY:
+                /* wind up */
         return sol_erno_get();
 }
 
@@ -162,7 +177,10 @@ SOL_TRY:
         sol_assert (sizeof (sol_u16) >= 2, SOL_ERNO_TEST);
 
 SOL_CATCH:
+                /* nothing to do in case of an exception */
+
 SOL_FINALLY:
+                /* wind up */
         return sol_erno_get();
 }
 
@@ -179,7 +197,10 @@ SOL_TRY:
         sol_assert (sizeof (sol_i32) >= 4, SOL_ERNO_TEST);
 
 SOL_CATCH:
+                /* nothing to do in case of an exception */
+
 SOL_FINALLY:
+                /* wind up */
         return sol_erno_get();
 }
 
@@ -196,7 +217,10 @@ SOL_TRY:
         sol_assert (sizeof (sol_u64) >= 8, SOL_ERNO_TEST);
 
 SOL_CATCH:
+                /* nothing to do in case of an exception */
+
 SOL_FINALLY:
+                /* wind up */
         return sol_erno_get();
 }
 
@@ -240,6 +264,8 @@ SOL_TRY:
         sol_try (sol_tsuite_total(ts, total));
 
 SOL_CATCH:
+                /* nothing to do in case of an exception */
+
 SOL_FINALLY:
                 /* wind up */
         sol_tsuite_term(ts);
