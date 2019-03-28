@@ -275,12 +275,12 @@ typedef sol_word sol_index;
 
 
 /*
- *      sol_ui16 - 16-bit signed integer
+ *      sol_u16 - 16-bit signed integer
  */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
-        typedef uint16_t sol_ui16;
+        typedef uint16_t sol_u16;
 #else
-        typedef unsigned short int sol_ui16;
+        typedef unsigned short int sol_u16;
 #endif
 
 
