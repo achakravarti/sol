@@ -483,9 +483,25 @@ typedef float sol_f32;
 
 
         /*
+         * SOL_F32_FMT - format specifier for sol_f32
+         */
+#define SOL_F32_FMT "f"
+
+
+
+
+        /*
          * sol_f64 - 64-bit floating point number
          */
 typedef double sol_f64;
+
+
+
+
+        /*
+         * SOL_F64_FMT - format specifier for sol_f64
+         */
+#define SOL_F64_FMT "f"
 
 
 
@@ -498,6 +514,14 @@ typedef double sol_f64;
 #else
         typedef float sol_float;
 #endif
+
+
+
+
+        /*
+         * SOL_FLOAT_FMT - format specifier for sol_f64
+         */
+#define SOL_FLOAT_FMT "f"
 
 
 
