@@ -64,6 +64,18 @@
 
 
         /*
+         * SOL_BOOL_FMT - format specifier for SOL_BOOL
+         */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#       define SOL_BOOL_FMT PRId32
+#else
+#       define SOL_BOOL_FMT "d"
+#endif
+
+
+
+
+        /*
          * sol_w8 - 8-bit word
          */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
