@@ -303,6 +303,22 @@ typedef sol_word sol_index;
 
 
         /*
+         * SOL_I8_MIN - minimum value of sol_i8
+         */
+#define SOL_I8_MIN ((sol_i8) -127)
+
+
+
+
+        /*
+         * SOL_I8_MAX - maximum value of sol_i8
+         */
+#define SOL_I8_MAX ((sol_i8) 127)
+
+
+
+
+        /*
          * SOL_I8_FMT - format specifier for sol_i8
          */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
@@ -322,6 +338,22 @@ typedef sol_word sol_index;
 #else
         typedef signed short int sol_i16;
 #endif
+
+
+
+
+        /*
+         * SOL_I16_MIN - minimum value of sol_i16
+         */
+#define SOL_I16_MIN ((sol_i16) -32767)
+
+
+
+
+        /*
+         * SOL_I16_MAX - maximum value of sol_i16
+         */
+#define SOL_I16_MAX ((sol_i16) 32767)
 
 
 
@@ -351,6 +383,22 @@ typedef sol_word sol_index;
 
 
         /*
+         * SOL_I32_MIN - minimum value of sol_i32
+         */
+#define SOL_I32_MIN ((sol_i32) -2147483647)
+
+
+
+
+        /*
+         * SOL_I32_MAX - maximum value of sol_i32
+         */
+#define SOL_I32_MAX ((sol_i32) 2147483647)
+
+
+
+
+        /*
          * SOL_I32_FMT - format specifier for sol_i32
          */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
@@ -371,6 +419,30 @@ typedef sol_word sol_index;
         typedef signed long sol_i64;
 #else
 #       error sol_i64: 64-bit types not supported in current environment
+#endif
+
+
+
+
+        /*
+         * SOL_I64_MIN - minimum value of sol_i64
+         */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99 || sol_env_wordsz() == 64)
+#       define SOL_I64_MIN ((sol_i64) -9223372036854775807)
+#else
+#       error SOL_I64_MIN: 64-bit types not supported in current environment
+#endif
+
+
+
+
+        /*
+         * SOL_I64_MAX - maximum value of sol_i64
+         */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99 || sol_env_wordsz() == 64)
+#       define SOL_I64_MAX ((sol_i64) 9223372036854775807)
+#else
+#       error SOL_I64_MAX: 64-bit types not supported in current environment
 #endif
 
 
@@ -405,6 +477,30 @@ typedef sol_word sol_index;
 #       else
                 typedef sol_i32 sol_int;
 #       endif
+#endif
+
+
+
+
+        /*
+         * SOL_INT_MIN - minimum value of sol_int
+         */
+#if (sol_env_wordsz() == 64)
+#       define SOL_INT_MIN SOL_I64_MIN
+#else
+#       define SOL_INT_MIN SOL_I32_MIN
+#endif
+
+
+
+
+        /*
+         * SOL_INT_MAX - maximum value of sol_int
+         */
+#if (sol_env_wordsz() == 64)
+#       define SOL_INT_MAX SOL_I64_MAX
+#else
+#       define SOL_INT_MAX SOL_I32_MAX
 #endif
 
 
