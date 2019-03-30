@@ -260,9 +260,24 @@ typedef sol_word sol_size;
 
 
         /*
+         * SOL_SIZE_FMT - format specifier for sol_size
+         */
+#define SOL_SIZE_FMT SOL_WORD_FMT
+
+
+
+        /*
          * sol_index - index value
          */
 typedef sol_word sol_index;
+
+
+
+
+        /*
+         * SOL_INDEX_FMT - format specifier for sol_index
+         */
+#define SOL_INDEX_FMT SOL_WORD_FMT
 
 
 
@@ -295,7 +310,6 @@ typedef sol_word sol_index;
 #else
 #       define SOL_I8_FMT "d"
 #endif
-
 
 
 
