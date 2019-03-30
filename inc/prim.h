@@ -84,6 +84,18 @@
 
 
         /*
+         * SOL_W8_FMT - format specifier for sol_w8
+         */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#       define SOL_W8_FMT PRIu32
+#else
+#       define SOL_W8_FMT "u"
+#endif
+
+
+
+
+        /*
          * sol_w16 - 16-bit word
          */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
@@ -104,12 +116,36 @@
 
 
         /*
+         * SOL_W16_FMT - format specifier for sol_w16
+         */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#       define SOL_W16_FMT PRIu32
+#else
+#       define SOL_W16_FMT "u"
+#endif
+
+
+
+
+        /*
          * sol_w32 - 32-bit word
          */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
         typedef uint32_t sol_w32;
 #else
         typedef unsigned int sol_w32;
+#endif
+
+
+
+
+        /*
+         * SOL_W32_FMT - format specifier for sol_w32
+         */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#       define SOL_W32_FMT PRIu32
+#else
+#       define SOL_W32_FMT "u"
 #endif
 
 
@@ -150,6 +186,20 @@
 
 
         /*
+         * SOL_W64_FMT - format specifier for sol_w64
+         */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#       define SOL_W64_FMT PRIu64
+#elif (sol_env_wordsz() == 64)
+#       define SOL_W64_FMT "lu"
+#else
+#       error SOL_W64_FMT: 64-bit types not supported in current environment
+#endif
+
+
+
+
+        /*
          * sol_word - native size word
          */
 #if (sol_env_wordsz() == 64)
@@ -163,6 +213,26 @@
                 typedef uint_fast32_t sol_word;
 #       else
                 typedef sol_w32 sol_word;
+#       endif
+#endif
+
+
+
+
+        /*
+         * SOL_WORD_FMT - format specifier for sol_word
+         */
+#if (sol_env_wordsz() == 64)
+#       if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#               define SOL_WORD_FMT PRIuFAST64
+#       else
+#               define SOL_WORD_FMT SOL_W64_FMT
+#       endif
+#else
+#       if (sol_env_stdc() >= SOL_ENV_STDC_C99)
+#               define SOL_WORD_FMT PRIuFAST32
+#       else
+#               define SOL_WORD_FMT SOL_W32_FMT
 #       endif
 #endif
 
@@ -428,7 +498,7 @@ typedef sol_word sol_index;
 #elif (sol_env_wordsz() == 64)
 #       define SOL_U64_FMT "lu"
 #else
-#       error SOL_U64_FMT: 64-bt types not supported in current environment
+#       error SOL_U64_FMT: 64-bit types not supported in current environment
 #endif
 
 
