@@ -294,6 +294,16 @@
 typedef sol_word sol_size;
 
         /*
+         * SOL_SIZE_MIN - minimum value of sol_size
+         */
+#define SOL_SIZE_MIN SOL_WORD_MIN
+
+        /*
+         * SOL_SIZE_MAX - maximum value of sol_size
+         */
+#define SOL_SIZE_MAX SOL_WORD_MAX
+
+        /*
          * SOL_SIZE_FMT - format specifier for sol_size
          */
 #define SOL_SIZE_FMT SOL_WORD_FMT
@@ -305,6 +315,16 @@ typedef sol_word sol_size;
          * sol_index - index value
          */
 typedef sol_word sol_index;
+
+        /*
+         * SOL_INDEX_MIN - minimum value of sol_index
+         */
+#define SOL_INDEX_MIN SOL_WORD_MIN
+
+        /*
+         * SOL_INDEX_MAX - maximum value of sol_index
+         */
+#define SOL_INDEX_MAX SOL_WORD_MAX
 
         /*
          * SOL_INDEX_FMT - format specifier for sol_index
