@@ -87,6 +87,16 @@
 #define SOL_W8_NULL ((sol_w8) 0x0)
 
         /*
+         * SOL_W8_MIN - minimum value of sol_w8
+         */
+#define SOL_W8_MIN ((sol_w8) 0x0)
+
+        /*
+         * SOL_W8_MAX - maximum value of sol_w8
+         */
+#define SOL_W8_MAX ((sol_w8) 0xFF)
+
+        /*
          * SOL_W8_FMT - format specifier for sol_w8
          */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
@@ -113,6 +123,16 @@
 #define SOL_W16_NULL ((sol_w16) 0x0)
 
         /*
+         * SOL_W16_MIN - minimum value of sol_w16
+         */
+#define SOL_W16_MIN ((sol_w16) 0x0)
+
+        /*
+         * SOL_W16_MAX - maximum value of sol_w16
+         */
+#define SOL_W16_MAX ((sol_w16) 0xFFFF)
+
+        /*
          * SOL_W16_FMT - format specifier for sol_w16
          */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
@@ -134,6 +154,21 @@
 #endif
 
         /*
+         * SOL_W32_NULL: sol_w32 null value
+         */
+#define SOL_W32_NULL ((sol_w32) 0x0)
+
+        /*
+         * SOL_W32_MIN - minimum value of sol_w32
+         */
+#define SOL_W32_MIN ((sol_w32) 0x0)
+
+        /*
+         * SOL_W32_MAX - maximum value of sol_w32
+         */
+#define SOL_W32_MAX ((sol_w32) 0xFFFFFFFF)
+
+        /*
          * SOL_W32_FMT - format specifier for sol_w32
          */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
@@ -141,11 +176,6 @@
 #else
 #       define SOL_W32_FMT "u"
 #endif
-
-        /*
-         * SOL_W32_NULL: sol_w32 null value
-         */
-#define SOL_W32_NULL ((sol_w32) 0x0)
 
 
 
@@ -158,7 +188,7 @@
 #elif (sol_env_wordsz() == 64)
         typedef unsigned long sol_w64;
 #else
-#       error "sol_w64: 64-bit types not supported in current environment"
+#       error sol_w64: 64-bit types not supported in current environment
 #endif
 
         /*
@@ -167,7 +197,25 @@
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99 || sol_env_wordsz() == 64)
 #       define SOL_W64_NULL ((sol_w64) 0x0)
 #else
-#       error SOL_W64_NULL: "64-bit types not supported in current environment"
+#       error SOL_W64_NULL: 64-bit types not supported in current environment
+#endif
+
+        /*
+         * SOL_W64_MIN - minimum value of sol_w64
+         */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99 || sol_env_wordsz() == 64)
+#       define SOL_W64_MIN ((sol_w64) 0x0)
+#else
+#       error SOL_W64_MIN: 64-bit types not supported in current environment
+#endif
+
+        /*
+         * SOL_W64_MAX - maximum value of sol_w64
+         */
+#if (sol_env_stdc() >= SOL_ENV_STDC_C99 || sol_env_wordsz() == 64)
+#       define SOL_W32_MAX ((sol_w32) 0xFFFFFFFFFFFFFFFF)
+#else
+#       error SOL_W64_MAX: 64-bit types not supported in current environment
 #endif
 
         /*
@@ -199,6 +247,25 @@
 #       else
                 typedef sol_w32 sol_word;
 #       endif
+#endif
+
+        /*
+         * SOL_WORD_NULL - sol_word null value
+         */
+#define SOL_WORD_NULL ((sol_word) 0x0)
+
+        /*
+         * SOL_WORD_MIN - minimum value of sol_word
+         */
+#define SOL_WORD_MIN ((sol_word) 0x0)
+
+        /*
+         * SOL_WORD_MAX - maximum value of sol_word
+         */
+#if (sol_env_wordsz() == 64)
+#       define SOL_WORD_MAX SOL_W64_MAX
+#else
+#       define SOL_WORD_MAX SOL_W32_MAX
 #endif
 
         /*
@@ -243,11 +310,6 @@ typedef sol_word sol_index;
          * SOL_INDEX_FMT - format specifier for sol_index
          */
 #define SOL_INDEX_FMT SOL_WORD_FMT
-
-        /*
-         * SOL_WORD_NULL: sol_word null value
-         */
-#define SOL_WORD_NULL ((sol_word) 0x0)
 
 
 
@@ -599,11 +661,7 @@ typedef sol_word sol_index;
         /*
          * SOL_UINT_MIN - minimum value of sol_uint
          */
-#if (sol_env_wordsz() == 64)
-#       define SOL_UINT_MIN SOL_U64_MIN
-#else
-#       define SOL_UINT_MIN SOL_U32_MIN
-#endif
+#define SOL_UINT_MIN ((sol_uint) 0x0)
 
         /*
          * SOL_UINT_MAX - maximum value of sol_uint
