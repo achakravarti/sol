@@ -770,12 +770,12 @@ typedef double sol_f64;
         /*
          * SOL_FLOAT_MIN - minimum value of sol_float
          */
-#define SOL_F64_MIN ((sol_float) -1e+37)
+#define SOL_FLOAT_MIN ((sol_float) -1e+37)
 
         /*
          * SOL_FLOAT_MAX - maximum value of sol_float
          */
-#define SOL_F64_MAX ((sol_float) 1e+37)
+#define SOL_FLOAT_MAX ((sol_float) 1e+37)
 
         /*
          * SOL_FLOAT_FMT - format specifier for sol_f64
