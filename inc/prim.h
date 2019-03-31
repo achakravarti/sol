@@ -717,8 +717,15 @@ typedef sol_word sol_index;
          */
 typedef float sol_f32;
 
+        /*
+         * SOL_F32_MIN - minimum value of sol_f32
+         */
+#define SOL_F32_MIN ((sol_f32) -1e+37)
 
-
+        /*
+         * SOL_F32_MAX - maximum value of sol_f32
+         */
+#define SOL_F32_MAX ((sol_f32) 1e+37)
 
         /*
          * SOL_F32_FMT - format specifier for sol_f32
@@ -733,8 +740,15 @@ typedef float sol_f32;
          */
 typedef double sol_f64;
 
+        /*
+         * SOL_F64_MIN - minimum value of sol_f64
+         */
+#define SOL_F64_MIN ((sol_f64) -1e+37)
 
-
+        /*
+         * SOL_F64_MAX - maximum value of sol_f64
+         */
+#define SOL_F64_MAX ((sol_f64) 1e+37)
 
         /*
          * SOL_F64_FMT - format specifier for sol_f64
@@ -753,8 +767,15 @@ typedef double sol_f64;
         typedef float sol_float;
 #endif
 
+        /*
+         * SOL_FLOAT_MIN - minimum value of sol_float
+         */
+#define SOL_F64_MIN ((sol_float) -1e+37)
 
-
+        /*
+         * SOL_FLOAT_MAX - maximum value of sol_float
+         */
+#define SOL_F64_MAX ((sol_float) 1e+37)
 
         /*
          * SOL_FLOAT_FMT - format specifier for sol_f64
