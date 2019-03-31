@@ -213,7 +213,7 @@
          * SOL_W64_MAX - maximum value of sol_w64
          */
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99 || sol_env_wordsz() == 64)
-#       define SOL_W32_MAX ((sol_w32) 0xFFFFFFFFFFFFFFFF)
+#       define SOL_W64_MAX ((sol_w32) 0xFFFFFFFFFFFFFFFF)
 #else
 #       error SOL_W64_MAX: 64-bit types not supported in current environment
 #endif
