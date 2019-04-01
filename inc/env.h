@@ -33,39 +33,52 @@
 
 
 
-        /*
-         * SOL_ENV_CC - enumerates supported C compilers
-         *   - SOL_ENV_CC_GNUC : GNU C or GNU C compatible compiler
-         *   - SOL_ENV_CC_CLANG: CLang front-end of LLVM compiler
-         *
-         * The SOL_ENV_CC type enumerates the C compilers that are supported by
-         * the Sol Library. The constants enumerated by this type are returned
-         * by the sol_env_cc() macro (defined below) in order to indicate the C
-         * compiler being used at compile-time.
-         *
-         * Currently, only GNU C and CLang compilers are supported directly, and
-         * GNU C compatible compilers indirectly. This is expected to be
-         * adequate as far as portability is concerned, as GNU C is the most
-         * widely ported C compiler. However, in future, support for other
-         * compilers, including MSVC, *may* be introduced if there is adequate
-         * reason to do so.
-         */
+/*
+ * Interface: compiler
+ *
+ * Synopsis:
+ *      #include sol/inc/env.h"
+ *
+ *      SOL_ENV_CC;
+ *      SOL_ENV_CC_GNUC;
+ *      SOL_ENV_CC_CLANG;
+ *      SOL_ENV_CC sol_env_cc(void);
+ *
+ * Description:
+ *      The compiler interface of the Environment Module of the Sol Library
+ *      provides a mechanism for client code to determine at compile time the
+ *      compiler being used.
+ *
+ *      The SOL_ENV_CC family of symbolic constants enumerate the compilers
+ *      recognised and supported by the Sol Library. Currently, only GNU C and
+ *      CLang compilers are supported directly, and GNU C compatible compilers
+ *      indirectly. This is expected to be adequate as far as portability is
+ *      concerned, as GNU C is the most widely ported C compiler. However, in
+ *      future, support for other compilers, including MSVC, **may** be
+ *      introduced if there is adequate reason to do so.
+ *
+ *      Accordingly, the supported compilers are represented by the SOL_ENV_CC
+ *      family of symbolic constants as follows:
+ *        - SOL_ENV_CC_GNUC: GNU C or GNU C compatible compiler
+ *        - SOL_ENV_CC_CLANG: CLang front-end of LLVM compiler
+ *
+ *      The sol_env_cc() macro determines at compile-time the C compiler that is
+ *      being used. This macro returns one of the SOL_ENV_CC family of constants
+ *      as appropriate.
+ *
+ * Notes:
+ *      The SOL_ENV_CC family of symbolic constants are defined as such, and not
+ *      as an enumeration, so that they may be used to perform relevant
+ *      pre-compilation checks at file scope outside any function body.
+ *
+ *      In case a compiler other than those recognised and supported by the Sol
+ *      Library is used, then the sol_env_cc() macro raises a compiler error.
+ */
+
 #define SOL_ENV_CC int
 #define SOL_ENV_CC_GNUC (0)
 #define SOL_ENV_CC_CLANG (1)
 
-        /*
-         * sol_env_cc() - determines C compiler at compile-time
-         *
-         * The sol_env_cc() macro determines at compile-time the C compiler that
-         * is being used. This macro returns one of the constants enumerated by
-         * the SOL_ENV_CC type as appropriate. A compile-time error is raised in
-         * case an unsupported compiler is detected.
-         *
-         * Return:
-         *   - SOL_ENV_CC_GNUC if GNU C or GNU C compatible compiler detected
-         *   - SOL_ENV_CC_CLANG if CLang compiler detected
-         */
 #if (defined __GNUC__)
 #       define sol_env_cc() SOL_ENV_CC_GNUC
 #elif (defined __clang__)
