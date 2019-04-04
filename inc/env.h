@@ -37,7 +37,7 @@
  * Interface: compiler
  *
  * Synopsis:
- *      #include sol/inc/env.h"
+ *      #include "sol/inc/env.h"
  *
  *      SOL_ENV_CC;
  *      SOL_ENV_CC_GNUC;
@@ -90,27 +90,57 @@
 
 
 
-        /*
-         * SOL_ENV_STDC - enumerates supported C language standards
-         *   - SOL_ENV_STDC_C89: C89 standard
-         *   - SOL_ENV_STDC_C90: C90 standard
-         *   - SOL_ENV_STDC_C94: C94 standard
-         *   - SOL_ENV_STDC_C99: C99 standard
-         *   - SOL_ENV_STDC_C11: C11 standard
-         *   - SOL_ENV_STDC_C18: C18 standard
-         *
-         * The SOL_ENV_STDC type enumerates the C language standards that are
-         * supported by the Sol Library. The constants enumerated by this type
-         * are used by the sol_env_stdc() macro (defined below) in order to
-         * indicate the compile-time C standard being used.
-         *
-         * The Sol Library is designed to be backward-compatible with the C89
-         * standard, while taking advantage of some of the new features
-         * introduced by the modern standards. Backward-compatiblity with the
-         * C89 standard ensures maximum portability; dialects predating the C89
-         * standard are not considered, as they are fairly archaic and limited
-         * only to deprecated compilers.
-         */
+/*
+ * Interface: C dialect
+ *
+ * Synopsis:
+ *      #include "sol/inc/env.h"
+ *
+ *      SOL_ENV_STDC
+ *      SOL_ENV_STDC_C89
+ *      SOL_ENV_STDC_C90
+ *      SOL_ENV_STDC_C94
+ *      SOL_ENV_STDC_C99
+ *      SOL_ENV_STDC_C11
+ *      SOL_ENV_STDC_C18
+ *      SOL_ENV_STDC sol_env_stdc(void);
+ *
+ * Description:
+ *      The C dialect interface of the Environment Module of the Sol Library
+ *      provides a mechanism for client code to determine at compile time the
+ *      standard C dialect being used.
+ *
+ *      The SOL_ENV_STDC family of symbolic constants enumerate the standard C
+ *      language dialects recognised and supported by the Sol Library. The Sol
+ *      Library is designed to be backward-compatible with the C89 standard,
+ *      while taking advantage of some of the new features introduced by the
+ *      modern standards. Backward-compatibility with the C89 standard ensures
+ *      maximum portability; dialects predating the C89 standard are not
+ *      considered, as they are fairly archaic and limited only to deprecated
+ *      compilers.
+ *
+ *      The supported C dialects are represented by the SOL_ENV_STDC symbolic
+ *      constants as follows:
+ *        - SOL_ENV_STDC_C89: C89 standard
+ *        - SOL_ENV_STDC_C90: C90 standard
+ *        - SOL_ENV_STDC_C94: C94 standard
+ *        - SOL_ENV_STDC_C99: C99 standard
+ *        - SOL_ENV_STDC_C11: C11 standard
+ *        - SOL_ENV_STDC_C18: C18 standard
+ *
+ *      The sol_env_stdc() macro determines at compile-time the standard C
+ *      dialect being used for compilation, and returns one of the SOL_ENV_STDC
+ *      family of symbolic constants as appropriate
+ *
+ * Notes:
+ *      The SOL_ENV_STDC family of symbolic constants are defined as such, and
+ *      not as an enumeration, so that they may be used to perform relevant
+ *      pre-compilation checks at file scope outside any function body.
+ *
+ *      In case a C dialect other than those recognised and supported by the Sol
+ *      Library is used, then the sol_env_stdc() macro raises a compiler error.
+ */
+
 #define SOL_ENV_STDC int
 #define SOL_ENV_STDC_C89 (0)
 #define SOL_ENV_STDC_C90 (1)
@@ -119,22 +149,6 @@
 #define SOL_ENV_STDC_C11 (4)
 #define SOL_ENV_STDC_C18 (5)
 
-        /*
-         * sol_env_stdc() - determines compile-time C language standard
-         *
-         * The sol_env_stdc() macro determines at compile-time the C language
-         * standard that is being used. This macro returns one of the constants
-         * enumerated by the SOL_ENV_STDC type as appropriate. A compile-time
-         * error is raised in case an unsupported standard is detected.
-         *
-         * Return:
-         *   - SOL_ENV_STDC_C89 if C89 standard detected
-         *   - SOL_ENV_STDC_C90 if C90 standard detected
-         *   - SOL_ENV_STDC_C94 if C94 standard detected
-         *   - SOL_ENV_STDC_C99 if C99 standard detected
-         *   - SOL_ENV_STDC_C11 if C11 standard detected
-         *   - SOL_ENV_STDC_C18 if C18 standard detected
-         */
 #if (defined __STDC__)
 #       if (defined __STDC_VERSION__)
 #               if (__STDC_VERSION__ >= 201710L)
