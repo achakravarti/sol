@@ -73,6 +73,86 @@ SOL_FINALLY:
 
 
 
+        /* w8_test1() implements the unit test described by W8_TEST1 */
+static sol_erno w8_test1(void)
+{
+        #define W8_TEST1 "size of sol_w8 is at least 8 bits"
+
+SOL_TRY:
+                /* check test condition */
+        sol_assert (sizeof (sol_w8) >= 1, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* nothing to do in case of an exception */
+
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
+        /* w16_test1() implements the unit test described by W16_TEST1 */
+static sol_erno w16_test1(void)
+{
+        #define W16_TEST1 "size of sol_w16 is at least 16 bits"
+
+SOL_TRY:
+                /* check test condition */
+        sol_assert (sizeof (sol_w16) >= 2, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* nothing to do in case of an exception */
+
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
+        /* w32_test1() implements the unit test described by W32_TEST1 */
+static sol_erno w32_test1(void)
+{
+        #define W32_TEST1 "size of sol_w32 is at least 32 bits"
+
+SOL_TRY:
+                /* check test condition */
+        sol_assert (sizeof (sol_w32) >= 4, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* nothing to do in case of an exception */
+
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
+        /* w64_test1() implements the unit test described by W64_TEST1 */
+static sol_erno w64_test1(void)
+{
+        #define W64_TEST1 "size of sol_w64 is at least 64 bits"
+
+SOL_TRY:
+                /* check test condition */
+        sol_assert (sizeof (sol_w64) >= 8, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* nothing to do in case of an exception */
+
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
         /* i8_test1() implements the unit test described by I8_TEST1 */
 static sol_erno i8_test1(void)
 {
@@ -194,7 +274,7 @@ static sol_erno u32_test1(void)
 
 SOL_TRY:
                 /* check test condition */
-        sol_assert (sizeof (sol_i32) >= 4, SOL_ERNO_TEST);
+        sol_assert (sizeof (sol_u32) >= 4, SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* nothing to do in case of an exception */
@@ -285,6 +365,10 @@ SOL_TRY:
                 /* register test cases */
         sol_try (sol_tsuite_register(ts, bool_test1, BOOL_TEST1));
         sol_try (sol_tsuite_register(ts, bool_test2, BOOL_TEST2));
+        sol_try (sol_tsuite_register(ts, w8_test1, W8_TEST1));
+        sol_try (sol_tsuite_register(ts, w16_test1, W16_TEST1));
+        sol_try (sol_tsuite_register(ts, w32_test1, W32_TEST1));
+        sol_try (sol_tsuite_register(ts, w64_test1, W64_TEST1));
         sol_try (sol_tsuite_register(ts, i8_test1, I8_TEST1));
         sol_try (sol_tsuite_register(ts, i16_test1, I16_TEST1));
         sol_try (sol_tsuite_register(ts, i32_test1, I32_TEST1));
