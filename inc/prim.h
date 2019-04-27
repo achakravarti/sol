@@ -36,6 +36,7 @@
         /* include required header files; the stdbool.h and stdint.h header
          * files are used in case a C99 environment is available */
 #include "./env.h"
+#include "./hint.h"
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
 #       include <stdbool.h>
 #       include <stdint.h>
@@ -713,6 +714,54 @@ typedef sol_word sol_index;
 
 
         /*
+         * sol_f64 - 64-bit floating point number
+         */
+typedef double sol_f64;
+
+        /*
+         * SOL_F64_MIN - minimum value of sol_f64
+         */
+#define SOL_F64_MIN ((sol_f64) -1e+37)
+
+        /*
+         * SOL_F64_MAX - maximum value of sol_f64
+         */
+#define SOL_F64_MAX ((sol_f64) 1e+37)
+
+        /*
+         * SOL_F64_FMT - format specifier for sol_f64
+         */
+#define SOL_F64_FMT "f"
+
+        /*
+         * sol_f64_lt() - compares two sol_f64 for less than
+         *
+         * @this function uses Donald Knuth's
+         * algorithm for the same as answered by user mch in the question posted
+         * on https://stackoverflow.com/questions/17333
+         */
+extern SOL_BOOL sol_f64_lt(const sol_f64 lhs,
+                               const sol_f64 rhs,
+                               const sol_f64 epsilon);
+
+        /*
+         * sol_f64_eq() - compares two sol_f64 for equality
+         */
+extern SOL_BOOL sol_f64_eq(const sol_f64 lhs,
+                          const sol_f64 rhs,
+                          const sol_f64 epsilon);
+
+        /*
+         * sol_f64_gt() - compares two sol_f64 for greater than
+         */
+extern SOL_BOOL sol_f64_gt(const sol_f64 lhs,
+                           const sol_f64 rhs,
+                           const sol_f64 epsilon);
+
+
+
+
+        /*
          * sol_f32 - 32-bit floating point number
          */
 typedef float sol_f32;
@@ -732,28 +781,30 @@ typedef float sol_f32;
          */
 #define SOL_F32_FMT "f"
 
+        /* define the float_lt() utility function; this function returns true if
+         * @lhs < @rhs, and false otherwise; this function uses Donald Knuth's
+         * algorithm for the same as answered by user mch in the question posted
+         * on https://stackoverflow.com/questions/17333 */
+sol_inline SOL_BOOL sol_f32_lt(const sol_f32 lhs,
+                               const sol_f32 rhs,
+                               const sol_f32 epsilon)
+{
+        return sol_f64_lt(lhs, rhs, epsilon);
+}
 
+sol_inline SOL_BOOL sol_f32_eq(const sol_f32 lhs,
+                               const sol_f32 rhs,
+                               const sol_f32 epsilon)
+{
+        return sol_f64_eq(lhs, rhs, epsilon);
+}
 
-
-        /*
-         * sol_f64 - 64-bit floating point number
-         */
-typedef double sol_f64;
-
-        /*
-         * SOL_F64_MIN - minimum value of sol_f64
-         */
-#define SOL_F64_MIN ((sol_f64) -1e+37)
-
-        /*
-         * SOL_F64_MAX - maximum value of sol_f64
-         */
-#define SOL_F64_MAX ((sol_f64) 1e+37)
-
-        /*
-         * SOL_F64_FMT - format specifier for sol_f64
-         */
-#define SOL_F64_FMT "f"
+sol_inline SOL_BOOL sol_f32_gt(const sol_f32 lhs,
+                               const sol_f32 rhs,
+                               const sol_f32 epsilon)
+{
+        return sol_f64_gt(lhs, rhs, epsilon);
+}
 
 
 
@@ -781,6 +832,27 @@ typedef double sol_f64;
          * SOL_FLOAT_FMT - format specifier for sol_f64
          */
 #define SOL_FLOAT_FMT "f"
+
+sol_inline SOL_BOOL sol_float_lt(const sol_float lhs,
+                                 const sol_float rhs,
+                                 const sol_float epsilon)
+{
+        return sol_f64_lt(lhs, rhs, epsilon);
+}
+
+sol_inline SOL_BOOL sol_float_eq(const sol_float lhs,
+                                 const sol_float rhs,
+                                 const sol_float epsilon)
+{
+        return sol_f64_eq(lhs, rhs, epsilon);
+}
+
+sol_inline SOL_BOOL sol_float_gt(const sol_float lhs,
+                                 const sol_float rhs,
+                                 const sol_float epsilon)
+{
+        return sol_f64_gt(lhs, rhs, epsilon);
+}
 
 
 
