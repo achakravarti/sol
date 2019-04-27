@@ -781,30 +781,14 @@ typedef float sol_f32;
          */
 #define SOL_F32_FMT "f"
 
-        /* define the float_lt() utility function; this function returns true if
-         * @lhs < @rhs, and false otherwise; this function uses Donald Knuth's
-         * algorithm for the same as answered by user mch in the question posted
-         * on https://stackoverflow.com/questions/17333 */
-sol_inline SOL_BOOL sol_f32_lt(const sol_f32 lhs,
-                               const sol_f32 rhs,
-                               const sol_f32 epsilon)
-{
-        return sol_f64_lt(lhs, rhs, epsilon);
-}
+#define sol_f32_lt(lhs, rhs, epsilon)       \
+        sol_f64_lt((lhs), (rhs), (epsilon)) \
 
-sol_inline SOL_BOOL sol_f32_eq(const sol_f32 lhs,
-                               const sol_f32 rhs,
-                               const sol_f32 epsilon)
-{
-        return sol_f64_eq(lhs, rhs, epsilon);
-}
+#define sol_f32_eq(lhs, rhs, epsilon)       \
+        sol_f64_eq((lhs), (rhs), (epsilon)) \
 
-sol_inline SOL_BOOL sol_f32_gt(const sol_f32 lhs,
-                               const sol_f32 rhs,
-                               const sol_f32 epsilon)
-{
-        return sol_f64_gt(lhs, rhs, epsilon);
-}
+#define sol_f32_gt(lhs, rhs, epsilon)       \
+        sol_f64_gt((lhs), (rhs), (epsilon)) \
 
 
 
@@ -833,26 +817,14 @@ sol_inline SOL_BOOL sol_f32_gt(const sol_f32 lhs,
          */
 #define SOL_FLOAT_FMT "f"
 
-sol_inline SOL_BOOL sol_float_lt(const sol_float lhs,
-                                 const sol_float rhs,
-                                 const sol_float epsilon)
-{
-        return sol_f64_lt(lhs, rhs, epsilon);
-}
+#define sol_float_lt(lhs, rhs, epsilon)     \
+        sol_f64_lt((lhs), (rhs), (epsilon)) \
 
-sol_inline SOL_BOOL sol_float_eq(const sol_float lhs,
-                                 const sol_float rhs,
-                                 const sol_float epsilon)
-{
-        return sol_f64_eq(lhs, rhs, epsilon);
-}
+#define sol_float_eq(lhs, rhs, epsilon)     \
+        sol_f64_eq((lhs), (rhs), (epsilon)) \
 
-sol_inline SOL_BOOL sol_float_gt(const sol_float lhs,
-                                 const sol_float rhs,
-                                 const sol_float epsilon)
-{
-        return sol_f64_gt(lhs, rhs, epsilon);
-}
+#define sol_float_gt(lhs, rhs, epsilon)     \
+        sol_f64_gt((lhs), (rhs), (epsilon)) \
 
 
 
