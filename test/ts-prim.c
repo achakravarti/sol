@@ -327,6 +327,28 @@ SOL_FINALLY:
 
 
 
+        /* define the f32_test2() unit test function; this function implements
+         * the test case described by the F32_TEST2 symbolic constant */
+static sol_erno f32_test2(void)
+{
+        #define F32_TEST2 "sol_f32_lt() evaluates whether a floating point" \
+                          " number is less than another"
+        const sol_f32 lhs = (sol_f32) 1.00;
+        const sol_f32 rhs = (sol_f32) 2.00;
+        const sol_f32 epsilon = (sol_f32) 0.000001;
+
+
+SOL_TRY:
+        sol_assert (sol_f32_lt(lhs, rhs, epsilon), SOL_ERNO_TEST);
+
+SOL_CATCH:
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
         /* f64_test1() implements the unit test described by F64_TEST1 */
 static sol_erno f64_test1(void)
 {
@@ -378,6 +400,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, u32_test1, U32_TEST1));
         sol_try (sol_tsuite_register(ts, u64_test1, U64_TEST1));
         sol_try (sol_tsuite_register(ts, f32_test1, F32_TEST1));
+        sol_try (sol_tsuite_register(ts, f32_test2, F32_TEST2));
         sol_try (sol_tsuite_register(ts, f64_test1, F64_TEST1));
 
                 /* execute test cases */
