@@ -331,15 +331,51 @@ SOL_FINALLY:
          * the test case described by the F32_TEST2 symbolic constant */
 static sol_erno f32_test2(void)
 {
-        #define F32_TEST2 "sol_f32_lt() evaluates whether a floating point" \
-                          " number is less than another"
-        const sol_f32 lhs = (sol_f32) 1.00;
-        const sol_f32 rhs = (sol_f32) 2.00;
-        const sol_f32 epsilon = (sol_f32) 0.000001;
+        #define F32_TEST2 "sol_f32_lt() return true if its lhs is less than" \
+                          " its rhs"
+        const sol_f32 lhs = (sol_f32) 3.141;
+        const sol_f32 rhs = (sol_f32) 3.1415;
 
 
 SOL_TRY:
-        sol_assert (sol_f32_lt(lhs, rhs, epsilon), SOL_ERNO_TEST);
+        sol_assert (sol_f32_lt(lhs, rhs), SOL_ERNO_TEST);
+
+SOL_CATCH:
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
+        /* f32_test3() implements the test case described by F32_TEST3 */
+static sol_erno f32_test3(void)
+{
+        #define F32_TEST3 "sol_f32_eq() returns true if passed two equal" \
+                          " sol_f32 values"
+        const sol_f32 lhs = (sol_f32) 3.1415;
+
+SOL_TRY:
+        sol_assert (sol_f32_eq(lhs, lhs), SOL_ERNO_TEST);
+
+SOL_CATCH:
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
+        /* f32_test4() implements the test case described by F32_TEST4 */
+static sol_erno f32_test4(void)
+{
+        #define F32_TEST4 "sol_f32_gt() returns true if its lhs parameter is" \
+                          " greater than its rhs parameter"
+        const sol_f32 lhs = 3.1415;
+        const sol_f32 rhs = 3.141;
+
+SOL_TRY:
+        sol_assert (sol_f32_gt(lhs, rhs), SOL_ERNO_TEST);
 
 SOL_CATCH:
 SOL_FINALLY:
@@ -363,6 +399,63 @@ SOL_CATCH:
 
 SOL_FINALLY:
                 /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
+        /* f64_test2() implements the test case described by F64_TEST2 */
+static sol_erno f64_test2(void)
+{
+        #define F64_TEST2 "sol_f64_lt() returns true when its lhs is less" \
+                          " than its rhs"
+        const sol_f32 lhs = (sol_f32) 3.1415926;
+        const sol_f32 rhs = (sol_f32) 3.14159265;
+
+
+SOL_TRY:
+        sol_assert (sol_f64_lt(lhs, rhs), SOL_ERNO_TEST);
+
+SOL_CATCH:
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
+        /* f64_test3() implements the test case described by F64_TEST3 */
+static sol_erno f64_test3(void)
+{
+        #define F64_TEST3 "sol_f64_eq() returns true if passed two equal" \
+                          " sol_f64 values"
+        const sol_f64 lhs = (sol_f64) 3.14159265;
+
+SOL_TRY:
+        sol_assert (sol_f64_eq(lhs, lhs), SOL_ERNO_TEST);
+
+SOL_CATCH:
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
+        /* f64_test4() implements the test case described by F64_TEST4 */
+static sol_erno f64_test4(void)
+{
+        #define F64_TEST4 "sol_f64_gt() return true if its lhs parameter is" \
+                          " greater than its rhs parameter"
+        const sol_f32 lhs = 3.14159265;
+        const sol_f32 rhs = 3.1415926;
+
+SOL_TRY:
+        sol_assert (sol_f64_gt(lhs, rhs), SOL_ERNO_TEST);
+
+SOL_CATCH:
+SOL_FINALLY:
         return sol_erno_get();
 }
 
@@ -401,7 +494,12 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, u64_test1, U64_TEST1));
         sol_try (sol_tsuite_register(ts, f32_test1, F32_TEST1));
         sol_try (sol_tsuite_register(ts, f32_test2, F32_TEST2));
+        sol_try (sol_tsuite_register(ts, f32_test3, F32_TEST3));
+        sol_try (sol_tsuite_register(ts, f32_test4, F32_TEST4));
         sol_try (sol_tsuite_register(ts, f64_test1, F64_TEST1));
+        sol_try (sol_tsuite_register(ts, f64_test2, F64_TEST2));
+        sol_try (sol_tsuite_register(ts, f64_test3, F64_TEST3));
+        sol_try (sol_tsuite_register(ts, f64_test4, F64_TEST4));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
