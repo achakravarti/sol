@@ -462,6 +462,83 @@ SOL_FINALLY:
 
 
 
+        /* float_test1() implements the unit test described by FLOAT_TEST1 */
+static sol_erno float_test1(void)
+{
+        #define FLOAT_TEST1 "size of sol_float is at least 32 bits"
+
+SOL_TRY:
+                /* check test condition */
+        sol_assert (sizeof (sol_float) >= 4, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* nothing to do in case of an exception */
+
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
+        /* float_test2() implements the test case described bh FLOAT_TEST2 */
+static sol_erno float_test2(void)
+{
+        #define FLOAT_TEST2 "sol_float_lt() return true if its lhs is less" \
+                            " than its rhs"
+        const sol_float lhs = (sol_f32) 3.141;
+        const sol_float rhs = (sol_f32) 3.1415;
+
+
+SOL_TRY:
+        sol_assert (sol_float_lt(lhs, rhs), SOL_ERNO_TEST);
+
+SOL_CATCH:
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
+        /* float_test3() implements the test case described by FLOAT_TEST3 */
+static sol_erno float_test3(void)
+{
+        #define FLOAT_TEST3 "sol_float_eq() returns true if passed two equal" \
+                            " sol_float values"
+        const sol_float lhs = (sol_float) 3.1415;
+
+SOL_TRY:
+        sol_assert (sol_float_eq(lhs, lhs), SOL_ERNO_TEST);
+
+SOL_CATCH:
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
+        /* float_test4() implements the test case described by FLOAT_TEST4 */
+static sol_erno float_test4(void)
+{
+        #define FLOAT_TEST4 "sol_float_gt() returns true if its lhs parameter" \
+                            " is greater than its rhs parameter"
+        const sol_float lhs = 3.1415;
+        const sol_float rhs = 3.141;
+
+SOL_TRY:
+        sol_assert (sol_float_gt(lhs, rhs), SOL_ERNO_TEST);
+
+SOL_CATCH:
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_prim() was declared in sol/test/suite.h */
 extern sol_erno __sol_tests_prim(sol_tlog *log,
                                  sol_uint *pass,
@@ -500,6 +577,10 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, f64_test2, F64_TEST2));
         sol_try (sol_tsuite_register(ts, f64_test3, F64_TEST3));
         sol_try (sol_tsuite_register(ts, f64_test4, F64_TEST4));
+        sol_try (sol_tsuite_register(ts, float_test1, FLOAT_TEST1));
+        sol_try (sol_tsuite_register(ts, float_test2, FLOAT_TEST2));
+        sol_try (sol_tsuite_register(ts, float_test3, FLOAT_TEST3));
+        sol_try (sol_tsuite_register(ts, float_test4, FLOAT_TEST4));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
