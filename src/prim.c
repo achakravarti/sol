@@ -10,14 +10,9 @@
          * @lhs < @rhs, and false otherwise; this function uses Donald Knuth's
          * algorithm for the same as answered by user mch in the question posted
          * on https://stackoverflow.com/questions/17333 */
-extern SOL_BOOL sol_f64_lt(const sol_f64 lhs,
-                           const sol_f64 rhs,
-                           const sol_f64 epsilon)
+extern SOL_BOOL sol_f64_lt(const sol_f64 lhs, const sol_f64 rhs)
 {
-        const double modl = fabs(lhs);
-        const double modr = fabs(rhs);
-
-        return (rhs - lhs) > (modl < modr ? modr : modl * epsilon);
+        return (rhs - lhs) > SOL_F64_EPSILON;
 }
 
 
@@ -27,14 +22,9 @@ extern SOL_BOOL sol_f64_lt(const sol_f64 lhs,
          * @lhs == @rhs, and false otherwise; this function uses Donald Knuth's
          * algorithm for the same as answered by user mch in the question posted
          * on https://stackoverflow.com/questions/17333 */
-extern SOL_BOOL sol_f64_eq(const sol_f64 lhs,
-                           const sol_f64 rhs,
-                           const sol_f64 epsilon)
+extern SOL_BOOL sol_f64_eq(const sol_f64 lhs, const sol_f64 rhs)
 {
-        const double modl = fabs(lhs);
-        const double modr = fabs(rhs);
-
-        return fabs(lhs - rhs) <= (modl > modr ? modr : modl * epsilon);
+        return fabs(lhs - rhs) < SOL_F64_EPSILON;
 }
 
 
@@ -44,14 +34,9 @@ extern SOL_BOOL sol_f64_eq(const sol_f64 lhs,
          * @lhs > @rhs, and false otherwise; this function uses Donald Knuth's
          * algorithm for the same as answered by user mch in the question posted
          * on https://stackoverflow.com/questions/17333 */
-extern SOL_BOOL sol_f64_gt(const sol_f64 lhs,
-                           const sol_f64 rhs,
-                           const sol_f64 epsilon)
+extern SOL_BOOL sol_f64_gt(const sol_f64 lhs, const sol_f64 rhs)
 {
-        register double modl = fabs(lhs);
-        register double modr = fabs(rhs);
-
-        return (lhs - rhs) > (modl < modr ? modr : modl * epsilon);
+        return (lhs - rhs) > SOL_F64_EPSILON;
 }
 
 

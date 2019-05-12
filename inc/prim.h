@@ -37,6 +37,7 @@
          * files are used in case a C99 environment is available */
 #include "./env.h"
 #include "./hint.h"
+#include <float.h>
 #if (sol_env_stdc() >= SOL_ENV_STDC_C99)
 #       include <stdbool.h>
 #       include <stdint.h>
@@ -733,30 +734,22 @@ typedef double sol_f64;
          */
 #define SOL_F64_FMT "f"
 
+#define SOL_F64_EPSILON DBL_EPSILON
+
         /*
          * sol_f64_lt() - compares two sol_f64 for less than
-         *
-         * @this function uses Donald Knuth's
-         * algorithm for the same as answered by user mch in the question posted
-         * on https://stackoverflow.com/questions/17333
          */
-extern SOL_BOOL sol_f64_lt(const sol_f64 lhs,
-                               const sol_f64 rhs,
-                               const sol_f64 epsilon);
+extern SOL_BOOL sol_f64_lt(const sol_f64 lhs, const sol_f64 rhs);
 
         /*
          * sol_f64_eq() - compares two sol_f64 for equality
          */
-extern SOL_BOOL sol_f64_eq(const sol_f64 lhs,
-                          const sol_f64 rhs,
-                          const sol_f64 epsilon);
+extern SOL_BOOL sol_f64_eq(const sol_f64 lhs, const sol_f64 rhs);
 
         /*
          * sol_f64_gt() - compares two sol_f64 for greater than
          */
-extern SOL_BOOL sol_f64_gt(const sol_f64 lhs,
-                           const sol_f64 rhs,
-                           const sol_f64 epsilon);
+extern SOL_BOOL sol_f64_gt(const sol_f64 lhs, const sol_f64 rhs);
 
 
 
@@ -781,14 +774,16 @@ typedef float sol_f32;
          */
 #define SOL_F32_FMT "f"
 
-#define sol_f32_lt(lhs, rhs, epsilon)       \
-        sol_f64_lt((lhs), (rhs), (epsilon)) \
+#define SOL_F32_EPSILON FLT_EPSILON
 
-#define sol_f32_eq(lhs, rhs, epsilon)       \
-        sol_f64_eq((lhs), (rhs), (epsilon)) \
+#define sol_f32_lt(lhs, rhs) \
+        sol_f64_lt((lhs), (rhs))
 
-#define sol_f32_gt(lhs, rhs, epsilon)       \
-        sol_f64_gt((lhs), (rhs), (epsilon)) \
+#define sol_f32_eq(lhs, rhs) \
+        sol_f64_eq((lhs), (rhs))
+
+#define sol_f32_gt(lhs, rhs) \
+        sol_f64_gt((lhs), (rhs))
 
 
 
@@ -817,14 +812,20 @@ typedef float sol_f32;
          */
 #define SOL_FLOAT_FMT "f"
 
-#define sol_float_lt(lhs, rhs, epsilon)     \
-        sol_f64_lt((lhs), (rhs), (epsilon)) \
+#if (sol_env_wordsz() == 64)
+#       define SOL_FLOAT_EPSILON SOL_F64_EPSILON
+#else
+#       define SOL_FLOAT_EPSILON SOL_F32_EPSILON
+#endif
 
-#define sol_float_eq(lhs, rhs, epsilon)     \
-        sol_f64_eq((lhs), (rhs), (epsilon)) \
+#define sol_float_lt(lhs, rhs) \
+        sol_f64_lt((lhs), (rhs))
 
-#define sol_float_gt(lhs, rhs, epsilon)     \
-        sol_f64_gt((lhs), (rhs), (epsilon)) \
+#define sol_float_eq(lhs, rhs) \
+        sol_f64_eq((lhs), (rhs))
+
+#define sol_float_gt(lhs, rhs) \
+        sol_f64_gt((lhs), (rhs))
 
 
 
