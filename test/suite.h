@@ -39,69 +39,69 @@
 
 
 
-/*
- *      __sol_tsuite_error() - test suite for exception handling module
- */
+        /*
+         * __sol_tsuite_error() - test suite for exception handling module
+         */
 extern sol_erno __sol_tsuite_error(sol_tlog *log,
-                                   int *pass,
-                                   int *fail,
-                                   int *total);
+                                   sol_uint *pass,
+                                   sol_uint *fail,
+                                   sol_uint *total);
 
 
 
 
-/*
- *      __sol_tsuite_test() - test suite for unit testing module
- */
+        /*
+         * __sol_tsuite_test() - test suite for unit testing module
+         */
 extern sol_erno __sol_tsuite_test(sol_tlog *log,
-                                  int *pass,
-                                  int *fail,
-                                  int *total);
+                                  sol_uint *pass,
+                                  sol_uint *fail,
+                                  sol_uint *total);
 
 
 
 
-/*
- *      __sol_tsuite_hint() - test suite for compiler hints module
- */
+        /*
+         * __sol_tsuite_hint() - test suite for compiler hints module
+         */
 extern sol_erno __sol_tsuite_hint(sol_tlog *log,
-                                  int *pass,
-                                  int *fail,
-                                  int *total);
+                                  sol_uint *pass,
+                                  sol_uint *fail,
+                                  sol_uint *total);
 
 
 
 
-/*
- *      __sol_tests_env() - test suite for environment module
- */
+        /*
+         * __sol_tests_env() - test suite for environment module
+         */
 extern sol_erno __sol_tests_env(sol_tlog *log,
-                                int *pass,
-                                int *fail,
-                                int *total);
+                                sol_uint *pass,
+                                sol_uint *fail,
+                                sol_uint *total);
 
 
 
 
-/*
- *      __sol_tests_ptr() - test suite for the pointer module
- */
+        /*
+         * __sol_tests_ptr() - test suite for the pointer module
+         */
 extern sol_erno __sol_tests_ptr(sol_tlog *log,
-                                int *pass,
-                                int *fail,
-                                int *total);
+                                sol_uint *pass,
+                                sol_uint *fail,
+                                sol_uint *total);
 
 
 
 
-/*
- *      __sol_tests_ptr2() - mock freestanding tests for the pointer module
- */
+        /*
+         * __sol_tests_ptr2() - mock freestanding tests for the pointer module
+         */
 #if (SOL_ENV_HOSTED_NONE != sol_env_host())
         extern sol_erno __sol_tests_ptr2(sol_tlog *log,
-                                         int      *pass,
-                                         int      *fail,
-                                         int      *total);
+                                         sol_uint *pass,
+                                         sol_uint *fail,
+                                         sol_uint *total);
 #else
 #       define __sol_tests_ptr2()
 #endif
@@ -109,13 +109,24 @@ extern sol_erno __sol_tests_ptr(sol_tlog *log,
 
 
 
-/*
- *      __sol_tests_log() - test suite for the logging module
- */
+        /*
+         * __sol_tests_log() - test suite for the logging module
+         */
 extern sol_erno __sol_tests_log(sol_tlog *log,
-                                int *pass,
-                                int *fail,
-                                int *total);
+                                sol_uint *pass,
+                                sol_uint *fail,
+                                sol_uint *total);
+
+
+
+
+        /*
+         * __sol_tests_prim() - test suite for the primitives module
+         */
+extern sol_erno __sol_tests_prim(sol_tlog *log,
+                                 sol_uint *pass,
+                                 sol_uint *fail,
+                                 sol_uint *total);
 
 
 

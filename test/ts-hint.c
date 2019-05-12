@@ -93,7 +93,7 @@ static void clang_on(void)
 /*
  *      mock_hot() - mocks definition of hot function
  */
-static sol_hot int mock_hot(void)
+static sol_hot sol_int mock_hot(void)
 {
         return 1;
 }
@@ -104,7 +104,7 @@ static sol_hot int mock_hot(void)
 /*
  *      mock_cold() - mocks definition of cold function
  */
-static sol_cold int mock_cold(void)
+static sol_cold sol_int mock_cold(void)
 {
         return 1;
 }
@@ -115,7 +115,7 @@ static sol_cold int mock_cold(void)
 /*
  *      mock_inline() - mocks definition of inline function
  */
-static sol_inline int mock_inline(void)
+static sol_inline sol_int mock_inline(void)
 {
         return 1;
 }
@@ -126,7 +126,7 @@ static sol_inline int mock_inline(void)
 /*
  *      mock_restrict() - mocks use of restrict pointer
  */
-static int mock_restrict(int *sol_restrict ptr)
+static int mock_restrict(sol_int *sol_restrict ptr)
 {
         *ptr = 1;
         return *ptr;
@@ -493,7 +493,7 @@ SOL_FINALLY:
 static sol_erno restrict_01(void)
 {
         #define RESTRICT_01 "A pointer marked restricted behaves as expected"
-        auto int tmp = 0;
+        auto sol_int tmp = 0;
 
 SOL_TRY:
                 /* check test condition */
@@ -512,9 +512,9 @@ SOL_FINALLY:
  *      __sol_hint_test() - declared in sol/test/suite.h
  */
 extern sol_erno __sol_tsuite_hint(sol_tlog *log,
-                                  int *pass,
-                                  int *fail,
-                                  int *total)
+                                  sol_uint *pass,
+                                  sol_uint *fail,
+                                  sol_uint *total)
 {
         auto sol_tsuite __ts, *ts = &__ts;
 

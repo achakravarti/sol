@@ -34,8 +34,8 @@
 
 
         /* include required header files */
-#include "./error.h"
-#include <stddef.h>
+#include "error.h"
+#include "prim.h"
 
 
 
@@ -94,7 +94,7 @@ typedef void sol_ptr;
  *        - SOL_ERNO_HEAP if heap memory failure occurs
  */
 extern sol_erno sol_ptr_new(sol_ptr **ptr,
-                            const size_t sz); /* NOLINT */
+                            sol_size sz);
 
 
 
@@ -129,7 +129,7 @@ extern sol_erno sol_ptr_new(sol_ptr **ptr,
  */
 extern sol_erno sol_ptr_copy(sol_ptr **ptr,
                              const sol_ptr *src,
-                             const size_t len); /* NOLINT */
+                             sol_size len);
 
 
 

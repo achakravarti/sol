@@ -34,8 +34,8 @@
 
 
         /* include required header files */
-#include "./hint.h"
-#include <stddef.h>
+#include "hint.h"
+#include "prim.h"
 
 
 
@@ -50,7 +50,7 @@
  *      type can take advantage of the exception handling features provided by
  *      this module.
  */
-typedef size_t sol_erno;
+typedef sol_word sol_erno;
 
 
 
@@ -232,6 +232,17 @@ typedef size_t sol_erno;
 
 
 
+/*
+ *      sol_erno_str() - stringifies error code
+ *        - erno: error code
+ *
+ *      The sol_erno_str() function generates the string representation of a
+ *      sol_erno error code @erno. This function represents @erno in hexadecimal
+ *      notation prefixed with a "0x".
+ *
+ *      Return:
+ *        - string representation of @erno
+ */
 extern const char *sol_erno_str(sol_erno erno);
 
 

@@ -32,6 +32,7 @@
 
 
 
+#include "./prim.h"
 #include "./error.h"
 
 
@@ -111,11 +112,11 @@ typedef void (sol_tlog)(const char *desc,
  *      Although the sol_tsuite type is defined as a transparent type so that it
  *      has no dependence on heap memory interfaces (which may not be available
  *      in freestanding environments), it should be treated as an opaque type,
- *      and unsed only through its interface functions declared below.
+ *      and used only through its interface functions declared below.
  */
 typedef struct __sol_tsuite {
-        int total;
-        int fail;
+        sol_uint total;
+        sol_uint fail;
         char desc[SOL_TSUITE_MAXTCASE][SOL_TCASE_MAXDESCLEN];
         sol_tcase *tcase[SOL_TSUITE_MAXTCASE];
         sol_tlog *tlog;
@@ -236,7 +237,7 @@ extern sol_erno sol_tsuite_register(sol_tsuite *tsuite,
  *        - SOL_ERNO_PTR if an invalid pointer is passed as an argument
  */
 extern sol_erno sol_tsuite_pass(const sol_tsuite *tsuite,
-                                int *pass);
+                                sol_uint *pass);
 
 
 
@@ -258,7 +259,7 @@ extern sol_erno sol_tsuite_pass(const sol_tsuite *tsuite,
  *        - SOL_ERNO_PTR if an invalid pointer is passed as an argument
  */
 extern sol_erno sol_tsuite_fail(const sol_tsuite *tsuite,
-                                int *fail);
+                                sol_uint *fail);
 
 
 
@@ -279,7 +280,7 @@ extern sol_erno sol_tsuite_fail(const sol_tsuite *tsuite,
  *        - SOL_ERNO_PTR if an invalid pointer is passed as an argument
  */
 extern sol_erno sol_tsuite_total(const sol_tsuite *tsuite,
-                                 int *total);
+                                 sol_uint *total);
 
 
 
