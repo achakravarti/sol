@@ -42,7 +42,7 @@ struct list_node {
 
 
 struct __sol_list {
-        sol_elem_delegate *free;
+        sol_elem_delegate_free *free;
         struct list_node *head;
         struct list_node *tail;
         struct list_node *curr;
@@ -95,6 +95,19 @@ SOL_FINALLY:
 
 extern void sol_list_free(sol_list **list)
 {
+        auto sol_list *hnd;
+        auto struct list_node *node;
+
+        if (sol_likely (list && (hnd = *list))) {
+                hnd->curr = hnd->head;
+
+                while ((node = hnd->curr)) {
+                        hnd->curr = hnd->curr->next;
+                        hnd->free(&node->elem);
+                }
+
+                sol_ptr_free((sol_ptr **) list);
+        }
 }
 
 
