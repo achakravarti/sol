@@ -170,7 +170,9 @@ SOL_FINALLY:
 extern sol_erno sol_list_start(sol_list *list)
 {
 SOL_TRY:
-        sol_assert (SOL_BOOL_TRUE, SOL_ERNO_PTR);
+        sol_assert (list, SOL_ERNO_PTR);
+
+        list->curr = list->head;
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
@@ -185,7 +187,9 @@ SOL_FINALLY:
 extern sol_erno sol_list_next(sol_list *list)
 {
 SOL_TRY:
-        sol_assert (SOL_BOOL_TRUE, SOL_ERNO_PTR);
+        sol_assert (list, SOL_ERNO_PTR);
+
+        list->curr = list->curr->next;
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
@@ -201,6 +205,8 @@ extern sol_erno sol_list_end(sol_list *list)
 {
 SOL_TRY:
         sol_assert (SOL_BOOL_TRUE, SOL_ERNO_PTR);
+
+        list->curr = list->tail;
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
