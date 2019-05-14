@@ -46,6 +46,7 @@ struct __sol_list {
         struct list_node *head;
         struct list_node *tail;
         struct list_node *curr;
+        sol_size sz;
         sol_size len;
 };
 
@@ -81,7 +82,7 @@ SOL_TRY:
 
         hnd->free = free;
         hnd->head = hnd->tail = hnd->curr = SOL_PTR_NULL;
-        hnd->len = (sol_size) 0;
+        hnd->sz = hnd->len = (sol_size) 0;
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
@@ -116,7 +117,9 @@ extern void sol_list_free(sol_list **list)
 extern sol_erno sol_list_len(const sol_list *list, sol_size *len)
 {
 SOL_TRY:
-        sol_assert (SOL_BOOL_TRUE, SOL_ERNO_PTR);
+        sol_assert (list && len, SOL_ERNO_PTR);
+
+        *len = list->len;
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
@@ -131,7 +134,10 @@ SOL_FINALLY:
 extern sol_erno sol_list_elem(const sol_list *list, sol_elem **elem)
 {
 SOL_TRY:
-        sol_assert (SOL_BOOL_TRUE, SOL_ERNO_PTR);
+        sol_assert (list, SOL_ERNO_PTR);
+        sol_assert (list->curr, SOL_ERNO_STATE);
+
+        sol_try (sol_ptr_copy(elem, list->curr->elem, list->sz));
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
