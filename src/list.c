@@ -33,7 +33,19 @@
 
 
 
+struct list_node {
+        sol_elem *elem;
+        struct list_node *next;
+};
+
+
+
+
 struct __sol_list {
+        struct list_node *head;
+        struct list_node *tail;
+        struct list_node *curr;
+        sol_size len;
 };
 
 
