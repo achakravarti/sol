@@ -67,6 +67,8 @@ extern sol_erno sol_list_ctor2(sol_list **list,
                                const sol_size sz,
                                sol_elem_delegate_free *free);
 
+extern sol_erno sol_list_copy(sol_list **list, const sol_list *src);
+
 extern void sol_list_free(sol_list **list);
 
 extern sol_erno sol_list_len(const sol_list *list, sol_size *len);

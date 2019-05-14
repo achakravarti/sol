@@ -96,6 +96,23 @@ SOL_FINALLY:
 
 
 
+extern sol_erno sol_list_copy(sol_list **list,
+                              const sol_list *src)
+{
+SOL_TRY:
+        sol_list_free(list);
+        sol_try (sol_ptr_copy((sol_ptr **) list, (sol_ptr *) src, sizeof *src));
+
+SOL_CATCH:
+        sol_log_erno(sol_erno_get());
+
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
 extern void sol_list_free(sol_list **list)
 {
         auto sol_list *hnd;
