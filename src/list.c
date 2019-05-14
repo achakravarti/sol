@@ -61,15 +61,16 @@ static sol_inline void delegate_free(sol_elem **elem)
 
 
 
-extern sol_erno sol_list_ctor(sol_list **list)
+extern sol_erno sol_list_ctor(sol_list **list, const sol_size sz)
 {
-        return sol_list_ctor2(list, &delegate_free);
+        return sol_list_ctor2(list, sz, &delegate_free);
 }
 
 
 
 
 extern sol_erno sol_list_ctor2(sol_list **list,
+                               const sol_size sz,
                                sol_elem_delegate_free *free)
 {
         auto sol_list *hnd;
@@ -82,7 +83,8 @@ SOL_TRY:
 
         hnd->free = free;
         hnd->head = hnd->tail = hnd->curr = SOL_PTR_NULL;
-        hnd->sz = hnd->len = (sol_size) 0;
+        hnd->sz = sz;
+        hnd->len = (sol_size) 0;
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());

@@ -61,9 +61,10 @@ typedef sol_erno (sol_elem_delegate_gt)(const sol_elem *lhs,
 
 typedef struct __sol_list sol_list;
 
-extern sol_erno sol_list_ctor(sol_list **list);
+extern sol_erno sol_list_ctor(sol_list **list, const sol_size sz);
 
 extern sol_erno sol_list_ctor2(sol_list **list,
+                               const sol_size sz,
                                sol_elem_delegate_free *free);
 
 extern void sol_list_free(sol_list **list);
