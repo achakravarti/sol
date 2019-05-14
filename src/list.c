@@ -152,7 +152,10 @@ SOL_FINALLY:
 extern sol_erno sol_list_setelem(sol_list *list, const sol_elem *elem)
 {
 SOL_TRY:
-        sol_assert (SOL_BOOL_TRUE, SOL_ERNO_PTR);
+        sol_assert (list, SOL_ERNO_PTR);
+        sol_assert (list->curr, SOL_ERNO_STATE);
+
+        sol_try (sol_ptr_copy(&list->curr->elem, elem, list->sz));
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
