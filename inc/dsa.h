@@ -51,7 +51,7 @@ typedef sol_erno (sol_elem_delegate_lt)(const sol_elem *lhs,
 
 typedef sol_erno (sol_elem_delegate_eq)(const sol_elem *lhs,
                                         const sol_elem *rhs,
-                                        const SOL_BOOL *eq);
+                                        SOL_BOOL *eq);
 
 typedef sol_erno (sol_elem_delegate_gt)(const sol_elem *lhs,
                                         const sol_elem *rhs,
@@ -77,6 +77,11 @@ extern void sol_elem_delegate_free(sol_elem_delegate **dlg);
 
 extern sol_erno sol_elem_delegate_execdispose(const sol_elem_delegate *dlg,
                                               sol_elem **elem);
+
+extern sol_erno sol_elem_delegate_calleq(const sol_elem_delegate *dlg,
+                                         const sol_elem *lhs,
+                                         const sol_elem *rhs,
+                                         SOL_BOOL *eq);
 
 
 
