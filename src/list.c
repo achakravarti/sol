@@ -239,8 +239,24 @@ SOL_FINALLY:
 
 extern sol_erno sol_list_push(sol_list *list, const sol_elem *elem)
 {
+        auto struct list_node *node = SOL_PTR_NULL;
+
 SOL_TRY:
-        sol_assert (SOL_BOOL_TRUE, SOL_ERNO_PTR);
+        sol_assert (list && elem, SOL_ERNO_PTR);
+
+        sol_try (sol_ptr_new((sol_ptr**)&node, sizeof (*node)));
+        node->elem = node->next = SOL_PTR_NULL;
+
+        sol_try (sol_ptr_copy(&node->elem, elem, list->sz));
+
+        if (!list->head)
+                list->head = node;
+
+        if (list->tail)
+                list->tail->next = node;
+
+        list->tail = node;
+        list->len++;
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
