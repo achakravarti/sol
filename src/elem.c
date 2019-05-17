@@ -135,7 +135,7 @@ extern void sol_elem_delegate_free(sol_elem_delegate **dlg)
 
 
 
-extern sol_erno sol_elem_delegate_execdispose(const sol_elem_delegate *dlg,
+extern sol_erno sol_elem_delegate_calldispose(const sol_elem_delegate *dlg,
                                               sol_elem **elem)
 {
 SOL_TRY:
