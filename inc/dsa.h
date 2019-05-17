@@ -43,7 +43,6 @@ typedef sol_ptr sol_elem;
 
 typedef void (sol_elem_delegate_dispose)(sol_elem **elem);
 
-typedef struct __sol_elem_delegate sol_elem_delegate;
 
 typedef sol_erno (sol_elem_delegate_lt)(const sol_elem *lhs,
                                         const sol_elem *rhs,
@@ -56,6 +55,63 @@ typedef sol_erno (sol_elem_delegate_eq)(const sol_elem *lhs,
 typedef sol_erno (sol_elem_delegate_gt)(const sol_elem *lhs,
                                         const sol_elem *rhs,
                                         SOL_BOOL *gt);
+
+typedef struct __sol_elem_class sol_elem_class;
+
+extern sol_erno sol_elem_class_new(sol_elem_class **cls,
+                                   const sol_index id,
+                                   const sol_size sz);
+
+extern sol_erno sol_elem_class_new2(sol_elem_class **cls,
+                                    const sol_index id,
+                                    const sol_size sz,
+                                    sol_elem_delegate_dispose *disp);
+
+extern sol_erno sol_elem_class_new3(sol_elem_class **cls,
+                                    const sol_index id,
+                                    const sol_size sz,
+                                    sol_elem_delegate_dispose *disp,
+                                    sol_elem_delegate_eq *eq);
+
+extern sol_erno sol_elem_class_new4(sol_elem_class **cls,
+                                    const sol_index id,
+                                    const sol_size sz,
+                                    sol_elem_delegate_dispose *free,
+                                    sol_elem_delegate_eq *eq,
+                                    sol_elem_delegate_lt *lt,
+                                    sol_elem_delegate_gt *gt);
+
+extern sol_erno sol_elem_class_copy(sol_elem_class **cls,
+                                    const sol_elem_class *src);
+
+extern sol_erno sol_elem_class_free(sol_elem_class **cls);
+
+extern sol_erno sol_elem_class_dispose(const sol_elem_class *cls,
+                                       sol_elem **elem);
+
+extern sol_erno sol_elem_class_eq(const sol_elem_class *cls,
+                                  const sol_elem *lhs,
+                                  const sol_elem *rhs,
+                                  SOL_BOOL *eq);
+
+extern sol_erno sol_elem_class_lt(const sol_elem_class *cls,
+                                  const sol_elem *lhs,
+                                  const sol_elem *rhs,
+                                  SOL_BOOL *lt);
+
+extern sol_erno sol_elem_class_gt(const sol_elem_class *cls,
+                                  const sol_elem *lhs,
+                                  const sol_elem *rhs,
+                                  SOL_BOOL *gt);
+
+
+
+
+
+
+typedef struct __sol_elem_delegate sol_elem_delegate;
+
+
 
 extern sol_erno sol_elem_delegate_new(sol_elem_delegate **dlg,
                                       sol_elem_delegate_dispose *disp);
