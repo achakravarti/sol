@@ -47,7 +47,7 @@ typedef struct __sol_elem_delegate sol_elem_delegate;
 
 typedef sol_erno (sol_elem_delegate_lt)(const sol_elem *lhs,
                                         const sol_elem *rhs,
-                                        const SOL_BOOL *lt);
+                                        SOL_BOOL *lt);
 
 typedef sol_erno (sol_elem_delegate_eq)(const sol_elem *lhs,
                                         const sol_elem *rhs,
@@ -82,6 +82,11 @@ extern sol_erno sol_elem_delegate_calleq(const sol_elem_delegate *dlg,
                                          const sol_elem *lhs,
                                          const sol_elem *rhs,
                                          SOL_BOOL *eq);
+
+extern sol_erno sol_elem_delegate_calllt(const sol_elem_delegate *dlg,
+                                         const sol_elem *lhs,
+                                         const sol_elem *rhs,
+                                         SOL_BOOL *lt);
 
 
 
