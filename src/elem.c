@@ -135,6 +135,24 @@ extern void sol_elem_delegate_free(sol_elem_delegate **dlg)
 
 
 
+extern sol_erno sol_elem_delegate_execdispose(const sol_elem_delegate *dlg,
+                                              sol_elem **elem)
+{
+SOL_TRY:
+        sol_assert (dlg, SOL_ERNO_PTR);
+
+        dlg->disp(elem);
+
+SOL_CATCH:
+        sol_log_erno(sol_erno_get());
+
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
 /******************************************************************************
  *                                    EOF
  *          Built on hyperion [Tue Jan 29 02:37:24 UTC 2019]
