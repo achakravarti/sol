@@ -61,17 +61,17 @@ static sol_inline void delegate_free(sol_elem **elem)
 
 
 
-extern sol_erno sol_list_ctor(sol_list **list, const sol_size sz)
+extern sol_erno sol_list_new(sol_list **list, const sol_size sz)
 {
-        return sol_list_ctor2(list, sz, &delegate_free);
+        return sol_list_new2(list, sz, &delegate_free);
 }
 
 
 
 
-extern sol_erno sol_list_ctor2(sol_list **list,
-                               const sol_size sz,
-                               sol_elem_delegate_free *free)
+extern sol_erno sol_list_new2(sol_list **list,
+                              const sol_size sz,
+                              sol_elem_delegate_free *free)
 {
         auto sol_list *hnd;
 
