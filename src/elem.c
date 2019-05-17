@@ -193,6 +193,26 @@ SOL_FINALLY:
 
 
 
+extern sol_erno sol_elem_delegate_callgt(const sol_elem_delegate *dlg,
+                                         const sol_elem *lhs,
+                                         const sol_elem *rhs,
+                                         SOL_BOOL *gt)
+{
+SOL_TRY:
+        sol_assert (dlg, SOL_ERNO_PTR);
+
+        dlg->gt(lhs, rhs, gt);
+
+SOL_CATCH:
+        sol_log_erno(sol_erno_get());
+
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
 /******************************************************************************
  *                                    EOF
  *          Built on hyperion [Tue Jan 29 02:37:24 UTC 2019]
