@@ -254,8 +254,24 @@ SOL_FINALLY:
 
 extern sol_erno sol_list_pop(sol_list *list)
 {
+        register sol_index i;
+
 SOL_TRY:
-        sol_assert (SOL_BOOL_TRUE, SOL_ERNO_PTR);
+        sol_assert (list, SOL_ERNO_PTR);
+
+        if (sol_likely (list->tail)) {
+                list->free(&list->tail->elem);
+                sol_ptr_free((sol_ptr**) &list->tail);
+
+                list->curr = list->head;
+                list->len--;
+
+                for (i = (sol_index) 0; i < list->len; i++)
+                        list->curr = list->curr->next;
+
+                list->curr->next = SOL_PTR_NULL;
+                list->tail = list->curr;
+        }
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
