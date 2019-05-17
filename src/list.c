@@ -71,7 +71,7 @@ extern sol_erno sol_list_new(sol_list **list, const sol_size sz)
 
 extern sol_erno sol_list_new2(sol_list **list,
                               const sol_size sz,
-                              sol_elem_delegate_free *free)
+                              sol_elem_delegate_dispose *free)
 {
         auto sol_list *hnd;
 

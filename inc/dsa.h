@@ -58,10 +58,10 @@ typedef sol_erno (sol_elem_delegate_gt)(const sol_elem *lhs,
                                         const SOL_BOOL *gt);
 
 extern sol_erno sol_elem_delegate_new(sol_elem_delegate **dlg,
-                                      sol_elem_delegate_free *free);
+                                      sol_elem_delegate_dispose *disp);
 
 extern sol_erno sol_elem_delegate_new2(sol_elem_delegate **dlg,
-                                       sol_elem_delegate_free *free,
+                                       sol_elem_delegate_dispose *disp,
                                        sol_elem_delegate_eq *eq);
 
 extern sol_erno sol_elem_delegate_new3(sol_elem_delegate **dlg,
@@ -84,7 +84,7 @@ extern sol_erno sol_list_new(sol_list **list, const sol_size sz);
 
 extern sol_erno sol_list_new2(sol_list **list,
                               const sol_size sz,
-                              sol_elem_delegate_free *free);
+                              sol_elem_delegate_dispose *free);
 
 extern sol_erno sol_list_copy(sol_list **list, const sol_list *src);
 
