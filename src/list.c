@@ -42,7 +42,7 @@ struct list_node {
 
 
 struct __sol_list {
-        sol_elem_delegate_free *free;
+        sol_elem_delegate_dispose *free;
         struct list_node *head;
         struct list_node *tail;
         struct list_node *curr;

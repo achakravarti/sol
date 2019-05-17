@@ -41,7 +41,9 @@
 
 typedef sol_ptr sol_elem;
 
-typedef void (sol_elem_delegate_free)(sol_elem **elem);
+typedef void (sol_elem_delegate_dispose)(sol_elem **elem);
+
+typedef struct __sol_elem_delegate sol_elem_delegate;
 
 typedef sol_erno (sol_elem_delegate_lt)(const sol_elem *lhs,
                                         const sol_elem *rhs,
@@ -55,6 +57,23 @@ typedef sol_erno (sol_elem_delegate_gt)(const sol_elem *lhs,
                                         const sol_elem *rhs,
                                         const SOL_BOOL *gt);
 
+extern sol_erno sol_elem_delegate_new(sol_elem_delegate **dlg,
+                                      sol_elem_delegate_free *free);
+
+extern sol_erno sol_elem_delegate_new2(sol_elem_delegate **dlg,
+                                       sol_elem_delegate_free *free,
+                                       sol_elem_delegate_eq *eq);
+
+extern sol_erno sol_elem_delegate_new3(sol_elem_delegate **dlg,
+                                       sol_elem_delegate_dispose *disp,
+                                       sol_elem_delegate_eq *eq,
+                                       sol_elem_delegate_lt *lt,
+                                       sol_elem_delegate_gt *gt);
+
+extern sol_erno sol_elem_delegate_copy(sol_elem_delegate **dlg,
+                                       const sol_elem_delegate *src);
+
+extern void sol_elem_delegate_free(sol_elem_delegate **dlg);
 
 
 
