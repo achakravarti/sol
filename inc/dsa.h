@@ -84,10 +84,9 @@ extern sol_erno sol_elem_class_new4(sol_elem_class **cls,
 extern sol_erno sol_elem_class_copy(sol_elem_class **cls,
                                     const sol_elem_class *src);
 
-extern sol_erno sol_elem_class_free(sol_elem_class **cls);
+extern void sol_elem_class_free(sol_elem_class **cls);
 
-extern sol_erno sol_elem_class_dispose(const sol_elem_class *cls,
-                                       sol_elem **elem);
+extern void sol_elem_class_dispose(const sol_elem_class *cls, sol_elem **elem);
 
 extern sol_erno sol_elem_class_eq(const sol_elem_class *cls,
                                   const sol_elem *lhs,
@@ -103,8 +102,6 @@ extern sol_erno sol_elem_class_gt(const sol_elem_class *cls,
                                   const sol_elem *lhs,
                                   const sol_elem *rhs,
                                   SOL_BOOL *gt);
-
-
 
 
 
