@@ -106,49 +106,6 @@ extern sol_erno sol_elem_class_gt(const sol_elem_class *cls,
 
 
 
-typedef struct __sol_elem_delegate sol_elem_delegate;
-
-
-
-extern sol_erno sol_elem_delegate_new(sol_elem_delegate **dlg,
-                                      sol_elem_delegate_dispose *disp);
-
-extern sol_erno sol_elem_delegate_new2(sol_elem_delegate **dlg,
-                                       sol_elem_delegate_dispose *disp,
-                                       sol_elem_delegate_eq *eq);
-
-extern sol_erno sol_elem_delegate_new3(sol_elem_delegate **dlg,
-                                       sol_elem_delegate_dispose *disp,
-                                       sol_elem_delegate_eq *eq,
-                                       sol_elem_delegate_lt *lt,
-                                       sol_elem_delegate_gt *gt);
-
-extern sol_erno sol_elem_delegate_copy(sol_elem_delegate **dlg,
-                                       const sol_elem_delegate *src);
-
-extern void sol_elem_delegate_free(sol_elem_delegate **dlg);
-
-extern sol_erno sol_elem_delegate_calldispose(const sol_elem_delegate *dlg,
-                                              sol_elem **elem);
-
-extern sol_erno sol_elem_delegate_calleq(const sol_elem_delegate *dlg,
-                                         const sol_elem *lhs,
-                                         const sol_elem *rhs,
-                                         SOL_BOOL *eq);
-
-extern sol_erno sol_elem_delegate_calllt(const sol_elem_delegate *dlg,
-                                         const sol_elem *lhs,
-                                         const sol_elem *rhs,
-                                         SOL_BOOL *lt);
-
-extern sol_erno sol_elem_delegate_callgt(const sol_elem_delegate *dlg,
-                                         const sol_elem *lhs,
-                                         const sol_elem *rhs,
-                                         SOL_BOOL *gt);
-
-
-
-
 typedef struct __sol_list sol_list;
 
 extern sol_erno sol_list_new(sol_list **list, const sol_size sz);
