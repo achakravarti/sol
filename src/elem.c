@@ -124,8 +124,10 @@ SOL_FINALLY:
 
 extern void sol_elem_delegate_free(sol_elem_delegate **dlg)
 {
+        auto sol_elem_delegate *hnd;
+
         if (sol_likely (dlg && *dlg)) {
-                if (!(--(*dlg)))
+                if ((hnd = *dlg) && !(--hnd->nref))
                         sol_ptr_free((sol_ptr **) dlg);
         }
 }
