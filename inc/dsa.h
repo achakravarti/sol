@@ -56,10 +56,10 @@ typedef sol_erno (sol_elem_delegate_gt)(const sol_ptr *lhs,
                                         const sol_ptr *rhs,
                                         SOL_BOOL *gt);
 
-typedef struct __sol_elem_class sol_elem_class;
+typedef struct __sol_elem_meta sol_elem_meta;
 
 extern sol_erno sol_elem_new(sol_elem **elem,
-                             const sol_elem_class *meta,
+                             const sol_elem_meta *meta,
                              const sol_ptr *data);
 
 extern sol_erno sol_elem_copy(sol_elem **elem, const sol_elem *src);
@@ -86,22 +86,22 @@ extern sol_erno sol_elem_data(const sol_elem *elem, sol_ptr **data);
 
 extern sol_erno sol_elem_setdata(sol_elem *elem, const sol_ptr *data);
 
-extern sol_erno sol_elem_class_new(sol_elem_class **cls,
+extern sol_erno sol_elem_meta_new(sol_elem_meta **meta,
                                    const sol_index id,
                                    const sol_size sz);
 
-extern sol_erno sol_elem_class_new2(sol_elem_class **cls,
+extern sol_erno sol_elem_meta_new2(sol_elem_meta **meta,
                                     const sol_index id,
                                     const sol_size sz,
                                     sol_elem_delegate_dispose *disp);
 
-extern sol_erno sol_elem_class_new3(sol_elem_class **cls,
+extern sol_erno sol_elem_meta_new3(sol_elem_meta **meta,
                                     const sol_index id,
                                     const sol_size sz,
                                     sol_elem_delegate_dispose *disp,
                                     sol_elem_delegate_eq *eq);
 
-extern sol_erno sol_elem_class_new4(sol_elem_class **cls,
+extern sol_erno sol_elem_meta_new4(sol_elem_meta **meta,
                                     const sol_index id,
                                     const sol_size sz,
                                     sol_elem_delegate_dispose *free,
@@ -109,10 +109,10 @@ extern sol_erno sol_elem_class_new4(sol_elem_class **cls,
                                     sol_elem_delegate_lt *lt,
                                     sol_elem_delegate_gt *gt);
 
-extern sol_erno sol_elem_class_copy(sol_elem_class **cls,
-                                    const sol_elem_class *src);
+extern sol_erno sol_elem_meta_copy(sol_elem_meta **meta,
+                                    const sol_elem_meta *src);
 
-extern void sol_elem_class_free(sol_elem_class **cls);
+extern void sol_elem_meta_free(sol_elem_meta **meta);
 
 
 

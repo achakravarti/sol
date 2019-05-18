@@ -35,14 +35,14 @@
 
 struct __sol_elem {
         sol_ptr *data;
-        sol_elem_class *meta;
+        sol_elem_meta *meta;
         sol_size nref;
 };
 
 
 
 
-struct __sol_elem_class {
+struct __sol_elem_meta {
         sol_index id;
         sol_size sz;
         sol_size nref;
@@ -56,7 +56,7 @@ struct __sol_elem_class {
 
 
 extern sol_erno sol_elem_new(sol_elem **elem,
-                             const sol_elem_class *meta,
+                             const sol_elem_meta *meta,
                              const sol_ptr *data)
 {
         auto sol_elem *hnd;
@@ -69,7 +69,7 @@ SOL_TRY:
         hnd->nref = (sol_size) 1;
 
         hnd->meta = hnd->data = SOL_PTR_NULL;
-        sol_try (sol_elem_class_copy(&hnd->meta, meta));
+        sol_try (sol_elem_meta_copy(&hnd->meta, meta));
         sol_try (sol_ptr_copy(&hnd->data, data, meta->sz));
 
 SOL_CATCH:
@@ -236,7 +236,7 @@ SOL_FINALLY:
 
 extern sol_erno sol_elem_setdata(sol_elem *elem, const sol_ptr *data)
 {
-        auto sol_elem_class *meta;
+        auto sol_elem_meta *meta;
 
 SOL_TRY:
         sol_assert (elem, SOL_ERNO_PTR);
@@ -270,7 +270,7 @@ SOL_FINALLY:
 
 
 
-static sol_erno class_init(sol_elem_class **cls,
+static sol_erno class_init(sol_elem_meta **meta,
                            const sol_index id,
                            const sol_size sz,
                            sol_elem_delegate_dispose *disp,
@@ -278,13 +278,13 @@ static sol_erno class_init(sol_elem_class **cls,
                            sol_elem_delegate_lt *lt,
                            sol_elem_delegate_gt *gt)
 {
-        auto sol_elem_class *hnd;
+        auto sol_elem_meta *hnd;
 
 SOL_TRY:
         sol_assert (sz, SOL_ERNO_RANGE);
 
-        sol_try (sol_ptr_new((sol_ptr **) cls, sizeof (**cls)));
-        hnd = *cls;
+        sol_try (sol_ptr_new((sol_ptr **) meta, sizeof (**meta)));
+        hnd = *meta;
         hnd->nref = (sol_size) 1;
 
         hnd->id = id;
@@ -304,11 +304,11 @@ SOL_FINALLY:
 
 
 
-extern sol_erno sol_elem_class_new(sol_elem_class **cls,
+extern sol_erno sol_elem_meta_new(sol_elem_meta **meta,
                                    const sol_index id,
                                    const sol_size sz)
 {
-        return class_init(cls,
+        return class_init(meta,
                           id,
                           sz,
                           SOL_PTR_NULL,
@@ -320,12 +320,12 @@ extern sol_erno sol_elem_class_new(sol_elem_class **cls,
 
 
 
-extern sol_erno sol_elem_class_new2(sol_elem_class **cls,
+extern sol_erno sol_elem_meta_new2(sol_elem_meta **meta,
                                     const sol_index id,
                                     const sol_size sz,
                                     sol_elem_delegate_dispose *disp)
 {
-        return class_init(cls,
+        return class_init(meta,
                           id,
                           sz,
                           disp,
@@ -337,19 +337,19 @@ extern sol_erno sol_elem_class_new2(sol_elem_class **cls,
 
 
 
-extern sol_erno sol_elem_class_new3(sol_elem_class **cls,
+extern sol_erno sol_elem_meta_new3(sol_elem_meta **meta,
                                     const sol_index id,
                                     const sol_size sz,
                                     sol_elem_delegate_dispose *disp,
                                     sol_elem_delegate_eq *eq)
 {
-        return class_init(cls, id, sz, disp, eq, SOL_PTR_NULL, SOL_PTR_NULL);
+        return class_init(meta, id, sz, disp, eq, SOL_PTR_NULL, SOL_PTR_NULL);
 }
 
 
 
 
-extern sol_erno sol_elem_class_new4(sol_elem_class **cls,
+extern sol_erno sol_elem_meta_new4(sol_elem_meta **meta,
                                     const sol_index id,
                                     const sol_size sz,
                                     sol_elem_delegate_dispose *disp,
@@ -360,7 +360,7 @@ extern sol_erno sol_elem_class_new4(sol_elem_class **cls,
 SOL_TRY:
         sol_assert (disp && eq && lt && gt, SOL_ERNO_PTR);
 
-        sol_try (class_init(cls, id, sz, disp, eq, lt, gt));
+        sol_try (class_init(meta, id, sz, disp, eq, lt, gt));
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
@@ -372,16 +372,16 @@ SOL_FINALLY:
 
 
 
-extern sol_erno sol_elem_class_copy(sol_elem_class **cls,
-                                    const sol_elem_class *src)
+extern sol_erno sol_elem_meta_copy(sol_elem_meta **meta,
+                                    const sol_elem_meta *src)
 {
-        auto sol_elem_class *hnd;
+        auto sol_elem_meta *hnd;
 
 SOL_TRY:
-        sol_assert (cls && src, SOL_ERNO_PTR);
-        sol_assert (!(hnd = *cls), SOL_ERNO_STATE);
+        sol_assert (meta && src, SOL_ERNO_PTR);
+        sol_assert (!(hnd = *meta), SOL_ERNO_STATE);
 
-        hnd = (sol_elem_class *) src;
+        hnd = (sol_elem_meta *) src;
         hnd->nref++;
 
 SOL_CATCH:
@@ -394,13 +394,13 @@ SOL_FINALLY:
 
 
 
-extern void sol_elem_class_free(sol_elem_class **cls)
+extern void sol_elem_meta_free(sol_elem_meta **meta)
 {
-        auto sol_elem_class *hnd;
+        auto sol_elem_meta *hnd;
 
-        if (sol_likely (cls && (hnd = *cls))) {
+        if (sol_likely (meta && (hnd = *meta))) {
                 if (!(--hnd->nref))
-                        sol_ptr_free ((sol_ptr **) cls);
+                        sol_ptr_free ((sol_ptr **) meta);
                 else
                         hnd = SOL_PTR_NULL;
         }
