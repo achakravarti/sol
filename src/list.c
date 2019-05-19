@@ -187,7 +187,7 @@ SOL_TRY:
         sol_assert (list, SOL_ERNO_PTR);
         sol_assert (list->curr, SOL_ERNO_STATE);
 
-        sol_try (sol_ptr_copy(elem, list->curr->elem, list->sz));
+        sol_try (sol_elem_copy(elem, list->curr->elem));
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
