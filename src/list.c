@@ -64,9 +64,12 @@ static sol_erno list_fork(sol_list **list)
         auto struct list_node *mark;
 
 SOL_TRY:
-        src = *list;
-        src->nref--;
+        sol_assert ((src = *list), SOL_ERNO_STATE);
 
+        if (src->nref == (sol_size) 1)
+                return SOL_ERNO_NULL;
+
+        src->nref--;
         *list = SOL_PTR_NULL;
         sol_try (sol_list_new(list, src->meta));
         hnd = *list;
@@ -207,12 +210,10 @@ SOL_TRY:
         sol_assert (list && (hnd = *list), SOL_ERNO_PTR);
         sol_assert (hnd->curr, SOL_ERNO_STATE);
 
-        if (hnd->nref > (sol_size) 1) {
-                sol_try (list_fork(list));
-                hnd = *list;
-        }
+        sol_try (list_fork(list));
+        hnd = *list;
 
-        sol_try (sol_elem_copy(&hnd->curr->elem, elem));
+        sol_try (sol_elem_copy(hnd->curr->elem, elem));
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
@@ -229,12 +230,10 @@ extern sol_erno sol_list_start(sol_list **list)
         auto sol_list *hnd;
 
 SOL_TRY:
-        sol_assert (list && (hnd = *list), SOL_ERNO_PTR);
+        sol_assert (list, SOL_ERNO_PTR);
 
-        if (hnd->nref > (sol_size) 1) {
-                sol_try (list_fork(list));
-                hnd = *list;
-        }
+        sol_try (list_fork(list));
+        hnd = *list;
 
         hnd->curr = hnd->head;
         hnd->idx = (sol_index) 0;
@@ -254,12 +253,10 @@ extern sol_erno sol_list_next(sol_list **list)
         auto sol_list *hnd;
 
 SOL_TRY:
-        sol_assert (list && (hnd = *list), SOL_ERNO_PTR);
+        sol_assert (list, SOL_ERNO_PTR);
 
-        if (hnd->nref > (sol_size) 1) {
-                sol_try (list_fork(list));
-                hnd = *list;
-        }
+        sol_try (list_fork(list));
+        hnd = *list;
 
         hnd->curr = hnd->curr->next;
         hnd->idx++;
@@ -279,12 +276,10 @@ extern sol_erno sol_list_end(sol_list **list)
         auto sol_list *hnd;
 
 SOL_TRY:
-        sol_assert (SOL_BOOL_TRUE, SOL_ERNO_PTR);
+        sol_assert (list, SOL_ERNO_PTR);
 
-        if (hnd->nref > (sol_size) 1) {
-                sol_try (list_fork(list));
-                hnd = *list;
-        }
+        sol_try (list_fork(list));
+        hnd = *list;
 
         hnd->curr = hnd->tail;
         hnd->idx = hnd->len;
