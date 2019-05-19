@@ -122,14 +122,20 @@ extern void sol_list_free(sol_list **list)
         auto struct list_node *node;
 
         if (sol_likely (list && (hnd = *list))) {
-                hnd->curr = hnd->head;
+                if (!(--hnd->nref)) {
+                        hnd->curr = hnd->head;
 
-                while ((node = hnd->curr)) {
-                        hnd->curr = hnd->curr->next;
-                        hnd->free(&node->elem);
+                        while ((node = hnd->curr)) {
+                                hnd->curr = hnd->curr->next;
+                                sol_elem_free(&node->elem);
+                        }
+
+                        sol_ptr_free((sol_ptr **) list);
                 }
 
-                sol_ptr_free((sol_ptr **) list);
+                else {
+                        hnd = SOL_PTR_NULL;
+                }
         }
 }
 
