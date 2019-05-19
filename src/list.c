@@ -50,26 +50,47 @@ struct __sol_list {
         struct list_node *curr;
         sol_elem_meta *meta;
         sol_size len;
+        sol_index idx;
         sol_size nref;
 };
 
 
 
 
-static sol_inline void delegate_free(sol_elem **elem)
+static sol_erno list_fork(sol_list **list)
 {
-        (void) elem;
+        register sol_index i;
+        register sol_list *src, *hnd;
+        auto struct list_node *mark;
+
+SOL_TRY:
+        src = *list;
+        src->nref--;
+
+        *list = SOL_PTR_NULL;
+        sol_try (sol_list_new(list, src->meta));
+        hnd = *list;
+
+        mark = src->curr;
+
+        for (i = (sol_index) 0; i < src->len; i++) {
+                src->curr = src->curr->next;
+                sol_try (sol_list_push(*list, src->curr->elem));
+        }
+
+        src->curr = mark;
+
+        for (i = (sol_index) 0; i < src->idx; i++)
+                hnd->idx++;
+
+SOL_CATCH:
+        sol_log_erno(sol_erno_get());
+
+SOL_FINALLY:
+        return sol_erno_get();
 }
 
 
-
-
-#if 0
-extern sol_erno sol_list_new(sol_list **list, const sol_size sz)
-{
-        return sol_list_new2(list, sz, &delegate_free);
-}
-#endif
 
 extern sol_erno sol_list_new(sol_list **list, const sol_elem_meta *meta)
 {
@@ -83,6 +104,7 @@ SOL_TRY:
 
         hnd->head = hnd->tail = hnd->curr = SOL_PTR_NULL;
         hnd->len = (sol_size) 0;
+        hnd->idx = (sol_index) 0;
         hnd->nref = (sol_size) 1;
 
 SOL_CATCH:
@@ -177,13 +199,20 @@ SOL_FINALLY:
 
 
 
-extern sol_erno sol_list_setelem(sol_list *list, const sol_elem *elem)
+extern sol_erno sol_list_setelem(sol_list **list, const sol_elem *elem)
 {
-SOL_TRY:
-        sol_assert (list, SOL_ERNO_PTR);
-        sol_assert (list->curr, SOL_ERNO_STATE);
+        auto sol_list *hnd;
 
-        sol_try (sol_ptr_copy(&list->curr->elem, elem, list->sz));
+SOL_TRY:
+        sol_assert (list && (hnd = *list), SOL_ERNO_PTR);
+        sol_assert (hnd->curr, SOL_ERNO_STATE);
+
+        if (hnd->nref > (sol_size) 1) {
+                sol_try (list_fork(list));
+                hnd = *list;
+        }
+
+        sol_try (sol_elem_copy(&hnd->curr->elem, elem));
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
@@ -201,6 +230,7 @@ SOL_TRY:
         sol_assert (list, SOL_ERNO_PTR);
 
         list->curr = list->head;
+        list->idx = (sol_index) 0;
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
@@ -218,6 +248,7 @@ SOL_TRY:
         sol_assert (list, SOL_ERNO_PTR);
 
         list->curr = list->curr->next;
+        list->idx++;
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
@@ -235,6 +266,7 @@ SOL_TRY:
         sol_assert (SOL_BOOL_TRUE, SOL_ERNO_PTR);
 
         list->curr = list->tail;
+        list->idx = list->len;
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());

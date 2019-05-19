@@ -129,7 +129,7 @@ extern sol_erno sol_list_len(const sol_list *list, sol_size *len);
 
 extern sol_erno sol_list_elem(const sol_list *list, sol_elem **elem);
 
-extern sol_erno sol_list_setelem(sol_list *list, const sol_elem *elem);
+extern sol_erno sol_list_setelem(sol_list **list, const sol_elem *elem);
 
 extern sol_erno sol_list_start(sol_list *list);
 
