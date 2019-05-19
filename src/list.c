@@ -43,11 +43,14 @@ struct list_node {
 
 struct __sol_list {
         sol_elem_delegate_dispose *free;
+        sol_size sz;
+
         struct list_node *head;
         struct list_node *tail;
         struct list_node *curr;
-        sol_size sz;
+        sol_elem_meta *meta;
         sol_size len;
+        sol_size nref;
 };
 
 
@@ -61,30 +64,26 @@ static sol_inline void delegate_free(sol_elem **elem)
 
 
 
+#if 0
 extern sol_erno sol_list_new(sol_list **list, const sol_size sz)
 {
         return sol_list_new2(list, sz, &delegate_free);
 }
+#endif
 
-
-
-
-extern sol_erno sol_list_new2(sol_list **list,
-                              const sol_size sz,
-                              sol_elem_delegate_dispose *free)
+extern sol_erno sol_list_new(sol_list **list, const sol_elem_meta *meta)
 {
         auto sol_list *hnd;
 
 SOL_TRY:
-        sol_assert (free, SOL_ERNO_PTR);
+        sol_assert (meta, SOL_ERNO_PTR);
 
         sol_try (sol_ptr_new((sol_ptr **) list, sizeof (**list)));
         hnd = *list;
 
-        hnd->free = free;
         hnd->head = hnd->tail = hnd->curr = SOL_PTR_NULL;
-        hnd->sz = sz;
         hnd->len = (sol_size) 0;
+        hnd->nref = (sol_size) 1;
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());

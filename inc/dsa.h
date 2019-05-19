@@ -119,11 +119,7 @@ extern void sol_elem_meta_free(sol_elem_meta **meta);
 
 typedef struct __sol_list sol_list;
 
-extern sol_erno sol_list_new(sol_list **list, const sol_size sz);
-
-extern sol_erno sol_list_new2(sol_list **list,
-                              const sol_size sz,
-                              sol_elem_delegate_dispose *free);
+extern sol_erno sol_list_new(sol_list **list, const sol_elem_meta *meta);
 
 extern sol_erno sol_list_copy(sol_list **list, const sol_list *src);
 
