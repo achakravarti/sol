@@ -309,6 +309,37 @@ SOL_FINALLY:
 
 
 
+static sol_erno meta_new4_test3(void)
+{
+        #define META_NEW4_TEST3 "sol_elem_meta_new4() throws SOL_ERNO_PTR" \
+                                " if passed a null pointer for @disp"
+        const sol_index ID = (sol_index) 1;
+        const sol_index SZ = (sol_index) 0;
+
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+
+SOL_TRY:
+        sol_try (sol_elem_meta_new4(&meta,
+                                    ID,
+                                    SZ,
+                                    SOL_PTR_NULL,
+                                    mock_cmp,
+                                    mock_cmp,
+                                    mock_cmp));
+
+SOL_CATCH:
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+        sol_elem_meta_free(&meta);
+        return sol_erno_get();
+}
+
+
+
+
 extern sol_erno __sol_tests_elem(sol_tlog *log,
                                  sol_uint *pass,
                                  sol_uint *fail,
@@ -334,6 +365,7 @@ SOL_TRY:
 
         sol_try (sol_tsuite_register(ts, meta_new4_test1, META_NEW4_TEST1));
         sol_try (sol_tsuite_register(ts, meta_new4_test2, META_NEW4_TEST2));
+        sol_try (sol_tsuite_register(ts, meta_new4_test3, META_NEW4_TEST3));
 
         sol_try (sol_tsuite_exec(ts));
         sol_try (sol_tsuite_pass(ts, pass));
