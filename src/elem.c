@@ -235,7 +235,7 @@ SOL_FINALLY:
 
 
 
-static sol_erno class_init(sol_elem_meta **meta,
+static sol_erno meta_init(sol_elem_meta **meta,
                            const sol_index id,
                            const sol_size sz,
                            sol_elem_delegate_dispose *disp,
@@ -273,7 +273,7 @@ extern sol_erno sol_elem_meta_new(sol_elem_meta **meta,
                                    const sol_index id,
                                    const sol_size sz)
 {
-        return class_init(meta,
+        return meta_init(meta,
                           id,
                           sz,
                           SOL_PTR_NULL,
@@ -290,7 +290,7 @@ extern sol_erno sol_elem_meta_new2(sol_elem_meta **meta,
                                     const sol_size sz,
                                     sol_elem_delegate_dispose *disp)
 {
-        return class_init(meta,
+        return meta_init(meta,
                           id,
                           sz,
                           disp,
@@ -308,7 +308,7 @@ extern sol_erno sol_elem_meta_new3(sol_elem_meta **meta,
                                     sol_elem_delegate_dispose *disp,
                                     sol_elem_delegate_eq *eq)
 {
-        return class_init(meta, id, sz, disp, eq, SOL_PTR_NULL, SOL_PTR_NULL);
+        return meta_init(meta, id, sz, disp, eq, SOL_PTR_NULL, SOL_PTR_NULL);
 }
 
 
