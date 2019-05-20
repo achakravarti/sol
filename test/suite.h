@@ -131,6 +131,17 @@ extern sol_erno __sol_tests_prim(sol_tlog *log,
 
 
 
+        /*
+         * __sol_tests_elem() - test suite for the element interface
+         */
+extern sol_erno __sol_tests_elem(sol_tlog *log,
+                                 sol_uint *pass,
+                                 sol_uint *fail,
+                                 sol_uint *total);
+
+
+
+
 #endif /* !defined __SOL_LIBRARY_TEST_SUITES */
 
 

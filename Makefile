@@ -62,9 +62,16 @@ INP_SO  = $(DIR_BLD)/error.o \
 	  $(DIR_BLD)/prim.o  \
 	  $(DIR_BLD)/elem.o  \
 	  $(DIR_BLD)/list.o
-INP_LD  = $(DIR_TEST)/runner.c $(DIR_TEST)/ts-error.c $(DIR_TEST)/ts-test.c \
-	  $(DIR_TEST)/ts-hint.c $(DIR_TEST)/ts-env.c $(DIR_TEST)/ts-ptr.c   \
-	  $(DIR_TEST)/ts-ptr2.c $(DIR_TEST)/ts-log.o $(DIR_TEST)/ts-prim.o
+INP_LD  = $(DIR_TEST)/runner.c   \
+	  $(DIR_TEST)/ts-error.c \
+	  $(DIR_TEST)/ts-test.c  \
+	  $(DIR_TEST)/ts-hint.c  \
+	  $(DIR_TEST)/ts-env.c   \
+	  $(DIR_TEST)/ts-ptr.c   \
+	  $(DIR_TEST)/ts-ptr2.c  \
+	  $(DIR_TEST)/ts-log.o   \
+	  $(DIR_TEST)/ts-prim.o  \
+	  $(DIR_TEST)/ts-elem.o
 INP_COV = $(DIR_BLD)/error.gcda $(DIR_BLD)/test.gcda $(DIR_BLD)/ptr.gcda \
 	  $(DIR_BLD)/log.gcda
 INP_RUN = $(DIR_BLD)/test.log

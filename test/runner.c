@@ -72,6 +72,7 @@ typedef enum {
         SUITE_PTR2,
         SUITE_LOG,
         SUITE_PRIM,
+        SUITE_ELEM,
         SUITE_COUNT
 } SUITE;
 
@@ -286,6 +287,7 @@ static void suite_init(void)
         suite_hnd[SUITE_PTR2] = __sol_tests_ptr2;
         suite_hnd[SUITE_LOG] = __sol_tests_log;
         suite_hnd[SUITE_PRIM] = __sol_tests_prim;
+        suite_hnd[SUITE_ELEM] = __sol_tests_elem;
 }
 
 
