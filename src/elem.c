@@ -274,29 +274,38 @@ extern sol_erno sol_elem_meta_new(sol_elem_meta **meta,
                                    const sol_size sz)
 {
         return meta_init(meta,
-                          id,
-                          sz,
-                          SOL_PTR_NULL,
-                          SOL_PTR_NULL,
-                          SOL_PTR_NULL,
-                          SOL_PTR_NULL);
+                         id,
+                         sz,
+                         SOL_PTR_NULL,
+                         SOL_PTR_NULL,
+                         SOL_PTR_NULL,
+                         SOL_PTR_NULL);
 }
 
 
 
 
 extern sol_erno sol_elem_meta_new2(sol_elem_meta **meta,
-                                    const sol_index id,
-                                    const sol_size sz,
-                                    sol_elem_delegate_dispose *disp)
+                                   const sol_index id,
+                                   const sol_size sz,
+                                   sol_elem_delegate_dispose *disp)
 {
-        return meta_init(meta,
-                          id,
-                          sz,
-                          disp,
-                          SOL_PTR_NULL,
-                          SOL_PTR_NULL,
-                          SOL_PTR_NULL);
+SOL_TRY:
+        sol_assert (disp, SOL_ERNO_PTR);
+
+        sol_try (meta_init(meta,
+                           id,
+                           sz,
+                           disp,
+                           SOL_PTR_NULL,
+                           SOL_PTR_NULL,
+                           SOL_PTR_NULL));
+
+SOL_CATCH:
+        sol_log_erno(sol_erno_get());
+
+SOL_FINALLY:
+        return sol_erno_get();
 }
 
 
