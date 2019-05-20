@@ -33,6 +33,28 @@
 
 
 
+static void mock_dispose(sol_ptr **disp)
+{
+        (void) disp;
+}
+
+
+
+
+static sol_erno mock_cmp(const sol_ptr *lhs,
+                         const sol_ptr *rhs,
+                         SOL_BOOL *cmp)
+{
+        (void) lhs;
+        (void) rhs;
+        (void) cmp;
+
+        return SOL_ERNO_NULL;
+}
+
+
+
+
 static sol_erno meta_new_test1(void)
 {
         #define META_NEW_TEST1 "sol_elem_meta_new() throws SOL_ERNO_PTR if" \
@@ -79,28 +101,6 @@ SOL_FINALLY:
 
 
 
-static void mock_dispose(sol_ptr **disp)
-{
-        (void) disp;
-}
-
-
-
-
-static sol_erno mock_cmp(const sol_ptr *lhs,
-                         const sol_ptr *rhs,
-                         SOL_BOOL *cmp)
-{
-        (void) lhs;
-        (void) rhs;
-        (void) cmp;
-
-        return SOL_ERNO_NULL;
-}
-
-
-
-
 static sol_erno meta_new2_test1(void)
 {
         #define META_NEW2_TEST1 "sol_elem_meta_new2() throws SOL_ERNO_PTR if" \
@@ -113,6 +113,30 @@ SOL_TRY:
 
 SOL_CATCH:
         sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
+static sol_erno meta_new2_test2(void)
+{
+        #define META_NEW2_TEST2 "sol_elem_meta_new2() throws SOL_ERNO_RANGE" \
+                               " passed zero for @sz"
+        const sol_index ID = (sol_index) 1;
+        const sol_index SZ = (sol_index) 0;
+
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+
+SOL_TRY:
+        sol_try (sol_elem_meta_new2(&meta, ID, SZ, mock_dispose));
+
+SOL_CATCH:
+        sol_erno_set(sol_erno_get() == SOL_ERNO_RANGE
                      ? SOL_ERNO_NULL
                      : SOL_ERNO_TEST);
 
@@ -193,6 +217,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, meta_new_test2, META_NEW_TEST2));
 
         sol_try (sol_tsuite_register(ts, meta_new2_test1, META_NEW2_TEST1));
+        sol_try (sol_tsuite_register(ts, meta_new2_test2, META_NEW2_TEST2));
 
         sol_try (sol_tsuite_register(ts, meta_new3_test1, META_NEW3_TEST1));
 
