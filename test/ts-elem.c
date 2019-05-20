@@ -33,14 +33,19 @@
 
 
 
-static sol_erno new_test1(void)
+static sol_erno meta_new_test1(void)
 {
-        #define NEW_TEST1 "sol_elem_meta_new()"
+        #define META_NEW_TEST1 "sol_elem_meta_new() throws SOL_ERNO_PTR if" \
+                               " passed a null pointer for @meta"
 
 SOL_TRY:
         sol_assert (SOL_BOOL_TRUE, SOL_ERNO_TEST);
 
 SOL_CATCH:
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
 SOL_FINALLY:
         return sol_erno_get();
 }
@@ -60,7 +65,7 @@ SOL_TRY:
 
         sol_try (sol_tsuite_init2(ts, log));
 
-        sol_try (sol_tsuite_register(ts, new_test1, NEW_TEST1));
+        sol_try (sol_tsuite_register(ts, meta_new_test1, META_NEW_TEST1));
 
         sol_try (sol_tsuite_exec(ts));
         sol_try (sol_tsuite_pass(ts, pass));
