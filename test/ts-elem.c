@@ -63,6 +63,20 @@ static void mock_dispose(sol_ptr **disp)
 
 
 
+static sol_erno mock_cmp(const sol_ptr *lhs,
+                         const sol_ptr *rhs,
+                         SOL_BOOL *cmp)
+{
+        (void) lhs;
+        (void) rhs;
+        (void) cmp;
+
+        return SOL_ERNO_NULL;
+}
+
+
+
+
 static sol_erno meta_new2_test1(void)
 {
         #define META_NEW2_TEST1 "sol_elem_meta_new2() throws SOL_ERNO_PTR if" \
@@ -72,6 +86,60 @@ static sol_erno meta_new2_test1(void)
 
 SOL_TRY:
         sol_try (sol_elem_meta_new2(SOL_PTR_NULL, ID, SZ, mock_dispose));
+
+SOL_CATCH:
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
+static sol_erno meta_new3_test1(void)
+{
+        #define META_NEW3_TEST1 "sol_elem_meta_new3() throws SOL_ERNO_PTR if" \
+                                " passed a null pointer for @meta"
+        const sol_index ID = (sol_index) 1;
+        const sol_index SZ = (sol_index) 1;
+
+SOL_TRY:
+        sol_try (sol_elem_meta_new3(SOL_PTR_NULL,
+                                    ID,
+                                    SZ,
+                                    mock_dispose,
+                                    mock_cmp));
+
+SOL_CATCH:
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
+static sol_erno meta_new4_test1(void)
+{
+        #define META_NEW4_TEST1 "sol_elem_meta_new4() throws SOL_ERNO_PTR if" \
+                                " passed a null pointer for @meta"
+        const sol_index ID = (sol_index) 1;
+        const sol_index SZ = (sol_index) 1;
+
+SOL_TRY:
+        sol_try (sol_elem_meta_new4(SOL_PTR_NULL,
+                                    ID,
+                                    SZ,
+                                    mock_dispose,
+                                    mock_cmp,
+                                    mock_cmp,
+                                    mock_cmp));
 
 SOL_CATCH:
         sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
