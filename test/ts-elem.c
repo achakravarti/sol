@@ -37,9 +37,11 @@ static sol_erno meta_new_test1(void)
 {
         #define META_NEW_TEST1 "sol_elem_meta_new() throws SOL_ERNO_PTR if" \
                                " passed a null pointer for @meta"
+        const sol_index ID = (sol_index) 1;
+        const sol_index SZ = (sol_index) 1;
 
 SOL_TRY:
-        sol_assert (SOL_BOOL_TRUE, SOL_ERNO_TEST);
+        sol_try (sol_elem_meta_new(SOL_PTR_NULL, ID, SZ));
 
 SOL_CATCH:
         sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
