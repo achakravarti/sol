@@ -330,25 +330,29 @@ SOL_FINALLY:
 
 
 
-extern sol_erno sol_list_pop(sol_list *list)
+extern sol_erno sol_list_pop(sol_list **list)
 {
         register sol_index i;
+        auto sol_list *hnd;
 
 SOL_TRY:
         sol_assert (list, SOL_ERNO_PTR);
 
-        if (sol_likely (list->tail)) {
-                list->free(&list->tail->elem);
-                sol_ptr_free((sol_ptr**) &list->tail);
+        sol_try (list_fork(list));
+        hnd = *list;
 
-                list->curr = list->head;
-                list->len--;
+        if (sol_likely (hnd->tail)) {
+                sol_elem_free(&hnd->tail->elem);
+                sol_ptr_free((sol_ptr**) &hnd->tail);
 
-                for (i = (sol_index) 0; i < list->len; i++)
-                        list->curr = list->curr->next;
+                hnd->curr = hnd->head;
+                hnd->len--;
 
-                list->curr->next = SOL_PTR_NULL;
-                list->tail = list->curr;
+                for (i = (sol_index) 0; i < hnd->len; i++)
+                        hnd->curr = hnd->curr->next;
+
+                hnd->curr->next = SOL_PTR_NULL;
+                hnd->tail = hnd->curr;
         }
 
 SOL_CATCH:

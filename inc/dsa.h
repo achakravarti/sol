@@ -139,7 +139,7 @@ extern sol_erno sol_list_end(sol_list **list);
 
 extern sol_erno sol_list_push(sol_list **list, const sol_elem *elem);
 
-extern sol_erno sol_list_pop(sol_list *list);
+extern sol_erno sol_list_pop(sol_list **list);
 
 
 
