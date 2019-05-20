@@ -317,7 +317,16 @@ extern sol_erno sol_elem_meta_new3(sol_elem_meta **meta,
                                     sol_elem_delegate_dispose *disp,
                                     sol_elem_delegate_eq *eq)
 {
-        return meta_init(meta, id, sz, disp, eq, SOL_PTR_NULL, SOL_PTR_NULL);
+SOL_TRY:
+        sol_assert (disp && eq, SOL_ERNO_PTR);
+
+        sol_try (meta_init(meta, id, sz, disp, eq, SOL_PTR_NULL, SOL_PTR_NULL));
+
+SOL_CATCH:
+        sol_log_erno(sol_erno_get());
+
+SOL_FINALLY:
+        return sol_erno_get();
 }
 
 
