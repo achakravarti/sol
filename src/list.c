@@ -78,7 +78,7 @@ SOL_TRY:
 
         for (i = (sol_index) 0; i < src->len; i++) {
                 src->curr = src->curr->next;
-                sol_try (sol_list_push(*list, src->curr->elem));
+                sol_try (sol_list_push(list, src->curr->elem));
         }
 
         src->curr = mark;
