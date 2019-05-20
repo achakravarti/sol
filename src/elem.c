@@ -325,7 +325,7 @@ extern sol_erno sol_elem_meta_new4(sol_elem_meta **meta,
 SOL_TRY:
         sol_assert (disp && eq && lt && gt, SOL_ERNO_PTR);
 
-        sol_try (class_init(meta, id, sz, disp, eq, lt, gt));
+        sol_try (meta_init(meta, id, sz, disp, eq, lt, gt));
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());

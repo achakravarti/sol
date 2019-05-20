@@ -213,7 +213,7 @@ SOL_TRY:
         sol_try (list_fork(list));
         hnd = *list;
 
-        sol_try (sol_elem_copy(hnd->curr->elem, elem));
+        sol_try (sol_elem_copy(&hnd->curr->elem, elem));
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
