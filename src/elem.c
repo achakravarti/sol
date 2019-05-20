@@ -63,6 +63,7 @@ extern sol_erno sol_elem_new(sol_elem **elem,
 
 SOL_TRY:
         sol_assert (meta && data, SOL_ERNO_PTR);
+        sol_assert (sizeof (*data) == meta->sz, SOL_ERNO_STATE);
 
         sol_try (sol_ptr_new((sol_ptr **) elem, meta->sz));
         hnd = *elem;
@@ -230,42 +231,6 @@ SOL_CATCH:
 SOL_FINALLY:
         return sol_erno_get();
 }
-
-
-
-
-extern sol_erno sol_elem_setdata(sol_elem *elem, const sol_ptr *data)
-{
-        auto sol_elem_meta *meta;
-
-SOL_TRY:
-        sol_assert (elem, SOL_ERNO_PTR);
-
-        if (elem->nref > (sol_size) 1) {
-                meta = elem->meta;
-                elem->nref--;
-
-                elem = SOL_PTR_NULL;
-                sol_try (sol_elem_new(&elem, meta, data));
-        }
-
-        else {
-                if (elem->meta->disp)
-                        elem->meta->disp(&elem->data);
-
-                sol_try (sol_ptr_copy(&elem->data, data, elem->meta->sz));
-        }
-
-SOL_CATCH:
-        sol_log_erno(sol_erno_get());
-
-SOL_FINALLY:
-        return sol_erno_get();
-}
-
-
-
-
 
 
 

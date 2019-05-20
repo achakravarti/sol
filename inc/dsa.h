@@ -84,8 +84,6 @@ extern sol_erno sol_elem_sz(const sol_elem *elem, sol_size *sz);
 
 extern sol_erno sol_elem_data(const sol_elem *elem, sol_ptr **data);
 
-extern sol_erno sol_elem_setdata(sol_elem *elem, const sol_ptr *data);
-
 extern sol_erno sol_elem_meta_new(sol_elem_meta **meta,
                                    const sol_index id,
                                    const sol_size sz);
