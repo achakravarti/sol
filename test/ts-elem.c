@@ -55,6 +55,30 @@ SOL_FINALLY:
 
 
 
+static sol_erno meta_new_test2(void)
+{
+        #define META_NEW_TEST2 "sol_elem_meta_new() throws SOL_ERNO_RANGE if" \
+                               " passed zero for @sz"
+        const sol_index ID = (sol_index) 1;
+        const sol_index SZ = (sol_index) 0;
+
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+
+SOL_TRY:
+        sol_try (sol_elem_meta_new(&meta, ID, SZ));
+
+SOL_CATCH:
+        sol_erno_set(sol_erno_get() == SOL_ERNO_RANGE
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
 static void mock_dispose(sol_ptr **disp)
 {
         (void) disp;
@@ -166,7 +190,13 @@ SOL_TRY:
         sol_try (sol_tsuite_init2(ts, log));
 
         sol_try (sol_tsuite_register(ts, meta_new_test1, META_NEW_TEST1));
-        sol_try (sol_tsuite_register(ts, meta_new2_test1, META_NEW_TEST1));
+        sol_try (sol_tsuite_register(ts, meta_new_test2, META_NEW_TEST2));
+
+        sol_try (sol_tsuite_register(ts, meta_new2_test1, META_NEW2_TEST1));
+
+        sol_try (sol_tsuite_register(ts, meta_new3_test1, META_NEW3_TEST1));
+
+        sol_try (sol_tsuite_register(ts, meta_new4_test1, META_NEW4_TEST1));
 
         sol_try (sol_tsuite_exec(ts));
         sol_try (sol_tsuite_pass(ts, pass));
