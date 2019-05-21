@@ -80,10 +80,10 @@ static sol_erno mock_cmp(const sol_ptr *lhs,
 
 
         /* new_test1() defines the test case described by NEW_TEST1 */
-static sol_erno meta_new_test1(void)
+static sol_erno new_test1(void)
 {
-        #define META_NEW_TEST1 "sol_elem_meta_new() throws SOL_ERNO_PTR if" \
-                               " passed a null pointer for @meta"
+        #define NEW_TEST1 "sol_elem_meta_new() throws SOL_ERNO_PTR if" \
+                          " passed a null pointer for @meta"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 1;
 
@@ -106,10 +106,10 @@ SOL_FINALLY:
 
 
         /* new_test2() defines the test case described by NEW_TEST2 */
-static sol_erno meta_new_test2(void)
+static sol_erno new_test2(void)
 {
-        #define META_NEW_TEST2 "sol_elem_meta_new() throws SOL_ERNO_RANGE if" \
-                               " passed zero for @sz"
+        #define NEW_TEST2 "sol_elem_meta_new() throws SOL_ERNO_RANGE if" \
+                          " passed zero for @sz"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 0;
         auto sol_elem_meta *meta = SOL_PTR_NULL;
@@ -134,10 +134,10 @@ SOL_FINALLY:
 
 
         /* new2_test1() defines the test case described by NEW2_TEST1 */
-static sol_erno meta_new2_test1(void)
+static sol_erno new2_test1(void)
 {
-        #define META_NEW2_TEST1 "sol_elem_meta_new2() throws SOL_ERNO_PTR if" \
-                                " passed a null pointer for @meta"
+        #define NEW2_TEST1 "sol_elem_meta_new2() throws SOL_ERNO_PTR if" \
+                           " passed a null pointer for @meta"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 1;
 
@@ -160,10 +160,10 @@ SOL_FINALLY:
 
 
         /* new2_test2() defines the test case described by NEW2_TEST2 */
-static sol_erno meta_new2_test2(void)
+static sol_erno new2_test2(void)
 {
-        #define META_NEW2_TEST2 "sol_elem_meta_new2() throws SOL_ERNO_RANGE" \
-                                " passed zero for @sz"
+        #define NEW2_TEST2 "sol_elem_meta_new2() throws SOL_ERNO_RANGE" \
+                           " passed zero for @sz"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 0;
         auto sol_elem_meta *meta = SOL_PTR_NULL;
@@ -188,10 +188,10 @@ SOL_FINALLY:
 
 
         /* new2_test3() defines the test case described by NEW2_TEST3 */
-static sol_erno meta_new2_test3(void)
+static sol_erno new2_test3(void)
 {
-        #define META_NEW2_TEST3 "sol_elem_meta_new2() throws SOL_ERNO_PTR" \
-                                " if passed a null pointer for @disp"
+        #define NEW2_TEST3 "sol_elem_meta_new2() throws SOL_ERNO_PTR" \
+                           " if passed a null pointer for @disp"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 0;
         auto sol_elem_meta *meta = SOL_PTR_NULL;
@@ -216,10 +216,10 @@ SOL_FINALLY:
 
 
         /* new3_test1() defines the test case described by NEW3_TEST1 */
-static sol_erno meta_new3_test1(void)
+static sol_erno new3_test1(void)
 {
-        #define META_NEW3_TEST1 "sol_elem_meta_new3() throws SOL_ERNO_PTR if" \
-                                " passed a null pointer for @meta"
+        #define NEW3_TEST1 "sol_elem_meta_new3() throws SOL_ERNO_PTR if" \
+                           " passed a null pointer for @meta"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 1;
 
@@ -246,10 +246,10 @@ SOL_FINALLY:
 
 
         /* new3_test2() defines the test case described by NEW3_TEST2 */
-static sol_erno meta_new3_test2(void)
+static sol_erno new3_test2(void)
 {
-        #define META_NEW3_TEST2 "sol_elem_meta_new3() throws SOL_ERNO_RANGE" \
-                                " passed zero for @sz"
+        #define NEW3_TEST2 "sol_elem_meta_new3() throws SOL_ERNO_RANGE" \
+                           " passed zero for @sz"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 0;
 
@@ -275,10 +275,10 @@ SOL_FINALLY:
 
 
         /* new3_test3() defines the test case described by NEW3_TEST3 */
-static sol_erno meta_new3_test3(void)
+static sol_erno new3_test3(void)
 {
-        #define META_NEW3_TEST3 "sol_elem_meta_new3() throws SOL_ERNO_PTR" \
-                                " if passed a null pointer for @disp"
+        #define NEW3_TEST3 "sol_elem_meta_new3() throws SOL_ERNO_PTR" \
+                           " if passed a null pointer for @disp"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 0;
         auto sol_elem_meta *meta = SOL_PTR_NULL;
@@ -303,10 +303,10 @@ SOL_FINALLY:
 
 
         /* new3_test4() defines the test case described by NEW3_TEST4 */
-static sol_erno meta_new3_test4(void)
+static sol_erno new3_test4(void)
 {
-        #define META_NEW3_TEST4 "sol_elem_meta_new3() throws SOL_ERNO_PTR" \
-                                " if passed a null pointer for @eq"
+        #define NEW3_TEST4 "sol_elem_meta_new3() throws SOL_ERNO_PTR" \
+                           " if passed a null pointer for @eq"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 0;
         auto sol_elem_meta *meta = SOL_PTR_NULL;
@@ -331,10 +331,10 @@ SOL_FINALLY:
 
 
         /* new4_test1() defines the test case described by NEW4_TEST1 */
-static sol_erno meta_new4_test1(void)
+static sol_erno new4_test1(void)
 {
-        #define META_NEW4_TEST1 "sol_elem_meta_new4() throws SOL_ERNO_PTR if" \
-                                " passed a null pointer for @meta"
+        #define NEW4_TEST1 "sol_elem_meta_new4() throws SOL_ERNO_PTR if" \
+                           " passed a null pointer for @meta"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 1;
 
@@ -363,10 +363,10 @@ SOL_FINALLY:
 
 
         /* new4_test2() defines the test case described by NEW4_TEST2 */
-static sol_erno meta_new4_test2(void)
+static sol_erno new4_test2(void)
 {
-        #define META_NEW4_TEST2 "sol_elem_meta_new4() throws SOL_ERNO_RANGE" \
-                                " passed zero for @sz"
+        #define NEW4_TEST2 "sol_elem_meta_new4() throws SOL_ERNO_RANGE" \
+                           " passed zero for @sz"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 0;
         auto sol_elem_meta *meta = SOL_PTR_NULL;
@@ -397,10 +397,10 @@ SOL_FINALLY:
 
 
         /* new4_test3() defines the test case described by NEW4_TEST3 */
-static sol_erno meta_new4_test3(void)
+static sol_erno new4_test3(void)
 {
-        #define META_NEW4_TEST3 "sol_elem_meta_new4() throws SOL_ERNO_PTR" \
-                                " if passed a null pointer for @disp"
+        #define NEW4_TEST3 "sol_elem_meta_new4() throws SOL_ERNO_PTR" \
+                           " if passed a null pointer for @disp"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 0;
         auto sol_elem_meta *meta = SOL_PTR_NULL;
@@ -431,10 +431,10 @@ SOL_FINALLY:
 
 
         /* new4_test4() defines the test case described by NEW4_TEST4 */
-static sol_erno meta_new4_test4(void)
+static sol_erno new4_test4(void)
 {
-        #define META_NEW4_TEST4 "sol_elem_meta_new4() throws SOL_ERNO_PTR" \
-                                " if passed a null pointer for @eq"
+        #define NEW4_TEST4 "sol_elem_meta_new4() throws SOL_ERNO_PTR" \
+                           " if passed a null pointer for @eq"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 0;
         auto sol_elem_meta *meta = SOL_PTR_NULL;
@@ -480,19 +480,19 @@ SOL_TRY:
         sol_try (sol_tsuite_init2(ts, log));
 
                 /* register test cases */
-        sol_try (sol_tsuite_register(ts, meta_new_test1, META_NEW_TEST1));
-        sol_try (sol_tsuite_register(ts, meta_new_test2, META_NEW_TEST2));
-        sol_try (sol_tsuite_register(ts, meta_new2_test1, META_NEW2_TEST1));
-        sol_try (sol_tsuite_register(ts, meta_new2_test2, META_NEW2_TEST2));
-        sol_try (sol_tsuite_register(ts, meta_new2_test3, META_NEW2_TEST3));
-        sol_try (sol_tsuite_register(ts, meta_new3_test1, META_NEW3_TEST1));
-        sol_try (sol_tsuite_register(ts, meta_new3_test2, META_NEW3_TEST2));
-        sol_try (sol_tsuite_register(ts, meta_new3_test3, META_NEW3_TEST3));
-        sol_try (sol_tsuite_register(ts, meta_new3_test4, META_NEW3_TEST4));
-        sol_try (sol_tsuite_register(ts, meta_new4_test1, META_NEW4_TEST1));
-        sol_try (sol_tsuite_register(ts, meta_new4_test2, META_NEW4_TEST2));
-        sol_try (sol_tsuite_register(ts, meta_new4_test3, META_NEW4_TEST3));
-        sol_try (sol_tsuite_register(ts, meta_new4_test4, META_NEW4_TEST4));
+        sol_try (sol_tsuite_register(ts, new_test1, NEW_TEST1));
+        sol_try (sol_tsuite_register(ts, new_test2, NEW_TEST2));
+        sol_try (sol_tsuite_register(ts, new2_test1, NEW2_TEST1));
+        sol_try (sol_tsuite_register(ts, new2_test2, NEW2_TEST2));
+        sol_try (sol_tsuite_register(ts, new2_test3, NEW2_TEST3));
+        sol_try (sol_tsuite_register(ts, new3_test1, NEW3_TEST1));
+        sol_try (sol_tsuite_register(ts, new3_test2, NEW3_TEST2));
+        sol_try (sol_tsuite_register(ts, new3_test3, NEW3_TEST3));
+        sol_try (sol_tsuite_register(ts, new3_test4, NEW3_TEST4));
+        sol_try (sol_tsuite_register(ts, new4_test1, NEW4_TEST1));
+        sol_try (sol_tsuite_register(ts, new4_test2, NEW4_TEST2));
+        sol_try (sol_tsuite_register(ts, new4_test3, NEW4_TEST3));
+        sol_try (sol_tsuite_register(ts, new4_test4, NEW4_TEST4));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
