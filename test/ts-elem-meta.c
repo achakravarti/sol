@@ -1,11 +1,11 @@
 /******************************************************************************
  *                           SOL LIBRARY v1.0.0+41
  *
- * File: sol/test/ts-elem.c
+ * File: sol/test/ts-elem-meta.c
  *
  * Description:
  *      This file is part of the internal quality checking of the Sol Library.
- *      It implements the test suite for the element interface
+ *      It implements the test suite for the element metadata interface
  *
  * Authors:
  *      Abhishek Chakravarti <abhishek@taranjali.org>
@@ -464,11 +464,11 @@ SOL_FINALLY:
 
 
 
-        /* __sol_tests_elem() was declared in sol/test/suite.h */
-extern sol_erno __sol_tests_elem(sol_tlog *log,
-                                 sol_uint *pass,
-                                 sol_uint *fail,
-                                 sol_uint *total)
+        /* __sol_tests_elem_meta() was declared in sol/test/suite.h */
+extern sol_erno __sol_tests_elem_meta(sol_tlog *log,
+                                      sol_uint *pass,
+                                      sol_uint *fail,
+                                      sol_uint *total)
 {
         auto sol_tsuite __ts, *ts = &__ts;
 
