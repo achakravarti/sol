@@ -43,13 +43,13 @@ struct __sol_elem {
 
 
 struct __sol_elem_meta {
-        sol_index id;
-        sol_size sz;
-        sol_size nref;
-        sol_elem_delegate_dispose *disp;
-        sol_elem_delegate_eq *eq;
-        sol_elem_delegate_lt *lt;
-        sol_elem_delegate_gt *gt;
+        sol_index id;                    /* element ID             */
+        sol_size sz;                     /* element size           */
+        sol_size nref;                   /* reference count        */
+        sol_elem_delegate_dispose *disp; /* dispose delegate       */
+        sol_elem_delegate_eq *eq;        /* == comparison delegate */
+        sol_elem_delegate_lt *lt;        /* < comparison delegate  */
+        sol_elem_delegate_gt *gt;        /* > comparison delegate  */
 };
 
 

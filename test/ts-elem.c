@@ -33,6 +33,24 @@
 
 
 
+        /* copy the definition of sol_elem_meta from src/elem.c; this is
+         * generally considered very bad practice, but I've made this choice
+         * deliberately because I need to access the reference count field for
+         * some of the test cases without exposing the internal structure of the
+         * type through some header file */
+struct __sol_elem_meta {
+        sol_index id;                    /* element ID             */
+        sol_size sz;                     /* element size           */
+        sol_size nref;                   /* reference count        */
+        sol_elem_delegate_dispose *disp; /* dispose delegate       */
+        sol_elem_delegate_eq *eq;        /* == comparison delegate */
+        sol_elem_delegate_lt *lt;        /* < comparison delegate  */
+        sol_elem_delegate_gt *gt;        /* > comparison delegate  */
+};
+
+
+
+
 static void mock_dispose(sol_ptr **disp)
 {
         (void) disp;
