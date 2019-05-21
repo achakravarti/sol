@@ -51,28 +51,35 @@ struct __sol_elem_meta {
 
 
 
+        /* mock_dispose() mocks a sol_elem_delegate_dispose callback */
 static void mock_dispose(sol_ptr **disp)
 {
+                /* casting to void prevents compiler warnings */
         (void) disp;
 }
 
 
 
 
+        /* mock_cmp mocks the sol_elem_delegate_eq, sol_elem_delegate_lt, and
+         * sol_elem_delegate_gt callbacks */
 static sol_erno mock_cmp(const sol_ptr *lhs,
                          const sol_ptr *rhs,
                          SOL_BOOL *cmp)
 {
+                /* casting to void prevents compiler warnings */
         (void) lhs;
         (void) rhs;
         (void) cmp;
 
+                /* we're good */
         return SOL_ERNO_NULL;
 }
 
 
 
 
+        /* new_test1() defines the test case described by NEW_TEST1 */
 static sol_erno meta_new_test1(void)
 {
         #define META_NEW_TEST1 "sol_elem_meta_new() throws SOL_ERNO_PTR if" \
@@ -81,38 +88,44 @@ static sol_erno meta_new_test1(void)
         const sol_index SZ = (sol_index) 1;
 
 SOL_TRY:
+                /* set up test */
         sol_try (sol_elem_meta_new(SOL_PTR_NULL, ID, SZ));
 
 SOL_CATCH:
+                /* check test condition */
         sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
                      ? SOL_ERNO_NULL
                      : SOL_ERNO_TEST);
 
 SOL_FINALLY:
+                /* tear down test */
         return sol_erno_get();
 }
 
 
 
 
+        /* new_test2() defines the test case described by NEW_TEST2 */
 static sol_erno meta_new_test2(void)
 {
         #define META_NEW_TEST2 "sol_elem_meta_new() throws SOL_ERNO_RANGE if" \
                                " passed zero for @sz"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 0;
-
         auto sol_elem_meta *meta = SOL_PTR_NULL;
 
 SOL_TRY:
+                /* set up test */
         sol_try (sol_elem_meta_new(&meta, ID, SZ));
 
 SOL_CATCH:
+                /* check test condition */
         sol_erno_set(sol_erno_get() == SOL_ERNO_RANGE
                      ? SOL_ERNO_NULL
                      : SOL_ERNO_TEST);
 
 SOL_FINALLY:
+                /* tear down test */
         sol_elem_meta_free(&meta);
         return sol_erno_get();
 }
@@ -120,6 +133,7 @@ SOL_FINALLY:
 
 
 
+        /* new2_test1() defines the test case described by NEW2_TEST1 */
 static sol_erno meta_new2_test1(void)
 {
         #define META_NEW2_TEST1 "sol_elem_meta_new2() throws SOL_ERNO_PTR if" \
@@ -128,38 +142,44 @@ static sol_erno meta_new2_test1(void)
         const sol_index SZ = (sol_index) 1;
 
 SOL_TRY:
+                /* set up test */
         sol_try (sol_elem_meta_new2(SOL_PTR_NULL, ID, SZ, mock_dispose));
 
 SOL_CATCH:
+                /* check test condition */
         sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
                      ? SOL_ERNO_NULL
                      : SOL_ERNO_TEST);
 
 SOL_FINALLY:
+                /* tear down test */
         return sol_erno_get();
 }
 
 
 
 
+        /* new2_test2() defines the test case described by NEW2_TEST2 */
 static sol_erno meta_new2_test2(void)
 {
         #define META_NEW2_TEST2 "sol_elem_meta_new2() throws SOL_ERNO_RANGE" \
                                 " passed zero for @sz"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 0;
-
         auto sol_elem_meta *meta = SOL_PTR_NULL;
 
 SOL_TRY:
+                /* set up test */
         sol_try (sol_elem_meta_new2(&meta, ID, SZ, mock_dispose));
 
 SOL_CATCH:
+                /* check test condition */
         sol_erno_set(sol_erno_get() == SOL_ERNO_RANGE
                      ? SOL_ERNO_NULL
                      : SOL_ERNO_TEST);
 
 SOL_FINALLY:
+                /* tear down test */
         sol_elem_meta_free(&meta);
         return sol_erno_get();
 }
@@ -167,24 +187,27 @@ SOL_FINALLY:
 
 
 
+        /* new2_test3() defines the test case described by NEW2_TEST3 */
 static sol_erno meta_new2_test3(void)
 {
         #define META_NEW2_TEST3 "sol_elem_meta_new2() throws SOL_ERNO_PTR" \
                                 " if passed a null pointer for @disp"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 0;
-
         auto sol_elem_meta *meta = SOL_PTR_NULL;
 
 SOL_TRY:
+                /* set up test */
         sol_try (sol_elem_meta_new2(&meta, ID, SZ, SOL_PTR_NULL));
 
 SOL_CATCH:
+                /* check test condition */
         sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
                      ? SOL_ERNO_NULL
                      : SOL_ERNO_TEST);
 
 SOL_FINALLY:
+                /* tear down test */
         sol_elem_meta_free(&meta);
         return sol_erno_get();
 }
@@ -192,6 +215,7 @@ SOL_FINALLY:
 
 
 
+        /* new3_test1() defines the test case described by NEW3_TEST1 */
 static sol_erno meta_new3_test1(void)
 {
         #define META_NEW3_TEST1 "sol_elem_meta_new3() throws SOL_ERNO_PTR if" \
@@ -200,6 +224,7 @@ static sol_erno meta_new3_test1(void)
         const sol_index SZ = (sol_index) 1;
 
 SOL_TRY:
+                /* set up test */
         sol_try (sol_elem_meta_new3(SOL_PTR_NULL,
                                     ID,
                                     SZ,
@@ -207,17 +232,20 @@ SOL_TRY:
                                     mock_cmp));
 
 SOL_CATCH:
+                /* check test condition */
         sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
                      ? SOL_ERNO_NULL
                      : SOL_ERNO_TEST);
 
 SOL_FINALLY:
+                /* tear down test */
         return sol_erno_get();
 }
 
 
 
 
+        /* new3_test2() defines the test case described by NEW3_TEST2 */
 static sol_erno meta_new3_test2(void)
 {
         #define META_NEW3_TEST2 "sol_elem_meta_new3() throws SOL_ERNO_RANGE" \
@@ -228,14 +256,17 @@ static sol_erno meta_new3_test2(void)
         auto sol_elem_meta *meta = SOL_PTR_NULL;
 
 SOL_TRY:
+                /* set up test */
         sol_try (sol_elem_meta_new3(&meta, ID, SZ, mock_dispose, mock_cmp));
 
 SOL_CATCH:
+                /* check test condition */
         sol_erno_set(sol_erno_get() == SOL_ERNO_RANGE
                      ? SOL_ERNO_NULL
                      : SOL_ERNO_TEST);
 
 SOL_FINALLY:
+                /* tear down test */
         sol_elem_meta_free(&meta);
         return sol_erno_get();
 }
@@ -243,24 +274,27 @@ SOL_FINALLY:
 
 
 
+        /* new3_test3() defines the test case described by NEW3_TEST3 */
 static sol_erno meta_new3_test3(void)
 {
         #define META_NEW3_TEST3 "sol_elem_meta_new3() throws SOL_ERNO_PTR" \
                                 " if passed a null pointer for @disp"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 0;
-
         auto sol_elem_meta *meta = SOL_PTR_NULL;
 
 SOL_TRY:
+                /* set up test */
         sol_try (sol_elem_meta_new3(&meta, ID, SZ, SOL_PTR_NULL, mock_cmp));
 
 SOL_CATCH:
+                /* check test condition */
         sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
                      ? SOL_ERNO_NULL
                      : SOL_ERNO_TEST);
 
 SOL_FINALLY:
+                /* tear down test */
         sol_elem_meta_free(&meta);
         return sol_erno_get();
 }
@@ -268,24 +302,27 @@ SOL_FINALLY:
 
 
 
+        /* new3_test4() defines the test case described by NEW3_TEST4 */
 static sol_erno meta_new3_test4(void)
 {
         #define META_NEW3_TEST4 "sol_elem_meta_new3() throws SOL_ERNO_PTR" \
                                 " if passed a null pointer for @eq"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 0;
-
         auto sol_elem_meta *meta = SOL_PTR_NULL;
 
 SOL_TRY:
+                /* set up test */
         sol_try (sol_elem_meta_new3(&meta, ID, SZ, mock_dispose, SOL_PTR_NULL));
 
 SOL_CATCH:
+                /* check test condition */
         sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
                      ? SOL_ERNO_NULL
                      : SOL_ERNO_TEST);
 
 SOL_FINALLY:
+                /* tear down test */
         sol_elem_meta_free(&meta);
         return sol_erno_get();
 }
@@ -293,6 +330,7 @@ SOL_FINALLY:
 
 
 
+        /* new4_test1() defines the test case described by NEW4_TEST1 */
 static sol_erno meta_new4_test1(void)
 {
         #define META_NEW4_TEST1 "sol_elem_meta_new4() throws SOL_ERNO_PTR if" \
@@ -301,6 +339,7 @@ static sol_erno meta_new4_test1(void)
         const sol_index SZ = (sol_index) 1;
 
 SOL_TRY:
+                /* set up test */
         sol_try (sol_elem_meta_new4(SOL_PTR_NULL,
                                     ID,
                                     SZ,
@@ -310,27 +349,30 @@ SOL_TRY:
                                     mock_cmp));
 
 SOL_CATCH:
+                /* check test condition */
         sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
                      ? SOL_ERNO_NULL
                      : SOL_ERNO_TEST);
 
 SOL_FINALLY:
+                /* tear down test */
         return sol_erno_get();
 }
 
 
 
 
+        /* new4_test2() defines the test case described by NEW4_TEST2 */
 static sol_erno meta_new4_test2(void)
 {
         #define META_NEW4_TEST2 "sol_elem_meta_new4() throws SOL_ERNO_RANGE" \
                                 " passed zero for @sz"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 0;
-
         auto sol_elem_meta *meta = SOL_PTR_NULL;
 
 SOL_TRY:
+                /* set up test */
         sol_try (sol_elem_meta_new4(&meta,
                                     ID,
                                     SZ,
@@ -340,11 +382,13 @@ SOL_TRY:
                                     mock_cmp));
 
 SOL_CATCH:
+                /* check test condition */
         sol_erno_set(sol_erno_get() == SOL_ERNO_RANGE
                      ? SOL_ERNO_NULL
                      : SOL_ERNO_TEST);
 
 SOL_FINALLY:
+                /* tear down test */
         sol_elem_meta_free(&meta);
         return sol_erno_get();
 }
@@ -352,16 +396,17 @@ SOL_FINALLY:
 
 
 
+        /* new4_test3() defines the test case described by NEW4_TEST3 */
 static sol_erno meta_new4_test3(void)
 {
         #define META_NEW4_TEST3 "sol_elem_meta_new4() throws SOL_ERNO_PTR" \
                                 " if passed a null pointer for @disp"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 0;
-
         auto sol_elem_meta *meta = SOL_PTR_NULL;
 
 SOL_TRY:
+                /* set up test */
         sol_try (sol_elem_meta_new4(&meta,
                                     ID,
                                     SZ,
@@ -371,11 +416,13 @@ SOL_TRY:
                                     mock_cmp));
 
 SOL_CATCH:
+                /* check test condition */
         sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
                      ? SOL_ERNO_NULL
                      : SOL_ERNO_TEST);
 
 SOL_FINALLY:
+                /* tear down test */
         sol_elem_meta_free(&meta);
         return sol_erno_get();
 }
@@ -383,16 +430,17 @@ SOL_FINALLY:
 
 
 
+        /* new4_test4() defines the test case described by NEW4_TEST4 */
 static sol_erno meta_new4_test4(void)
 {
         #define META_NEW4_TEST4 "sol_elem_meta_new4() throws SOL_ERNO_PTR" \
                                 " if passed a null pointer for @eq"
         const sol_index ID = (sol_index) 1;
         const sol_index SZ = (sol_index) 0;
-
         auto sol_elem_meta *meta = SOL_PTR_NULL;
 
 SOL_TRY:
+                /* set up test */
         sol_try (sol_elem_meta_new4(&meta,
                                     ID,
                                     SZ,
@@ -402,11 +450,13 @@ SOL_TRY:
                                     mock_cmp));
 
 SOL_CATCH:
+                /* check test condition */
         sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
                      ? SOL_ERNO_NULL
                      : SOL_ERNO_TEST);
 
 SOL_FINALLY:
+                /* tear down test */
         sol_elem_meta_free(&meta);
         return sol_erno_get();
 }
@@ -414,6 +464,7 @@ SOL_FINALLY:
 
 
 
+        /* __sol_tests_elem() was declared in sol/test/suite.h */
 extern sol_erno __sol_tests_elem(sol_tlog *log,
                                  sol_uint *pass,
                                  sol_uint *fail,
@@ -422,34 +473,40 @@ extern sol_erno __sol_tests_elem(sol_tlog *log,
         auto sol_tsuite __ts, *ts = &__ts;
 
 SOL_TRY:
+                /* check preconditions */
         sol_assert (log && pass && fail && total, SOL_ERNO_PTR);
 
+                /* initialise test suite */
         sol_try (sol_tsuite_init2(ts, log));
 
+                /* register test cases */
         sol_try (sol_tsuite_register(ts, meta_new_test1, META_NEW_TEST1));
         sol_try (sol_tsuite_register(ts, meta_new_test2, META_NEW_TEST2));
-
         sol_try (sol_tsuite_register(ts, meta_new2_test1, META_NEW2_TEST1));
         sol_try (sol_tsuite_register(ts, meta_new2_test2, META_NEW2_TEST2));
         sol_try (sol_tsuite_register(ts, meta_new2_test3, META_NEW2_TEST3));
-
         sol_try (sol_tsuite_register(ts, meta_new3_test1, META_NEW3_TEST1));
         sol_try (sol_tsuite_register(ts, meta_new3_test2, META_NEW3_TEST2));
         sol_try (sol_tsuite_register(ts, meta_new3_test3, META_NEW3_TEST3));
         sol_try (sol_tsuite_register(ts, meta_new3_test4, META_NEW3_TEST4));
-
         sol_try (sol_tsuite_register(ts, meta_new4_test1, META_NEW4_TEST1));
         sol_try (sol_tsuite_register(ts, meta_new4_test2, META_NEW4_TEST2));
         sol_try (sol_tsuite_register(ts, meta_new4_test3, META_NEW4_TEST3));
-        sol_try (sol_tsuite_register(ts, meta_new3_test4, META_NEW3_TEST4));
+        sol_try (sol_tsuite_register(ts, meta_new4_test4, META_NEW4_TEST4));
 
+                /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
+
+                /* report test counts */
         sol_try (sol_tsuite_pass(ts, pass));
         sol_try (sol_tsuite_fail(ts, fail));
         sol_try (sol_tsuite_total(ts, total));
 
 SOL_CATCH:
+                /* pass by in case of exception */
+
 SOL_FINALLY:
+                /* wind up */
         sol_tsuite_term(ts);
         return sol_erno_get();
 }
