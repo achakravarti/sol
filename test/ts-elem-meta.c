@@ -562,6 +562,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, new4_test3, NEW4_TEST3));
         sol_try (sol_tsuite_register(ts, new4_test4, NEW4_TEST4));
         sol_try (sol_tsuite_register(ts, new4_test5, NEW4_TEST5));
+        sol_try (sol_tsuite_register(ts, new4_test6, NEW4_TEST6));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
