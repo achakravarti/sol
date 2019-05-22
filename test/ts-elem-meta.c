@@ -464,6 +464,40 @@ SOL_FINALLY:
 
 
 
+        /* new4_test5() defines the test case described by NEW4_TEST5 */
+static sol_erno new4_test5(void)
+{
+        #define NEW4_TEST5 "sol_elem_meta_new4() throws SOL_ERNO_PTR" \
+                           " if passed a null pointer for @lt"
+        const sol_index ID = (sol_index) 1;
+        const sol_index SZ = (sol_index) 0;
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (sol_elem_meta_new4(&meta,
+                                    ID,
+                                    SZ,
+                                    mock_dispose,
+                                    mock_cmp,
+                                    SOL_PTR_NULL,
+                                    mock_cmp));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_elem_meta() was declared in sol/test/suite.h */
 extern sol_erno __sol_tests_elem_meta(sol_tlog *log,
                                       sol_uint *pass,
@@ -493,6 +527,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, new4_test2, NEW4_TEST2));
         sol_try (sol_tsuite_register(ts, new4_test3, NEW4_TEST3));
         sol_try (sol_tsuite_register(ts, new4_test4, NEW4_TEST4));
+        sol_try (sol_tsuite_register(ts, new4_test5, NEW4_TEST5));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
