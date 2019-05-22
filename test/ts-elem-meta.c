@@ -85,7 +85,7 @@ static sol_erno new_test1(void)
         #define NEW_TEST1 "sol_elem_meta_new() throws SOL_ERNO_PTR if" \
                           " passed a null pointer for @meta"
         const sol_index ID = (sol_index) 1;
-        const sol_index SZ = (sol_index) 1;
+        const sol_size SZ = (sol_size) 1;
 
 SOL_TRY:
                 /* set up test */
@@ -111,7 +111,7 @@ static sol_erno new_test2(void)
         #define NEW_TEST2 "sol_elem_meta_new() throws SOL_ERNO_RANGE if" \
                           " passed zero for @sz"
         const sol_index ID = (sol_index) 1;
-        const sol_index SZ = (sol_index) 0;
+        const sol_size SZ = (sol_size) 0;
         auto sol_elem_meta *meta = SOL_PTR_NULL;
 
 SOL_TRY:
@@ -123,6 +123,34 @@ SOL_CATCH:
         sol_erno_set(sol_erno_get() == SOL_ERNO_RANGE
                      ? SOL_ERNO_NULL
                      : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        return sol_erno_get();
+}
+
+
+
+
+        /* new_test3() defines the test case described by NEW_TEST3 */
+static sol_erno new_test3(void)
+{
+        #define NEW_TEST3 "sol_elem_meta_new() sets the internal reference" \
+                          "count to 1 when called"
+        const sol_index ID = (sol_index) 1;
+        const sol_size SZ = (sol_size) 1;
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (sol_elem_meta_new(&meta, ID, SZ));
+
+                /* check test condition */
+        sol_assert (meta->nref == (sol_size) 1, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by if no exception occurs */
 
 SOL_FINALLY:
                 /* tear down test */
@@ -547,16 +575,23 @@ SOL_TRY:
                 /* initialise test suite */
         sol_try (sol_tsuite_init2(ts, log));
 
-                /* register test cases */
+                /* register sol_elem_meta_new() test cases */
         sol_try (sol_tsuite_register(ts, new_test1, NEW_TEST1));
         sol_try (sol_tsuite_register(ts, new_test2, NEW_TEST2));
+        sol_try (sol_tsuite_register(ts, new_test3, NEW_TEST3));
+
+                /* register sol_elem_meta_new2() test cases */
         sol_try (sol_tsuite_register(ts, new2_test1, NEW2_TEST1));
         sol_try (sol_tsuite_register(ts, new2_test2, NEW2_TEST2));
         sol_try (sol_tsuite_register(ts, new2_test3, NEW2_TEST3));
+
+                /* register sol_elem_meta_new3() test cases */
         sol_try (sol_tsuite_register(ts, new3_test1, NEW3_TEST1));
         sol_try (sol_tsuite_register(ts, new3_test2, NEW3_TEST2));
         sol_try (sol_tsuite_register(ts, new3_test3, NEW3_TEST3));
         sol_try (sol_tsuite_register(ts, new3_test4, NEW3_TEST4));
+
+                /* register sol_elem_meta_new4() test cases */
         sol_try (sol_tsuite_register(ts, new4_test1, NEW4_TEST1));
         sol_try (sol_tsuite_register(ts, new4_test2, NEW4_TEST2));
         sol_try (sol_tsuite_register(ts, new4_test3, NEW4_TEST3));
