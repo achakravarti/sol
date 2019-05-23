@@ -734,7 +734,7 @@ SOL_FINALLY:
 
 
 
-        /* copy_test4() defines the test case described by COPY_TEST1 */
+        /* copy_test4() defines the test case described by COPY_TEST4 */
 static sol_erno copy_test4(void)
 {
         #define COPY_TEST4 "sol_elem_meta_copy() increments the reference" \
@@ -750,6 +750,8 @@ SOL_TRY:
         sol_try (sol_elem_meta_new(&src, ID, SZ));
         sol_try (sol_elem_meta_copy(&meta1, src));
         sol_try (sol_elem_meta_copy(&meta2, src));
+
+                /* check test condition */
         sol_assert (src->nref == (sol_size) 3, SOL_ERNO_TEST);
 
 SOL_CATCH:
@@ -759,6 +761,37 @@ SOL_FINALLY:
                 /* tear down test */
         sol_elem_meta_free(&meta1);
         sol_elem_meta_free(&meta2);
+        sol_elem_meta_free(&src);
+        return sol_erno_get();
+}
+
+
+
+
+        /* copy_test5() defines the test case described by COPY_TEST5 */
+static sol_erno copy_test5(void)
+{
+        #define COPY_TEST5 "sol_elem_meta_copy() sets @meta to non-null" \
+                           " if successful"
+        const sol_index ID = (sol_index) 5;
+        const sol_size SZ = (sol_size) 7;
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_elem_meta *src = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (sol_elem_meta_new(&src, ID, SZ));
+        sol_try (sol_elem_meta_copy(&meta, src));
+
+                /* check test condition */
+        sol_assert (meta, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by if an exception occurs */
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
         sol_elem_meta_free(&src);
         return sol_erno_get();
 }
@@ -813,6 +846,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, copy_test2, COPY_TEST2));
         sol_try (sol_tsuite_register(ts, copy_test3, COPY_TEST3));
         sol_try (sol_tsuite_register(ts, copy_test4, COPY_TEST4));
+        sol_try (sol_tsuite_register(ts, copy_test5, COPY_TEST5));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
