@@ -358,14 +358,12 @@ SOL_FINALLY:
 extern sol_erno sol_elem_meta_copy(sol_elem_meta **meta,
                                    const sol_elem_meta *src)
 {
-        auto sol_elem_meta *hnd;
-
 SOL_TRY:
         sol_assert (meta && src, SOL_ERNO_PTR);
-        sol_assert (!(hnd = *meta), SOL_ERNO_STATE);
+        sol_assert (!*meta, SOL_ERNO_STATE);
 
-        hnd = (sol_elem_meta *) src;
-        hnd->nref++;
+        *meta = (sol_elem_meta *) src;
+        (*meta)->nref++;
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
