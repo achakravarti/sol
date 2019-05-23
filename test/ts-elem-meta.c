@@ -679,6 +679,35 @@ SOL_FINALLY:
 
 
 
+        /* copy_test2() defines the test case described by COPY_TEST2 */
+static sol_erno copy_test2(void)
+{
+        #define COPY_TEST2 "sol_elem_meta_copy() throws SOL_ERNO_STATE if" \
+                           " @meta references a non-null pointer"
+        const sol_index ID = (sol_index) 5;
+        const sol_size SZ = (sol_size) 7;
+        auto sol_elem_meta *src = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (sol_elem_meta_new(&src, ID, SZ));
+        sol_try (sol_elem_meta_copy(&src, src));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_STATE
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&src);
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_elem_meta() was declared in sol/test/suite.h */
 extern sol_erno __sol_tests_elem_meta(sol_tlog *log,
                                       sol_uint *pass,
@@ -723,6 +752,7 @@ SOL_TRY:
 
                 /* register sol_elem_meta_copy() test cases */
         sol_try (sol_tsuite_register(ts, copy_test1, COPY_TEST1));
+        sol_try (sol_tsuite_register(ts, copy_test2, COPY_TEST2));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
