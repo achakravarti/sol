@@ -708,6 +708,32 @@ SOL_FINALLY:
 
 
 
+        /* copy_test3() defines the test case described by COPY_TEST3 */
+static sol_erno copy_test3(void)
+{
+        #define COPY_TEST3 "sol_elem_meta_copy() throws SOL_ERNO_PTR if" \
+                           " @src is null"
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (sol_elem_meta_copy(&meta, SOL_PTR_NULL));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_elem_meta() was declared in sol/test/suite.h */
 extern sol_erno __sol_tests_elem_meta(sol_tlog *log,
                                       sol_uint *pass,
@@ -753,6 +779,7 @@ SOL_TRY:
                 /* register sol_elem_meta_copy() test cases */
         sol_try (sol_tsuite_register(ts, copy_test1, COPY_TEST1));
         sol_try (sol_tsuite_register(ts, copy_test2, COPY_TEST2));
+        sol_try (sol_tsuite_register(ts, copy_test3, COPY_TEST3));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
