@@ -356,7 +356,7 @@ SOL_FINALLY:
 
 
 extern sol_erno sol_elem_meta_copy(sol_elem_meta **meta,
-                                    const sol_elem_meta *src)
+                                   const sol_elem_meta *src)
 {
         auto sol_elem_meta *hnd;
 
