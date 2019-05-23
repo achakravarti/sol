@@ -799,6 +799,43 @@ SOL_FINALLY:
 
 
 
+        /* copy_test6() defines the test case described by COPY_TEST6 */
+static sol_erno copy_test6(void)
+{
+        #define COPY_TEST6 "sol_elem_meta_copy() sets @meta with the same" \
+                           " data as @src"
+        const sol_index ID = (sol_index) 5;
+        const sol_size SZ = (sol_size) 7;
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_elem_meta *src = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (sol_elem_meta_new(&src, ID, SZ));
+        sol_try (sol_elem_meta_copy(&meta, src));
+
+                /* check test condition */
+        sol_assert (meta->id == src->id, SOL_ERNO_TEST);
+        sol_assert (meta->sz == src->sz, SOL_ERNO_TEST);
+        sol_assert (meta->disp == src->disp, SOL_ERNO_TEST);
+        sol_assert (meta->eq == src->eq, SOL_ERNO_TEST);
+        sol_assert (meta->gt == src->gt, SOL_ERNO_TEST);
+        sol_assert (meta->lt == src->lt, SOL_ERNO_TEST);
+        sol_assert (meta->nref == src->nref, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by if an exception occurs */
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_meta_free(&src);
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_elem_meta() was declared in sol/test/suite.h */
 extern sol_erno __sol_tests_elem_meta(sol_tlog *log,
                                       sol_uint *pass,
@@ -847,6 +884,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, copy_test3, COPY_TEST3));
         sol_try (sol_tsuite_register(ts, copy_test4, COPY_TEST4));
         sol_try (sol_tsuite_register(ts, copy_test5, COPY_TEST5));
+        sol_try (sol_tsuite_register(ts, copy_test5, COPY_TEST6));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
