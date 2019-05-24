@@ -383,7 +383,7 @@ extern void sol_elem_meta_free(sol_elem_meta **meta)
                 if (!(--hnd->nref))
                         sol_ptr_free ((sol_ptr **) meta);
                 else
-                        hnd = SOL_PTR_NULL;
+                        *meta = SOL_PTR_NULL;
         }
 }
 

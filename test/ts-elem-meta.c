@@ -960,6 +960,95 @@ SOL_FINALLY:
 
 
 
+        /* free_test1() defines the test case described by FREE_TEST1 */
+static sol_erno free_test1(void)
+{
+        #define FREE_TEST1 "sol_elem_meta_free() is safe even if @meta" \
+                           " is null"
+
+                /* set up test */
+        sol_elem_meta_free(SOL_PTR_NULL);
+        return SOL_ERNO_NULL;
+}
+
+
+
+
+        /* free_test2() defines the test case described by FREE_TEST2 */
+static sol_erno free_test2(void)
+{
+        #define FREE_TEST2 "sol_elem_meta_free() is safe even if @meta" \
+                           " is a handle to a null pointer"
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+
+                /* set up test */
+        sol_elem_meta_free(&meta);
+        return SOL_ERNO_NULL;
+}
+
+
+
+
+        /* free_test3() defines the test case described by FREE_TEST3 */
+static sol_erno free_test3(void)
+{
+        #define FREE_TEST3 "sol_elem_meta_free() releases @meta"
+        const sol_index ID = 5;
+        const sol_size SZ = 6;
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (sol_elem_meta_new(&meta, ID, SZ));
+        sol_elem_meta_free(&meta);
+
+                /* check test condition */
+        sol_assert (!meta, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by if exception occurs */
+
+SOL_FINALLY:
+                /* tear down test */
+        return sol_erno_get();
+}
+
+
+
+
+        /* free_test4() defines the test case described by FREE_TEST4 */
+static sol_erno free_test4(void)
+{
+        #define FREE_TEST4 "sol_elem_meta_free() accounts for reference" \
+                           " counting when releasing @meta"
+        const sol_index ID = 5;
+        const sol_size SZ = 6;
+        auto sol_elem_meta *src = SOL_PTR_NULL;
+        auto sol_elem_meta *meta1 = SOL_PTR_NULL;
+        auto sol_elem_meta *meta2 = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (sol_elem_meta_new(&src, ID, SZ));
+        sol_try (sol_elem_meta_copy(&meta1, src));
+        sol_try (sol_elem_meta_copy(&meta2, meta1));
+        sol_elem_meta_free(&meta2);
+
+                /* check test condition */
+        sol_assert (src && meta1 && !meta2, SOL_ERNO_TEST);
+        sol_assert (src->nref == (sol_size) 2, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by if exception occurs */
+
+SOL_FINALLY:
+                /* tear down test */
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_elem_meta() was declared in sol/test/suite.h */
 extern sol_erno __sol_tests_elem_meta(sol_tlog *log,
                                       sol_uint *pass,
@@ -1013,6 +1102,12 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, copy_test4, COPY_TEST4));
         sol_try (sol_tsuite_register(ts, copy_test5, COPY_TEST5));
         sol_try (sol_tsuite_register(ts, copy_test6, COPY_TEST6));
+
+                /* register sol_elem_meta_free() test cases */
+        sol_try (sol_tsuite_register(ts, free_test1, FREE_TEST1));
+        sol_try (sol_tsuite_register(ts, free_test2, FREE_TEST2));
+        sol_try (sol_tsuite_register(ts, free_test3, FREE_TEST3));
+        sol_try (sol_tsuite_register(ts, free_test4, FREE_TEST4));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
