@@ -137,7 +137,7 @@ SOL_FINALLY:
 static sol_erno new_test3(void)
 {
         #define NEW_TEST3 "sol_elem_meta_new() sets the internal reference" \
-                          "count to 1 when called"
+                          " count to 1 when called"
         const sol_index ID = (sol_index) 1;
         const sol_size SZ = (sol_size) 1;
         auto sol_elem_meta *meta = SOL_PTR_NULL;
@@ -148,6 +148,34 @@ SOL_TRY:
 
                 /* check test condition */
         sol_assert (meta->nref == (sol_size) 1, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by if exception occurs */
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        return sol_erno_get();
+}
+
+
+
+
+        /* new_test4() defines the test case described by NEW_TEST4 */
+static sol_erno new_test4(void)
+{
+        #define NEW_TEST4 "sol_elem_meta_new() sets @meta to non-null" \
+                          " if successful"
+        const sol_index ID = (sol_index) 1;
+        const sol_size SZ = (sol_size) 1;
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (sol_elem_meta_new(&meta, ID, SZ));
+
+                /* check test condition */
+        sol_assert (meta, SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* pass by if exception occurs */
@@ -855,6 +883,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, new_test1, NEW_TEST1));
         sol_try (sol_tsuite_register(ts, new_test2, NEW_TEST2));
         sol_try (sol_tsuite_register(ts, new_test3, NEW_TEST3));
+        sol_try (sol_tsuite_register(ts, new_test4, NEW_TEST4));
 
                 /* register sol_elem_meta_new2() test cases */
         sol_try (sol_tsuite_register(ts, new2_test1, NEW2_TEST1));
