@@ -63,6 +63,7 @@ typedef sol_erno (suite)(sol_tlog *log,
  *        - SUITE_LOG: logging module test suite
  *        - SUITE_PRIM: primitives module test suite
  *        - SUITE_ELEM_META: element metadata interface test suite
+ *        - SUITE_ELEM: element interface test suite
  *        - SUITE_COUNT: count of test suites
  */
 typedef enum {
@@ -75,6 +76,7 @@ typedef enum {
         SUITE_LOG,
         SUITE_PRIM,
         SUITE_ELEM_META,
+        SUITE_ELEM,
         SUITE_COUNT
 } SUITE;
 
@@ -289,6 +291,7 @@ static void suite_init(void)
         suite_hnd[SUITE_PTR2] = __sol_tests_ptr2;
         suite_hnd[SUITE_LOG] = __sol_tests_log;
         suite_hnd[SUITE_PRIM] = __sol_tests_prim;
+        suite_hnd[SUITE_ELEM] = __sol_tests_elem;
         suite_hnd[SUITE_ELEM_META] = __sol_tests_elem_meta;
 }
 

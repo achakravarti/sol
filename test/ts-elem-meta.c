@@ -5,7 +5,7 @@
  *
  * Description:
  *      This file is part of the internal quality checking of the Sol Library.
- *      It implements the test suite for the element metadata interface
+ *      It implements the test suite for the element metadata interface.
  *
  * Authors:
  *      Abhishek Chakravarti <abhishek@taranjali.org>
