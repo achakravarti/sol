@@ -33,6 +33,45 @@
 
 
 
+static sol_erno meta_new(sol_elem_meta **meta)
+{
+        const sol_index ID = (sol_index) 5;
+        const sol_size SZ = sizeof (int);
+
+        return sol_elem_meta_new(meta, ID, SZ);
+}
+
+
+
+
+        /* new_test1() defines the test case described by NEW_TEST1 */
+static sol_erno new_test1(void)
+{
+        #define NEW_TEST1 "sol_elem_new() throws SOL_ERNO_PTR if" \
+                          " passed a null pointer for @elem"
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto int data = 5;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(SOL_PTR_NULL, meta, (sol_ptr *) &data));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_elem() was declared in sol/test/suite.h */
 extern sol_erno __sol_tests_elem(sol_tlog *log,
                                  sol_uint *pass,
@@ -49,6 +88,7 @@ SOL_TRY:
         sol_try (sol_tsuite_init2(ts, log));
 
                 /* register sol_elem_new() test cases */
+        sol_try (sol_tsuite_register(ts, new_test1, NEW_TEST1));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));

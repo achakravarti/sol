@@ -63,7 +63,6 @@ extern sol_erno sol_elem_new(sol_elem **elem,
 
 SOL_TRY:
         sol_assert (meta && data, SOL_ERNO_PTR);
-        sol_assert (sizeof (*data) == meta->sz, SOL_ERNO_STATE);
 
         sol_try (sol_ptr_new((sol_ptr **) elem, meta->sz));
         hnd = *elem;
