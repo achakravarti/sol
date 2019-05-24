@@ -929,7 +929,13 @@ static sol_erno copy_test6(void)
 
 SOL_TRY:
                 /* set up test */
-        sol_try (sol_elem_meta_new(&src, ID, SZ));
+        sol_try (sol_elem_meta_new4(&src,
+                                    ID,
+                                    SZ,
+                                    mock_dispose,
+                                    mock_cmp,
+                                    mock_cmp,
+                                    mock_cmp));
         sol_try (sol_elem_meta_copy(&meta, src));
 
                 /* check test condition */
@@ -1006,7 +1012,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, copy_test3, COPY_TEST3));
         sol_try (sol_tsuite_register(ts, copy_test4, COPY_TEST4));
         sol_try (sol_tsuite_register(ts, copy_test5, COPY_TEST5));
-        sol_try (sol_tsuite_register(ts, copy_test5, COPY_TEST6));
+        sol_try (sol_tsuite_register(ts, copy_test6, COPY_TEST6));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
