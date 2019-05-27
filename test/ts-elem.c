@@ -128,6 +128,31 @@ SOL_FINALLY:
 
 
 
+        /* id_test1(0 defines the test case described by ID_TEST1 */
+static sol_erno id_test1(void)
+{
+        #define ID_TEST1 "sol_elem_id() throws SOL_ERNO_PTR if passed" \
+                         " a null pointer for @elem"
+        auto sol_index id;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (sol_elem_id(SOL_PTR_NULL, &id));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_elem() was declared in sol/test/suite.h */
 extern sol_erno __sol_tests_elem(sol_tlog *log,
                                  sol_uint *pass,
@@ -147,6 +172,9 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, new_test1, NEW_TEST1));
         sol_try (sol_tsuite_register(ts, new_test2, NEW_TEST2));
         sol_try (sol_tsuite_register(ts, new_test3, NEW_TEST3));
+
+                /* register sol_elem_id() test cases */
+        sol_try (sol_tsuite_register(ts, id_test1, ID_TEST1));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
