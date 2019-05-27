@@ -128,7 +128,7 @@ SOL_FINALLY:
 
 
 
-        /* id_test1(0 defines the test case described by ID_TEST1 */
+        /* id_test1() defines the test case described by ID_TEST1 */
 static sol_erno id_test1(void)
 {
         #define ID_TEST1 "sol_elem_id() throws SOL_ERNO_PTR if passed" \
@@ -150,6 +150,30 @@ SOL_FINALLY:
         return sol_erno_get();
 }
 
+
+
+
+        /* sz_test1() defines the test case described by SZ_TEST1 */
+static sol_erno sz_test1(void)
+{
+        #define SZ_TEST1 "sol_elem_sz() throws SOL_ERNO_PTR if passed" \
+                         " a null pointer for @elem"
+        auto sol_size sz;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (sol_elem_sz(SOL_PTR_NULL, &sz));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        return sol_erno_get();
+}
 
 
 
@@ -175,6 +199,9 @@ SOL_TRY:
 
                 /* register sol_elem_id() test cases */
         sol_try (sol_tsuite_register(ts, id_test1, ID_TEST1));
+
+                /* register sol_elem_sz() test cases */
+        sol_try (sol_tsuite_register(ts, sz_test1, SZ_TEST1));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
