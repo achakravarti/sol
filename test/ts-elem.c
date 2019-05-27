@@ -359,6 +359,38 @@ SOL_FINALLY:
 
 
 
+        /* data_test3() defines the test case described by DATA_TEST3 */
+static sol_erno data_test3(void)
+{
+        #define DATA_TEST3 "sol_elem_data() returns the correct data"
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_int *chk = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr *) &data));
+        sol_try (sol_elem_data(elem, (sol_ptr **) &chk));
+
+                /* check test condition */
+        sol_assert ((int) *chk == data, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by in case of exception */
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
+        sol_ptr_free((sol_ptr **) &chk);
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_elem() was declared in sol/test/suite.h */
 extern sol_erno __sol_tests_elem(sol_tlog *log,
                                  sol_uint *pass,
@@ -392,6 +424,7 @@ SOL_TRY:
                 /* register sol_elem_data() test cases */
         sol_try (sol_tsuite_register(ts, data_test1, DATA_TEST1));
         sol_try (sol_tsuite_register(ts, data_test2, DATA_TEST2));
+        sol_try (sol_tsuite_register(ts, data_test3, DATA_TEST3));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
