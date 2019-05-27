@@ -99,6 +99,35 @@ SOL_FINALLY:
 
 
 
+        /* new_test3() defines the test case described by NEW_TEST3 */
+static sol_erno new_test3(void)
+{
+        #define NEW_TEST3 "sol_elem_new() throws SOL_ERNO_PTR if" \
+                          " passed a null pointer for @data"
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, SOL_PTR_NULL));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_free(&elem);
+        sol_elem_meta_free(&meta);
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_elem() was declared in sol/test/suite.h */
 extern sol_erno __sol_tests_elem(sol_tlog *log,
                                  sol_uint *pass,
@@ -117,6 +146,7 @@ SOL_TRY:
                 /* register sol_elem_new() test cases */
         sol_try (sol_tsuite_register(ts, new_test1, NEW_TEST1));
         sol_try (sol_tsuite_register(ts, new_test2, NEW_TEST2));
+        sol_try (sol_tsuite_register(ts, new_test3, NEW_TEST3));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
