@@ -177,6 +177,33 @@ SOL_FINALLY:
 
 
 
+
+        /* data_test1() defines the test case described by DATA_TEST1 */
+static sol_erno data_test1(void)
+{
+        #define DATA_TEST1 "sol_elem_data() throws SOL_ERNO_PTR if passed" \
+                           " a null pointer for @elem"
+        auto sol_ptr *data = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (sol_elem_data(SOL_PTR_NULL, &data));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_ptr_free((sol_ptr **) &data);
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_elem() was declared in sol/test/suite.h */
 extern sol_erno __sol_tests_elem(sol_tlog *log,
                                  sol_uint *pass,
@@ -202,6 +229,9 @@ SOL_TRY:
 
                 /* register sol_elem_sz() test cases */
         sol_try (sol_tsuite_register(ts, sz_test1, SZ_TEST1));
+
+                /* register sol_elem_data() test cases */
+        sol_try (sol_tsuite_register(ts, data_test1, DATA_TEST1));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
