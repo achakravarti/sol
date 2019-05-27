@@ -111,6 +111,8 @@ extern void sol_elem_free(sol_elem **elem)
         if (sol_likely (elem && (hnd = *elem))) {
                 if (!(--hnd->nref)) {
                         hnd->meta->disp(&hnd->data);
+                        sol_elem_meta_free(&hnd->meta);
+
                         sol_ptr_free((sol_ptr **) elem);
                 }
 
