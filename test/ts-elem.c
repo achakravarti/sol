@@ -184,6 +184,37 @@ SOL_FINALLY:
 
 
 
+        /* id_test3() defines the test case described by ID_TEST3 */
+static sol_erno id_test3(void)
+{
+        #define ID_TEST3 "sol_elem_id() return the correct ID"
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+        auto sol_index id;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr *) &data));
+        sol_try (sol_elem_id(elem, &id));
+
+                /* check test condition */
+        sol_assert (id == 5, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by in case of exception */
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
+        return sol_erno_get();
+}
+
+
+
+
         /* sz_test1() defines the test case described by SZ_TEST1 */
 static sol_erno sz_test1(void)
 {
@@ -320,6 +351,7 @@ SOL_TRY:
                 /* register sol_elem_id() test cases */
         sol_try (sol_tsuite_register(ts, id_test1, ID_TEST1));
         sol_try (sol_tsuite_register(ts, id_test2, ID_TEST2));
+        sol_try (sol_tsuite_register(ts, id_test3, ID_TEST3));
 
                 /* register sol_elem_sz() test cases */
         sol_try (sol_tsuite_register(ts, sz_test1, SZ_TEST1));
