@@ -177,7 +177,7 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* tear down test */
         sol_elem_meta_free(&meta);
-        //sol_elem_free(&elem);
+        sol_elem_free(&elem);
         return sol_erno_get();
 }
 
@@ -232,7 +232,7 @@ SOL_CATCH:
 
 SOL_FINALLY:
                 /* tear down test */
-        //sol_elem_free(&elem);
+        sol_elem_free(&elem);
         sol_elem_meta_free(&meta);
         return sol_erno_get();
 }
