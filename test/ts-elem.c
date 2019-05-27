@@ -159,9 +159,13 @@ static sol_erno id_test2(void)
         #define ID_TEST2 "sol_elem_id() throws SOL_ERNO_PTR if passed" \
                          " a null pointer for @id"
         auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
 
 SOL_TRY:
                 /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr *) &data));
         sol_try (sol_elem_id(elem, SOL_PTR_NULL));
 
 SOL_CATCH:
@@ -172,6 +176,8 @@ SOL_CATCH:
 
 SOL_FINALLY:
                 /* tear down test */
+        sol_elem_meta_free(&meta);
+        //sol_elem_free(&elem);
         return sol_erno_get();
 }
 
@@ -197,6 +203,37 @@ SOL_CATCH:
 
 SOL_FINALLY:
                 /* tear down test */
+        return sol_erno_get();
+}
+
+
+
+
+        /* sz_test2() defines the test case described by SZ_TEST2 */
+static sol_erno sz_test2(void)
+{
+        #define SZ_TEST2 "sol_elem_sz() throws SOL_ERNO_PTR if passed" \
+                         " a null pointer for @sz"
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr *) &data));
+        sol_try (sol_elem_sz(elem, SOL_PTR_NULL));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        //sol_elem_free(&elem);
+        sol_elem_meta_free(&meta);
         return sol_erno_get();
 }
 
@@ -255,6 +292,7 @@ SOL_TRY:
 
                 /* register sol_elem_sz() test cases */
         sol_try (sol_tsuite_register(ts, sz_test1, SZ_TEST1));
+        sol_try (sol_tsuite_register(ts, sz_test2, SZ_TEST2));
 
                 /* register sol_elem_data() test cases */
         sol_try (sol_tsuite_register(ts, data_test1, DATA_TEST1));
