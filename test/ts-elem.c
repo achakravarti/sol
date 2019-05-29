@@ -33,11 +33,14 @@
 
 
 
+        /* meta_new() is a utility function to initialise the sample element
+         * metadata used for testing */
 static sol_erno meta_new(sol_elem_meta **meta)
 {
         const sol_index ID = (sol_index) 5;
-        const sol_size SZ = sizeof (int);
+        const sol_size SZ = sizeof (sol_int);
 
+                /* initialise metadata */
         return sol_elem_meta_new(meta, ID, SZ);
 }
 
@@ -287,7 +290,7 @@ SOL_TRY:
         sol_try (sol_elem_sz(elem, &sz));
 
                 /* check test condition */
-        sol_assert (sz == sizeof(int), SOL_ERNO_TEST);
+        sol_assert (sz == sizeof(sol_int), SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* pass by in case of exception */
@@ -366,16 +369,16 @@ static sol_erno data_test3(void)
         auto sol_elem *elem = SOL_PTR_NULL;
         auto sol_elem_meta *meta = SOL_PTR_NULL;
         auto sol_int *chk = SOL_PTR_NULL;
-        auto sol_int data = (sol_int) 5;
+        auto sol_int data = 5;
 
 SOL_TRY:
                 /* set up test */
         sol_try (meta_new(&meta));
-        sol_try (sol_elem_new(&elem, meta, (sol_ptr *) &data));
-        sol_try (sol_elem_data(elem, (sol_ptr **) &chk));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr*) &data));
+        sol_try (sol_elem_data(elem, (sol_ptr**) &chk));
 
                 /* check test condition */
-        sol_assert ((int) *chk == data, SOL_ERNO_TEST);
+        sol_assert (*chk == data, SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* pass by in case of exception */
@@ -385,6 +388,36 @@ SOL_FINALLY:
         sol_elem_meta_free(&meta);
         sol_elem_free(&elem);
         sol_ptr_free((sol_ptr **) &chk);
+        return sol_erno_get();
+}
+
+
+
+
+        /* lt_test1() defines the test case described by LT_TEST1 */
+static sol_erno lt_test1(void)
+{
+        #define LT_TEST1 "sol_elem_lt() throws SOL_ERNO_PTR if @lhs" \
+                         " is null"
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+        auto SOL_BOOL lt;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr*) &data));
+        sol_try (sol_elem_lt(SOL_PTR_NULL, elem, &lt));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
         return sol_erno_get();
 }
 
@@ -425,6 +458,9 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, data_test1, DATA_TEST1));
         sol_try (sol_tsuite_register(ts, data_test2, DATA_TEST2));
         sol_try (sol_tsuite_register(ts, data_test3, DATA_TEST3));
+
+                /* register sol_elem_lt() test cases */
+        sol_try (sol_tsuite_register(ts, lt_test1, LT_TEST1));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));

@@ -133,6 +133,7 @@ extern sol_erno sol_elem_lt(const sol_elem *lhs,
 SOL_TRY:
         sol_assert (lhs && rhs && lt, SOL_ERNO_PTR);
         sol_assert (lhs->meta->id == rhs->meta->id, SOL_ERNO_STATE);
+        sol_assert (lhs->meta->lt, SOL_ERNO_STATE);
 
         sol_try (lhs->meta->lt(lhs->data, rhs->data, lt));
 
@@ -153,6 +154,7 @@ extern sol_erno sol_elem_eq(const sol_elem *lhs,
 SOL_TRY:
         sol_assert (lhs && rhs && eq, SOL_ERNO_PTR);
         sol_assert (lhs->meta->id == rhs->meta->id, SOL_ERNO_STATE);
+        sol_assert (lhs->meta->eq, SOL_ERNO_STATE);
 
         sol_try (lhs->meta->eq(lhs->data, rhs->data, eq));
 
@@ -171,15 +173,20 @@ extern sol_erno sol_elem_gt(const sol_elem *lhs,
                             SOL_BOOL *gt)
 {
 SOL_TRY:
+                /* check preconditions */
         sol_assert (lhs && rhs && gt, SOL_ERNO_PTR);
         sol_assert (lhs->meta->id == rhs->meta->id, SOL_ERNO_STATE);
+        sol_assert (lhs->meta->gt, SOL_ERNO_STATE);
 
+                /* invoke comparison callback */
         sol_try (lhs->meta->gt(lhs->data, rhs->data, gt));
 
 SOL_CATCH:
+                /* log current error code */
         sol_log_erno(sol_erno_get());
 
 SOL_FINALLY:
+                /* wind up */
         return sol_erno_get();
 }
 
