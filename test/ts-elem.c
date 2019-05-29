@@ -424,6 +424,36 @@ SOL_FINALLY:
 
 
 
+        /* lt_test2() defines the test case described by LT_TEST2 */
+static sol_erno lt_test2(void)
+{
+        #define LT_TEST2 "sol_elem_lt() throws SOL_ERNO_PTR if @rhs" \
+                         " is null"
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+        auto SOL_BOOL lt;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr*) &data));
+        sol_try (sol_elem_lt(elem, SOL_PTR_NULL, &lt));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_elem() was declared in sol/test/suite.h */
 extern sol_erno __sol_tests_elem(sol_tlog *log,
                                  sol_uint *pass,
@@ -461,6 +491,7 @@ SOL_TRY:
 
                 /* register sol_elem_lt() test cases */
         sol_try (sol_tsuite_register(ts, lt_test1, LT_TEST1));
+        sol_try (sol_tsuite_register(ts, lt_test2, LT_TEST2));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
