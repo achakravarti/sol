@@ -33,7 +33,58 @@
 
 
 
-        /* meta_new() is a utility function to initialise the sample element
+        /* mock_dispose() mocks the element data dispose delegate */
+static void mock_dispose(sol_ptr **elem)
+{
+        (void) elem;
+}
+
+
+
+
+        /* mock_lt() mocks the less than comparison delegate */
+static sol_erno mock_lt(const sol_ptr *lhs, const sol_ptr *rhs, SOL_BOOL *lt)
+{
+        const sol_int left = *((sol_int *) lhs);
+        const sol_int right = *((sol_int *) rhs);
+
+                /* perform comparison */
+        *lt = (left < right);
+        return SOL_ERNO_NULL;
+}
+
+
+
+
+        /* mock_eq() mocks the equal to comparison delegate */
+static sol_erno mock_eq(const sol_ptr *lhs, const sol_ptr *rhs, SOL_BOOL *eq)
+{
+        const sol_int left = *((sol_int *) lhs);
+        const sol_int right = *((sol_int *) rhs);
+
+                /* perform comparison */
+        *eq = (left == right);
+        return SOL_ERNO_NULL;
+}
+
+
+
+
+        /* mock_gt() mocks the greater than comparison delegate */
+static sol_erno mock_gt(const sol_ptr *lhs, const sol_ptr *rhs, SOL_BOOL *gt)
+{
+        const sol_int left = *((sol_int *) lhs);
+        const sol_int right = *((sol_int *) rhs);
+
+                /* perform comparison */
+        *gt = (left > right);
+        return SOL_ERNO_NULL;
+}
+
+
+
+
+        /* meta_new() is a utility function to initialise the minimal element
          * metadata used for testing */
 static sol_erno meta_new(sol_elem_meta **meta)
 {
@@ -42,6 +93,26 @@ static sol_erno meta_new(sol_elem_meta **meta)
 
                 /* initialise metadata */
         return sol_elem_meta_new(meta, ID, SZ);
+}
+
+
+
+
+        /* meta_new2 is a utility function to initialise the full element
+         * metadata used for testing */
+static sol_erno meta_new2(sol_elem_meta **meta)
+{
+        const sol_index ID = (sol_index) 6;
+        const sol_size SZ = sizeof (sol_int);
+
+                /* initialise metadata */
+        return sol_elem_meta_new4(meta,
+                                  ID,
+                                  SZ,
+                                  mock_dispose,
+                                  mock_eq,
+                                  mock_lt,
+                                  mock_gt);
 }
 
 
@@ -418,6 +489,8 @@ SOL_CATCH:
 
 SOL_FINALLY:
                 /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
         return sol_erno_get();
 }
 
@@ -448,6 +521,8 @@ SOL_CATCH:
 
 SOL_FINALLY:
                 /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
         return sol_erno_get();
 }
 
@@ -477,6 +552,46 @@ SOL_CATCH:
 
 SOL_FINALLY:
                 /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
+        return sol_erno_get();
+}
+
+
+
+
+        /* lt_test4() defines the test case described by LT_TEST4 */
+static sol_erno lt_test4(void)
+{
+        #define LT_TEST4 "sol_elem_lt() throws SOL_ERNO_STATE if @lhs" \
+                         " and @rhs are of different types"
+        auto sol_elem_meta *meta1 = SOL_PTR_NULL;
+        auto sol_elem_meta *meta2 = SOL_PTR_NULL;
+        auto sol_elem *elem1 = SOL_PTR_NULL;
+        auto sol_elem *elem2 = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+        auto SOL_BOOL lt;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta1));
+        sol_try (meta_new2(&meta2));
+        sol_try (sol_elem_new(&elem1, meta1, (sol_ptr*) &data));
+        sol_try (sol_elem_new(&elem2, meta2, (sol_ptr*) &data));
+        sol_try (sol_elem_lt(elem1, elem2, &lt));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_STATE
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta1);
+        sol_elem_meta_free(&meta2);
+        sol_elem_free(&elem1);
+        sol_elem_free(&elem2);
         return sol_erno_get();
 }
 
@@ -521,7 +636,8 @@ SOL_TRY:
                 /* register sol_elem_lt() test cases */
         sol_try (sol_tsuite_register(ts, lt_test1, LT_TEST1));
         sol_try (sol_tsuite_register(ts, lt_test2, LT_TEST2));
-        sol_try (sol_tsuite_register(ts, lt_test2, LT_TEST3));
+        sol_try (sol_tsuite_register(ts, lt_test3, LT_TEST3));
+        sol_try (sol_tsuite_register(ts, lt_test4, LT_TEST4));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));

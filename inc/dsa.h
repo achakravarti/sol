@@ -102,7 +102,7 @@ extern sol_erno sol_elem_meta_new3(sol_elem_meta **meta,
 extern sol_erno sol_elem_meta_new4(sol_elem_meta **meta,
                                     const sol_index id,
                                     const sol_size sz,
-                                    sol_elem_delegate_dispose *free,
+                                    sol_elem_delegate_dispose *disp,
                                     sol_elem_delegate_eq *eq,
                                     sol_elem_delegate_lt *lt,
                                     sol_elem_delegate_gt *gt);
