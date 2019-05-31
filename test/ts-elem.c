@@ -711,7 +711,7 @@ SOL_TRY:
         sol_try (meta_new2(&meta2));
         sol_try (sol_elem_new(&elem1, meta1, (sol_ptr*) &data));
         sol_try (sol_elem_new(&elem2, meta2, (sol_ptr*) &data));
-        sol_try (sol_elem_lt(elem1, elem2, &eq));
+        sol_try (sol_elem_eq(elem1, elem2, &eq));
 
 SOL_CATCH:
                 /* check test condition */
@@ -725,6 +725,38 @@ SOL_FINALLY:
         sol_elem_meta_free(&meta2);
         sol_elem_free(&elem1);
         sol_elem_free(&elem2);
+        return sol_erno_get();
+}
+
+
+
+
+        /* gt_test1() defines the test case described by GT_TEST1 */
+static sol_erno gt_test1(void)
+{
+        #define GT_TEST1 "sol_elem_gt() throws SOL_ERNO_PTR if @lhs" \
+                         " is null"
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+        auto SOL_BOOL gt;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr*) &data));
+        sol_try (sol_elem_gt(SOL_PTR_NULL, elem, &gt));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
         return sol_erno_get();
 }
 
@@ -777,6 +809,9 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, eq_test2, EQ_TEST2));
         sol_try (sol_tsuite_register(ts, eq_test3, EQ_TEST3));
         sol_try (sol_tsuite_register(ts, eq_test4, EQ_TEST4));
+
+                /* register sol_elem_eq() test cases */
+        sol_try (sol_tsuite_register(ts, gt_test1, GT_TEST1));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
