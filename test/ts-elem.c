@@ -763,6 +763,38 @@ SOL_FINALLY:
 
 
 
+        /* gt_test2() defines the test case described by GT_TEST2 */
+static sol_erno gt_test2(void)
+{
+        #define GT_TEST2 "sol_elem_gt() throws SOL_ERNO_PTR if @rhs" \
+                         " is null"
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+        auto SOL_BOOL gt;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr*) &data));
+        sol_try (sol_elem_gt(elem, SOL_PTR_NULL, &gt));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_elem() was declared in sol/test/suite.h */
 extern sol_erno __sol_tests_elem(sol_tlog *log,
                                  sol_uint *pass,
@@ -810,8 +842,9 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, eq_test3, EQ_TEST3));
         sol_try (sol_tsuite_register(ts, eq_test4, EQ_TEST4));
 
-                /* register sol_elem_eq() test cases */
+                /* register sol_elem_gt() test cases */
         sol_try (sol_tsuite_register(ts, gt_test1, GT_TEST1));
+        sol_try (sol_tsuite_register(ts, gt_test2, GT_TEST2));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
