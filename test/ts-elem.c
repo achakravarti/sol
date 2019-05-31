@@ -33,12 +33,86 @@
 
 
 
+        /* mock_dispose() mocks the element data dispose delegate */
+static void mock_dispose(sol_ptr **elem)
+{
+        (void) elem;
+}
+
+
+
+
+        /* mock_lt() mocks the less than comparison delegate */
+static sol_erno mock_lt(const sol_ptr *lhs, const sol_ptr *rhs, SOL_BOOL *lt)
+{
+        const sol_int left = *((sol_int *) lhs);
+        const sol_int right = *((sol_int *) rhs);
+
+                /* perform comparison */
+        *lt = (left < right);
+        return SOL_ERNO_NULL;
+}
+
+
+
+
+        /* mock_eq() mocks the equal to comparison delegate */
+static sol_erno mock_eq(const sol_ptr *lhs, const sol_ptr *rhs, SOL_BOOL *eq)
+{
+        const sol_int left = *((sol_int *) lhs);
+        const sol_int right = *((sol_int *) rhs);
+
+                /* perform comparison */
+        *eq = (left == right);
+        return SOL_ERNO_NULL;
+}
+
+
+
+
+        /* mock_gt() mocks the greater than comparison delegate */
+static sol_erno mock_gt(const sol_ptr *lhs, const sol_ptr *rhs, SOL_BOOL *gt)
+{
+        const sol_int left = *((sol_int *) lhs);
+        const sol_int right = *((sol_int *) rhs);
+
+                /* perform comparison */
+        *gt = (left > right);
+        return SOL_ERNO_NULL;
+}
+
+
+
+
+        /* meta_new() is a utility function to initialise the minimal element
+         * metadata used for testing */
 static sol_erno meta_new(sol_elem_meta **meta)
 {
         const sol_index ID = (sol_index) 5;
-        const sol_size SZ = sizeof (int);
+        const sol_size SZ = sizeof (sol_int);
 
+                /* initialise metadata */
         return sol_elem_meta_new(meta, ID, SZ);
+}
+
+
+
+
+        /* meta_new2 is a utility function to initialise the full element
+         * metadata used for testing */
+static sol_erno meta_new2(sol_elem_meta **meta)
+{
+        const sol_index ID = (sol_index) 6;
+        const sol_size SZ = sizeof (sol_int);
+
+                /* initialise metadata */
+        return sol_elem_meta_new4(meta,
+                                  ID,
+                                  SZ,
+                                  mock_dispose,
+                                  mock_eq,
+                                  mock_lt,
+                                  mock_gt);
 }
 
 
@@ -99,6 +173,495 @@ SOL_FINALLY:
 
 
 
+        /* new_test3() defines the test case described by NEW_TEST3 */
+static sol_erno new_test3(void)
+{
+        #define NEW_TEST3 "sol_elem_new() throws SOL_ERNO_PTR if" \
+                          " passed a null pointer for @data"
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, SOL_PTR_NULL));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_free(&elem);
+        sol_elem_meta_free(&meta);
+        return sol_erno_get();
+}
+
+
+
+
+        /* id_test1() defines the test case described by ID_TEST1 */
+static sol_erno id_test1(void)
+{
+        #define ID_TEST1 "sol_elem_id() throws SOL_ERNO_PTR if passed" \
+                         " a null pointer for @elem"
+        auto sol_index id;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (sol_elem_id(SOL_PTR_NULL, &id));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        return sol_erno_get();
+}
+
+
+
+
+        /* id_test2() defines the test case described by ID_TEST2 */
+static sol_erno id_test2(void)
+{
+        #define ID_TEST2 "sol_elem_id() throws SOL_ERNO_PTR if passed" \
+                         " a null pointer for @id"
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr *) &data));
+        sol_try (sol_elem_id(elem, SOL_PTR_NULL));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
+        return sol_erno_get();
+}
+
+
+
+
+        /* id_test3() defines the test case described by ID_TEST3 */
+static sol_erno id_test3(void)
+{
+        #define ID_TEST3 "sol_elem_id() returns the correct ID"
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+        auto sol_index id;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr *) &data));
+        sol_try (sol_elem_id(elem, &id));
+
+                /* check test condition */
+        sol_assert (id == 5, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by in case of exception */
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
+        return sol_erno_get();
+}
+
+
+
+
+        /* sz_test1() defines the test case described by SZ_TEST1 */
+static sol_erno sz_test1(void)
+{
+        #define SZ_TEST1 "sol_elem_sz() throws SOL_ERNO_PTR if passed" \
+                         " a null pointer for @elem"
+        auto sol_size sz;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (sol_elem_sz(SOL_PTR_NULL, &sz));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        return sol_erno_get();
+}
+
+
+
+
+        /* sz_test2() defines the test case described by SZ_TEST2 */
+static sol_erno sz_test2(void)
+{
+        #define SZ_TEST2 "sol_elem_sz() throws SOL_ERNO_PTR if passed" \
+                         " a null pointer for @sz"
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr *) &data));
+        sol_try (sol_elem_sz(elem, SOL_PTR_NULL));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_free(&elem);
+        sol_elem_meta_free(&meta);
+        return sol_erno_get();
+}
+
+
+
+
+        /* sz_test3() defines the test case described by SZ_TEST3 */
+static sol_erno sz_test3(void)
+{
+        #define SZ_TEST3 "sol_elem_sz() returns the correct size"
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+        auto sol_size sz;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr *) &data));
+        sol_try (sol_elem_sz(elem, &sz));
+
+                /* check test condition */
+        sol_assert (sz == sizeof(sol_int), SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by in case of exception */
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
+        return sol_erno_get();
+}
+
+
+
+
+        /* data_test1() defines the test case described by DATA_TEST1 */
+static sol_erno data_test1(void)
+{
+        #define DATA_TEST1 "sol_elem_data() throws SOL_ERNO_PTR if passed" \
+                           " a null pointer for @elem"
+        auto sol_ptr *data = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (sol_elem_data(SOL_PTR_NULL, &data));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_ptr_free((sol_ptr **) &data);
+        return sol_erno_get();
+}
+
+
+
+
+        /* data_test2() defines the test case described by DATA_TEST2 */
+static sol_erno data_test2(void)
+{
+        #define DATA_TEST2 "sol_elem_data() throws SOL_ERNO_PTR if passed" \
+                           " a null pointer for @data"
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr *) &data));
+        sol_try (sol_elem_data(elem, SOL_PTR_NULL));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_free(&elem);
+        sol_elem_meta_free(&meta);
+        return sol_erno_get();
+}
+
+
+
+
+        /* data_test3() defines the test case described by DATA_TEST3 */
+static sol_erno data_test3(void)
+{
+        #define DATA_TEST3 "sol_elem_data() returns the correct data"
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_int *chk = SOL_PTR_NULL;
+        auto sol_int data = 5;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr*) &data));
+        sol_try (sol_elem_data(elem, (sol_ptr**) &chk));
+
+                /* check test condition */
+        sol_assert (*chk == data, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by in case of exception */
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
+        sol_ptr_free((sol_ptr **) &chk);
+        return sol_erno_get();
+}
+
+
+
+
+        /* lt_test1() defines the test case described by LT_TEST1 */
+static sol_erno lt_test1(void)
+{
+        #define LT_TEST1 "sol_elem_lt() throws SOL_ERNO_PTR if @lhs" \
+                         " is null"
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+        auto SOL_BOOL lt;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr*) &data));
+        sol_try (sol_elem_lt(SOL_PTR_NULL, elem, &lt));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
+        return sol_erno_get();
+}
+
+
+
+
+        /* lt_test2() defines the test case described by LT_TEST2 */
+static sol_erno lt_test2(void)
+{
+        #define LT_TEST2 "sol_elem_lt() throws SOL_ERNO_PTR if @rhs" \
+                         " is null"
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+        auto SOL_BOOL lt;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr*) &data));
+        sol_try (sol_elem_lt(elem, SOL_PTR_NULL, &lt));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
+        return sol_erno_get();
+}
+
+
+
+
+        /* lt_test3() defines the test case described by LT_TEST3 */
+static sol_erno lt_test3(void)
+{
+        #define LT_TEST3 "sol_elem_lt() throws SOL_ERNO_PTR if @lts" \
+                         " is null"
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr*) &data));
+        sol_try (sol_elem_lt(elem, elem, SOL_PTR_NULL));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
+        return sol_erno_get();
+}
+
+
+
+
+        /* lt_test4() defines the test case described by LT_TEST4 */
+static sol_erno lt_test4(void)
+{
+        #define LT_TEST4 "sol_elem_lt() throws SOL_ERNO_STATE if @lhs" \
+                         " and @rhs are of different types"
+        auto sol_elem_meta *meta1 = SOL_PTR_NULL;
+        auto sol_elem_meta *meta2 = SOL_PTR_NULL;
+        auto sol_elem *elem1 = SOL_PTR_NULL;
+        auto sol_elem *elem2 = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+        auto SOL_BOOL lt;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta1));
+        sol_try (meta_new2(&meta2));
+        sol_try (sol_elem_new(&elem1, meta1, (sol_ptr*) &data));
+        sol_try (sol_elem_new(&elem2, meta2, (sol_ptr*) &data));
+        sol_try (sol_elem_lt(elem1, elem2, &lt));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_STATE
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta1);
+        sol_elem_meta_free(&meta2);
+        sol_elem_free(&elem1);
+        sol_elem_free(&elem2);
+        return sol_erno_get();
+}
+
+
+
+
+        /* eq_test1() defines the test case described by EQ_TEST1 */
+static sol_erno eq_test1(void)
+{
+        #define EQ_TEST1 "sol_elem_eq() throws SOL_ERNO_PTR if @lhs" \
+                         " is null"
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+        auto SOL_BOOL eq;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr*) &data));
+        sol_try (sol_elem_eq(SOL_PTR_NULL, elem, &eq));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
+        return sol_erno_get();
+}
+
+
+
+
+        /* eq_test2() defines the test case described by EQ_TEST2 */
+static sol_erno eq_test2(void)
+{
+        #define EQ_TEST2 "sol_elem_eq() throws SOL_ERNO_PTR if @rhs" \
+                         " is null"
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+        auto SOL_BOOL eq;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr*) &data));
+        sol_try (sol_elem_lt(elem, SOL_PTR_NULL, &eq));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_elem() was declared in sol/test/suite.h */
 extern sol_erno __sol_tests_elem(sol_tlog *log,
                                  sol_uint *pass,
@@ -117,6 +680,32 @@ SOL_TRY:
                 /* register sol_elem_new() test cases */
         sol_try (sol_tsuite_register(ts, new_test1, NEW_TEST1));
         sol_try (sol_tsuite_register(ts, new_test2, NEW_TEST2));
+        sol_try (sol_tsuite_register(ts, new_test3, NEW_TEST3));
+
+                /* register sol_elem_id() test cases */
+        sol_try (sol_tsuite_register(ts, id_test1, ID_TEST1));
+        sol_try (sol_tsuite_register(ts, id_test2, ID_TEST2));
+        sol_try (sol_tsuite_register(ts, id_test3, ID_TEST3));
+
+                /* register sol_elem_sz() test cases */
+        sol_try (sol_tsuite_register(ts, sz_test1, SZ_TEST1));
+        sol_try (sol_tsuite_register(ts, sz_test2, SZ_TEST2));
+        sol_try (sol_tsuite_register(ts, sz_test3, SZ_TEST3));
+
+                /* register sol_elem_data() test cases */
+        sol_try (sol_tsuite_register(ts, data_test1, DATA_TEST1));
+        sol_try (sol_tsuite_register(ts, data_test2, DATA_TEST2));
+        sol_try (sol_tsuite_register(ts, data_test3, DATA_TEST3));
+
+                /* register sol_elem_lt() test cases */
+        sol_try (sol_tsuite_register(ts, lt_test1, LT_TEST1));
+        sol_try (sol_tsuite_register(ts, lt_test2, LT_TEST2));
+        sol_try (sol_tsuite_register(ts, lt_test3, LT_TEST3));
+        sol_try (sol_tsuite_register(ts, lt_test4, LT_TEST4));
+
+                /* register sol_elem_eq() test cases */
+        sol_try (sol_tsuite_register(ts, eq_test1, EQ_TEST1));
+        sol_try (sol_tsuite_register(ts, eq_test2, EQ_TEST2));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
