@@ -532,7 +532,7 @@ SOL_FINALLY:
         /* lt_test3() defines the test case described by LT_TEST3 */
 static sol_erno lt_test3(void)
 {
-        #define LT_TEST3 "sol_elem_lt() throws SOL_ERNO_PTR if @lts" \
+        #define LT_TEST3 "sol_elem_lt() throws SOL_ERNO_PTR if @lt" \
                          " is null"
         auto sol_elem_meta *meta = SOL_PTR_NULL;
         auto sol_elem *elem = SOL_PTR_NULL;
@@ -662,6 +662,37 @@ SOL_FINALLY:
 
 
 
+        /* eq_test3() defines the test case described by EQ_TEST3 */
+static sol_erno eq_test3(void)
+{
+        #define EQ_TEST3 "sol_elem_eq() throws SOL_ERNO_PTR if @eq" \
+                         " is null"
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_int data = (sol_int) 5;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr*) &data));
+        sol_try (sol_elem_eq(elem, elem, SOL_PTR_NULL));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_elem() was declared in sol/test/suite.h */
 extern sol_erno __sol_tests_elem(sol_tlog *log,
                                  sol_uint *pass,
@@ -706,6 +737,7 @@ SOL_TRY:
                 /* register sol_elem_eq() test cases */
         sol_try (sol_tsuite_register(ts, eq_test1, EQ_TEST1));
         sol_try (sol_tsuite_register(ts, eq_test2, EQ_TEST2));
+        sol_try (sol_tsuite_register(ts, eq_test3, EQ_TEST3));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
