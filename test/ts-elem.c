@@ -123,8 +123,9 @@ static sol_erno new_test1(void)
 {
         #define NEW_TEST1 "sol_elem_new() throws SOL_ERNO_PTR if" \
                           " passed a null pointer for @elem"
+        const int data = 5;
+
         auto sol_elem_meta *meta = SOL_PTR_NULL;
-        auto int data = 5;
 
 SOL_TRY:
                 /* set up test */
@@ -151,8 +152,9 @@ static sol_erno new_test2(void)
 {
         #define NEW_TEST2 "sol_elem_new() throws SOL_ERNO_PTR if" \
                           " passed a null pointer for @meta"
+        const int data = 5;
+
         auto sol_elem *elem = SOL_PTR_NULL;
-        auto int data = 5;
 
 SOL_TRY:
                 /* set up test */
@@ -178,6 +180,7 @@ static sol_erno new_test3(void)
 {
         #define NEW_TEST3 "sol_elem_new() throws SOL_ERNO_PTR if" \
                           " passed a null pointer for @data"
+
         auto sol_elem *elem = SOL_PTR_NULL;
         auto sol_elem_meta *meta = SOL_PTR_NULL;
 
@@ -207,6 +210,7 @@ static sol_erno id_test1(void)
 {
         #define ID_TEST1 "sol_elem_id() throws SOL_ERNO_PTR if passed" \
                          " a null pointer for @elem"
+
         auto sol_index id;
 
 SOL_TRY:
@@ -232,9 +236,10 @@ static sol_erno id_test2(void)
 {
         #define ID_TEST2 "sol_elem_id() throws SOL_ERNO_PTR if passed" \
                          " a null pointer for @id"
+        const sol_int data = (sol_int) 5;
+
         auto sol_elem *elem = SOL_PTR_NULL;
         auto sol_elem_meta *meta = SOL_PTR_NULL;
-        auto sol_int data = (sol_int) 5;
 
 SOL_TRY:
                 /* set up test */
@@ -262,9 +267,10 @@ SOL_FINALLY:
 static sol_erno id_test3(void)
 {
         #define ID_TEST3 "sol_elem_id() returns the correct ID"
+        const sol_int data = (sol_int) 5;
+
         auto sol_elem *elem = SOL_PTR_NULL;
         auto sol_elem_meta *meta = SOL_PTR_NULL;
-        auto sol_int data = (sol_int) 5;
         auto sol_index id;
 
 SOL_TRY:
@@ -319,9 +325,10 @@ static sol_erno sz_test2(void)
 {
         #define SZ_TEST2 "sol_elem_sz() throws SOL_ERNO_PTR if passed" \
                          " a null pointer for @sz"
+        const sol_int data = (sol_int) 5;
+
         auto sol_elem *elem = SOL_PTR_NULL;
         auto sol_elem_meta *meta = SOL_PTR_NULL;
-        auto sol_int data = (sol_int) 5;
 
 SOL_TRY:
                 /* set up test */
@@ -349,9 +356,10 @@ SOL_FINALLY:
 static sol_erno sz_test3(void)
 {
         #define SZ_TEST3 "sol_elem_sz() returns the correct size"
+        const sol_int data = (sol_int) 5;
+
         auto sol_elem *elem = SOL_PTR_NULL;
         auto sol_elem_meta *meta = SOL_PTR_NULL;
-        auto sol_int data = (sol_int) 5;
         auto sol_size sz;
 
 SOL_TRY:
@@ -381,6 +389,7 @@ static sol_erno data_test1(void)
 {
         #define DATA_TEST1 "sol_elem_data() throws SOL_ERNO_PTR if passed" \
                            " a null pointer for @elem"
+
         auto sol_ptr *data = SOL_PTR_NULL;
 
 SOL_TRY:
@@ -407,9 +416,10 @@ static sol_erno data_test2(void)
 {
         #define DATA_TEST2 "sol_elem_data() throws SOL_ERNO_PTR if passed" \
                            " a null pointer for @data"
+        const sol_int data = (sol_int) 5;
+
         auto sol_elem *elem = SOL_PTR_NULL;
         auto sol_elem_meta *meta = SOL_PTR_NULL;
-        auto sol_int data = (sol_int) 5;
 
 SOL_TRY:
                 /* set up test */
@@ -437,10 +447,11 @@ SOL_FINALLY:
 static sol_erno data_test3(void)
 {
         #define DATA_TEST3 "sol_elem_data() returns the correct data"
+        const sol_int data = 5;
+
         auto sol_elem *elem = SOL_PTR_NULL;
         auto sol_elem_meta *meta = SOL_PTR_NULL;
         auto sol_int *chk = SOL_PTR_NULL;
-        auto sol_int data = 5;
 
 SOL_TRY:
                 /* set up test */
@@ -470,9 +481,10 @@ static sol_erno lt_test1(void)
 {
         #define LT_TEST1 "sol_elem_lt() throws SOL_ERNO_PTR if @lhs" \
                          " is null"
+        const sol_int data = (sol_int) 5;
+
         auto sol_elem_meta *meta = SOL_PTR_NULL;
         auto sol_elem *elem = SOL_PTR_NULL;
-        auto sol_int data = (sol_int) 5;
         auto SOL_BOOL lt;
 
 SOL_TRY:
@@ -502,9 +514,10 @@ static sol_erno lt_test2(void)
 {
         #define LT_TEST2 "sol_elem_lt() throws SOL_ERNO_PTR if @rhs" \
                          " is null"
+        const sol_int data = (sol_int) 5;
+
         auto sol_elem_meta *meta = SOL_PTR_NULL;
         auto sol_elem *elem = SOL_PTR_NULL;
-        auto sol_int data = (sol_int) 5;
         auto SOL_BOOL lt;
 
 SOL_TRY:
@@ -534,9 +547,10 @@ static sol_erno lt_test3(void)
 {
         #define LT_TEST3 "sol_elem_lt() throws SOL_ERNO_PTR if @lt" \
                          " is null"
+        const sol_int data = (sol_int) 5;
+
         auto sol_elem_meta *meta = SOL_PTR_NULL;
         auto sol_elem *elem = SOL_PTR_NULL;
-        auto sol_int data = (sol_int) 5;
 
 SOL_TRY:
                 /* set up test */
@@ -565,19 +579,20 @@ static sol_erno lt_test4(void)
 {
         #define LT_TEST4 "sol_elem_lt() throws SOL_ERNO_STATE if @lhs" \
                          " and @rhs are of different types"
+        const sol_int data = (sol_int) 5;
+
         auto sol_elem_meta *meta1 = SOL_PTR_NULL;
         auto sol_elem_meta *meta2 = SOL_PTR_NULL;
         auto sol_elem *elem1 = SOL_PTR_NULL;
         auto sol_elem *elem2 = SOL_PTR_NULL;
-        auto sol_int data = (sol_int) 5;
         auto SOL_BOOL lt;
 
 SOL_TRY:
                 /* set up test */
         sol_try (meta_new(&meta1));
         sol_try (meta_new2(&meta2));
-        sol_try (sol_elem_new(&elem1, meta1, (sol_ptr*) &data));
-        sol_try (sol_elem_new(&elem2, meta2, (sol_ptr*) &data));
+        sol_try (sol_elem_new(&elem1, meta1, (sol_ptr *) &data));
+        sol_try (sol_elem_new(&elem2, meta2, (sol_ptr *) &data));
         sol_try (sol_elem_lt(elem1, elem2, &lt));
 
 SOL_CATCH:
@@ -598,14 +613,57 @@ SOL_FINALLY:
 
 
 
+        /* lt_test5() defines the test case described  by LT_TEST5 */
+static sol_erno lt_test5(void)
+{
+        #define LT_TEST5                  /* test description */      \
+                "sol_elem_lt() throws SOL_ERNO_STATE if the metadata" \
+                " of @elem does not have a less than delegate defined"
+        const sol_int DATA = (sol_int) 5; /* sample data      */
+
+        auto sol_elem_meta *meta; /* element metadata  */
+        auto sol_elem *lhs;       /* lhs element       */
+        auto sol_elem *rhs;       /* rhs element       */
+        auto SOL_BOOL lt;         /* comparison result */
+
+SOL_TRY:
+                /* init handles */
+        meta = SOL_PTR_NULL;
+        lhs = rhs = SOL_PTR_NULL;
+
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&lhs, meta, (sol_ptr *) &DATA));
+        sol_try (sol_elem_new(&rhs, meta, (sol_ptr *) &DATA));
+        sol_try (sol_elem_lt(lhs, rhs, &lt));
+
+SOL_CATCH:
+                /* check test condition when exception occurs */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_STATE
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&lhs);
+        sol_elem_free(&rhs);
+
+        return sol_erno_get();
+}
+
+
+
+
         /* eq_test1() defines the test case described by EQ_TEST1 */
 static sol_erno eq_test1(void)
 {
         #define EQ_TEST1 "sol_elem_eq() throws SOL_ERNO_PTR if @lhs" \
                          " is null"
+        const sol_int data = (sol_int) 5;
+
         auto sol_elem_meta *meta = SOL_PTR_NULL;
         auto sol_elem *elem = SOL_PTR_NULL;
-        auto sol_int data = (sol_int) 5;
         auto SOL_BOOL eq;
 
 SOL_TRY:
@@ -635,9 +693,10 @@ static sol_erno eq_test2(void)
 {
         #define EQ_TEST2 "sol_elem_eq() throws SOL_ERNO_PTR if @rhs" \
                          " is null"
+        const sol_int data = (sol_int) 5;
+
         auto sol_elem_meta *meta = SOL_PTR_NULL;
         auto sol_elem *elem = SOL_PTR_NULL;
-        auto sol_int data = (sol_int) 5;
         auto SOL_BOOL eq;
 
 SOL_TRY:
@@ -667,9 +726,10 @@ static sol_erno eq_test3(void)
 {
         #define EQ_TEST3 "sol_elem_eq() throws SOL_ERNO_PTR if @eq" \
                          " is null"
+        const sol_int data = (sol_int) 5;
+
         auto sol_elem_meta *meta = SOL_PTR_NULL;
         auto sol_elem *elem = SOL_PTR_NULL;
-        auto sol_int data = (sol_int) 5;
 
 SOL_TRY:
                 /* set up test */
@@ -698,11 +758,12 @@ static sol_erno eq_test4(void)
 {
         #define EQ_TEST4 "sol_elem_eq() throws SOL_ERNO_STATE if @lhs" \
                          " and @rhs are of different types"
+        const sol_int data = (sol_int) 5;
+
         auto sol_elem_meta *meta1 = SOL_PTR_NULL;
         auto sol_elem_meta *meta2 = SOL_PTR_NULL;
         auto sol_elem *elem1 = SOL_PTR_NULL;
         auto sol_elem *elem2 = SOL_PTR_NULL;
-        auto sol_int data = (sol_int) 5;
         auto SOL_BOOL eq;
 
 SOL_TRY:
@@ -736,9 +797,10 @@ static sol_erno gt_test1(void)
 {
         #define GT_TEST1 "sol_elem_gt() throws SOL_ERNO_PTR if @lhs" \
                          " is null"
+        const sol_int data = (sol_int) 5;
+
         auto sol_elem_meta *meta = SOL_PTR_NULL;
         auto sol_elem *elem = SOL_PTR_NULL;
-        auto sol_int data = (sol_int) 5;
         auto SOL_BOOL gt;
 
 SOL_TRY:
@@ -768,9 +830,10 @@ static sol_erno gt_test2(void)
 {
         #define GT_TEST2 "sol_elem_gt() throws SOL_ERNO_PTR if @rhs" \
                          " is null"
+        const sol_int data = (sol_int) 5;
+
         auto sol_elem_meta *meta = SOL_PTR_NULL;
         auto sol_elem *elem = SOL_PTR_NULL;
-        auto sol_int data = (sol_int) 5;
         auto SOL_BOOL gt;
 
 SOL_TRY:
@@ -800,9 +863,10 @@ static sol_erno gt_test3(void)
 {
         #define GT_TEST3 "sol_elem_gt() throws SOL_ERNO_PTR if @gt" \
                          " is null"
+        const sol_int data = (sol_int) 5;
+
         auto sol_elem_meta *meta = SOL_PTR_NULL;
         auto sol_elem *elem = SOL_PTR_NULL;
-        auto sol_int data = (sol_int) 5;
 
 SOL_TRY:
                 /* set up test */
@@ -831,11 +895,12 @@ static sol_erno gt_test4(void)
 {
         #define GT_TEST4 "sol_elem_gt() throws SOL_ERNO_STATE if @lhs" \
                          " and @rhs are of different types"
+        const sol_int data = (sol_int) 5;
+
         auto sol_elem_meta *meta1 = SOL_PTR_NULL;
         auto sol_elem_meta *meta2 = SOL_PTR_NULL;
         auto sol_elem *elem1 = SOL_PTR_NULL;
         auto sol_elem *elem2 = SOL_PTR_NULL;
-        auto sol_int data = (sol_int) 5;
         auto SOL_BOOL gt;
 
 SOL_TRY:
@@ -904,6 +969,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, lt_test2, LT_TEST2));
         sol_try (sol_tsuite_register(ts, lt_test3, LT_TEST3));
         sol_try (sol_tsuite_register(ts, lt_test4, LT_TEST4));
+        sol_try (sol_tsuite_register(ts, lt_test5, LT_TEST5));
 
                 /* register sol_elem_eq() test cases */
         sol_try (sol_tsuite_register(ts, eq_test1, EQ_TEST1));
