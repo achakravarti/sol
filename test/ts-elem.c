@@ -45,11 +45,11 @@ static void mock_dispose(sol_ptr **elem)
         /* mock_lt() mocks the less than comparison delegate */
 static sol_erno mock_lt(const sol_ptr *lhs, const sol_ptr *rhs, SOL_BOOL *lt)
 {
-        const sol_int left = *((sol_int *) lhs);
-        const sol_int right = *((sol_int *) rhs);
+        const sol_int LHS = *((sol_int *) lhs);
+        const sol_int RHS = *((sol_int *) rhs);
 
                 /* perform comparison */
-        *lt = (left < right);
+        *lt = (LHS < RHS);
         return SOL_ERNO_NULL;
 }
 
@@ -59,11 +59,11 @@ static sol_erno mock_lt(const sol_ptr *lhs, const sol_ptr *rhs, SOL_BOOL *lt)
         /* mock_eq() mocks the equal to comparison delegate */
 static sol_erno mock_eq(const sol_ptr *lhs, const sol_ptr *rhs, SOL_BOOL *eq)
 {
-        const sol_int left = *((sol_int *) lhs);
-        const sol_int right = *((sol_int *) rhs);
+        const sol_int LHS = *((sol_int *) lhs);
+        const sol_int RHS = *((sol_int *) rhs);
 
                 /* perform comparison */
-        *eq = (left == right);
+        *eq = (LHS == RHS);
         return SOL_ERNO_NULL;
 }
 
@@ -73,11 +73,11 @@ static sol_erno mock_eq(const sol_ptr *lhs, const sol_ptr *rhs, SOL_BOOL *eq)
         /* mock_gt() mocks the greater than comparison delegate */
 static sol_erno mock_gt(const sol_ptr *lhs, const sol_ptr *rhs, SOL_BOOL *gt)
 {
-        const sol_int left = *((sol_int *) lhs);
-        const sol_int right = *((sol_int *) rhs);
+        const sol_int LHS = *((sol_int *) lhs);
+        const sol_int RHS = *((sol_int *) rhs);
 
                 /* perform comparison */
-        *gt = (left > right);
+        *gt = (LHS > RHS);
         return SOL_ERNO_NULL;
 }
 
@@ -792,6 +792,47 @@ SOL_FINALLY:
 
 
 
+        /* eq_test5() defines the test case described  by EQ_TEST5 */
+static sol_erno eq_test5(void)
+{
+        #define EQ_TEST5 "sol_elem_eq() throws SOL_ERNO_STATE if the metadata" \
+                         " of @elem does not have a less than delegate defined"
+        const sol_int DATA = (sol_int) 5;
+
+        auto sol_elem_meta *meta; /* element metadata  */
+        auto sol_elem *lhs;       /* lhs element       */
+        auto sol_elem *rhs;       /* rhs element       */
+        auto SOL_BOOL eq;         /* comparison result */
+
+SOL_TRY:
+                /* init handles */
+        meta = SOL_PTR_NULL;
+        lhs = rhs = SOL_PTR_NULL;
+
+                /* set up test */
+        sol_try (meta_new(&meta));
+        sol_try (sol_elem_new(&lhs, meta, (sol_ptr *) &DATA));
+        sol_try (sol_elem_new(&rhs, meta, (sol_ptr *) &DATA));
+        sol_try (sol_elem_lt(lhs, rhs, &eq));
+
+SOL_CATCH:
+                /* check test condition when exception occurs */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_STATE
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&lhs);
+        sol_elem_free(&rhs);
+
+        return sol_erno_get();
+}
+
+
+
+
         /* gt_test1() defines the test case described by GT_TEST1 */
 static sol_erno gt_test1(void)
 {
@@ -976,6 +1017,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, eq_test2, EQ_TEST2));
         sol_try (sol_tsuite_register(ts, eq_test3, EQ_TEST3));
         sol_try (sol_tsuite_register(ts, eq_test4, EQ_TEST4));
+        sol_try (sol_tsuite_register(ts, eq_test5, EQ_TEST5));
 
                 /* register sol_elem_gt() test cases */
         sol_try (sol_tsuite_register(ts, gt_test1, GT_TEST1));
