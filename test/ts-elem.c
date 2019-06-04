@@ -613,13 +613,12 @@ SOL_FINALLY:
 
 
 
-        /* lt_test5() defines the test case described  by LT_TEST5 */
+        /* lt_test5() defines the test case described by LT_TEST5 */
 static sol_erno lt_test5(void)
 {
-        #define LT_TEST5                  /* test description */      \
-                "sol_elem_lt() throws SOL_ERNO_STATE if the metadata" \
-                " of @elem does not have a less than delegate defined"
-        const sol_int DATA = (sol_int) 5; /* sample data      */
+        #define LT_TEST5 "sol_elem_lt() throws SOL_ERNO_STATE if the metadata" \
+                         " of @elem does not have a less than delegate defined"
+        const sol_int DATA = (sol_int) 5;
 
         auto sol_elem_meta *meta; /* element metadata  */
         auto sol_elem *lhs;       /* lhs element       */
@@ -642,6 +641,49 @@ SOL_CATCH:
         sol_erno_set(sol_erno_get() == SOL_ERNO_STATE
                      ? SOL_ERNO_NULL
                      : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&lhs);
+        sol_elem_free(&rhs);
+
+        return sol_erno_get();
+}
+
+
+
+
+        /* lt_test6() defines the test case described by LT_TEST6 */
+static sol_erno lt_test6(void)
+{
+        #define LT_TEST6 "sol_elem_lt() correctly executes its less than" \
+                         " comparison delegate"
+        const sol_int LHSDATA = (sol_int) 4;
+        const sol_int RHSDATA = (sol_int) 5;
+
+        auto sol_elem_meta *meta; /* element metadata  */
+        auto sol_elem *lhs;       /* LHS element       */
+        auto sol_elem *rhs;       /* RHS element       */
+        auto SOL_BOOL lt;         /* comparison result */
+
+SOL_TRY:
+                /* init handles */
+        meta = SOL_PTR_NULL;
+        lhs = rhs = SOL_PTR_NULL;
+
+                /* set up test */
+        sol_try (meta_new2(&meta));
+        sol_try (sol_elem_new(&lhs, meta, (sol_ptr *) &LHSDATA));
+        sol_try (sol_elem_new(&rhs, meta, (sol_ptr *) &RHSDATA));
+
+                /* check test condition */
+        lt = SOL_BOOL_FALSE;
+        sol_try (sol_elem_lt(lhs, rhs, &lt));
+        sol_assert (lt, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by in case of exception */
 
 SOL_FINALLY:
                 /* tear down test */
@@ -1011,6 +1053,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, lt_test3, LT_TEST3));
         sol_try (sol_tsuite_register(ts, lt_test4, LT_TEST4));
         sol_try (sol_tsuite_register(ts, lt_test5, LT_TEST5));
+        sol_try (sol_tsuite_register(ts, lt_test6, LT_TEST6));
 
                 /* register sol_elem_eq() test cases */
         sol_try (sol_tsuite_register(ts, eq_test1, EQ_TEST1));
