@@ -275,6 +275,37 @@ SOL_FINALLY:
 
 
 
+        /* copy_test3() defines the test case described by COPY_TEST3 */
+static sol_erno copy_test3(void)
+{
+        #define COPY_TEST3 "sol_elem_copy() throws SOL_ERNO_PTR if @src" \
+                           " is null"
+
+        auto sol_elem_meta *meta; /* element metadata   */
+        auto sol_elem *elem;      /* contextual element */
+
+SOL_TRY:
+                /* set up test */
+        meta = SOL_PTR_NULL;
+        sol_try (meta_new(&meta));
+        elem = SOL_PTR_NULL;
+        sol_try (sol_elem_copy(&elem, SOL_PTR_NULL));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        return sol_erno_get();
+}
+
+
+
+
         /* id_test1() defines the test case described by ID_TEST1 */
 static sol_erno id_test1(void)
 {
@@ -1233,6 +1264,7 @@ SOL_TRY:
                 /* register sol_elem_copy() test cases */
         sol_try (sol_tsuite_register(ts, copy_test1, COPY_TEST1));
         sol_try (sol_tsuite_register(ts, copy_test2, COPY_TEST2));
+        sol_try (sol_tsuite_register(ts, copy_test3, COPY_TEST3));
 
                 /* register sol_elem_id() test cases */
         sol_try (sol_tsuite_register(ts, id_test1, ID_TEST1));
