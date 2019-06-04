@@ -33,6 +33,20 @@
 
 
 
+        /* copy the definition of sol_elem from src/elem.c; this is generally
+         * considered very bad practice, but I've made this choice deliberately
+         * because I need to access the reference count field for some of the
+         * test cases without exposing the internal structure of the type
+         * through some header file */
+struct __sol_elem {
+        sol_ptr *data;
+        sol_elem_meta *meta;
+        sol_size nref;
+};
+
+
+
+
         /* mock_dispose() mocks the element data dispose delegate */
 static void mock_dispose(sol_ptr **elem)
 {
@@ -300,6 +314,46 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* tear down test */
         sol_elem_meta_free(&meta);
+        return sol_erno_get();
+}
+
+
+
+
+        /* copy_test4() defines the test case described by COPY_TEST4 */
+static sol_erno copy_test4(void)
+{
+        #define COPY_TEST4 "sol_elem_copy() increments the reference" \
+                           " count of @src"
+        const sol_int DATA = (sol_int) 5;
+
+        auto sol_elem_meta *meta; /* element metadata */
+        auto sol_elem *src;       /* source element */
+        auto sol_elem *cpy1;      /* 1st copy of @src */
+        auto sol_elem *cpy2;      /* 2nd copy of @src */
+
+SOL_TRY:
+                /* set up test */
+        meta = SOL_PTR_NULL;
+        sol_try (meta_new(&meta));
+        src = cpy1 = cpy2 = SOL_PTR_NULL;
+        sol_try (sol_elem_new(&src, meta, (sol_ptr *)&DATA));
+        sol_try (sol_elem_copy(&cpy1, src));
+        sol_try (sol_elem_copy(&cpy2, src));
+
+                /* check test condition */
+        sol_assert (src->nref == (sol_size) 3, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by if an exception occurs */
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&src);
+        sol_elem_free(&cpy1);
+        sol_elem_free(&cpy2);
+
         return sol_erno_get();
 }
 
@@ -1265,6 +1319,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, copy_test1, COPY_TEST1));
         sol_try (sol_tsuite_register(ts, copy_test2, COPY_TEST2));
         sol_try (sol_tsuite_register(ts, copy_test3, COPY_TEST3));
+        sol_try (sol_tsuite_register(ts, copy_test4, COPY_TEST4));
 
                 /* register sol_elem_id() test cases */
         sol_try (sol_tsuite_register(ts, id_test1, ID_TEST1));
