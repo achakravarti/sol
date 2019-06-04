@@ -1055,7 +1055,7 @@ SOL_FINALLY:
 
 
 
-        /* gt_test5() defines the test case described  by gt_TEST5 */
+        /* gt_test5() defines the test case described  by GT_TEST5 */
 static sol_erno gt_test5(void)
 {
         #define GT_TEST5 "sol_elem_gt() throws SOL_ERNO_STATE if the metadata" \
@@ -1084,6 +1084,49 @@ SOL_CATCH:
         sol_erno_set(sol_erno_get() == SOL_ERNO_STATE
                      ? SOL_ERNO_NULL
                      : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&lhs);
+        sol_elem_free(&rhs);
+
+        return sol_erno_get();
+}
+
+
+
+
+        /* gt_test6() defines the test case described by GT_TEST6 */
+static sol_erno gt_test6(void)
+{
+        #define GT_TEST6 "sol_elem_gt() correctly executes its greater than" \
+                         " comparison delegate"
+        const sol_int LHSDATA = (sol_int) 5;
+        const sol_int RHSDATA = (sol_int) 4;
+
+        auto sol_elem_meta *meta; /* element metadata  */
+        auto sol_elem *lhs;       /* LHS element       */
+        auto sol_elem *rhs;       /* RHS element       */
+        auto SOL_BOOL gt;         /* comparison result */
+
+SOL_TRY:
+                /* init handles */
+        meta = SOL_PTR_NULL;
+        lhs = rhs = SOL_PTR_NULL;
+
+                /* set up test */
+        sol_try (meta_new2(&meta));
+        sol_try (sol_elem_new(&lhs, meta, (sol_ptr *) &LHSDATA));
+        sol_try (sol_elem_new(&rhs, meta, (sol_ptr *) &RHSDATA));
+
+                /* check test condition */
+        gt = SOL_BOOL_FALSE;
+        sol_try (sol_elem_gt(lhs, rhs, &gt));
+        sol_assert (gt, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by in case of exception */
 
 SOL_FINALLY:
                 /* tear down test */
@@ -1154,6 +1197,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, gt_test3, GT_TEST3));
         sol_try (sol_tsuite_register(ts, gt_test4, GT_TEST4));
         sol_try (sol_tsuite_register(ts, gt_test5, GT_TEST5));
+        sol_try (sol_tsuite_register(ts, gt_test6, GT_TEST6));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(ts));
