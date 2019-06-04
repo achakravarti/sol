@@ -875,6 +875,49 @@ SOL_FINALLY:
 
 
 
+        /* eq_test6() defines the test case described by EQ_TEST6 */
+static sol_erno eq_test6(void)
+{
+        #define EQ_TEST6 "sol_elem_eq() correctly executes its equal to" \
+                         " comparison delegate"
+        const sol_int LHSDATA = (sol_int) 5;
+        const sol_int RHSDATA = (sol_int) 5;
+
+        auto sol_elem_meta *meta; /* element metadata  */
+        auto sol_elem *lhs;       /* LHS element       */
+        auto sol_elem *rhs;       /* RHS element       */
+        auto SOL_BOOL eq;         /* comparison result */
+
+SOL_TRY:
+                /* init handles */
+        meta = SOL_PTR_NULL;
+        lhs = rhs = SOL_PTR_NULL;
+
+                /* set up test */
+        sol_try (meta_new2(&meta));
+        sol_try (sol_elem_new(&lhs, meta, (sol_ptr *) &LHSDATA));
+        sol_try (sol_elem_new(&rhs, meta, (sol_ptr *) &RHSDATA));
+
+                /* check test condition */
+        eq = SOL_BOOL_FALSE;
+        sol_try (sol_elem_eq(lhs, rhs, &eq));
+        sol_assert (eq, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by in case of exception */
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&lhs);
+        sol_elem_free(&rhs);
+
+        return sol_erno_get();
+}
+
+
+
+
         /* gt_test1() defines the test case described by GT_TEST1 */
 static sol_erno gt_test1(void)
 {
@@ -1061,6 +1104,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, eq_test3, EQ_TEST3));
         sol_try (sol_tsuite_register(ts, eq_test4, EQ_TEST4));
         sol_try (sol_tsuite_register(ts, eq_test5, EQ_TEST5));
+        sol_try (sol_tsuite_register(ts, eq_test6, EQ_TEST6));
 
                 /* register sol_elem_gt() test cases */
         sol_try (sol_tsuite_register(ts, gt_test1, GT_TEST1));
