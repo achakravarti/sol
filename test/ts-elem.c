@@ -520,7 +520,7 @@ static sol_erno free_test4(void)
                            " counting when releasing @elem"
         const sol_int DATA = (sol_int) 5;
 
-        auto sol_elem_meta *meta; /* element metadat    */
+        auto sol_elem_meta *meta; /* element metadata   */
         auto sol_elem *src;       /* source element     */
         auto sol_elem *cpy1;      /* first copy of src  */
         auto sol_elem *cpy2;      /* second copy of src */
@@ -547,9 +547,49 @@ SOL_CATCH:
 
 SOL_FINALLY:
                 /* release handles */
+        sol_elem_meta_free(&meta);
         sol_elem_free(&src);
         sol_elem_free(&cpy1);
         sol_elem_free(&cpy2);
+
+                /* return current error code */
+        return sol_erno_get();
+}
+
+
+
+
+        /* free_test5() defines the test case described by FREE_TEST5 */
+static sol_erno free_test5(void)
+{
+        #define FREE_TEST5 "sol_elem_free() invokes the dispose delegate for" \
+                           " @elem if it is available"
+        const sol_int DATA = (sol_int) 5;
+
+        auto sol_elem_meta *meta; /* element metadata */
+        auto sol_elem *elem;      /* test element     */
+
+SOL_TRY:
+                /* init metadata */
+        meta = SOL_PTR_NULL;
+        sol_try (meta_new(&meta));
+
+                /* init source element */
+        elem = SOL_PTR_NULL;
+        sol_try (sol_elem_new(&elem, meta, (sol_ptr *) &DATA));
+
+
+                /* check test condition */
+        sol_elem_free(&elem);
+        sol_assert (dispose_invoked && !elem, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by if exception occurs */
+
+SOL_FINALLY:
+                /* release handles */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
 
                 /* return current error code */
         return sol_erno_get();
@@ -1526,6 +1566,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, free_test2, FREE_TEST2));
         sol_try (sol_tsuite_register(ts, free_test3, FREE_TEST3));
         sol_try (sol_tsuite_register(ts, free_test4, FREE_TEST4));
+        sol_try (sol_tsuite_register(ts, free_test5, FREE_TEST5));
 
                 /* register sol_elem_id() test cases */
         sol_try (sol_tsuite_register(ts, id_test1, ID_TEST1));
