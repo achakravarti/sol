@@ -920,10 +920,10 @@ SOL_FINALLY:
         /* copy_test6() defines the test case described by COPY_TEST6 */
 static sol_erno copy_test6(void)
 {
-        #define COPY_TEST6 "sol_elem_meta_copy() sets @meta with the same" \
-                           " data as @src"
+        #define COPY_TEST6 "sol_elem_meta_copy() makes @meta identical to @src"
         const sol_index ID = (sol_index) 5;
         const sol_size SZ = (sol_size) 7;
+
         auto sol_elem_meta *meta = SOL_PTR_NULL;
         auto sol_elem_meta *src = SOL_PTR_NULL;
 

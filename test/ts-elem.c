@@ -397,6 +397,44 @@ SOL_FINALLY:
 
 
 
+        /* copy_test6() defines the test case described by COPY_TEST6 */
+static sol_erno copy_test6(void)
+{
+        #define COPY_TEST6 "sol_elem_copy() makes @elem identical to @src"
+        const sol_int DATA = (sol_int) 5;
+
+        auto sol_elem_meta *meta; /* element metadata */
+        auto sol_elem *src;       /* source element   */
+        auto sol_elem *cpy;       /* copy of @src     */
+
+SOL_TRY:
+                /* set up test */
+        meta = SOL_PTR_NULL;
+        sol_try (meta_new2(&meta));
+        src = cpy = SOL_PTR_NULL;
+        sol_try (sol_elem_new(&src, meta, (sol_ptr *) &DATA));
+        sol_try (sol_elem_copy(&cpy, src));
+
+                /* check test condition */
+        sol_assert (cpy->meta == src->meta, SOL_ERNO_PTR);
+        sol_assert (cpy->data == src->data, SOL_ERNO_PTR);
+        sol_assert (cpy->nref == src->nref, SOL_ERNO_PTR);
+
+SOL_CATCH:
+                /* pass by in case of exception */
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&src);
+        sol_elem_free(&cpy);
+
+        return sol_erno_get();
+}
+
+
+
+
         /* id_test1() defines the test case described by ID_TEST1 */
 static sol_erno id_test1(void)
 {
@@ -1358,6 +1396,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, copy_test3, COPY_TEST3));
         sol_try (sol_tsuite_register(ts, copy_test4, COPY_TEST4));
         sol_try (sol_tsuite_register(ts, copy_test5, COPY_TEST5));
+        sol_try (sol_tsuite_register(ts, copy_test6, COPY_TEST6));
 
                 /* register sol_elem_id() test cases */
         sol_try (sol_tsuite_register(ts, id_test1, ID_TEST1));
