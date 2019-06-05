@@ -437,6 +437,21 @@ SOL_FINALLY:
 
 
 
+        /* free_test1() defines the test case described by FREE_TEST1 */
+static sol_erno free_test1(void)
+{
+        #define FREE_TEST1 "sol_elem_free() is safe even if @elem is null"
+
+                /* set up test */
+        sol_elem_meta_free(SOL_PTR_NULL);
+
+                /* we're expecting no error */
+        return SOL_ERNO_NULL;
+}
+
+
+
+
         /* id_test1() defines the test case described by ID_TEST1 */
 static sol_erno id_test1(void)
 {
@@ -1399,6 +1414,9 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, copy_test4, COPY_TEST4));
         sol_try (sol_tsuite_register(ts, copy_test5, COPY_TEST5));
         sol_try (sol_tsuite_register(ts, copy_test6, COPY_TEST6));
+
+                /* register sol_elem_free() test cases */
+        sol_try (sol_tsuite_register(ts, free_test1, FREE_TEST1));
 
                 /* register sol_elem_id() test cases */
         sol_try (sol_tsuite_register(ts, id_test1, ID_TEST1));
