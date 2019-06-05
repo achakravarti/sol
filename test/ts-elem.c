@@ -360,13 +360,50 @@ SOL_FINALLY:
 
 
 
+        /* copy_test5() defines the test case described by COPY_TEST5 */
+static sol_erno copy_test5(void)
+{
+        #define COPY_TEST5 "sol_elem_copy() sets @elem to non-null if" \
+                           " successful"
+        const sol_int DATA = (sol_int) 5;
+
+        auto sol_elem_meta *meta; /* element metadata */
+        auto sol_elem *src;       /* source element   */
+        auto sol_elem *cpy;       /* copy of @src     */
+
+SOL_TRY:
+                /* set up test */
+        meta = SOL_PTR_NULL;
+        sol_try (meta_new(&meta));
+        src = cpy = SOL_PTR_NULL;
+        sol_try (sol_elem_new(&src, meta, (sol_ptr *) &DATA));
+        sol_try (sol_elem_copy(&cpy, src));
+
+                /* check test condition */
+        sol_assert (cpy, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by if an exception occurs */
+
+SOL_FINALLY:
+                /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&src);
+        sol_elem_free(&cpy);
+
+        return sol_erno_get();
+}
+
+
+
+
         /* id_test1() defines the test case described by ID_TEST1 */
 static sol_erno id_test1(void)
 {
         #define ID_TEST1 "sol_elem_id() throws SOL_ERNO_PTR if passed" \
                          " a null pointer for @elem"
 
-        auto sol_index id;
+        auto sol_index id; /* element ID */
 
 SOL_TRY:
                 /* set up test */
@@ -1320,6 +1357,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, copy_test2, COPY_TEST2));
         sol_try (sol_tsuite_register(ts, copy_test3, COPY_TEST3));
         sol_try (sol_tsuite_register(ts, copy_test4, COPY_TEST4));
+        sol_try (sol_tsuite_register(ts, copy_test5, COPY_TEST5));
 
                 /* register sol_elem_id() test cases */
         sol_try (sol_tsuite_register(ts, id_test1, ID_TEST1));

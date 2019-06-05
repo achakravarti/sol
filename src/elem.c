@@ -85,14 +85,12 @@ SOL_FINALLY:
 extern sol_erno sol_elem_copy(sol_elem **elem,
                               const sol_elem *src)
 {
-        auto sol_elem *hnd;
-
 SOL_TRY:
         sol_assert (elem && src, SOL_ERNO_PTR);
-        sol_assert (!(hnd = *elem), SOL_ERNO_STATE);
+        sol_assert (!*elem, SOL_ERNO_STATE);
 
-        hnd = (sol_elem *) src;
-        hnd->nref++;
+        *elem = (sol_elem *) src;
+        (*elem)->nref++;
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
