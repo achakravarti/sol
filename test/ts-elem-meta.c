@@ -1043,6 +1043,10 @@ SOL_CATCH:
 
 SOL_FINALLY:
                 /* tear down test */
+        sol_elem_meta_free(&src);
+        sol_elem_meta_free(&meta1);
+        sol_elem_meta_free(&meta2);
+
         return sol_erno_get();
 }
 

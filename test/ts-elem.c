@@ -47,10 +47,18 @@ struct __sol_elem {
 
 
 
+        /* dispose_invoked is a flag used to check whether the mock_dispose()
+         * delegate defined below has been invoked by sol_elem_free() */
+static SOL_BOOL dispose_invoked = SOL_BOOL_FALSE;
+
+
+
+
         /* mock_dispose() mocks the element data dispose delegate */
 static void mock_dispose(sol_ptr **elem)
 {
         (void) elem;
+        dispose_invoked = SOL_BOOL_TRUE;
 }
 
 
@@ -486,7 +494,6 @@ SOL_TRY:
         sol_try (meta_new(&meta));
         elem = SOL_PTR_NULL;
         sol_try (sol_elem_new(&elem, meta, (sol_ptr *) &DATA));
-        sol_elem_meta_free(&meta);
         sol_elem_free(&elem);
 
                 /* check test condition */
@@ -497,6 +504,54 @@ SOL_CATCH:
 
 SOL_FINALLY:
                 /* tear down test */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
+
+        return sol_erno_get();
+}
+
+
+
+
+        /* free_test4() defines the test case described by FREE_TEST4 */
+static sol_erno free_test4(void)
+{
+        #define FREE_TEST4 "sol_elem_free() accounts for reference" \
+                           " counting when releasing @elem"
+        const sol_int DATA = (sol_int) 5;
+
+        auto sol_elem_meta *meta; /* element metadat    */
+        auto sol_elem *src;       /* source element     */
+        auto sol_elem *cpy1;      /* first copy of src  */
+        auto sol_elem *cpy2;      /* second copy of src */
+
+SOL_TRY:
+                /* init metadata */
+        meta = SOL_PTR_NULL;
+        sol_try (meta_new(&meta));
+
+                /* init source element and its copies */
+        src = cpy1 = cpy2 = SOL_PTR_NULL;
+        sol_try (sol_elem_new(&src, meta, (sol_ptr *) &DATA));
+        sol_try (sol_elem_copy(&cpy1, src));
+        sol_try (sol_elem_copy(&cpy2, src));
+
+
+                /* check test condition */
+        sol_elem_free(&cpy2);
+        sol_assert (src && cpy1 && !cpy2, SOL_ERNO_TEST);
+        sol_assert (src->nref == (sol_size) 2, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by if exception occurs */
+
+SOL_FINALLY:
+                /* release handles */
+        sol_elem_free(&src);
+        sol_elem_free(&cpy1);
+        sol_elem_free(&cpy2);
+
+                /* return current error code */
         return sol_erno_get();
 }
 
@@ -1470,6 +1525,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(ts, free_test1, FREE_TEST1));
         sol_try (sol_tsuite_register(ts, free_test2, FREE_TEST2));
         sol_try (sol_tsuite_register(ts, free_test3, FREE_TEST3));
+        sol_try (sol_tsuite_register(ts, free_test4, FREE_TEST4));
 
                 /* register sol_elem_id() test cases */
         sol_try (sol_tsuite_register(ts, id_test1, ID_TEST1));

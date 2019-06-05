@@ -116,7 +116,7 @@ extern void sol_elem_free(sol_elem **elem)
                 }
 
                 else {
-                        hnd = SOL_PTR_NULL;
+                        *elem = SOL_PTR_NULL;
                 }
         }
 }
