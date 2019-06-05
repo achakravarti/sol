@@ -419,6 +419,8 @@ SOL_TRY:
         sol_assert (cpy->meta == src->meta, SOL_ERNO_PTR);
         sol_assert (cpy->data == src->data, SOL_ERNO_PTR);
         sol_assert (cpy->nref == src->nref, SOL_ERNO_PTR);
+        sol_assert (*((sol_int *) src->data) == DATA, SOL_ERNO_TEST);
+        sol_assert (*((sol_int *) cpy->data) == DATA, SOL_ERNO_TEST);
 
 SOL_CATCH:
                 /* pass by in case of exception */
