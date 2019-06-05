@@ -443,7 +443,26 @@ static sol_erno free_test1(void)
         #define FREE_TEST1 "sol_elem_free() is safe even if @elem is null"
 
                 /* set up test */
-        sol_elem_meta_free(SOL_PTR_NULL);
+        sol_elem_free(SOL_PTR_NULL);
+
+                /* we're expecting no error */
+        return SOL_ERNO_NULL;
+}
+
+
+
+
+        /* free_test2() defines the test case described by FREE_TEST2 */
+static sol_erno free_test2(void)
+{
+        #define FREE_TEST2 "sol_elem_free() is safe even if @elem" \
+                           " is a handle to a null pointer"
+
+        auto sol_elem *elem; /* test element */
+
+                /* set up test */
+        elem = SOL_PTR_NULL;
+        sol_elem_free(&elem);
 
                 /* we're expecting no error */
         return SOL_ERNO_NULL;
@@ -1417,6 +1436,7 @@ SOL_TRY:
 
                 /* register sol_elem_free() test cases */
         sol_try (sol_tsuite_register(ts, free_test1, FREE_TEST1));
+        sol_try (sol_tsuite_register(ts, free_test2, FREE_TEST2));
 
                 /* register sol_elem_id() test cases */
         sol_try (sol_tsuite_register(ts, id_test1, ID_TEST1));
