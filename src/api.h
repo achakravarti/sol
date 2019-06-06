@@ -1,11 +1,11 @@
 /******************************************************************************
  *                           SOL LIBRARY v0.1.0+41
  *
- * File: sol/inc/dsa.h
+ * File: sol/inc/api.h
  *
  * Description:
  *      This file is part of the API of the Sol Library. It declares the
- *      interface of the data structures and algorithms module.
+ *      interface of the modules that make up the Sol Library.
  *
  * Authors:
  *      Abhishek Chakravarti <abhishek@taranjali.org>
@@ -27,22 +27,21 @@
 
 
         /* define header guard */
-#if (!defined __SOL_DATA_STRUCTURES_AND_ALGORITHMS_MODULE)
-#define __SOL_DATA_STRUCTURES_AND_ALGORITHMS_MODULE
+#if !defined __SOL_LIBRARY_API_INCLUDED
+#define __SOL_LIBRARY_API_INCLUDED
 
 
 
 
-        /* include required header files */
-#include "ptr.h"
-
+#include "../inc/ptr.h" /* TODO: remove later */
 
 
 
 typedef struct __sol_elem sol_elem;
 
-typedef void (sol_elem_delegate_dispose)(sol_ptr **elem);
+typedef struct __sol_elem_meta sol_elem_meta;
 
+typedef void (sol_elem_delegate_dispose)(sol_ptr **data);
 
 typedef sol_erno (sol_elem_delegate_lt)(const sol_ptr *lhs,
                                         const sol_ptr *rhs,
@@ -55,8 +54,6 @@ typedef sol_erno (sol_elem_delegate_eq)(const sol_ptr *lhs,
 typedef sol_erno (sol_elem_delegate_gt)(const sol_ptr *lhs,
                                         const sol_ptr *rhs,
                                         SOL_BOOL *gt);
-
-typedef struct __sol_elem_meta sol_elem_meta;
 
 extern sol_erno sol_elem_new(sol_elem **elem,
                              const sol_elem_meta *meta,
@@ -115,6 +112,7 @@ extern void sol_elem_meta_free(sol_elem_meta **meta);
 
 
 
+/* Module: List */
 typedef struct __sol_list sol_list;
 
 extern sol_erno sol_list_new(sol_list **list, const sol_elem_meta *meta);
@@ -142,7 +140,8 @@ extern sol_erno sol_list_pop(sol_list **list);
 
 
 
-#endif /* (!defined __SOL_DATA_STRUCTURES_AND_ALGORITHMS_MODULE) */
+        /* close header guard __SOL_LIBRARY_API_INCLUDED */
+#endif
 
 
 

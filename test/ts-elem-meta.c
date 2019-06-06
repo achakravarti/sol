@@ -27,7 +27,7 @@
 
 
         /* include required header files */
-#include "../inc/dsa.h"
+#include "../src/api.h"
 #include "suite.h"
 
 
