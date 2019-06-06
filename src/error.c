@@ -27,8 +27,7 @@
 
 
         /* include required header files */
-#include "../inc/prim.h"
-#include "../inc/error.h"
+#include "api.h"
 
 
 
