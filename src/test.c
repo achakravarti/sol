@@ -28,7 +28,6 @@
 
         /* include required header files */
 #include "api.h"
-#include "../inc/test.h"
 
 
 
