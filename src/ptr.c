@@ -30,7 +30,7 @@
 #include "../inc/env.h"
 #include "../inc/libc.h"
 #include "../inc/log.h"
-#include "../inc/ptr.h"
+#include "api.h"
 
 
 
