@@ -27,8 +27,6 @@
 
 
         /* include required header files */
-#include "../inc/hint.h"
-#include "../inc/libc.h"
 #include "api.h"
 
 

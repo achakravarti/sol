@@ -27,8 +27,6 @@
 
 
         /* include required header files */
-#include "../inc/env.h"
-#include "../inc/libc.h"
 #include "api.h"
 
 
