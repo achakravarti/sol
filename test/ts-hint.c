@@ -28,7 +28,6 @@
 
         /* include required header files */
 #include "./suite.h"
-#include "../inc/hint.h"
 
 
 
