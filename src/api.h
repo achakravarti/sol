@@ -411,7 +411,7 @@
  *      Historically, GCC has always focused aggressively on optimisation, and
  *      this trend is now also followed by Clang. Many of these optimisations
  *      have been introduced as compiler-specific extensions to the C language
- *      that were originally not part of the standards
+ *      that were originally not part of the standards.
  *
  *      Although a few of these optimisations have been introduced in the newer
  *      standards since they are extremely useful and widely used, by and large
