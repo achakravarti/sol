@@ -775,6 +775,27 @@
 #       include <inttypes.h>
 #endif
 
+/*
+ * Module: Boolean Primitive
+ *
+ * Synopsis:
+ *      #include "sol/api.h"
+ *
+ *      typedef SOL_BOOL;
+ *
+ *      #define SOL_BOOL_FALSE;
+ *      #define SOL_BOOL_TRUE;
+ *      #define SOL_BOOL_FMT;
+ *
+ * Abstract:
+ *
+ * Description:
+ *
+ * Usage:
+ *
+ * References:
+ */
+
         /*
          * SOL_BOOL - a Boolean value
          *   - SOL_BOOL_FALSE: Boolean value 'False'
@@ -798,9 +819,6 @@
 #else
 #       define SOL_BOOL_FMT "d"
 #endif
-
-
-
 
         /*
          * sol_w8 - 8-bit word
