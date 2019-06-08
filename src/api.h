@@ -564,6 +564,33 @@
 
 
 
+ /*
+  * Module: Libc Compatibility Layer
+  *
+  * Synopsis:
+  *     #include "sol/api.h"
+  *
+  *     SOL_LIBC_FILE_DEFINED;
+  *     SOL_LIBC_FOPEN_DEFINED;
+  *     SOL_LIBC_FCLOSE_DEFINED;
+  *     SOL_LIBC_FPRINTF_DEFINED;
+  *     SOL_LIBC_FGETS_DEFINED;
+  *     SOL_LIBC_TIME_T_DEFINED;
+  *     SOL_LIBC_TIME_DEFINED;
+  *     SOL_LIBC_CTIME_DEFINED;
+  *     SOL_LIBC_FABS_DEFINED;
+  *     SOL_LIBC_MALLOC_DEFINED;
+  *     SOL_LIBC_FREE_DEFINED;
+  *
+  * Abstract:
+  *
+  * Description:
+  *
+  * Usage:
+  *
+  * References:
+  */
+
 #if (sol_env_host() != SOL_ENV_HOST_NONE)
 #       include <stdio.h>
 #       include <stdlib.h>
