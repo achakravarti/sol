@@ -820,6 +820,51 @@
 #       define SOL_BOOL_FMT "d"
 #endif
 
+
+
+
+/*
+ * Module: Word Primitives
+ *
+ * Synopsis:
+ *      #include "sol/api.h"
+ *
+ *      typedef sol_w8;
+ *      typedef sol_w16;
+ *      typedef sol_w32;
+ *      typedef sol_w64;
+ *      typedef sol_word;
+ *
+ *      #define SOL_W8_NULL;
+ *      #define SOL_W16_NULL;
+ *      #define SOL_W32_NULL;
+ *      #define SOL_W64_NULL;
+ *      #define SOL_WORD_NULL;
+ *      #define SOL_W8_MIN;
+ *      #define SOL_W16_MIN;
+ *      #define SOL_W32_MIN;
+ *      #define SOL_W64_MIN;
+ *      #define SOL_WORD_MIN;
+ *      #define SOL_W8_MAX;
+ *      #define SOL_W16_MAX;
+ *      #define SOL_W32_MAX;
+ *      #define SOL_W64_MAX;
+ *      #define SOL_WORD_MAX;
+ *      #define SOL_W8_FMT;
+ *      #define SOL_W16_FMT;
+ *      #define SOL_W32_FMT;
+ *      #define SOL_W64_FMT;
+ *      #define SOL_WORD_FMT;
+ *
+ * Abstract:
+ *
+ * Description:
+ *
+ * Usage:
+ *
+ * References:
+ */
+
         /*
          * sol_w8 - 8-bit word
          */
