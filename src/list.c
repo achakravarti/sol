@@ -41,15 +41,10 @@ struct list_node {
 
 
 struct __sol_list {
-        sol_elem_delegate_dispose *free;
-        sol_size sz;
-
         struct list_node *head;
         struct list_node *tail;
         struct list_node *curr;
-        sol_elem_meta *meta;
         sol_size len;
-        sol_index idx;
         sol_size nref;
 };
 
@@ -59,7 +54,7 @@ struct __sol_list {
 static sol_erno list_fork(sol_list **list)
 {
         register sol_index i;
-        register sol_list *src, *hnd;
+        register sol_list *src;
         auto struct list_node *mark;
 
 SOL_TRY:
@@ -69,11 +64,10 @@ SOL_TRY:
                 return SOL_ERNO_NULL;
 
         src->nref--;
-        *list = SOL_PTR_NULL;
-        sol_try (sol_list_new(list, src->meta));
-        hnd = *list;
-
         mark = src->curr;
+
+        *list = SOL_PTR_NULL;
+        sol_try (sol_list_new(list));
 
         for (i = (sol_index) 0; i < src->len; i++) {
                 src->curr = src->curr->next;
@@ -81,9 +75,6 @@ SOL_TRY:
         }
 
         src->curr = mark;
-
-        for (i = (sol_index) 0; i < src->idx; i++)
-                hnd->idx++;
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
@@ -94,25 +85,26 @@ SOL_FINALLY:
 
 
 
-extern sol_erno sol_list_new(sol_list **list, const sol_elem_meta *meta)
+extern sol_erno sol_list_new(sol_list **list)
 {
-        auto sol_list *hnd;
+        auto sol_list *hnd; /* handle to @list */
 
 SOL_TRY:
-        sol_assert (meta, SOL_ERNO_PTR);
-
+                /* allocate heap for new list */
         sol_try (sol_ptr_new((sol_ptr **) list, sizeof (**list)));
         hnd = *list;
 
+                /* init fields */
         hnd->head = hnd->tail = hnd->curr = SOL_PTR_NULL;
         hnd->len = (sol_size) 0;
-        hnd->idx = (sol_index) 0;
         hnd->nref = (sol_size) 1;
 
 SOL_CATCH:
+                /* log any exception that might have occurred */
         sol_log_erno(sol_erno_get());
 
 SOL_FINALLY:
+                /* return current error code */
         return sol_erno_get();
 }
 
@@ -158,7 +150,7 @@ extern void sol_list_free(sol_list **list)
                 }
 
                 else {
-                        hnd = SOL_PTR_NULL;
+                        *list = SOL_PTR_NULL;
                 }
         }
 }
@@ -203,11 +195,17 @@ SOL_FINALLY:
 
 extern sol_erno sol_list_setelem(sol_list **list, const sol_elem *elem)
 {
-        auto sol_list *hnd;
+        auto sol_list *hnd; /* handle to @list        */
+        auto sol_index sid; /* source element ID      */
+        auto sol_index did; /* destination element ID */
 
 SOL_TRY:
+                /* check preconditions */
         sol_assert (list && (hnd = *list), SOL_ERNO_PTR);
         sol_assert (hnd->curr, SOL_ERNO_STATE);
+        sol_try (sol_elem_id(elem, &sid));
+        sol_try (sol_elem_id(hnd->curr->elem, &did));
+        sol_assert (sid == did, SOL_ERNO_STATE);
 
         sol_try (list_fork(list));
         hnd = *list;
@@ -235,7 +233,6 @@ SOL_TRY:
         hnd = *list;
 
         hnd->curr = hnd->head;
-        hnd->idx = (sol_index) 0;
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
@@ -258,7 +255,6 @@ SOL_TRY:
         hnd = *list;
 
         hnd->curr = hnd->curr->next;
-        hnd->idx++;
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
@@ -281,7 +277,6 @@ SOL_TRY:
         hnd = *list;
 
         hnd->curr = hnd->tail;
-        hnd->idx = hnd->len;
 
 SOL_CATCH:
         sol_log_erno(sol_erno_get());
@@ -297,9 +292,17 @@ extern sol_erno sol_list_push(sol_list **list, const sol_elem *elem)
 {
         auto struct list_node *node = SOL_PTR_NULL;
         auto sol_list *hnd;
+        auto sol_index sid;
+        auto sol_index did;
 
 SOL_TRY:
-        sol_assert (list && elem, SOL_ERNO_PTR);
+        sol_assert (list && (hnd = *list) && elem, SOL_ERNO_PTR);
+
+        if (sol_likely (hnd->len)) {
+                sol_try (sol_elem_id(elem, &sid));
+                sol_try (sol_elem_id(hnd->curr->elem, &did));
+                sol_assert (sid == did, SOL_ERNO_STATE);
+        }
 
         sol_try (list_fork(list));
         hnd = *list;

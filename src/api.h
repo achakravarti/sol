@@ -2083,7 +2083,7 @@ extern void sol_elem_meta_free(sol_elem_meta **meta);
 /* Module: List */
 typedef struct __sol_list sol_list;
 
-extern sol_erno sol_list_new(sol_list **list, const sol_elem_meta *meta);
+extern sol_erno sol_list_new(sol_list **list);
 
 extern sol_erno sol_list_copy(sol_list **list, const sol_list *src);
 
