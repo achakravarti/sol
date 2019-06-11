@@ -27,9 +27,7 @@
 
 
         /* include required header files */
-#include "../inc/log.h"
-#include "../inc/libc.h"
-#include "../inc/ptr.h"
+#include "../src/api.h"
 #include "./suite.h"
 
 
@@ -62,7 +60,7 @@ static void mock_sleep(int scale)
  *        - 0 if @what is not found in @where
  *        - 1 if @what is found in where
  */
-static const int str_find(const char *needle, const char *haystack)
+static int str_find(const char *needle, const char *haystack)
 {
         const char *nitr = needle;
         const char *hitr = haystack;

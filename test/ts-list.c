@@ -181,3 +181,67 @@ SOL_FINALLY:
 
 
 
+        /* new_test1() defines the test case described by NEW_TEST1 */
+static sol_erno new_test1(void)
+{
+        #define NEW_TEST1 "sol_list_new() throws SOL_ERNO_PTR if passed a" \
+                          " null pointer for @list"
+
+SOL_TRY:
+                /* set up test */
+        sol_try (sol_list_new(SOL_PTR_NULL));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* return current error code */
+        return sol_erno_get();
+}
+
+
+
+
+        /* __sol_tests_list() is declared in sol/test/suite.h */
+extern sol_erno __sol_tests_list(sol_tlog *log,
+                                 sol_uint *pass,
+                                 sol_uint *fail,
+                                 sol_uint *total)
+{
+        auto sol_tsuite ts;   /* sol_list test suite */
+        auto sol_tsuite *hnd; /* handle to $ts       */
+
+SOL_TRY:
+                /* check preconditions */
+        sol_assert (log && pass && fail && total, SOL_ERNO_PTR);
+
+                /* init test suite */
+        hnd = &ts;
+        sol_try (sol_tsuite_init2(hnd, log));
+
+                /* register sol_list_new() test cases */
+        sol_try (sol_tsuite_register(hnd, new_test1, NEW_TEST1));
+
+                /* execute test cases */
+        sol_try (sol_tsuite_exec(hnd));
+
+                /* report test counts */
+        sol_try (sol_tsuite_pass(hnd, pass));
+        sol_try (sol_tsuite_fail(hnd, fail));
+        sol_try (sol_tsuite_total(hnd, total));
+
+SOL_CATCH:
+                /* pass by in case of exception */
+
+SOL_FINALLY:
+                /* wind up */
+        sol_tsuite_term(hnd);
+
+                /* return currrent error code */
+        return sol_erno_get();
+}
+
+

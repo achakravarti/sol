@@ -27,7 +27,7 @@
 
 
         /* include required header files */
-#include "../inc/prim.h"
+#include "../src/api.h"
 #include "suite.h"
 
 

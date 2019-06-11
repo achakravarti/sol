@@ -62,6 +62,9 @@ INP_SO  = $(DIR_BLD)/error.o \
 	  $(DIR_BLD)/prim.o  \
 	  $(DIR_BLD)/elem.o  \
 	  $(DIR_BLD)/list.o
+
+	# INP_LD lists the source files containing the test suites required to
+	# build the driver application
 INP_LD  = $(DIR_TEST)/runner.c       \
 	  $(DIR_TEST)/ts-error.c     \
 	  $(DIR_TEST)/ts-test.c      \
@@ -69,10 +72,11 @@ INP_LD  = $(DIR_TEST)/runner.c       \
 	  $(DIR_TEST)/ts-env.c       \
 	  $(DIR_TEST)/ts-ptr.c       \
 	  $(DIR_TEST)/ts-ptr2.c      \
-	  $(DIR_TEST)/ts-log.o       \
-	  $(DIR_TEST)/ts-prim.o      \
-	  $(DIR_TEST)/ts-elem-meta.o \
-	  $(DIR_TEST)/ts-elem.o
+	  $(DIR_TEST)/ts-log.c       \
+	  $(DIR_TEST)/ts-prim.c      \
+	  $(DIR_TEST)/ts-elem-meta.c \
+	  $(DIR_TEST)/ts-elem.c      \
+	  $(DIR_TEST)/ts-list.c
 INP_COV = $(DIR_BLD)/error.gcda $(DIR_BLD)/test.gcda $(DIR_BLD)/ptr.gcda \
 	  $(DIR_BLD)/log.gcda $(DIR_BLD)/prim.gcda $(DIR_BLD)/elem.gcda
 INP_RUN = $(DIR_BLD)/test.log
