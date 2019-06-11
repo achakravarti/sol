@@ -77,8 +77,15 @@ INP_LD  = $(DIR_TEST)/runner.c       \
 	  $(DIR_TEST)/ts-elem-meta.c \
 	  $(DIR_TEST)/ts-elem.c      \
 	  $(DIR_TEST)/ts-list.c
-INP_COV = $(DIR_BLD)/error.gcda $(DIR_BLD)/test.gcda $(DIR_BLD)/ptr.gcda \
-	  $(DIR_BLD)/log.gcda $(DIR_BLD)/prim.gcda $(DIR_BLD)/elem.gcda
+
+INP_COV = $(DIR_BLD)/error.gcda \
+	  $(DIR_BLD)/test.gcda  \
+	  $(DIR_BLD)/ptr.gcda   \
+	  $(DIR_BLD)/log.gcda   \
+	  $(DIR_BLD)/prim.gcda  \
+	  $(DIR_BLD)/elem.gcda  \
+	  $(DIR_BLD)/list.gcda
+
 INP_RUN = $(DIR_BLD)/test.log
 
 
