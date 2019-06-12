@@ -224,6 +224,36 @@ SOL_CATCH:
                 /* pass by in case of exception */
 
 SOL_FINALLY:
+                /* wind up */
+        sol_list_free(&list);
+
+                /* return current error code */
+        return sol_erno_get();
+}
+
+
+
+
+static sol_erno new_test3(void)
+{
+        #define NEW_TEST3 "sol_list_new() throws SOL_ERNO_STATE if passed a" \
+                          " non-null pointer"
+
+        auto sol_list *list; /* test list */
+
+SOL_TRY:
+                /* set up test condition */
+        list = SOL_PTR_NULL;
+        sol_try (sol_list_new(&list));
+        sol_try (sol_list_new(&list));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_STATE
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
                 /* return current error code */
         return sol_erno_get();
 }
@@ -251,6 +281,7 @@ SOL_TRY:
                 /* register sol_list_new() test cases */
         sol_try (sol_tsuite_register(hnd, new_test1, NEW_TEST1));
         sol_try (sol_tsuite_register(hnd, new_test2, NEW_TEST2));
+        sol_try (sol_tsuite_register(hnd, new_test3, NEW_TEST3));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(hnd));

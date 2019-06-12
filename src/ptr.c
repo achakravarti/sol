@@ -63,7 +63,8 @@ extern sol_erno sol_ptr_new(sol_ptr **ptr,
 {
 SOL_TRY:
                 /* check preconditions */
-        sol_assert (ptr && !*ptr, SOL_ERNO_PTR);
+        sol_assert (ptr, SOL_ERNO_PTR);
+        sol_assert (!*ptr, SOL_ERNO_STATE);
         sol_assert (sz, SOL_ERNO_RANGE);
 
                 /* allocate heap memory of size @sz to @ptr */

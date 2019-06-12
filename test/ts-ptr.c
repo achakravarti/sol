@@ -64,7 +64,7 @@ SOL_FINALLY:
  */
 static sol_erno test_new2(void)
 {
-        #define DESC_NEW2 "sol_ptr_new() throws SOL_ERNO_PTR when passed a" \
+        #define DESC_NEW2 "sol_ptr_new() throws SOL_ERNO_STATE when passed a" \
                           " pointer for @ptr that has already been allocated"
         auto sol_ptr *ptr = SOL_PTR_NULL;
 
@@ -75,7 +75,7 @@ SOL_TRY:
 
 SOL_CATCH:
                 /* check test condition */
-        sol_erno_set(SOL_ERNO_PTR == sol_erno_get()
+        sol_erno_set(SOL_ERNO_STATE == sol_erno_get()
                      ? SOL_ERNO_NULL
                      : SOL_ERNO_TEST);
 
