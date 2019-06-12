@@ -234,6 +234,7 @@ SOL_FINALLY:
 
 
 
+        /* new_test3() defines the test case described by NEW_TEST3 */
 static sol_erno new_test3(void)
 {
         #define NEW_TEST3 "sol_list_new() throws SOL_ERNO_STATE if passed a" \
@@ -254,6 +255,40 @@ SOL_CATCH:
                      : SOL_ERNO_TEST);
 
 SOL_FINALLY:
+                /* wind up */
+        sol_list_free(&list);
+
+                /* return current error code */
+        return sol_erno_get();
+}
+
+
+
+
+        /* len_test1() defines the test case described by LEN_TEST1 */
+static sol_erno len_test1(void)
+{
+        #define LEN_TEST1 "sol_list_len() returns 0 for a newly created @list"
+
+        auto sol_list *list; /* test list       */
+        auto sol_size len;   /* length of $list */
+
+SOL_TRY:
+                /* set up test */
+        list = SOL_PTR_NULL;
+        sol_try (sol_list_new(&list));
+
+                /* check test condition */
+        sol_try (sol_list_len(list, &len));
+        sol_assert (!len, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by in case of exception */
+
+SOL_FINALLY:
+                /* wind up */
+        sol_list_free(&list);
+
                 /* return current error code */
         return sol_erno_get();
 }
@@ -282,6 +317,9 @@ SOL_TRY:
         sol_try (sol_tsuite_register(hnd, new_test1, NEW_TEST1));
         sol_try (sol_tsuite_register(hnd, new_test2, NEW_TEST2));
         sol_try (sol_tsuite_register(hnd, new_test3, NEW_TEST3));
+
+                /* register sol_list_len() test cases */
+        sol_try (sol_tsuite_register(hnd, len_test1, LEN_TEST1));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(hnd));
