@@ -205,6 +205,32 @@ SOL_FINALLY:
 
 
 
+        /* new_test2() defines the test case described by NEW_TEST2 */
+static sol_erno new_test2(void)
+{
+        #define NEW_TEST2 "sol_list_new() creates a new list instance"
+
+        auto sol_list *list; /* test list */
+
+SOL_TRY:
+                /* set up test */
+        list = SOL_PTR_NULL;
+        sol_try (sol_list_new(&list));
+
+                /* check test condition */
+        sol_assert (list, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by in case of exception */
+
+SOL_FINALLY:
+                /* return current error code */
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_list() is declared in sol/test/suite.h */
 extern sol_erno __sol_tests_list(sol_tlog *log,
                                  sol_uint *pass,
@@ -224,6 +250,7 @@ SOL_TRY:
 
                 /* register sol_list_new() test cases */
         sol_try (sol_tsuite_register(hnd, new_test1, NEW_TEST1));
+        sol_try (sol_tsuite_register(hnd, new_test2, NEW_TEST2));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(hnd));
