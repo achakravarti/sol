@@ -322,6 +322,35 @@ SOL_FINALLY:
 
 
 
+        /* len_test3() defines the test case described by LEN_TEST3 */
+static sol_erno len_test3(void)
+{
+        #define LEN_TEST3 "sol_list_len() throws SOL_ERNO_PTR if passed a" \
+                          " null pointer for @len"
+
+        auto sol_list *list; /* test list */
+
+SOL_TRY:
+                /* set up test */
+        list = SOL_PTR_NULL;
+        sol_try (sol_list_new(&list));
+        sol_try (sol_list_len(list, SOL_PTR_NULL));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* wind up and return current error code */
+        sol_list_free(&list);
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_list() is declared in sol/test/suite.h */
 extern sol_erno __sol_tests_list(sol_tlog *log,
                                  sol_uint *pass,
@@ -347,6 +376,7 @@ SOL_TRY:
                 /* register sol_list_len() test cases */
         sol_try (sol_tsuite_register(hnd, len_test1, LEN_TEST1));
         sol_try (sol_tsuite_register(hnd, len_test2, LEN_TEST2));
+        sol_try (sol_tsuite_register(hnd, len_test3, LEN_TEST3));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(hnd));
