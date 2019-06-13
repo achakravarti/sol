@@ -152,23 +152,20 @@ static sol_inline sol_erno meta_new(sol_elem_meta **meta)
 
 
 
-        /* elem_new() initialises an element @elem with a payload string @str */
-static sol_erno elem_new(sol_elem **elem, const char *str)
+        /* elem_new() initialises an element @elem of class @meta with a payload
+         * string @str */
+static sol_erno elem_new(sol_elem **elem,
+                         sol_elem_meta **meta,
+                         const char *str)
 {
-        auto sol_elem_meta *meta; /* metadata of @elem */
-        auto char *hstr;          /* heap copy of @str */
+        auto char *hstr = SOL_PTR_NULL;
 
 SOL_TRY:
-                /* init @elem metadata */
-        meta = SOL_PTR_NULL;
-        sol_try (meta_new(&meta));
-
-                /* init heap copy of @str */
-        hstr = SOL_PTR_NULL;
+                /* init @elem with @meta and @str; all three handles are assumed
+                 * to have been passed as pointing to null instances */
+        sol_try (meta_new(meta));
         sol_try (str_new(&hstr, str));
-
-                /* init @elem with heap copy of @str */
-        sol_try (sol_elem_new(elem, meta, (sol_ptr *) hstr));
+        sol_try (sol_elem_new(elem, *meta, (sol_ptr *) hstr));
 
 SOL_CATCH:
                 /* pass by in case of exception */
@@ -328,11 +325,10 @@ static sol_erno len_test3(void)
         #define LEN_TEST3 "sol_list_len() throws SOL_ERNO_PTR if passed a" \
                           " null pointer for @len"
 
-        auto sol_list *list; /* test list */
+        auto sol_list *list = SOL_PTR_NULL;
 
 SOL_TRY:
                 /* set up test */
-        list = SOL_PTR_NULL;
         sol_try (sol_list_new(&list));
         sol_try (sol_list_len(list, SOL_PTR_NULL));
 
@@ -351,6 +347,43 @@ SOL_FINALLY:
 
 
 
+        /* len_test4() defines the test case described by LEN_TEST4 */
+static sol_erno len_test4(void)
+{
+        #define LEN_TEST4 "sol_list_len() returns the correct length of @list" \
+                          " through @len"
+
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_list *list = SOL_PTR_NULL;
+        auto sol_size len;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (elem_new(&elem, &meta, "Hello, world!"));
+        sol_try (sol_list_new(&list));
+        sol_try (sol_list_push(&list, elem));
+
+                /* check test condition */
+        sol_try (sol_list_len(list, &len));
+        sol_assert (len == (sol_size) 1, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by in case of exception */
+
+SOL_FINALLY:
+                /* wind up */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
+        sol_list_free(&list);
+
+                /* return current error code */
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_list() is declared in sol/test/suite.h */
 extern sol_erno __sol_tests_list(sol_tlog *log,
                                  sol_uint *pass,
@@ -358,7 +391,7 @@ extern sol_erno __sol_tests_list(sol_tlog *log,
                                  sol_uint *total)
 {
         auto sol_tsuite ts;   /* sol_list test suite */
-        auto sol_tsuite *hnd; /* handle to $ts       */
+        auto sol_tsuite *hnd = SOL_PTR_NULL;
 
 SOL_TRY:
                 /* check preconditions */
@@ -377,6 +410,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(hnd, len_test1, LEN_TEST1));
         sol_try (sol_tsuite_register(hnd, len_test2, LEN_TEST2));
         sol_try (sol_tsuite_register(hnd, len_test3, LEN_TEST3));
+        sol_try (sol_tsuite_register(hnd, len_test4, LEN_TEST4));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(hnd));
