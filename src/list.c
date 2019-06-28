@@ -51,6 +51,39 @@ struct __sol_list {
 
 
 
+static sol_erno list_push(sol_list *list, const sol_elem *elem)
+{
+        auto struct list_node *node = SOL_PTR_NULL;
+
+SOL_TRY:
+                /* create element node to push */
+        sol_try (sol_ptr_new((sol_ptr**)&node, sizeof (*node)));
+        node->elem = SOL_PTR_NULL;
+        node->next = SOL_PTR_NULL;
+        sol_try (sol_elem_copy(&node->elem, elem));
+
+                /* set new node as head if @list is empty */
+        if (!list->head)
+                list->head = node;
+
+                /* set new node as next to current tail if @list isn't empty */
+        if (sol_likely (list->tail))
+                list->tail->next = node;
+
+                /* set new node as tail and update length of @list */
+        list->tail = node;
+        list->len++;
+
+SOL_CATCH:
+        sol_log_erno(sol_erno_get());
+
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
 static sol_erno list_fork(sol_list **list)
 {
         register sol_index i;
@@ -71,7 +104,8 @@ SOL_TRY:
 
         for (i = (sol_index) 0; i < src->len; i++) {
                 src->curr = src->curr->next;
-                sol_try (sol_list_push(list, src->curr->elem));
+                //sol_try (sol_list_push(list, src->curr->elem));
+                sol_try (list_push(*list, src->curr->elem));
         }
 
         src->curr = mark;
@@ -290,27 +324,31 @@ SOL_FINALLY:
 
 extern sol_erno sol_list_push(sol_list **list, const sol_elem *elem)
 {
-        auto struct list_node *node = SOL_PTR_NULL;
+        //auto struct list_node *node = SOL_PTR_NULL;
         auto sol_list *hnd;
         auto sol_index sid;
         auto sol_index did;
 
 SOL_TRY:
+                /* check preconditions */
         sol_assert (list && (hnd = *list) && elem, SOL_ERNO_PTR);
 
+                /* ensure that the ID of @elem matches the ID of any existing
+                 * elements in @list */
         if (sol_likely (hnd->len)) {
                 sol_try (sol_elem_id(elem, &sid));
                 sol_try (sol_elem_id(hnd->curr->elem, &did));
                 sol_assert (sid == did, SOL_ERNO_STATE);
         }
 
+                /* create a fork of @list if required */
         sol_try (list_fork(list));
         hnd = *list;
 
+        #if 0
         sol_try (sol_ptr_new((sol_ptr**)&node, sizeof (*node)));
         node->elem = SOL_PTR_NULL;
         node->next = SOL_PTR_NULL;
-
         sol_try (sol_elem_copy(&node->elem, elem));
 
         if (!hnd->head)
@@ -321,11 +359,15 @@ SOL_TRY:
 
         hnd->tail = node;
         hnd->len++;
+        #endif
+        sol_try (list_push(hnd, elem));
 
 SOL_CATCH:
+                /* log any exception that might have occured */
         sol_log_erno(sol_erno_get());
 
 SOL_FINALLY:
+                /* return current error code */
         return sol_erno_get();
 }
 
