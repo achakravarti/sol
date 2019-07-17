@@ -413,6 +413,32 @@ SOL_FINALLY:
 
 
 
+        /* define the unit test to run the test case described by NREF_TEST2 */
+static sol_erno nref_test2(void)
+{
+        #define NREF_TEST2 "sol_list_nref() throws SOL_ERNO_PTR if passed a" \
+                          " null pointer for @list"
+
+        auto sol_size nref;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (sol_list_nref(SOL_PTR_NULL, &nref));
+
+SOL_CATCH:
+                /* check test condition */
+        sol_erno_set(sol_erno_get() == SOL_ERNO_PTR
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+                /* wind up */
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_list() is declared in sol/test/suite.h */
 extern sol_erno __sol_tests_list(sol_tlog *log,
                                  sol_uint *pass,
@@ -443,6 +469,7 @@ SOL_TRY:
 
                 /* register sol_list_nref() test cases */
         sol_try (sol_tsuite_register(hnd, nref_test1, NREF_TEST1));
+        sol_try (sol_tsuite_register(hnd, nref_test2, NREF_TEST2));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(hnd));
