@@ -532,7 +532,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(hnd, nref_test1, NREF_TEST1));
         sol_try (sol_tsuite_register(hnd, nref_test2, NREF_TEST2));
         sol_try (sol_tsuite_register(hnd, nref_test3, NREF_TEST3));
-        sol_try (sol_tsuite_register(hnd, nref_test4, NREF_TEST3));
+        sol_try (sol_tsuite_register(hnd, nref_test4, NREF_TEST4));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(hnd));
