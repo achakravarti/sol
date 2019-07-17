@@ -471,7 +471,7 @@ SOL_FINALLY:
 static sol_erno nref_test4(void)
 {
         #define NREF_TEST4 "sol_list_nref() returns the correct reference count"
-        const sol_size EXPECTED = 3;
+        const sol_size EXPECTED = (sol_size) 3;
 
         auto sol_list *list = SOL_PTR_NULL;
         auto sol_list *cpy1 = SOL_PTR_NULL;
@@ -483,9 +483,9 @@ SOL_TRY:
         sol_try (sol_list_new(&list));
         sol_try (sol_list_copy(&cpy1, list));
         sol_try (sol_list_copy(&cpy2, list));
-        sol_try (sol_list_nref(list, &nref));
 
                 /* check test condition */
+        sol_try (sol_list_nref(list, &nref));
         sol_assert (nref == EXPECTED, SOL_ERNO_TEST);
 
 SOL_CATCH:
@@ -494,6 +494,50 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_list_free(&list);
+        sol_list_free(&cpy1);
+        sol_list_free(&cpy2);
+        return sol_erno_get();
+}
+
+
+
+
+        /* push_test1() defines the test case described by PUSH_TEST1 */
+static sol_erno push_test1(void)
+{
+        #define PUSH_TEST1 "sol_list_push() correctly manages the reference" \
+                          " counts of @list"
+        const sol_size EXPECTED = (sol_size) 2;
+
+        auto sol_elem_meta *meta = SOL_PTR_NULL;
+        auto sol_elem *elem = SOL_PTR_NULL;
+        auto sol_list *list = SOL_PTR_NULL;
+        auto sol_list *cpy1 = SOL_PTR_NULL;
+        auto sol_list *cpy2 = SOL_PTR_NULL;
+        auto sol_size nref;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (elem_new(&elem, &meta, "Hello, world!"));
+        sol_try (sol_list_new(&list));
+        sol_try (sol_list_copy(&cpy1, list));
+        sol_try (sol_list_copy(&cpy2, list));
+        sol_try (sol_list_push(&list, elem));
+
+                /* check test condition */
+        sol_try (sol_list_nref(cpy1, &nref));
+        sol_assert (nref == EXPECTED, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by in case of exception */
+
+SOL_FINALLY:
+                /* wind up */
+        sol_elem_meta_free(&meta);
+        sol_elem_free(&elem);
+        sol_list_free(&list);
+        sol_list_free(&cpy1);
+        sol_list_free(&cpy2);
         return sol_erno_get();
 }
 
@@ -534,6 +578,9 @@ SOL_TRY:
         sol_try (sol_tsuite_register(hnd, nref_test3, NREF_TEST3));
         sol_try (sol_tsuite_register(hnd, nref_test4, NREF_TEST4));
 
+                /* register sol_list_push() test cases */
+        sol_try (sol_tsuite_register(hnd, push_test1, PUSH_TEST1));
+
                 /* execute test cases */
         sol_try (sol_tsuite_exec(hnd));
 
@@ -548,8 +595,6 @@ SOL_CATCH:
 SOL_FINALLY:
                 /* wind up */
         sol_tsuite_term(hnd);
-
-                /* return currrent error code */
         return sol_erno_get();
 }
 
