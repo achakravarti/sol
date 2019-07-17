@@ -2078,31 +2078,52 @@ extern sol_erno sol_elem_meta_copy(sol_elem_meta **meta,
 extern void sol_elem_meta_free(sol_elem_meta **meta);
 
 
+/******************************************************************************
+ * Module: List
+ *
+ * Abstract:
+ * 	The List Module of the Sol Library provides a generic reference counted
+ * 	list type along with an interface to manipulate its instances.
+ *
+ * Description:
+ * 	A list is represented by the opaque type `sol_list`. The functions that
+ * 	form the interface for `sol_list` return a `sol_erno` error code to
+ * 	indicate whether or not the operation succeeded. The only exception to
+ * 	this is the `sol_list_free()` function, which returns `void`, since it's
+ * 	a finalisation routine.
+ *
+ * 	TODO: Describe contracts and assumptions.
+ *
+ * 	The first parameter of all the interface functions takes a handle to the
+ * 	contextual `sol_list` instance. A `sol_list **` handle indicates that
+ * 	the instance is being changed in the heap and / or having its state
+ * 	changed in some way. A `const sol_list *` handle indicates that the
+ * 	instance isn't being modified.
+ *
+ * 	The List Module provides three housekeeping interface functions
+ * 	responsible for managing the allocation and deallocation of list
+ * 	instances in the heap. `sol_list_new()` creates a new empty list
+ * 	instance, and `sol_list_copy()` creates a copy of an existing instance.
+ * 	`sol_list_free()` destroys an existing instance by releasing the heap
+ * 	memory allocated to it.
+ *
+ * Usage:
+ *
+ * References:
+ */
 
-
-/* Module: List */
 typedef struct __sol_list sol_list;
 
 extern sol_erno sol_list_new(sol_list **list);
-
 extern sol_erno sol_list_copy(sol_list **list, const sol_list *src);
-
 extern void sol_list_free(sol_list **list);
-
 extern sol_erno sol_list_len(const sol_list *list, sol_size *len);
-
 extern sol_erno sol_list_elem(const sol_list *list, sol_elem **elem);
-
 extern sol_erno sol_list_setelem(sol_list **list, const sol_elem *elem);
-
 extern sol_erno sol_list_start(sol_list **list);
-
 extern sol_erno sol_list_next(sol_list **list);
-
 extern sol_erno sol_list_end(sol_list **list);
-
 extern sol_erno sol_list_push(sol_list **list, const sol_elem *elem);
-
 extern sol_erno sol_list_pop(sol_list **list);
 
 
