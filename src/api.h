@@ -2092,7 +2092,7 @@ extern void sol_elem_meta_free(sol_elem_meta **meta);
  * 	this is the `sol_list_free()` function, which returns `void`, since it's
  * 	a finalisation routine.
  *
- * 	TODO: Describe contracts and assumptions.
+ * 	TODO: Describe preconditions and assumptions.
  *
  * 	The first parameter of all the interface functions takes a handle to the
  * 	contextual `sol_list` instance. A `sol_list **` handle indicates that
@@ -2118,6 +2118,7 @@ extern sol_erno sol_list_new(sol_list **list);
 extern sol_erno sol_list_copy(sol_list **list, const sol_list *src);
 extern void sol_list_free(sol_list **list);
 extern sol_erno sol_list_len(const sol_list *list, sol_size *len);
+extern sol_erno sol_list_nref(const sol_list *list, sol_size *nref);
 extern sol_erno sol_list_elem(const sol_list *list, sol_elem **elem);
 extern sol_erno sol_list_setelem(sol_list **list, const sol_elem *elem);
 extern sol_erno sol_list_start(sol_list **list);

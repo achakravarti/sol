@@ -209,6 +209,25 @@ SOL_FINALLY:
 
 
 
+        /* define the sol_list_nref() interface function; return the nref field
+         * of @list through @nref after checking preconditions; in case of an
+         * exception, log the current error code */
+extern sol_erno sol_list_nref(const sol_list *list, sol_size *nref)
+{
+SOL_TRY:
+        sol_assert (list && nref, SOL_ERNO_PTR);
+        *nref = list->nref;
+
+SOL_CATCH:
+        sol_log_erno(sol_erno_get());
+
+SOL_FINALLY:
+        return sol_erno_get();
+}
+
+
+
+
 extern sol_erno sol_list_elem(const sol_list *list, sol_elem **elem)
 {
 SOL_TRY:
