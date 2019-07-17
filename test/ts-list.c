@@ -384,6 +384,35 @@ SOL_FINALLY:
 
 
 
+        /* define the unit test to run the test case described by NREF_TEST1 */
+static sol_erno nref_test1(void)
+{
+        #define NREF_TEST1 "sol_list_nref() returns 1 for a newly created @list"
+        const sol_size EXPECTED = 1;
+
+        auto sol_list *list = SOL_PTR_NULL;
+        auto sol_size nref;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (sol_list_new(&list));
+        sol_try (sol_list_nref(list, &nref));
+
+                /* check test condition */
+        sol_assert (nref == EXPECTED, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by in case of exception */
+
+SOL_FINALLY:
+                /* wind up */
+        sol_list_free(&list);
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_list() is declared in sol/test/suite.h */
 extern sol_erno __sol_tests_list(sol_tlog *log,
                                  sol_uint *pass,
@@ -411,6 +440,9 @@ SOL_TRY:
         sol_try (sol_tsuite_register(hnd, len_test2, LEN_TEST2));
         sol_try (sol_tsuite_register(hnd, len_test3, LEN_TEST3));
         sol_try (sol_tsuite_register(hnd, len_test4, LEN_TEST4));
+
+                /* register sol_list_nref() test cases */
+        sol_try (sol_tsuite_register(hnd, nref_test1, NREF_TEST1));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(hnd));
