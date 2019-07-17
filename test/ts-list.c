@@ -467,6 +467,39 @@ SOL_FINALLY:
 
 
 
+        /* define the unit test to run the test case described by NREF_TEST4 */
+static sol_erno nref_test4(void)
+{
+        #define NREF_TEST4 "sol_list_nref() returns the correct reference count"
+        const sol_size EXPECTED = 3;
+
+        auto sol_list *list = SOL_PTR_NULL;
+        auto sol_list *cpy1 = SOL_PTR_NULL;
+        auto sol_list *cpy2 = SOL_PTR_NULL;
+        auto sol_size nref;
+
+SOL_TRY:
+                /* set up test */
+        sol_try (sol_list_new(&list));
+        sol_try (sol_list_copy(&cpy1, list));
+        sol_try (sol_list_copy(&cpy2, list));
+        sol_try (sol_list_nref(list, &nref));
+
+                /* check test condition */
+        sol_assert (nref == EXPECTED, SOL_ERNO_TEST);
+
+SOL_CATCH:
+                /* pass by in case of exception */
+
+SOL_FINALLY:
+                /* wind up */
+        sol_list_free(&list);
+        return sol_erno_get();
+}
+
+
+
+
         /* __sol_tests_list() is declared in sol/test/suite.h */
 extern sol_erno __sol_tests_list(sol_tlog *log,
                                  sol_uint *pass,
@@ -499,6 +532,7 @@ SOL_TRY:
         sol_try (sol_tsuite_register(hnd, nref_test1, NREF_TEST1));
         sol_try (sol_tsuite_register(hnd, nref_test2, NREF_TEST2));
         sol_try (sol_tsuite_register(hnd, nref_test3, NREF_TEST3));
+        sol_try (sol_tsuite_register(hnd, nref_test4, NREF_TEST3));
 
                 /* execute test cases */
         sol_try (sol_tsuite_exec(hnd));
