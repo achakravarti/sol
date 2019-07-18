@@ -291,6 +291,38 @@ SOL_FINALLY:
 
 
 
+        /* implement the copy_test2() unit test; this unit test checks that the
+         * SOL_ERNO_STATE error code is returned by sol_list_copy if it is
+         * passed a non-null list instance through its contextual handle; the
+         * source list instance that is to be copied is mocked */
+static sol_erno copy_test2(void)
+{
+        #define COPY_TEST2 "sol_list_copy() throws SOL_ERNO_STATE if passed a" \
+                           " if the instance handled by @list is not null"
+
+        auto sol_list *list = SOL_PTR_NULL;
+        auto sol_list *mock = SOL_PTR_NULL;
+
+SOL_TRY:
+        sol_try (sol_list_new(&list));
+        sol_try (sol_list_new(&mock));
+        sol_try (sol_list_copy(&list, mock));
+
+SOL_CATCH:
+        sol_erno_set(sol_erno_get() == SOL_ERNO_STATE
+                     ? SOL_ERNO_NULL
+                     : SOL_ERNO_TEST);
+
+SOL_FINALLY:
+        sol_list_free(&list);
+        sol_list_free(&mock);
+
+        return sol_erno_get();
+}
+
+
+
+
         /* len_test1() defines the test case described by LEN_TEST1 */
 static sol_erno len_test1(void)
 {
@@ -597,6 +629,7 @@ SOL_TRY:
 
                 /* register sol_list_copy() test cases */
         sol_try (sol_tsuite_register(hnd, copy_test1, COPY_TEST1));
+        sol_try (sol_tsuite_register(hnd, copy_test2, COPY_TEST2));
 
                 /* register sol_list_len() test cases */
         sol_try (sol_tsuite_register(hnd, len_test1, LEN_TEST1));
@@ -629,5 +662,4 @@ SOL_FINALLY:
         sol_tsuite_term(hnd);
         return sol_erno_get();
 }
-
 
