@@ -323,6 +323,39 @@ SOL_FINALLY:
 
 
 
+        /* implement the copy_test3() unit test; this unit test checks that
+         * sol_list_copy() performs a lazy copy of a source list to the context
+         * list; this is determined by checking that the reference count of the
+         * source list gets incremented; the catch block is passed by in case of
+         * an exception */
+static sol_erno copy_test3(void)
+{
+        #define COPY_TEST3 "sol_list_copy() lazily copies the source list to" \
+                           " the contextual list"
+        const sol_size EXPECTED = (sol_size) 2;
+
+        auto sol_list *ctx = SOL_PTR_NULL;
+        auto sol_list *src = SOL_PTR_NULL;
+        auto sol_size nref;
+
+SOL_TRY:
+        sol_try (sol_list_new(&src));
+        sol_try (sol_list_copy(&ctx, src));
+
+        sol_try (sol_list_nref(ctx, &nref));
+        sol_assert (nref == EXPECTED, SOL_ERNO_TEST);
+
+SOL_CATCH:
+SOL_FINALLY:
+        sol_list_free(&ctx);
+        sol_list_free(&src);
+
+        return sol_erno_get();
+}
+
+
+
+
         /* len_test1() defines the test case described by LEN_TEST1 */
 static sol_erno len_test1(void)
 {
@@ -630,6 +663,7 @@ SOL_TRY:
                 /* register sol_list_copy() test cases */
         sol_try (sol_tsuite_register(hnd, copy_test1, COPY_TEST1));
         sol_try (sol_tsuite_register(hnd, copy_test2, COPY_TEST2));
+        sol_try (sol_tsuite_register(hnd, copy_test3, COPY_TEST3));
 
                 /* register sol_list_len() test cases */
         sol_try (sol_tsuite_register(hnd, len_test1, LEN_TEST1));
